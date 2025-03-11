@@ -1,8 +1,36 @@
+import ClinicAndSpecialties from "./ClinicAndSpecialties";
+import PatientReviews from "./PatientReviews";
+
 const Home = () => {
     return (
-        <div>
-            Home page
-        </div>
+        <section>
+            {/* Banner */}
+
+            {/* About us */}
+
+            {/* Our Services */}
+
+            {/* Our Departments */}
+
+            {/* Upcoming Appointments */}
+
+            {/* Clinic and Specialties */}
+            <ClinicAndSpecialties />
+            
+            {/* Our Medical Experts */}
+
+            {/* Why Book With Us */}
+
+            {/* Patient Reviews */}
+            <PatientReviews />
+
+            {/* Stats Section */}
+
+            {/* Frequently Asked Questions */}
+
+            {/* Download Mobile App */}
+
+        </section>
     );
 };
 
