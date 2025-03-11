@@ -54,7 +54,7 @@ const Faq = () => {
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 className="container mx-auto  px-4 lg:px-8 "
             >
-                <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="flex flex-col md:flex-row items-center gap-8 py-10 xl:py-6">
 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
