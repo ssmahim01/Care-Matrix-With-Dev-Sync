@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const PatientReviews = () => {
-  return (
-    <section>
-      this is Patient reviews page
-    </section>
-  )
-}
+  return <section>this is Patient reviews page</section>;
+};
 
-export default PatientReviews
+export default PatientReviews;
