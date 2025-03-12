@@ -1,4 +1,5 @@
 import ClinicAndSpecialties from "./ClinicAndSpecialties";
+import Doctors from "./Doctors";
 import PatientReviews from "./PatientReviews";
 
 const Home = () => {
@@ -16,9 +17,10 @@ const Home = () => {
 
             {/* Clinic and Specialties */}
             <ClinicAndSpecialties />
-            
-            {/* Our Medical Experts */}
 
+            {/* Our Medical Experts */}
+            <Doctors></Doctors>
+            
             {/* Why Book With Us */}
 
             {/* Patient Reviews */}
