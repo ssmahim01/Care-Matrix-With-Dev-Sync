@@ -12,14 +12,13 @@ import SpecialtyCard from "./SpecieltiesCard"
 import DoctorCard from "./DoctorsCard"
 import ServiceCard from "./ServicesCard"
 import FacilityCard from "./FacilityCard"
-import AppointmentForm from "./AppintmentForm"
 
 export default function ClinicAndSpecialties() {
   const [searchQuery, setSearchQuery] = useState("")
   const [, setActiveTab] = useState("specialties")
 
   return (
-    <div className="min-h-screen rounded-2xl bg-gradient-to-b from-sky-50 to-white">
+    <section className="min-h-screen rounded-2xl bg-gradient-to-b from-sky-50 to-white">
       {/* Hero Section */}
       <HeroSection />
 
@@ -169,40 +168,8 @@ export default function ClinicAndSpecialties() {
             </motion.div>
           </TabsContent>
         </Tabs>
-
-        {/* Appointment Booking Section */}
-        <section className="mt-16 bg-gradient-to-r from-sky-100 to-sky-50 rounded-xl p-6 md:p-8">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-sky-800 mb-4">Book Your Appointment</h2>
-              <p className="text-sky-600 mb-6">
-                Schedule a consultation with our specialists. We're committed to providing you with the best care
-                possible.
-              </p>
-              <ul className="space-y-2 text-sky-700">
-                <li className="flex items-center">
-                  <ChevronRight className="h-5 w-5 text-sky-500 mr-2" />
-                  <span>Quick and easy online booking</span>
-                </li>
-                <li className="flex items-center">
-                  <ChevronRight className="h-5 w-5 text-sky-500 mr-2" />
-                  <span>Flexible scheduling options</span>
-                </li>
-                <li className="flex items-center">
-                  <ChevronRight className="h-5 w-5 text-sky-500 mr-2" />
-                  <span>Confirmation and reminders via email/SMS</span>
-                </li>
-                <li className="flex items-center">
-                  <ChevronRight className="h-5 w-5 text-sky-500 mr-2" />
-                  <span>Reschedule or cancel if needed</span>
-                </li>
-              </ul>
-            </div>
-            <AppointmentForm />
-          </div>
-        </section>
       </main>
-    </div>
+    </section>
   )
 }
 

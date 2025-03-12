@@ -1,9 +1,11 @@
-import ClinicAndSpecialties from "./Clinic_and_Specialties/ClinicAndSpecialties";
+
+import Doctors from "./Doctors";
 import Faq from "./Faq";
 import OurDepartments from "./../../components/Home/OurDepartments";
 import StatsSection from "./../../components/Home/StatsSection";
 import HowItWorks from "./../../components/Home/HowItWorks";
 import PatientReviews from "./Patient_Reviews/PatientReviews";
+import ClinicAndSpecialties from "./Clinic_and_Specialties/ClinicAndSpecialties";
 
 const Home = () => {
   return (
@@ -20,15 +22,18 @@ const Home = () => {
       </section>
 
       {/* Upcoming Appointments */}
-      <section className="pb-16">
+      <div className="pb-16">
         <HowItWorks />
-      </section>
+      </div>
 
       {/* Clinic and Specialties */}
       <section className="pb-16">
         <ClinicAndSpecialties />
       </section>
       {/* Our Medical Experts */}
+      <div className="pb-16">
+        <Doctors />
+      </div>
 
       {/* Why Book With Us */}
 
@@ -42,9 +47,8 @@ const Home = () => {
         <StatsSection />
       </section>
 
-            {/* Frequently Asked Questions */}
-            <Faq></Faq>
-      {/* Frequently Asked Questions */}
+      {/* FAQ */}
+      <Faq />
 
       {/* Download Mobile App */}
     </section>

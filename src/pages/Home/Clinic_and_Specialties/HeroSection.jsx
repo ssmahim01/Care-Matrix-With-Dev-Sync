@@ -6,7 +6,7 @@ import { Calendar, Phone } from "lucide-react"
 
 export default function HeroSection() {
   return (
-    <section className="bg-gradient-to-r rounded-2xl from-sky-100 via-sky-50 to-white py-12 md:py-20">
+    <section className="bg-gradient-to-r rounded-2xl from-sky-100 via-sky-50 to-white py-16 md:py-20">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <motion.div
@@ -59,7 +59,6 @@ export default function HeroSection() {
               <img
                 src="/placeholder.svg?height=500&width=600"
                 alt="Medical professionals"
-                fill
                 className="object-cover"
               />
             </div>
