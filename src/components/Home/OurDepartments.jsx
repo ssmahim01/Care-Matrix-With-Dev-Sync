@@ -74,7 +74,7 @@ const OurDepartments = () => {
         {departments?.map((department) => (
           <div
             key={department?._id}
-            className="w-full shadow-[0px_4px_10px_#0E82FD50] hover:shadow-none z-0 bg-white rounded relative cursor-pointer group 
+            className="w-full h-full grid place-content-stretch shadow-[0px_4px_10px_#0E82FD50] hover:shadow-none z-0 bg-white rounded relative cursor-pointer group 
             before:absolute before:top-0 hover:before:top-[10px] before:left-0 hover:before:left-[-10px] 
             before:w-full before:h-full before:rounded before:bg-[#0E82FD20] before:transition-all before:duration-500 before:z-[-1] 
             after:w-full after:h-full after:absolute after:top-0 hover:after:top-[20px] after:left-0 hover:after:left-[-20px] 
