@@ -6,19 +6,19 @@ const HowItWorks = () => {
       icon: <Search size={60} className="text-[#0E82FD]" />,
       title: "Search Doctor",
       description:
-        "Search for a doctor based on specialization, location, \n or availability.",
+        "Search for a doctor based on specialization, location, or availability.",
     },
     {
       icon: <UserCheck size={60} className="text-[#0E82FD]" />,
       title: "Check Doctor Profile",
       description:
-        "Explore detailed doctor profiles on our platform to \n make informed healthcare decisions.",
+        "Explore detailed doctor profiles on our platform to make informed healthcare decisions.",
     },
     {
       icon: <CalendarCheck size={60} className="text-[#0E82FD]" />,
       title: "Schedule Appointment",
       description:
-        "Choose your preferred doctor, select a convenient time \n slot, & confirm your appointment.",
+        "Choose your preferred doctor, select a convenient time slot, & confirm your appointment.",
     },
     {
       icon: <HeartPulse size={60} className="text-[#0E82FD]" />,
@@ -29,7 +29,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <div className="flex items-center gap-6 flex-col md:flex-row justify-center">
+    <div className="flex items-center gap-6 flex-col lg:flex-row justify-center">
       {/* Right Side */}
       <div>
         {/* Section Heading */}
@@ -59,7 +59,7 @@ const HowItWorks = () => {
         {services.map((service, index) => (
           <div
             key={index}
-            className="bg-white w-full shadow-sm border border-border rounded p-4  h-fit"
+            className="bg-white grid h-full place-content-stretch w-full shadow-sm border border-border rounded p-4"
           >
             <div>{service.icon}</div>
             <h3 className="text-xl font-bold mt-2 tracking-wider">
