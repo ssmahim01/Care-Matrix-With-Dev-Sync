@@ -45,8 +45,7 @@ const Faq = () => {
 
     ];
     return (
-        <div className="bg-[#EAF9FC] my-12">
-
+        <div className="bg-[#EAF9FC] my-12 rounded-md">
 
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
