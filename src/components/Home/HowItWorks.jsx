@@ -31,7 +31,7 @@ const HowItWorks = () => {
   return (
     <div className="flex items-center gap-6 flex-col lg:flex-row justify-center">
       {/* Right Side */}
-      <div>
+      <div className="w-full lg:w-4/12">
         {/* Section Heading */}
         <div className="space-y-2">
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-wide">
@@ -46,16 +46,16 @@ const HowItWorks = () => {
           </h3>
         </div>
         {/* Image */}
-        <div className="mt-6 w-full">
+        <div className="mt-6">
           <img
-            src="https://i.ibb.co.com/rKMxdSyN/doctor-Work-removebg-preview.png"
+            src="https://i.ibb.co.com/FkCJb5PS/doctor-Image-removebg-preview.png"
             alt="doctor_image"
-            className="w-full h-full"
+            className="w-full h-full max-h-[520px]"
           />
         </div>
       </div>
       {/* Left Side */}
-      <div className="lg:mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:w-7/12">
+      <div className="lg:mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:w-8/12">
         {services.map((service, index) => (
           <div
             key={index}
