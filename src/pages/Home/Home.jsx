@@ -5,6 +5,7 @@ import OurDepartments from "./../../components/Home/OurDepartments";
 import StatsSection from "./../../components/Home/StatsSection";
 import HowItWorks from "./../../components/Home/HowItWorks";
 import PatientReviews from "./PatientReviews";
+import WhyChooseUs from "@/components/Home/WhyChooseUs";
 
 const Home = () => {
   return (
@@ -32,6 +33,7 @@ const Home = () => {
             <Doctors></Doctors>
             
             {/* Why Book With Us */}
+            <WhyChooseUs></WhyChooseUs>
       {/* Clinic and Specialties */}
       <div className="pb-16">
         <ClinicAndSpecialties />
