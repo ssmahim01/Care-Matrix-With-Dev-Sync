@@ -70,7 +70,7 @@ const OurDepartments = () => {
         </h3>
       </div>
       {/* Main Container */}
-      <div className="mt-6 grid gap-8 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-6 grid gap-7 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {departments?.map((department) => (
           <div
             key={department?._id}
