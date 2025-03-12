@@ -1,0 +1,208 @@
+/* eslint-disable no-unused-vars */
+
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Search, Calendar, Phone, ChevronRight, Heart, Brain, Stethoscope, Baby, Bone, Eye, Pill, SmileIcon, } from "lucide-react"
+import { doctors, facilities, services, specialties } from "@/lib/data"
+import HeroSection from "./HeroSection"
+import SpecialtyCard from "./SpecieltiesCard"
+import DoctorCard from "./DoctorsCard"
+import ServiceCard from "./ServicesCard"
+import FacilityCard from "./FacilityCard"
+import AppointmentForm from "./AppintmentForm"
+
+export default function ClinicAndSpecialties() {
+  const [searchQuery, setSearchQuery] = useState("")
+  const [, setActiveTab] = useState("specialties")
+
+  return (
+    <div className="min-h-screen rounded-2xl bg-gradient-to-b from-sky-50 to-white">
+      {/* Hero Section */}
+      <HeroSection />
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-12 ">
+        {/* Search and Quick Actions */}
+        <div className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="relative w-full md:w-96">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sky-500 h-4 w-4" />
+            <Input
+              placeholder="Search specialties, doctors, services..."
+              className="pl-10 border-sky-200 focus:border-sky-400"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="flex gap-3 w-full md:w-auto">
+            <Button className="bg-sky-600 hover:bg-sky-700 flex-1 md:flex-none">
+              <Calendar className="mr-2 h-4 w-4" /> Book Appointment
+            </Button>
+            <Button variant="outline" className="border-sky-200 text-sky-700 hover:bg-sky-50 flex-1 md:flex-none">
+              <Phone className="mr-2 h-4 w-4" /> Contact Us
+            </Button>
+          </div>
+        </div>
+
+        {/* Tabs Navigation */}
+        <Tabs defaultValue="specialties" className="w-full" onValueChange={setActiveTab}>
+          <TabsList className="bg-sky-50 w-full justify-start overflow-x-auto flex-nowrap mb-8">
+            <TabsTrigger value="specialties" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">
+              Medical Specialties
+            </TabsTrigger>
+            <TabsTrigger value="doctors" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">
+              Our Doctors
+            </TabsTrigger>
+            <TabsTrigger value="services" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">
+              Services
+            </TabsTrigger>
+            <TabsTrigger value="facilities" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">
+              Facilities
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Specialties Tab */}
+          <TabsContent value="specialties" className="mt-0">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-sky-800 mb-2">Our Medical Specialties</h2>
+                <p className="text-sky-600 max-w-3xl">
+                  Horizon Medical Center offers comprehensive care across multiple specialties, with state-of-the-art
+                  facilities and experienced specialists.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {specialties.map(({ id, Icon, title, description, patientCount, doctorCount }) => (
+                  <SpecialtyCard
+                    key={id}
+                    icon={<Icon className="h-8 w-8 text-sky-600" />}
+                    title={title}
+                    description={description}
+                    patientCount={patientCount}
+                    doctorCount={doctorCount}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          </TabsContent>
+
+          {/* Doctors Tab */}
+          <TabsContent value="doctors" className="mt-0">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-sky-800 mb-2">Our Medical Experts</h2>
+                <p className="text-sky-600 max-w-3xl">
+                  Meet our team of highly qualified and experienced doctors dedicated to providing exceptional care.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {doctors.map((doctor) => (
+                  <DoctorCard key={doctor.id} doctor={doctor} />
+                ))}
+              </div>
+            </motion.div>
+          </TabsContent>
+
+          {/* Services Tab */}
+          <TabsContent value="services" className="mt-0">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-sky-800 mb-2">Our Services</h2>
+                <p className="text-sky-600 max-w-3xl">
+                  We offer a wide range of medical services to meet all your healthcare needs.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {services.map(({id, Icon, description,features,title}) => (
+                  <ServiceCard 
+                  key={id} 
+                  icon={<Icon className="h-8 w-8 text-sky-600" />}
+                  description={description}
+                  features={features}
+                  title={title}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          </TabsContent>
+
+          {/* Facilities Tab */}
+          <TabsContent value="facilities" className="mt-0">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-sky-800 mb-2">Our Facilities</h2>
+                <p className="text-sky-600 max-w-3xl">
+                  Explore our state-of-the-art facilities designed to provide the highest standard of care.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {facilities.map((facility) => (
+                  <FacilityCard key={facility.id} facility={facility} />
+                ))}
+              </div>
+            </motion.div>
+          </TabsContent>
+        </Tabs>
+
+        {/* Appointment Booking Section */}
+        <section className="mt-16 bg-gradient-to-r from-sky-100 to-sky-50 rounded-xl p-6 md:p-8">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-sky-800 mb-4">Book Your Appointment</h2>
+              <p className="text-sky-600 mb-6">
+                Schedule a consultation with our specialists. We're committed to providing you with the best care
+                possible.
+              </p>
+              <ul className="space-y-2 text-sky-700">
+                <li className="flex items-center">
+                  <ChevronRight className="h-5 w-5 text-sky-500 mr-2" />
+                  <span>Quick and easy online booking</span>
+                </li>
+                <li className="flex items-center">
+                  <ChevronRight className="h-5 w-5 text-sky-500 mr-2" />
+                  <span>Flexible scheduling options</span>
+                </li>
+                <li className="flex items-center">
+                  <ChevronRight className="h-5 w-5 text-sky-500 mr-2" />
+                  <span>Confirmation and reminders via email/SMS</span>
+                </li>
+                <li className="flex items-center">
+                  <ChevronRight className="h-5 w-5 text-sky-500 mr-2" />
+                  <span>Reschedule or cancel if needed</span>
+                </li>
+              </ul>
+            </div>
+            <AppointmentForm />
+          </div>
+        </section>
+      </main>
+    </div>
+  )
+}
+

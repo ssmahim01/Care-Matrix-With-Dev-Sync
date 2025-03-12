@@ -1,10 +1,13 @@
+
 import { Outlet } from "react-router-dom";
+import { Toaster } from "sonner";
 
 const MainLayout = () => {
     return (
-        <div>
+        <section>
             <Outlet />
-        </div>
+            <Toaster />
+        </section>
     );
 };
 
