@@ -1,4 +1,5 @@
 import ClinicAndSpecialties from "./ClinicAndSpecialties";
+import Doctors from "./Doctors";
 import Faq from "./Faq";
 import OurDepartments from "./../../components/Home/OurDepartments";
 import StatsSection from "./../../components/Home/StatsSection";
@@ -24,6 +25,13 @@ const Home = () => {
         <HowItWorks />
       </div>
 
+            {/* Clinic and Specialties */}
+            <ClinicAndSpecialties />
+
+            {/* Our Medical Experts */}
+            <Doctors></Doctors>
+            
+            {/* Why Book With Us */}
       {/* Clinic and Specialties */}
       <div className="pb-16">
         <ClinicAndSpecialties />
