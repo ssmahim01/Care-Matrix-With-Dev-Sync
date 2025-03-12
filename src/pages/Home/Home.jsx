@@ -4,6 +4,8 @@ import OurDepartments from "./../../components/Home/OurDepartments";
 import StatsSection from "./../../components/Home/StatsSection";
 import HowItWorks from "./../../components/Home/HowItWorks";
 import PatientReviews from "./PatientReviews";
+import AboutUs from "@/components/Home/AboutUs";
+
 
 const Home = () => {
   return (
@@ -11,6 +13,9 @@ const Home = () => {
       {/* Banner */}
 
       {/* About us */}
+    <div className="pt-16">
+    <AboutUs/>
+    </div>
 
       {/* Our Services */}
 
