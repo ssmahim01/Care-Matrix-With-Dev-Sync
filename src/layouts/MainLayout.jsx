@@ -1,11 +1,17 @@
+import Navbar from "@/shared/Navbar/Navbar";
 import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
-    return (
-        <div>
-            <Outlet />
-        </div>
-    );
+  return (
+    <div>
+      {/* Shared Navbar component */}
+      <Navbar />
+      {/* All contents wrapping inside of the outlet*/}
+      <div className="min-h-[calc(100vh-313px)] py-8">
+        <Outlet />
+      </div>
+    </div>
+  );
 };
 
 export default MainLayout;

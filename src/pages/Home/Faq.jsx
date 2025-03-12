@@ -2,10 +2,14 @@ import React from "react";
 import Lottie from "lottie-react";
 import { motion } from "framer-motion";
 import faqLottie from "../../assets/faq.json";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+    Accordion,
+    AccordionItem,
+    AccordionTrigger,
+    AccordionContent,
+} from "@/components/ui/accordion";
 
 const Faq = () => {
-
     const faqData = [
         {
             id: "q1",
@@ -91,10 +95,9 @@ const Faq = () => {
                     </motion.div>
                 </div>
             </motion.div>
-        </div>
+
+        </div >
     );
 };
-
-
 
 export default Faq;

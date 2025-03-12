@@ -56,11 +56,11 @@ const OurDepartments = () => {
       {/* Section Heading */}
       <div className="text-center space-y-4">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide">
-          Our{" "}
+          OUR{" "}
           <span className="text-[#0E82FD] tracking-wider underline underline-offset-4">
-            Medical
+            MEDICAL
           </span>{" "}
-          Departments
+          DEPARTMENTS
         </h1>
         <h3 className="text-lg md:text-xl text-[#464646] font-medium tracking-wider">
           Delivering Advanced, Specialized Care Across a Wide Range of{" "}
@@ -70,11 +70,11 @@ const OurDepartments = () => {
         </h3>
       </div>
       {/* Main Container */}
-      <div className="mt-6 grid gap-8 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-6 grid gap-7 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {departments?.map((department) => (
           <div
             key={department?._id}
-            className="w-full shadow-[0px_4px_10px_#0E82FD50] hover:shadow-none z-0 bg-white rounded relative cursor-pointer group 
+            className="w-full h-full grid place-content-stretch shadow-[0px_4px_10px_#0E82FD50] hover:shadow-none z-0 bg-white rounded relative cursor-pointer group 
             before:absolute before:top-0 hover:before:top-[10px] before:left-0 hover:before:left-[-10px] 
             before:w-full before:h-full before:rounded before:bg-[#0E82FD20] before:transition-all before:duration-500 before:z-[-1] 
             after:w-full after:h-full after:absolute after:top-0 hover:after:top-[20px] after:left-0 hover:after:left-[-20px] 
@@ -89,14 +89,16 @@ const OurDepartments = () => {
 
             {/*  contents  */}
             <div className="p-[18px] pt-2.5 bg-white rounded-b">
-              <h3 className="text-[1.5rem] font-bold text-[#0E82FD] tracking-wide">
+              <h3 className="text-[1.5rem] font-bold text-[#272727] tracking-wide">
                 {department?.title}
               </h3>
               <p className="text-[1rem] mt-1 font-[400] text-gray-600">
                 {department?.description}
               </p>
-              <button className="btn border-none hover:bg-[#0e81fdc6] text-[1rem] duration-500 bg-[#0E82FD] text-white mt-4">
-                Read More
+              <button className="btn border-none hover:bg-[#0e6efd] text-[1rem] duration-500 bg-[#0E82FD] text-white mt-4 relative group">
+                <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[1px] after:bg-white after:transition-all after:duration-300 group-hover:after:w-full">
+                  Read More...
+                </span>
               </button>
             </div>
           </div>
