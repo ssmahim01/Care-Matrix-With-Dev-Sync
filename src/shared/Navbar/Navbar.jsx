@@ -5,10 +5,6 @@ import {
   MdHealthAndSafety,
   MdLocalPharmacy,
   MdMedicalServices,
-<<<<<<< HEAD
-  MdMenuBook,
-=======
->>>>>>> 5764e988825879f04a0ec81a1e480b03d61e570a
 } from "react-icons/md";
 import { FaUserDoctor } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
@@ -19,9 +15,6 @@ import { closeMenu, toggleMenu } from "@/redux/menuSlice";
 import "./Navbar.css";
 
 const Navbar = () => {
-<<<<<<< HEAD
-  const user = null;
-=======
   const dispatch = useDispatch();
   const menuOpen = useSelector((state) => state.menu.menuOpen);
   console.log(menuOpen);
@@ -44,7 +37,6 @@ const Navbar = () => {
       document.removeEventListener("click", handleClickOutSide);
     };
   }, [dispatch]);
->>>>>>> 5764e988825879f04a0ec81a1e480b03d61e570a
 
   const routes = (
     <>
@@ -70,41 +62,6 @@ const Navbar = () => {
   );
 
   return (
-<<<<<<< HEAD
-    <div className="navbar border-b border-[#f3f6f9] fixed z-50 shadow-sm bg-[#f3f6f9]">
-      <div className="w-11/12 mx-auto max-w-screen-2xl flex items-center">
-        <div className="navbar-start">
-          <div className="dropdown">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn border border-neutral-300 btn-ghost lg:hidden mr-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
-            </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100/90 rounded-box z-[10] mt-3 w-60 p-3 shadow gap-4 mr-3"
-            >
-              {routes}
-            </ul>
-          </div>
-          <div className="flex items-center">
-            {/* <img
-=======
     <div className="navbar border-b border-[#f3f6f9] fixed z-10 shadow-sm lg:px-24 md:px-6 px-4 bg-[#f3f6f9]">
       <div className="navbar-start">
         <div className="dropdown" ref={dropdownRef}>
@@ -158,20 +115,10 @@ const Navbar = () => {
         </div>
         <div className="flex items-center">
           <img
->>>>>>> 5764e988825879f04a0ec81a1e480b03d61e570a
             src={CareMatrixLogo}
             className="w-9 h-9 rounded-md"
             referrerPolicy="no-referrer"
             alt="Logo of Care Matrix"
-<<<<<<< HEAD
-          /> */}
-            <a
-              href="/"
-              className="lg:text-3xl text-xl p-2 hidden md:flex gap-0 items-center font-bold"
-            >
-              <span>Care</span>-<span className="text-[#0E82FD]">Matrix</span>
-            </a>
-=======
           />
           <a
             href="/"
@@ -193,44 +140,17 @@ const Navbar = () => {
               <BiLogOutCircle />
               <span>Log Out</span>
             </button>
->>>>>>> 5764e988825879f04a0ec81a1e480b03d61e570a
           </div>
-        </div>
-
-        <div className="navbar-end w-full">
-          <div className="hidden lg:flex">
-            <ul className="menu menu-horizontal gap-4 mr-3 px-1">{routes}</ul>
-          </div>
-
-          {user ? (
-            <div className="flex gap-2 items-center">
-              <figure className="w-12 h-12 avatar avatar-online">
-                <img
-                  src={user?.photoURL}
-                  alt={user?.displayName}
-                  className="w-full h-full border-4 border-indigo-500 rounded-full"
-                  referrerPolicy="no-referrer"
-                />
-              </figure>
-
-              <button className="bg-blue-500 cursor-pointer py-2 px-5 text-white hover:bg-blue-700 rounded-md font-bold flex gap-1 items-center">
-                <BiLogOutCircle className="text-2xl" />
-                <span className="text-base">Log Out</span>
-              </button>
-            </div>
-          ) : (
-            <>
-              <button className="btn bg-[#0E82FD] border-none text-white duration-500 hover:bg-[#0e6efd] rounded md:ml-2 font-bold relative group">
-                <Link to="/login" className="flex gap-1 items-center">
-                  <span className="relative after:content-[''] after:absolute after:left-0 after:-bottom-[2px] after:w-0 after:h-[1px] after:bg-white after:transition-all after:duration-300 group-hover:after:w-full">
-                    Login
-                  </span>
-                  <BiLogInCircle className="text-base" />
-                </Link>
-              </button>
-            </>
-          )}
-        </div>
+        ) : (
+          <>
+            <button className="btn btn-outline border-2 text-[#0E82FD] hover:bg-sky-600 hover:text-white rounded-md md:ml-2 font-bold">
+              <Link to="/login" className="flex gap-1 items-center">
+                <span>Login</span>
+                <BiLogInCircle className="text-base" />
+              </Link>
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
