@@ -56,11 +56,11 @@ const OurDepartments = () => {
       {/* Section Heading */}
       <div className="text-center space-y-4">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide">
-          Our{" "}
+          OUR{" "}
           <span className="text-[#0E82FD] tracking-wider underline underline-offset-4">
-            Medical
+            MEDICAL
           </span>{" "}
-          Departments
+          DEPARTMENTS
         </h1>
         <h3 className="text-lg md:text-xl text-[#464646] font-medium tracking-wider">
           Delivering Advanced, Specialized Care Across a Wide Range of{" "}
@@ -89,7 +89,7 @@ const OurDepartments = () => {
 
             {/*  contents  */}
             <div className="p-[18px] pt-2.5 bg-white rounded-b">
-              <h3 className="text-[1.5rem] font-bold text-[#0E82FD] tracking-wide">
+              <h3 className="text-[1.5rem] font-bold text-[#272727] tracking-wide">
                 {department?.title}
               </h3>
               <p className="text-[1rem] mt-1 font-[400] text-gray-600">
