@@ -1,4 +1,5 @@
 import ClinicAndSpecialties from "./ClinicAndSpecialties";
+import Faq from "./Faq";
 import PatientReviews from "./PatientReviews";
 
 const Home = () => {
@@ -27,6 +28,7 @@ const Home = () => {
             {/* Stats Section */}
 
             {/* Frequently Asked Questions */}
+            <Faq></Faq>
 
             {/* Download Mobile App */}
 
