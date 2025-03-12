@@ -11,11 +11,10 @@ const Doctors = () => {
     }, [])
 
     return (
-        <div className='bg-slate-100 '>
-
+        <>
             {/* section inner */}
 
-            <div className='container mx-auto px-4 py-10 md:py-14 lg:py-16'>
+            <div className='container mx-auto px-4'>
                 {/* section-header */}
                 <div className="text-center ">
                     <h3 className='font-bold text-sm text-blue-800'>Doctors</h3>
@@ -29,7 +28,7 @@ const Doctors = () => {
                     }
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
