@@ -49,12 +49,18 @@ const Faq = () => {
 
     ];
     return (
-        <div className="bg-[#EAF9FC] my-12 rounded-md">
+        <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true }}
+            className="bg-[#EAF9FC] my-10 relative rounded-md">
 
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
+                viewport={{ once: true }}
                 className="container mx-auto  px-4 lg:px-8 "
             >
                 <div className="flex flex-col md:flex-row items-center gap-8 py-10 xl:py-6">
@@ -63,6 +69,7 @@ const Faq = () => {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
+                        viewport={{ once: true }}
                         className="w-full lg:w-1/2"
                     >
                         <Lottie className="w-full  lg:w-10/12" animationData={faqLottie} loop />
@@ -73,6 +80,7 @@ const Faq = () => {
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
+                        viewport={{ once: true }}
                         className="w-full lg:w-1/2"
                     >
                         <h5 className="text-xs font-semibold text-[#0B55E5]">FREQUENTLY ASKED QUESTIONS</h5>
@@ -86,6 +94,7 @@ const Faq = () => {
                                         animate={{ opacity: 1, height: "auto" }}
                                         exit={{ opacity: 0, height: 0 }}
                                         transition={{ duration: 0.5, ease: "easeInOut" }}
+                                        viewport={{ once: false, amount: 0.2 }}
                                     >
                                         <AccordionContent>{answer}</AccordionContent>
                                     </motion.div>
@@ -96,7 +105,7 @@ const Faq = () => {
                 </div>
             </motion.div>
 
-        </div >
+        </motion.div >
     );
 };
 
