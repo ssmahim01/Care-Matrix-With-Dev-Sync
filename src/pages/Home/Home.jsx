@@ -1,4 +1,6 @@
 import ClinicAndSpecialties from "./ClinicAndSpecialties";
+import Doctors from "./Doctors";
+import Faq from "./Faq";
 import OurDepartments from "./../../components/Home/OurDepartments";
 import StatsSection from "./../../components/Home/StatsSection";
 import HowItWorks from "./../../components/Home/HowItWorks";
@@ -27,7 +29,16 @@ const Home = () => {
       <div className="pb-16">
         <ClinicAndSpecialties />
       </div>
+
       {/* Our Medical Experts */}
+      <div className="pb-16">
+        <Doctors />
+      </div>
+
+      {/* Clinic and Specialties */}
+      <div className="pb-16">
+        <ClinicAndSpecialties />
+      </div>
 
       {/* Why Book With Us */}
 
@@ -41,7 +52,8 @@ const Home = () => {
         <StatsSection />
       </div>
 
-      {/* Frequently Asked Questions */}
+      {/* FAQ */}
+      <Faq />
 
       {/* Download Mobile App */}
     </section>
