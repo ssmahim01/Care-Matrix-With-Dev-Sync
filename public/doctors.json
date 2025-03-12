@@ -2,28 +2,28 @@
     {
       "id": 1,
       "name": "Dr. Sarah Johnson",
-      "image": "https://i.ibb.co.com/TqL0rMff/image.png",
+      "image": "https://i.ibb.co.com/WWp3yKDz/image.png",
       "rating": 4.9,
       "title": "Cardiologist"
     },
     {
       "id": 2,
       "name": "Dr. Michael Smith",
-      "image": "https://i.ibb.co.com/TqL0rMff/image.png",
+      "image": "https://i.ibb.co.com/F4M3hFY4/image.png",
       "rating": 4.8,
       "title": "Neurologist"
     },
     {
       "id": 3,
       "name": "Dr. Emily Brown",
-      "image": "https://i.ibb.co.com/TqL0rMff/image.png",
+      "image": "https://i.ibb.co.com/39hPW8d1/image.png",
       "rating": 4.7,
       "title": "Dermatologist"
     },
     {
       "id": 4,
       "name": "Dr. James Wilson",
-      "image": "https://i.ibb.co.com/TqL0rMff/image.png",
+      "image": "https://i.ibb.co.com/FbsX85Nn/image.png",
       "rating": 4.6,
       "title": "Orthopedic Surgeon"
     }
