@@ -16,7 +16,7 @@ const Home = () => {
       {/* Our Services */}
 
       {/* Our Departments */}
-      <div className="md:pb-24 pb-14">
+      <div className="md:pb-24 pt-12 pb-14">
         <OurDepartments />
       </div>
 
