@@ -14,7 +14,7 @@ const Home = () => {
             {/* Banner */}
 
       {/* About us */}
-    <div className="pt-16">
+    <div className="py-16">
     <AboutUs/>
     </div>
             {/* About us */}
