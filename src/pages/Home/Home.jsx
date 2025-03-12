@@ -38,7 +38,16 @@ const Home = () => {
       <div className="pb-16">
         <ClinicAndSpecialties />
       </div>
+
       {/* Our Medical Experts */}
+      <div className="pb-16">
+        <Doctors />
+      </div>
+
+      {/* Clinic and Specialties */}
+      <div className="pb-16">
+        <ClinicAndSpecialties />
+      </div>
 
       {/* Why Book With Us */}
 
@@ -52,9 +61,8 @@ const Home = () => {
         <StatsSection />
       </div>
 
-            {/* Frequently Asked Questions */}
-            <Faq></Faq>
-      {/* Frequently Asked Questions */}
+      {/* FAQ */}
+      <Faq />
 
       {/* Download Mobile App */}
     </section>
