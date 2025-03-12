@@ -2,6 +2,8 @@ import StatsSection from "@/components/Home/StatsSection";
 import ClinicAndSpecialties from "./ClinicAndSpecialties";
 import Faq from "./Faq";
 import PatientReviews from "./PatientReviews";
+import AboutUs from "@/components/Home/AboutUs";
+
 import OurDepartments from "@/components/Home/OurDepartments";
 import HowItWorks from "@/components/Home/HowItWorks";
 import Doctors from "./Doctors";
@@ -12,6 +14,10 @@ const Home = () => {
       {/* Banner */}
 
       {/* About us */}
+    <div className="py-16">
+    <AboutUs/>
+    </div>
+            {/* About us */}
 
       {/* Our Services */}
 
