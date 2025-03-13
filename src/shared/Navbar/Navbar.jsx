@@ -5,6 +5,7 @@ import {
   MdHealthAndSafety,
   MdLocalPharmacy,
   MdMedicalServices,
+  MdMenuBook,
 } from "react-icons/md";
 import { FaUserDoctor } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
@@ -15,11 +16,11 @@ import { closeMenu, toggleMenu } from "@/redux/menuSlice";
 import "./Navbar.css";
 
 const Navbar = () => {
+  const user = null;
   const dispatch = useDispatch();
   const menuOpen = useSelector((state) => state.menu.menuOpen);
   console.log(menuOpen);
   const dropdownRef = useRef(null);
-  const user = null;
 
   const handleToggleMenu = () => {
     dispatch(toggleMenu());

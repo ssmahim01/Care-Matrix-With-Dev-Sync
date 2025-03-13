@@ -1,20 +1,24 @@
 import StatsSection from "@/components/Home/StatsSection";
-import ClinicAndSpecialties from "./ClinicAndSpecialties";
 import Faq from "./Faq";
-import PatientReviews from "./PatientReviews";
 import AboutUs from "@/components/Home/AboutUs";
 
 import OurDepartments from "@/components/Home/OurDepartments";
 import HowItWorks from "@/components/Home/HowItWorks";
 import Doctors from "./Doctors";
-import Hero from "@/components/Home/Hero";
+import Specialties from "@/components/Home/Specialties";
 
 const Home = () => {
   return (
-    <section className="w-full">
-      {/* Hero Section */}
-      <div className="pt-9">
-      <Hero />
+    <section className="lg:w-4/5 w-11/12 mx-auto">
+
+      {/* About us */}
+      <div className="py-16">
+        <AboutUs />
+      </div>
+
+      {/* Our Departments */}
+      <div className="md:pb-24 pt-12 pb-14">
+        <OurDepartments />
       </div>
 
         {/* Stats Section */}
@@ -58,7 +62,8 @@ const Home = () => {
 
       {/* Patient Reviews */}
       {/* <PatientReviews /> */}
-
+      {/* specialties */}
+      <Specialties></Specialties>
       {/* FAQ */}
       <Faq />
 
