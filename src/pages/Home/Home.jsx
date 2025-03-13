@@ -10,6 +10,7 @@ import Specialties from "@/components/Home/Specialties";
 import Hero from "@/components/Home/Hero";
 import ClinicAndSpecialties from "./Clinic_and_Specialties/ClinicAndSpecialties";
 import PatientReviews from "./Patient_Reviews/PatientReviews";
+import WhyChooseUs from "./WhyChooseUs";
 
 const Home = () => {
   return (
@@ -64,7 +65,13 @@ const Home = () => {
       {/* Clinic and Specialties */}
       <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
         <ClinicAndSpecialties />
+      </div> 
+
+      {/* Why choose us */}
+      <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
+       <WhyChooseUs></WhyChooseUs>
       </div>
+
 
       {/* Patient Reviews */}
       <PatientReviews />
