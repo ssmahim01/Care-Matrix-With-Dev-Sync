@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 
 const Hero = () => {
   return (
-    <div className="bg-cover bg-center bg-no-repeat" style={{
+    <div className="max-w-[98rem] mx-auto bg-cover bg-center bg-no-repeat" style={{
         backgroundImage: `url('${HeroBG}')`
     }}>
       <div className="lg:px-28 md:px-14 px-6 py-6 flex flex-col lg:flex-row items-center justify-between lg:gap-12">
