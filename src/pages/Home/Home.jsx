@@ -7,6 +7,7 @@ import AboutUs from "@/components/Home/AboutUs";
 import OurDepartments from "@/components/Home/OurDepartments";
 import HowItWorks from "@/components/Home/HowItWorks";
 import Doctors from "./Doctors";
+import Specialties from "@/components/Home/Specialties";
 
 const Home = () => {
   return (
@@ -14,10 +15,10 @@ const Home = () => {
       {/* Banner */}
 
       {/* About us */}
-    <div className="py-16">
-    <AboutUs/>
-    </div>
-            {/* About us */}
+      <div className="py-16">
+        <AboutUs />
+      </div>
+      {/* About us */}
 
       {/* Our Services */}
 
@@ -55,7 +56,8 @@ const Home = () => {
 
       {/* Patient Reviews */}
       {/* <PatientReviews /> */}
-
+      {/* specialties */}
+      <Specialties></Specialties>
       {/* FAQ */}
       <Faq />
 
