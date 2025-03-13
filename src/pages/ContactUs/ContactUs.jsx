@@ -6,19 +6,19 @@ import { CgFacebook } from "react-icons/cg";
 
 const ContactUs = () => {
   return (
-    <div className="py-24 w-11/12 md:w-10/12 mx-auto max-w-screen-2xl">
-      <SectionHeader
+    <div className="py-24 w-11/12 md:w-10/12 mx-auto max-w-[1440px]">
+      {/* <SectionHeader
         title_1st_slice={"Our"}
         title_2nd_slice={"Contact"}
         title_3rd_slice={"Information"}
         subTitle={
           "Great doctor if you need your family member to get effective immediate assistance, \n emergency treatment, or simple consultation."
         }
-      />
+      /> */}
       {/* Contact Us Form */}
       <section className="w-full grid grid-cols-1 md:grid-cols-2 gap-[35px] boxShadow p-[30px] rounded-xl">
         {/*  information  */}
-        <aside className="w-full bg-[#0E82FD] flex flex-col justify-between p-[25px] rounded-md">
+        <aside className="w-full bg-gradient-to-r from-[#0E82FD] to-[#58aefe] flex flex-col justify-between p-[25px] rounded-md">
           {/* Header */}
           <div>
             <h1 className="text-2xl font-bold text-white border-b-2 w-fit">

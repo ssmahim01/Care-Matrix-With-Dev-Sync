@@ -24,7 +24,7 @@ const HowItWorks = () => {
       icon: <HeartPulse size={60} className="text-[#0E82FD]" />,
       title: "Get Your Solution",
       description:
-        "Discuss your health concerns with the doctor and  \nreceive personalized advice & solutions.",
+        "Discuss your health concerns with the doctor and receive personalized advice & solutions.",
     },
   ];
 
@@ -34,14 +34,14 @@ const HowItWorks = () => {
       <div className="w-full lg:w-4/12">
         {/* Section Heading */}
         <div className="space-y-2">
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-wide">
-            How{" "}
+          <h1 className="text-2xl font-extrabold tracking-wide">
+            HOW{" "}
             <span className="text-[#0E82FD] tracking-wider underline underline-offset-4">
-              It
+              IT
             </span>{" "}
-            Works
+            WORKS
           </h1>
-          <h3 className="text-xl md:text-2xl text-[#464646] font-medium tracking-wider">
+          <h3 className="text-lg text-[#464646] font-medium tracking-wider">
             4 easy steps to get your solution
           </h3>
         </div>
