@@ -22,7 +22,7 @@ const OurService = () => {
     ];
 
     return (
-        <section className="py-12">
+        <section className="">
             <div className="container mx-auto px-4">
                 {/* Section Heading */}
                 <div className="text-center space-y-4">

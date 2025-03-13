@@ -1,3 +1,5 @@
+import SectionHeader from "@/shared/Section/SectionHeader";
+
 const OurDepartments = () => {
   // Departments Data --->
   const departments = [
@@ -54,21 +56,14 @@ const OurDepartments = () => {
   return (
     <div>
       {/* Section Heading */}
-      <div className="text-center space-y-4">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide">
-          OUR{" "}
-          <span className="text-[#0E82FD] tracking-wider underline underline-offset-4">
-            MEDICAL
-          </span>{" "}
-          DEPARTMENTS
-        </h1>
-        <h3 className="text-lg md:text-xl text-[#464646] font-medium tracking-wider">
-          Delivering Advanced, Specialized Care Across a Wide Range of{" "}
-          <br className="hidden md:block" />
-          Medical Fields. Compassionate Experts Dedicated to Your Health and
-          Well-Being.
-        </h3>
-      </div>
+      <SectionHeader
+        title_1st_slice={"OUR"}
+        title_2nd_slice={"MEDICAL"}
+        title_3rd_slice={"DEPARTMENTS"}
+        subTitle={
+          " Delivering Advanced, Specialized Care Across a Wide Range of \n  Medical Fields. Compassionate Experts Dedicated to Your Health and Well-Being."
+        }
+      />
       {/* Main Container */}
       <div className="mt-6 grid gap-7 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {departments?.map((department) => (
