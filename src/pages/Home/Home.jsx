@@ -14,10 +14,10 @@ const Home = () => {
       {/* Banner */}
 
       {/* About us */}
-    <div className="py-16">
-    <AboutUs/>
-    </div>
-            {/* About us */}
+      <div className="py-16">
+        <AboutUs />
+      </div>
+      {/* About us */}
 
       {/* Our Services */}
 
