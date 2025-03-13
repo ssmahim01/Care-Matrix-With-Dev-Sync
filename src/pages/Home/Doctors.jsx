@@ -1,5 +1,8 @@
 import DoctorCard from "@/components/DoctorCard";
 import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -9,6 +12,41 @@ const Doctors = () => {
       .then((res) => res.json())
       .then((data) => setDoctors(data));
   }, []);
+
+  let settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
 
   return (
     <div>
@@ -23,21 +61,23 @@ const Doctors = () => {
             </span>{" "}
             DOCTORS
           </h1>
-          <h3 className="text-lg md:text-xl text-[#464646] font-medium tracking-wider">
+          <p className="text-[#464646] font-medium tracking-wider">
             Meet Our Skilled Team Committed to Providing Exceptional{" "}
             <br className="hidden md:block" /> Medical Care and Personalized
             Treatment.
-          </h3>
+          </p>
         </div>
         {/* section-content */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-          {doctors.map((doctor) => (
+
+        <div className="mt-6">
+        <Slider {...settings}>
+      {doctors.map((doctor) => (
             <DoctorCard key={doctor.id} doctor={doctor}></DoctorCard>
           ))}
-          {[...doctors].reverse().map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor}></DoctorCard>
-          ))}
+    </Slider>
         </div>
+
+        
       </div>
     </div>
   );

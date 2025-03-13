@@ -28,12 +28,10 @@ const Home = () => {
 
             {/* Clinic and Specialties */}
             <ClinicAndSpecialties />
-
-            {/* Our Medical Experts */}
-            <Doctors></Doctors>
             
             {/* Why Book With Us */}
             <WhyChooseUs></WhyChooseUs>
+            
       {/* Clinic and Specialties */}
       <div className="pb-16">
         <ClinicAndSpecialties />

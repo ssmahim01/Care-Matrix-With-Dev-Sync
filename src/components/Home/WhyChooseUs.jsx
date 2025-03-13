@@ -12,9 +12,9 @@ const WhyChooseUs = () => {
           </span>{" "}
           Us
         </h1>
-        <h3 className="text-[#464646] font-medium tracking-wider">
+        <p className="text-[#464646] font-medium tracking-wider">
           At CareMatrix, we provide personalized, high-quality healthcare with advanced technology and 24/7 support. Trust our expert team for compassionate and reliable medical services.
-        </h3>
+        </p>
       </div>
       {/* Main Container */}
       <div className="mt-6 grid gap-4 grid-cols-1 lg:grid-cols-2">

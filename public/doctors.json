@@ -26,5 +26,33 @@
     "image": "https://i.ibb.co.com/FbsX85Nn/image.png",
     "rating": 4.6,
     "title": "Orthopedic Surgeon"
+  },
+  {
+    "id": 5,
+    "name": "Dr. Olivia Martinez",
+    "image": "https://i.ibb.co.com/6chHc9LB/image.png",
+    "rating": 4.9,
+    "title": "Pediatrician"
+  },
+  {
+    "id": 6,
+    "name": "Dr. William Anderson",
+    "image": "https://i.ibb.co.com/XrWMk0Mh/image.png",
+    "rating": 4.8,
+    "title": "General Surgeon"
+  },
+  {
+    "id": 7,
+    "name": "Dr. Sophia Carter",
+    "image": "https://i.ibb.co.com/tTTy0qmj/image.png",
+    "rating": 4.7,
+    "title": "Endocrinologist"
+  },
+  {
+    "id": 8,
+    "name": "Dr. Daniel Lee",
+    "image": "https://i.ibb.co.com/dwkZbPRD/image.png",
+    "rating": 4.6,
+    "title": "Psychiatrist"
   }
 ]
