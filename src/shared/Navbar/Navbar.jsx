@@ -63,7 +63,8 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar border-b border-[#f3f6f9] fixed z-10 shadow-sm lg:px-24 md:px-6 px-4 bg-[#f3f6f9]">
+   <div className="max-w-[98rem] mx-auto">
+     <div className="navbar border-b border-[#f3f6f9] fixed z-20 shadow-sm lg:px-24 md:px-6 px-4 bg-[#f3f6f9]">
       <div className="navbar-start">
         <div className="dropdown" ref={dropdownRef}>
           <button
@@ -108,7 +109,7 @@ const Navbar = () => {
           {menuOpen && (
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100/90 rounded-box z-[10] mt-3 w-60 p-3 shadow gap-4 mr-3"
+              className="menu menu-sm dropdown-content bg-base-100/90 rounded-box z-[20] mt-3 w-60 p-3 shadow gap-4 mr-3"
             >
               {routes}
             </ul>
@@ -154,6 +155,7 @@ const Navbar = () => {
         )}
       </div>
     </div>
+   </div>
   );
 };
 
