@@ -16,7 +16,7 @@ const WhyChooseUs = () => {
           At CareMatrix, we provide personalized, high-quality healthcare with advanced technology and 24/7 support. Trust our expert team for compassionate and reliable medical services.
         </p>
       </div>
-      {/* Main Container */}
+      {/* Main content */}
       <div className="mt-6 grid gap-4 grid-cols-1 lg:grid-cols-2">
         <div>
           <img className='w-full h-full object-cover rounded-md' src="https://i.ibb.co.com/S48PYgBW/a5a95fd5-2b1e-4080-b7e1-312f87259900.webp" alt="" />
