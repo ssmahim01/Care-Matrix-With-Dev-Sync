@@ -1,4 +1,5 @@
 import DoctorCard from "@/components/DoctorCard";
+import SectionHeader from "@/shared/Section/SectionHeader";
 import React, { useEffect, useState } from "react";
 
 const Doctors = () => {
@@ -14,21 +15,15 @@ const Doctors = () => {
     <div>
       {/* section inner */}
       <div className="mx-auto px-4 py-10 md:py-14 lg:py-16">
-        {/* section-header */}
-        <div className="text-center space-y-4">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide">
-            OUR{" "}
-            <span className="text-[#0E82FD] tracking-wider underline underline-offset-4">
-              EXPERT
-            </span>{" "}
-            DOCTORS
-          </h1>
-          <h3 className="text-lg md:text-xl text-[#464646] font-medium tracking-wider">
-            Meet Our Skilled Team Committed to Providing Exceptional{" "}
-            <br className="hidden md:block" /> Medical Care and Personalized
-            Treatment.
-          </h3>
-        </div>
+        {/* section-header */}{" "}
+        <SectionHeader
+          title_1st_slice={"OUR"}
+          title_2nd_slice={"EXPERT"}
+          title_3rd_slice={"DOCTORS"}
+          subTitle={
+            "Meet Our Skilled Team Committed to Providing Exceptional \n Medical Care and Personalized Treatment."
+          }
+        />
         {/* section-content */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
           {doctors.map((doctor) => (
