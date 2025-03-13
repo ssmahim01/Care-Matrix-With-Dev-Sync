@@ -14,7 +14,7 @@ export default function DoctorCard({ doctor }) {
         <CardContent className="p-6">
           <div className="flex flex-col items-center mb-4">
             <Avatar className="h-24 w-24 border-4 border-sky-100">
-              <AvatarImage src={doctor.image} alt={doctor.name} />
+              <AvatarImage className={"object-cover scale-105"} src={doctor.image} alt={doctor.name} />
               <AvatarFallback className="bg-sky-100 text-sky-800 text-xl">
                 {doctor.name
                   .split(" ")

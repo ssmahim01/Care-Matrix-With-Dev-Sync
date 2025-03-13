@@ -57,9 +57,9 @@ export default function HeroSection() {
           >
             <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-xl">
               <img
-                src="/placeholder.svg?height=500&width=600"
+                src="https://storage.googleapis.com/treatspace-prod-media/pracimg/u-1998/shutterstock_2532301281.jpeg"
                 alt="Medical professionals"
-                className="object-cover"
+                className="object-cover w-full h-full"
               />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg">
