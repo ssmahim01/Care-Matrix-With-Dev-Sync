@@ -1,5 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import faqLottie from "../../assets/faq.json";
 import {
