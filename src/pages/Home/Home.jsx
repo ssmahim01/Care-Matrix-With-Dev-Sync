@@ -10,14 +10,15 @@ import Specialties from "@/components/Home/Specialties";
 import Hero from "@/components/Home/Hero";
 import ClinicAndSpecialties from "./Clinic_and_Specialties/ClinicAndSpecialties";
 import PatientReviews from "./Patient_Reviews/PatientReviews";
+import WhyChooseUs from "./WhyChooseUs";
 
 const Home = () => {
   return (
     <section className="w-full">
       {/* Hero Section */}
-     <div className="pt-9">
-     <Hero />
-     </div>
+      <div className="pt-8 pb-24">
+        <Hero />
+      </div>
 
       {/* About us */}
     <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
@@ -42,18 +43,13 @@ const Home = () => {
       </div>
 
       {/* How It Works */}
-      <div className="pb-24 lg:w-4/5 w-11/12 mx-auto">
-         <HowItWorks />
-       </div>
-  
-       {/* Our Departments */}
-       <div className="md:pb-20 pb-14 lg:w-4/5 w-11/12 mx-auto">
-         <OurDepartments />
-       </div>
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <HowItWorks />
+      </div>
 
-      {/* About us */}
-      <div className="pb-12 lg:w-4/5 w-11/12 mx-auto">
-        <AboutUs />
+      {/* Our Departments */}
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <OurDepartments />
       </div>
 
       {/* Clinic and Specialties
@@ -62,23 +58,32 @@ const Home = () => {
       </div> */}
 
       {/* Our Medical Experts */}
-      <div className="pb-5 lg:w-4/5 w-11/12 mx-auto">
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Doctors />
       </div>
 
       {/* Clinic and Specialties */}
       <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
         <ClinicAndSpecialties />
+      </div> 
+
+      {/* Why choose us */}
+      <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
+       <WhyChooseUs></WhyChooseUs>
       </div>
+
 
       {/* Patient Reviews */}
       <PatientReviews />
       {/* specialties */}
-      <div className="lg:w-4/5 w-11/12 mx-auto">
-      <Specialties></Specialties>
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <Specialties />
       </div>
+
       {/* FAQ */}
-      <Faq />
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <Faq />
+      </div>
 
       {/* Download Mobile App */}
     </section>
