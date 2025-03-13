@@ -5,8 +5,11 @@ import AboutUs from "@/components/Home/AboutUs";
 import OurDepartments from "@/components/Home/OurDepartments";
 import HowItWorks from "@/components/Home/HowItWorks";
 import Doctors from "./Doctors";
+import OurService from "@/components/Home/OurService";
 import Specialties from "@/components/Home/Specialties";
 import Hero from "@/components/Home/Hero";
+import ClinicAndSpecialties from "./Clinic_and_Specialties/ClinicAndSpecialties";
+import PatientReviews from "./Patient_Reviews/PatientReviews";
 
 const Home = () => {
   return (
@@ -17,19 +20,24 @@ const Home = () => {
       </div>
 
       {/* About us */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
-        <AboutUs />
-      </div>
+    <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+    <AboutUs/>
+    </div>
+            {/* About us */}
 
       {/* Our Services */}
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <OurService />
+      </div>
 
       {/* Our Departments */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="md:pb-24 pb-14">
         <OurDepartments />
       </div>
 
       {/* Stats Section */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+       {/* Stats Section */}
+       <div className="md:pb-24 pb-12">
         <StatsSection />
       </div>
 
@@ -53,14 +61,13 @@ const Home = () => {
         <Doctors />
       </div>
 
-      {/* Clinic and Specialties
+      {/* Clinic and Specialties */}
       <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
         <ClinicAndSpecialties />
-      </div> */}
+      </div>
 
       {/* Patient Reviews */}
-      {/* <PatientReviews /> */}
-
+      <PatientReviews />
       {/* specialties */}
       <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Specialties />
