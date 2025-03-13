@@ -3,10 +3,18 @@ import { MdOutlineCall, MdOutlineEmail } from "react-icons/md";
 import { BsInstagram, BsLinkedin, BsTwitter } from "react-icons/bs";
 import { IoLocationOutline } from "react-icons/io5";
 import { CgFacebook } from "react-icons/cg";
+import { useEffect } from "react";
 
 const ContactUs = () => {
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+
   return (
-    <div className="py-24 w-11/12 md:w-10/12 mx-auto max-w-[1440px]">
+    <div className="pt-24 pb-8 w-11/12 md:w-10/12 mx-auto max-w-[1440px]">
       {/* <SectionHeader
         title_1st_slice={"Our"}
         title_2nd_slice={"Contact"}

@@ -12,28 +12,35 @@ const Home = () => {
   return (
     <section className="w-full">
       {/* Hero Section */}
-     <div className="pt-9">
-     <Hero />
-     </div>
+      <div className="pt-8 pb-24">
+        <Hero />
+      </div>
 
-       {/* Stats Section */}
-       <div className="md:pb-24 pb-12">
+      {/* About us */}
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <AboutUs />
+      </div>
+
+      {/* Our Services */}
+
+      {/* Our Departments */}
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <OurDepartments />
+      </div>
+
+      {/* Stats Section */}
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <StatsSection />
       </div>
 
       {/* How It Works */}
-      <div className="pb-24 lg:w-4/5 w-11/12 mx-auto">
-         <HowItWorks />
-       </div>
-  
-       {/* Our Departments */}
-       <div className="md:pb-20 pb-14 lg:w-4/5 w-11/12 mx-auto">
-         <OurDepartments />
-       </div>
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <HowItWorks />
+      </div>
 
-      {/* About us */}
-      <div className="pb-12 lg:w-4/5 w-11/12 mx-auto">
-        <AboutUs />
+      {/* Our Departments */}
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <OurDepartments />
       </div>
 
       {/* Clinic and Specialties
@@ -42,7 +49,7 @@ const Home = () => {
       </div> */}
 
       {/* Our Medical Experts */}
-      <div className="pb-5 lg:w-4/5 w-11/12 mx-auto">
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Doctors />
       </div>
 
@@ -53,12 +60,16 @@ const Home = () => {
 
       {/* Patient Reviews */}
       {/* <PatientReviews /> */}
+
       {/* specialties */}
-      <div className="lg:w-4/5 w-11/12 mx-auto">
-      <Specialties></Specialties>
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <Specialties />
       </div>
+
       {/* FAQ */}
-      <Faq />
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <Faq />
+      </div>
 
       {/* Download Mobile App */}
     </section>
