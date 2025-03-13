@@ -5,6 +5,7 @@ import AboutUs from "@/components/Home/AboutUs";
 import OurDepartments from "@/components/Home/OurDepartments";
 import HowItWorks from "@/components/Home/HowItWorks";
 import Doctors from "./Doctors";
+import OurService from "@/components/Home/OurService";
 import Specialties from "@/components/Home/Specialties";
 import Hero from "@/components/Home/Hero";
 import ClinicAndSpecialties from "./Clinic_and_Specialties/ClinicAndSpecialties";
@@ -18,6 +19,23 @@ const Home = () => {
      <Hero />
      </div>
 
+      {/* About us */}
+    <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+    <AboutUs/>
+    </div>
+            {/* About us */}
+
+      {/* Our Services */}
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <OurService />
+      </div>
+
+      {/* Our Departments */}
+      <div className="md:pb-24 pb-14">
+        <OurDepartments />
+      </div>
+
+      {/* Stats Section */}
        {/* Stats Section */}
        <div className="md:pb-24 pb-12">
         <StatsSection />
