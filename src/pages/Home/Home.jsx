@@ -1,52 +1,64 @@
-
-import Doctors from "./Doctors";
+import StatsSection from "@/components/Home/StatsSection";
 import Faq from "./Faq";
-import OurDepartments from "./../../components/Home/OurDepartments";
-import StatsSection from "./../../components/Home/StatsSection";
-import HowItWorks from "./../../components/Home/HowItWorks";
-import PatientReviews from "./Patient_Reviews/PatientReviews";
+import AboutUs from "@/components/Home/AboutUs";
+
+import OurDepartments from "@/components/Home/OurDepartments";
+import HowItWorks from "@/components/Home/HowItWorks";
+import Doctors from "./Doctors";
+import Specialties from "@/components/Home/Specialties";
+import Hero from "@/components/Home/Hero";
 import ClinicAndSpecialties from "./Clinic_and_Specialties/ClinicAndSpecialties";
+import PatientReviews from "./Patient_Reviews/PatientReviews";
 
 const Home = () => {
   return (
-    <section className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl">
-      {/* Banner */}
+    <section className="w-full">
+      {/* Hero Section */}
+     <div className="pt-9">
+     <Hero />
+     </div>
 
-      {/* About us */}
-
-      {/* Our Services */}
-
-      {/* Our Departments */}
-      <section className="pt-12 pb-16">
-        <OurDepartments />
-      </section>
-
-      {/* Upcoming Appointments */}
-      <div className="pb-16">
-        <HowItWorks />
+       {/* Stats Section */}
+       <div className="md:pb-24 pb-12">
+        <StatsSection />
       </div>
 
-      {/* Clinic and Specialties */}
-      <section className="pb-16">
+      {/* How It Works */}
+      <div className="pb-24 lg:w-4/5 w-11/12 mx-auto">
+         <HowItWorks />
+       </div>
+  
+       {/* Our Departments */}
+       <div className="md:pb-20 pb-14 lg:w-4/5 w-11/12 mx-auto">
+         <OurDepartments />
+       </div>
+
+      {/* About us */}
+      <div className="pb-12 lg:w-4/5 w-11/12 mx-auto">
+        <AboutUs />
+      </div>
+
+      {/* Clinic and Specialties
+      <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
         <ClinicAndSpecialties />
-      </section>
+      </div> */}
+
       {/* Our Medical Experts */}
-      <div className="pb-16">
+      <div className="pb-5 lg:w-4/5 w-11/12 mx-auto">
         <Doctors />
       </div>
 
-      {/* Why Book With Us */}
+      {/* Clinic and Specialties */}
+      <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
+        <ClinicAndSpecialties />
+      </div>
 
       {/* Patient Reviews */}
-      <section className="pb-16">
-        <PatientReviews />
-      </section>
-
-      {/* Stats Section */}
-      <section className="pb-16">
-        <StatsSection />
-      </section>
-
+      <PatientReviews />
+      {/* specialties */}
+      <div className="lg:w-4/5 w-11/12 mx-auto">
+      <Specialties></Specialties>
+      </div>
       {/* FAQ */}
       <Faq />
 
