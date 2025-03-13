@@ -24,38 +24,38 @@ const HowItWorks = () => {
       icon: <HeartPulse size={60} className="text-[#0E82FD]" />,
       title: "Get Your Solution",
       description:
-        "Discuss your health concerns with the doctor and  \nreceive personalized advice & solutions.",
+        "Discuss your health concerns with the doctor and receive personalized advice & solutions.",
     },
   ];
 
   return (
     <div className="flex items-center gap-6 flex-col lg:flex-row justify-center">
       {/* Right Side */}
-      <div>
+      <div className="w-full lg:w-4/12">
         {/* Section Heading */}
         <div className="space-y-2">
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-wide">
-            How{" "}
+          <h1 className="text-2xl font-extrabold tracking-wide">
+            HOW{" "}
             <span className="text-[#0E82FD] tracking-wider underline underline-offset-4">
-              It
+              IT
             </span>{" "}
-            Works
+            WORKS
           </h1>
-          <h3 className="text-xl md:text-2xl text-[#464646] font-medium tracking-wider">
+          <h3 className="text-lg text-[#464646] font-medium tracking-wider">
             4 easy steps to get your solution
           </h3>
         </div>
         {/* Image */}
-        <div className="mt-6 w-full">
+        <div className="mt-6">
           <img
-            src="https://i.ibb.co.com/rKMxdSyN/doctor-Work-removebg-preview.png"
+            src="https://i.ibb.co.com/FkCJb5PS/doctor-Image-removebg-preview.png"
             alt="doctor_image"
-            className="w-full h-full"
+            className="w-full h-full max-h-[520px]"
           />
         </div>
       </div>
       {/* Left Side */}
-      <div className="lg:mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:w-7/12">
+      <div className="lg:mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 w-full md:w-8/12">
         {services.map((service, index) => (
           <div
             key={index}
