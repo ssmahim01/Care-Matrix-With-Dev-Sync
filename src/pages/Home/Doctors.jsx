@@ -6,7 +6,6 @@ import "slick-carousel/slick/slick-theme.css";
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
-
   useEffect(() => {
     fetch("/doctors.json")
       .then((res) => res.json())
@@ -18,7 +17,7 @@ const Doctors = () => {
     infinite: false,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 1,
+    slidesToScroll: 2,
     initialSlide: 0,
     responsive: [
       {
