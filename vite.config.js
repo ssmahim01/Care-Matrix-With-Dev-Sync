@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import path, { dirname } from 'path'  // ✅ Import path
 import { fileURLToPath } from 'url' // ✅ Required for ESM
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
