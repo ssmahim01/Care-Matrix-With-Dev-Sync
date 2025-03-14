@@ -11,20 +11,27 @@ import Hero from "@/components/Home/Hero";
 import ClinicAndSpecialties from "./Clinic_and_Specialties/ClinicAndSpecialties";
 import PatientReviews from "./Patient_Reviews/PatientReviews";
 import WhyChooseUs from "./WhyChooseUs";
+import Chat from "@/components/Home/Chat";
 
 const Home = () => {
   return (
     <section className="w-full">
       {/* Hero Section */}
-      <div className="pt-8 pb-24">
+      <div className="pt-8">
         <Hero />
       </div>
 
+       
+
       {/* About us */}
-    <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+    <div className="py-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
     <AboutUs/>
     </div>
-            {/* About us */}
+
+    {/* Stats Section */}
+    <div className="container mx-auto  md:pb-24 pb-12">
+        <StatsSection />
+      </div>
 
       {/* Our Services */}
       <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
@@ -36,39 +43,23 @@ const Home = () => {
         <Chat />
       </div>
 
-      {/* Our Departments */}
-      <div className="md:pb-24 pb-14">
-        <OurDepartments />
-      </div>
-
-      {/* Stats Section */}
-       {/* Stats Section */}
-       <div className="md:pb-24 pb-12">
-        <StatsSection />
-      </div>
-
       {/* How It Works */}
       <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <HowItWorks />
       </div>
 
       {/* Our Departments */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="pb-8 mx-auto w-11/12 lg:w-4/5 max-w-screen-2xl">
         <OurDepartments />
       </div>
 
-      {/* Clinic and Specialties
-      <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
-        <ClinicAndSpecialties />
-      </div> */}
-
       {/* Our Medical Experts */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Doctors />
       </div>
 
       {/* Clinic and Specialties */}
-      <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
+      <div className="pb-10 lg:w-4/5 w-11/12 mx-auto">
         <ClinicAndSpecialties />
       </div> 
 
@@ -80,17 +71,16 @@ const Home = () => {
 
       {/* Patient Reviews */}
       <PatientReviews />
+
       {/* specialties */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="pb-8 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Specialties />
       </div>
 
       {/* FAQ */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="pb-8 mx-auto w-full max-w-screen-2xl">
         <Faq />
       </div>
-
-      {/* Download Mobile App */}
     </section>
   );
 };
