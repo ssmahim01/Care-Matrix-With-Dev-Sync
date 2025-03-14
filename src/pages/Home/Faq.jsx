@@ -55,7 +55,7 @@ const Faq = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             viewport={{ once: true }}
-            className="bg-[#EAF9FC] my-10 relative rounded-md">
+            className="bg-[#EAF9FC] my-8 relative rounded-md">
 
             <motion.div
                 initial={{ opacity: 0, y: 50 }}

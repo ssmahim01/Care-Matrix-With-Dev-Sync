@@ -21,15 +21,17 @@ const Home = () => {
         <Hero />
       </div>
 
-       {/* Stats Section */}
-       <div className="max-w-[98rem] mx-auto md:pb-24 pb-12">
-        <StatsSection />
-      </div>
+       
 
       {/* About us */}
-    <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+    <div className="py-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
     <AboutUs/>
     </div>
+
+    {/* Stats Section */}
+    <div className="container mx-auto  md:pb-24 pb-12">
+        <StatsSection />
+      </div>
 
       {/* Our Services */}
       <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
