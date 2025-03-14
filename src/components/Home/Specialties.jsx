@@ -30,7 +30,7 @@ const Specialties = () => {
 
     return (
         <motion.div
-            className="relative text-center py-10"
+            className="relative text-center py-8"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -90,7 +90,7 @@ const Specialties = () => {
                     >
                         <div className="bg-white border rounded-lg p-6 shadow-sm transition-all duration-500 hover:border-blue-500 group cursor-pointer w-full">
                             <motion.div
-                                className="rounded-full p-4 bg-gray-100 inline-block transition-all duration-500 group-hover:bg-blue-500 group-hover:text-white group-hover:rotate-[360deg]"
+                                className="rounded-full p-4 text-blue-500 bg-gray-100 inline-block transition-all duration-500 group-hover:bg-blue-500 group-hover:text-white group-hover:rotate-[360deg]"
                                 whileHover={{ transition: { duration: 0.6 } }}
                             >
                                 {item.icon}
