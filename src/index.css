@@ -290,3 +290,12 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+.slick-arrow::before{
+  color: #0E82FD;
+}
+
+.slick-slide>div{
+  margin: 0 10px;
+  height: 400px;
+}
