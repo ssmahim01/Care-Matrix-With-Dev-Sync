@@ -10,6 +10,7 @@ import Specialties from "@/components/Home/Specialties";
 import Hero from "@/components/Home/Hero";
 import ClinicAndSpecialties from "./Clinic_and_Specialties/ClinicAndSpecialties";
 import PatientReviews from "./Patient_Reviews/PatientReviews";
+import Chat from "@/components/Home/Chat";
 
 const Home = () => {
   return (
@@ -28,6 +29,11 @@ const Home = () => {
       {/* Our Services */}
       <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <OurService />
+      </div>
+
+      {/* Introduction of Chat dashboard */}
+      <div className="md:pb-20 pb-14">
+        <Chat />
       </div>
 
       {/* Our Departments */}
