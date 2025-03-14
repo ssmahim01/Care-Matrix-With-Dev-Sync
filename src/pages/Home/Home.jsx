@@ -21,15 +21,13 @@ const Home = () => {
         <Hero />
       </div>
 
-       
-
       {/* About us */}
-    <div className="py-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+    <div className="py-24 mx-auto w-11/12 lg:w-4/5 max-w-screen-2xl">
     <AboutUs/>
     </div>
 
     {/* Stats Section */}
-    <div className="container mx-auto  md:pb-24 pb-12">
+    <div className="container lg:w-4/5 max-w-[98rem] w-11/12 mx-auto md:pb-20 pb-12">
         <StatsSection />
       </div>
 
@@ -58,16 +56,10 @@ const Home = () => {
         <Doctors />
       </div>
 
-      {/* Clinic and Specialties */}
-      <div className="pb-10 lg:w-4/5 w-11/12 mx-auto">
-        <ClinicAndSpecialties />
-      </div> 
-
       {/* Why choose us */}
       <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
-       <WhyChooseUs></WhyChooseUs>
+       <WhyChooseUs />
       </div>
-
 
       {/* Patient Reviews */}
       <PatientReviews />
