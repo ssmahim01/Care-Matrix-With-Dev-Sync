@@ -61,8 +61,8 @@ const Doctors = () => {
             DOCTORS
           </h1>
           <p className="text-[#464646] font-medium tracking-wider">
-            Meet Our Skilled Team Committed to Providing Exceptional{" "}
-            <br className="hidden md:block" /> Medical Care and Personalized
+            Meet Our Skilled Team Committed {" "} <br className="hidden md:block" /> to Providing Exceptional
+             Medical Care and Personalized
             Treatment.
           </p>
         </div>
