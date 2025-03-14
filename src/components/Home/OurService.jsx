@@ -45,7 +45,7 @@ const OurService = () => {
                     {services.map((service) => (
                         <div
                             key={service.id}
-                            className="relative p-6 rounded-xl shadow-md transition bg-white text-gray-900 group overflow-hidden"
+                            className="relative p-6 rounded-xl shadow-md transition bg-white text-[#464646] group overflow-hidden"
                         >
                             {/* Background Image */}
                             <div className="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-100 transition duration-500"
@@ -62,7 +62,7 @@ const OurService = () => {
                             </div>
 
                             {/* Overlay */}
-                            <div className="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-80 transition duration-500"></div>
+                            <div className="absolute inset-0 bg-[#0E82FD] opacity-0 group-hover:opacity-80 transition duration-500"></div>
                         </div>
                     ))}
                 </div>
