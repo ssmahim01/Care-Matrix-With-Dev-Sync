@@ -3,6 +3,8 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home/Home";
 import ExpertDoctors from "@/pages/Doctors/ExpertDoctors";
 import ContactUs from "@/pages/ContactUs/ContactUs";
+import Login from "@/authentication/Login";
+import Register from "@/authentication/Register";
 
 const Router = () => {
   return (
@@ -13,6 +15,11 @@ const Router = () => {
           <Route path="/doctors" element={<ExpertDoctors />} />
           <Route path="/contact-us" element={<ContactUs />} />
         </Route>
+      </Routes>
+      {/* Authentication Routes */}
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   );
