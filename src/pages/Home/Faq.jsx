@@ -68,8 +68,8 @@ const Faq = () => {
 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
                         viewport={{ once: true }}
                         className="w-full lg:w-1/2"
                     >
@@ -79,8 +79,8 @@ const Faq = () => {
 
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
                         viewport={{ once: true }}
                         className="w-full lg:w-1/2"
                     >
@@ -92,9 +92,9 @@ const Faq = () => {
                                     <AccordionTrigger className={'cursor-pointer'}>{question}</AccordionTrigger>
                                     <motion.div
                                         initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: "auto" }}
+                                        whileInView={{ opacity: 1, height: "auto" }}
                                         exit={{ opacity: 0, height: 0 }}
-                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                        transition={{ duration: 0.5, ease: "easeInOut", delay: 1 }}
                                         viewport={{ once: false, amount: 0.2 }}
                                     >
                                         <AccordionContent>{answer}</AccordionContent>
