@@ -31,6 +31,11 @@ const Home = () => {
         <OurService />
       </div>
 
+      {/* Introduction of Chat dashboard */}
+      <div className="md:pb-20 pb-14">
+        <Chat />
+      </div>
+
       {/* Our Departments */}
       <div className="md:pb-24 pb-14">
         <OurDepartments />
