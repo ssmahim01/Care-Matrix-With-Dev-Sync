@@ -65,7 +65,7 @@ const Home = () => {
 
       {/* Why choose us */}
       <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
-       <WhyChooseUs></WhyChooseUs>
+       <WhyChooseUs />
       </div>
 
 
