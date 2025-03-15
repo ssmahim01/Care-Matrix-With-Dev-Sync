@@ -61,24 +61,24 @@ const Doctors = () => {
             DOCTORS
           </h1>
           <p className="text-[#464646] font-medium tracking-wider">
-            Meet Our Skilled Team Committed {" "} <br className="hidden md:block" /> to Providing Exceptional
-             Medical Care and Personalized
-            Treatment.
+
+            Meet our highly skilled team of expert  {" "}
+            <br className="hidden md:block" /> doctors, dedicated to providing top-quality medical care with a personalized approach to ensure your well-being.
           </p>
         </div>
         {/* section-content */}
 
         <div className="mt-6">
-        <Slider {...settings}>
-      {doctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor}></DoctorCard>
-          ))}
-    </Slider>
+          <Slider {...settings}>
+            {doctors.map((doctor) => (
+              <DoctorCard key={doctor.id} doctor={doctor}></DoctorCard>
+            ))}
+          </Slider>
         </div>
 
-        
+
       </div>
-      </div>
+    </div>
   );
 };
 
