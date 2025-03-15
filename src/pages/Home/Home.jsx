@@ -1,7 +1,6 @@
 import StatsSection from "@/components/Home/StatsSection";
 import Faq from "./Faq";
 import AboutUs from "@/components/Home/AboutUs";
-
 import OurDepartments from "@/components/Home/OurDepartments";
 import HowItWorks from "@/components/Home/HowItWorks";
 import Doctors from "./Doctors";
@@ -21,10 +20,10 @@ const Home = () => {
       </div>
 
       {/* About us */}
-    <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
-    <AboutUs/>
-    </div>
-            {/* About us */}
+      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <AboutUs />
+      </div>
+      {/* About us */}
 
       {/* Our Services */}
       <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
@@ -37,8 +36,8 @@ const Home = () => {
       </div>
 
       {/* Stats Section */}
-       {/* Stats Section */}
-       <div className="md:pb-24 pb-12">
+      {/* Stats Section */}
+      <div className="md:pb-24 pb-12">
         <StatsSection />
       </div>
 
@@ -65,13 +64,12 @@ const Home = () => {
       {/* Clinic and Specialties */}
       <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
         <ClinicAndSpecialties />
-      </div> 
+      </div>
 
       {/* Why choose us */}
       <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
-       <WhyChooseUs></WhyChooseUs>
+        <WhyChooseUs></WhyChooseUs>
       </div>
-
 
       {/* Patient Reviews */}
       <PatientReviews />

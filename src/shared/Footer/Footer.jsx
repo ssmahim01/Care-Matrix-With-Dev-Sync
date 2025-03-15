@@ -1,3 +1,5 @@
+import logo from "@/assets/logo.jpg";
+
 const Footer = () => {
   return (
     <footer className="bg-white">
@@ -6,8 +8,8 @@ const Footer = () => {
           {/* Logo DIV */}
           <div>
             {/* Logo */}
-            <div className="text-3xl font-bold">
-              Care <span className="text-blue-500">Matrix</span>
+            <div>
+              <img src={logo} alt="Care-Matrix logo" className="w-44" />
             </div>
             {/* Description */}
             <p className="mt-4 max-w-lg text-gray-500">
