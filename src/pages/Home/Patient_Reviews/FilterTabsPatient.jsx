@@ -9,7 +9,7 @@ const FilterTabsPatient = ({setActiveTab, activeTab, currentReviews, handleHelpf
   return (
     <motion.div variants={itemVariants}>
             <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex flex-col space-y-1.5 md:flex-row justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold text-sky-800">Patient Reviews</h2>
                 <TabsList className="bg-sky-50">
                   <TabsTrigger value="all" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">

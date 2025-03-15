@@ -1,12 +1,12 @@
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
 import { FaHome } from "react-icons/fa";
 import { MdContacts, MdDelete, MdMedicalServices } from "react-icons/md";
-import {CiMenuFries} from "react-icons/ci";
+import { CiMenuFries } from "react-icons/ci";
 import { FaUserDoctor } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
 import CareMatrixLogo from "../../assets/Images/logo-care-matrix.webp";
 import "./Navbar.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,27 +32,33 @@ const Navbar = () => {
   //     document.removeEventListener("click", handleClickOutSide);
   //   };
   // }, [dispatch]);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const routes = (
     <>
-      <NavLink className="flex gap-1 items-center" to="/">
+      <NavLink className="flex gap-1 items-center" to="/" onClick={() => setIsMenuOpen(false)}>
         <FaHome /> <span className="font-bold">Home</span>
       </NavLink>
-      <NavLink className="flex gap-1 items-center" to="/doctors">
+      <NavLink className="flex gap-1 items-center" to="/doctors" onClick={() => setIsMenuOpen(false)}>
         <FaUserDoctor /> <span className="font-bold">Doctors</span>
       </NavLink>
-      <NavLink className="flex gap-1 items-center" to="/services">
+      <NavLink className="flex gap-1 items-center" to="/services" onClick={() => setIsMenuOpen(false)}>
         <MdMedicalServices /> <span className="font-bold">Services</span>
       </NavLink>
-      <NavLink className="flex gap-1 items-center" to="/contact-us">
+      <NavLink className="flex gap-1 items-center" to="/contact-us" onClick={() => setIsMenuOpen(false)}>
         <MdContacts /> <span className="font-bold">Contact Us</span>
       </NavLink>
-      {/* <NavLink className="flex gap-1 items-center" to="/pharmacy">
-        <MdLocalPharmacy /> <span className="font-bold">Pharmacy</span>
-      </NavLink> */}
-      {/* <NavLink className="flex gap-1 items-center" to="/health-articles">
-        <MdHealthAndSafety /> <span className="font-bold">Health Articles</span>
-      </NavLink> */}
     </>
   );
 
@@ -110,14 +116,14 @@ const Navbar = () => {
         </div> */}
           {/* mobile sidebar */}
           <aside
-            className={` ${
-              isMenuOpen
-                ? "translate-x-0 opacity-100 z-20"
-                : "translate-x-[200px] opacity-0 z-[-1]"
-            } lg:hidden bg-[#e2ebee] p-4 text-center absolute top-[60px] right-0 w-full md:right-2 sm:w-[300px] md:rounded-md transition-all duration-300`}
-          >              
+            ref={menuRef}
+            className={` ${isMenuOpen
+              ? "translate-x-0 opacity-100 z-20"
+              : "translate-x-[200px] opacity-0 z-[-1]"
+              } lg:hidden bg-[#e2ebee] p-4 text-center absolute top-[60px] right-0 w-full md:right-2 sm:w-[300px] md:rounded-md transition-all duration-300`}
+          >
             <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
-             {routes}
+              {routes}
             </ul>
           </aside>
           <div className="flex items-center">
@@ -136,15 +142,12 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="navbar-end w-full">
+        <div className="navbar-end w-full ">
           <div className="hidden lg:flex">
             <ul className="menu menu-horizontal gap-4 mr-3 px-1">{routes}</ul>
           </div>
 
-          <CiMenuFries
-            className="text-[1.6rem] text-[#353333] cursor-pointer lg:hidden flex mr-4"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          />
+
 
           {user ? (
             <div className="flex gap-2 items-center">
@@ -163,6 +166,10 @@ const Navbar = () => {
               </button>
             </>
           )}
+          <CiMenuFries
+            className="text-[1.6rem] text-[#353333] cursor-pointer lg:hidden flex ml-4"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          />
         </div>
       </div>
     </>
