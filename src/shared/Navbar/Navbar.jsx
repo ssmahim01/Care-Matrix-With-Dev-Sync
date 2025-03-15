@@ -7,6 +7,7 @@ import { Link, NavLink } from "react-router-dom";
 import CareMatrixLogo from "../../assets/Images/logo-care-matrix.webp";
 import "./Navbar.css";
 import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -66,61 +67,13 @@ const Navbar = () => {
     <>
       <div className="navbar border-b border-[#f3f6f9] fixed z-20 shadow-sm lg:px-24 md:px-6 px-4 bg-[#f3f6f9]">
         <div className="navbar-start w-full">
-          {/* <div className="dropdown">
-          <button
-            tabIndex={0}
-            role="button"
-            className="btn btn-outline border border-sky-200 lg:hidden mr-3 shadow-sm"
-          >
-            {menuOpen ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h7"
-                />{" "}
-              </svg>
-            )}
-          </button>
-          {menuOpen && (
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100/90 rounded-box z-[20] mt-3 w-60 p-3 shadow gap-4 mr-3"
-            >
-              {routes}
-            </ul>
-          )}
-        </div> */}
           {/* mobile sidebar */}
           <aside
             ref={menuRef}
             className={` ${isMenuOpen
               ? "translate-x-0 opacity-100 z-20"
               : "translate-x-[200px] opacity-0 z-[-1]"
-              } lg:hidden bg-[#e2ebee] p-4 text-center absolute top-[60px] right-0 w-full md:right-2 sm:w-[300px] md:rounded-md transition-all duration-300`}
+              } lg:hidden bg-[#e2ebee] p-4 text-center absolute top-[60px] md:top-[64px] right-0 w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
           >
             <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
               {routes}
@@ -135,7 +88,7 @@ const Navbar = () => {
             />
             <a
               href="/"
-              className="lg:text-3xl text-xl p-2 hidden md:flex gap-0 items-center font-bold"
+              className="lg:text-3xl text-2xl p-2 hidden md:flex gap-0 items-center font-bold"
             >
               <span>Care</span> <span className="text-[#535ed1]">Matrix</span>
             </a>
@@ -146,8 +99,6 @@ const Navbar = () => {
           <div className="hidden lg:flex">
             <ul className="menu menu-horizontal gap-4 mr-3 px-1">{routes}</ul>
           </div>
-
-
 
           {user ? (
             <div className="flex gap-2 items-center">
@@ -166,10 +117,16 @@ const Navbar = () => {
               </button>
             </>
           )}
-          <CiMenuFries
-            className="text-[1.6rem] text-[#353333] cursor-pointer lg:hidden flex ml-4"
+          {!isMenuOpen ? (
+            <CiMenuFries
+            className="text-[1.6rem] text-[#363030] cursor-pointer lg:hidden flex ml-4"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           />
+          ) : (
+            <X className="ml-3 text-[#363030]"
+            onClick={() => setIsMenuOpen(false)}
+            />
+          )}
         </div>
       </div>
     </>
