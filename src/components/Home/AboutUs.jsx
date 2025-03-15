@@ -43,7 +43,7 @@ const AboutUs = () => {
           </p>
         </div>
 
-      <Link to={"#"}> <button className="mt-6 px-3 py-2 sm:px-6 sm:py-3 bg-[#0E82FD]  text-white font-semibold rounded-lg flex items-center gap-2 hover:bg-[#0e81fdc6] transition">
+      <Link to={"/about-us"}> <button className="mt-6 px-3 py-2 sm:px-6 sm:py-3 bg-[#0E82FD]  text-white font-semibold rounded-lg flex items-center gap-2 hover:bg-[#0e81fdc6] transition">
           ➜ More About Us
         </button>
       </Link>
