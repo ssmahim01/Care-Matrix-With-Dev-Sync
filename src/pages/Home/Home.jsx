@@ -15,62 +15,62 @@ import Chat from "@/components/Home/Chat";
 
 const Home = () => {
   return (
-    <section className="w-full">
+    <section className="w-full space-y-6">
       {/* Hero Section */}
-      <div className="pt-8">
+      <div className="pb-8">
         <Hero />
       </div>
 
       {/* About us */}
-    <div className="py-24 mx-auto w-11/12 lg:w-4/5 max-w-screen-2xl">
-    <AboutUs/>
-    </div>
+      <div className="pb-10 mx-auto w-11/12 lg:w-4/5 max-w-screen-2xl">
+        <AboutUs />
+      </div>
 
-    {/* Stats Section */}
-    <div className="container lg:w-4/5 max-w-[98rem] w-11/12 mx-auto md:pb-20 pb-12">
+      {/* Stats Section */}
+      <div className="pb-8 container lg:w-4/5 max-w-[98rem] w-11/12 mx-auto">
         <StatsSection />
       </div>
 
       {/* Our Services */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <OurService />
       </div>
 
       {/* Introduction of Chat dashboard */}
-      <div className="md:pb-20 pb-14">
+      <div className="pb-8">
         <Chat />
       </div>
 
       {/* How It Works */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <HowItWorks />
       </div>
 
       {/* Our Departments */}
-      <div className="pb-8 mx-auto w-11/12 lg:w-4/5 max-w-screen-2xl">
+      <div className="lg:-mb-3 mx-auto w-11/12 lg:w-4/5 max-w-screen-2xl">
         <OurDepartments />
       </div>
 
       {/* Our Medical Experts */}
-      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="lg:-mb-3 mx-auto lg:w-10/12 max-w-screen-2xl">
         <Doctors />
       </div>
 
       {/* Why choose us */}
-      <div className="pb-16 lg:w-4/5 w-11/12 mx-auto">
-       <WhyChooseUs />
+      <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <WhyChooseUs />
       </div>
 
       {/* Patient Reviews */}
       <PatientReviews />
 
       {/* specialties */}
-      <div className="pb-8 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="-mt-5 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Specialties />
       </div>
 
       {/* FAQ */}
-      <div className="pb-8 mx-auto w-full max-w-screen-2xl">
+      <div className="mx-auto w-full max-w-screen-2xl">
         <Faq />
       </div>
     </section>
