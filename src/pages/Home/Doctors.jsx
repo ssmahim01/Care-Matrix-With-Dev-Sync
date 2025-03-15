@@ -68,12 +68,12 @@ const Doctors = () => {
         </div>
         {/* section-content */}
 
-        <div className="mt-6">
-          <Slider {...settings}>
-            {doctors.map((doctor) => (
-              <DoctorCard key={doctor.id} doctor={doctor}></DoctorCard>
-            ))}
-          </Slider>
+        <div className="mt-6 w-11/12 md:w-full mx-auto">
+        <Slider {...settings}>
+      {doctors.map((doctor) => (
+            <DoctorCard key={doctor.id} doctor={doctor}></DoctorCard>
+          ))}
+    </Slider>
         </div>
 
 

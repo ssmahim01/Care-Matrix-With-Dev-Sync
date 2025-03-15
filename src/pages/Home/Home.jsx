@@ -52,7 +52,7 @@ const Home = () => {
       </div>
 
       {/* Our Medical Experts */}
-      <div className="pb-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="pb-10 mx-auto  lg:w-10/12 max-w-screen-2xl">
         <Doctors />
       </div>
 
