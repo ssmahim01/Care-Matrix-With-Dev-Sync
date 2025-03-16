@@ -27,6 +27,7 @@ const ContactUsForm = () => {
   return (
     <form className="pt-[20px]">
       <div className="flex flex-col sm:flex-row items-center gap-[30px]">
+        {/* First Name */}
         <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
           <label className="text-[1rem] text-gray-900 font-[400]">
             First Name
@@ -38,7 +39,7 @@ const ContactUsForm = () => {
             className="peer border-gray-300 border-b outline-none focus:border-[#0E82FD] w-full text-gray-700 transition-colors duration-300"
           />
         </div>
-
+        {/* Last Name */}
         <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
           <label className="text-[1rem] text-gray-900 font-[400]">
             Last Name
@@ -51,8 +52,9 @@ const ContactUsForm = () => {
           />
         </div>
       </div>
-
+      {/* Email & Phone Number */}
       <div className="flex flex-col sm:flex-row items-center gap-[30px] mt-10">
+        {/* Email */}
         <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
           <label className="text-[1rem] text-gray-900 font-[400]">
             Email Address
@@ -64,7 +66,7 @@ const ContactUsForm = () => {
             className="peer border-gray-300 border-b outline-none focus:border-[#0E82FD] w-full text-gray-700 transition-colors duration-300"
           />
         </div>
-
+        {/* Phone Number */}
         <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
           <label className="text-[1rem] text-gray-900 font-[400]">
             Phone Number
@@ -77,7 +79,7 @@ const ContactUsForm = () => {
           />
         </div>
       </div>
-
+      {/* Message */}
       <div className="flex flex-col gap-[5px] w-full mt-10">
         <label className="text-[1rem] text-gray-900 font-[400]">
           Write Message
@@ -88,7 +90,7 @@ const ContactUsForm = () => {
           className="peer min-h-[100px] border-gray-300 border-b resize-none outline-none w-full text-gray-700 transition-colors focus:border-[#0E82FD] duration-300"
         />
       </div>
-
+      {/* Submit Button */}
       <div className="w-full flex items-center justify-end mt-3">
         <button className="btn border-none hover:bg-[#46a0ff] text-[1rem] duration-700 bg-[#0E82FD] text-white mt-4 relative group">
           <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[1px] after:bg-white after:transition-all after:duration-300 group-hover:after:w-full">
