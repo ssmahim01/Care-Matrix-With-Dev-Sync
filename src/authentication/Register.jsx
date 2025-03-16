@@ -1,12 +1,11 @@
 import logo from "@/assets/logo.jpg";
-import { Button } from "@/components/ui/button";
-import { IoIosLogIn } from "react-icons/io";
-import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
-import { MdDelete, MdDone, MdOutlineMail } from "react-icons/md";
-import { Link } from "react-router";
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { IoIosLogIn } from "react-icons/io";
+import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
+import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
+import { Link } from "react-router";
 
 const Register = () => {
   // states for name, email
@@ -26,7 +25,7 @@ const Register = () => {
     strong: false,
   });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [StrongPassword, setStrongPassword] = useState("");
+  const [strongPassword, setStrongPassword] = useState("");
   // states for loading & error
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState("");
@@ -63,19 +62,20 @@ const Register = () => {
       type: "length",
     },
     {
-      text: "Should contain uppercase.",
+      text: "Password should contain uppercase.",
       type: "uppercase",
     },
     {
-      text: "Should contain lowercase.",
-      type: "lowercase",
-    },
-    {
-      text: "Should contain numbers.",
+      text: "Password should contain numbers.",
       type: "number",
     },
     {
-      text: "Should contain special characters.",
+      text: "Password should contain lowercase.",
+      type: "lowercase",
+    },
+
+    {
+      text: "Password should contain special characters.",
       type: "symbol",
     },
   ];
@@ -94,6 +94,14 @@ const Register = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!image) {
+      return console.error("Pls select an image for your profile");
+    }
+    const user = { name, email, password: strongPassword };
+    console.table(user);
+  };
   // console.log({
   //   name,
   //   email,
@@ -101,8 +109,8 @@ const Register = () => {
   // })
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
-      <div className="max-w-md md:max-w-lg mx-auto p-6 bg-white border border-border shadow rounded-lg">
+    <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
+      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
         {/* Header & Logo */}
         <div>
           <div>
@@ -120,10 +128,7 @@ const Register = () => {
           </div>
         </div>
         {/* Register Form */}
-        <form
-          // action={handleSubmit}
-          className="flex flex-col gap-4 mt-4"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
           {/* Name input */}
           <div>
             {/* Label */}
@@ -140,7 +145,7 @@ const Register = () => {
                 required
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter Your Name"
-                className="peer border-border border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-gray-300 transition-colors duration-300"
+                className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
             </div>
           </div>
@@ -155,7 +160,7 @@ const Register = () => {
             />
             {preview === "" ? (
               <div
-                className="w-full md:w-[100%] flex items-center justify-center flex-col gap-4 border-border border rounded-md py-4 cursor-pointer"
+                className="w-full md:w-[100%] flex items-center justify-center flex-col gap-4 border-blue-200 border rounded-md py-4 cursor-pointer"
                 onClick={handleUploadImage}
               >
                 <FaFileUpload className="text-[2rem] text-[#777777]" />
@@ -164,7 +169,7 @@ const Register = () => {
                 </p>
               </div>
             ) : (
-              <div className="relative w-full border border-border rounded-xl p-4">
+              <div className="relative w-full border border-blue-200 rounded-xl p-4">
                 <img
                   src={preview}
                   alt="Selected file preview"
@@ -190,6 +195,29 @@ const Register = () => {
               </div>
             )}
           </div>
+          {/* Number input */}
+          <div>
+            {/* Label */}
+            <label
+              htmlFor="number"
+              className="text-[16px] text-text font-[600]"
+            >
+              Phone Number
+            </label>
+            {/* Input with icon */}
+            <div className="w-full mt-2 relative">
+              <MdLocalPhone className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
+              <input
+                type="number"
+                name="email"
+                id="email"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Phone Number"
+                className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
+              />
+            </div>
+          </div>
           {/* Email input */}
           <div>
             {/* Label */}
@@ -206,11 +234,10 @@ const Register = () => {
                 required
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
-                className="peer border-border border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-gray-300 transition-colors duration-300"
+                className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
             </div>
           </div>
-
           {/* Password input */}
           <div>
             {/* Label */}
@@ -225,13 +252,13 @@ const Register = () => {
               <RiLockPasswordLine className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
               <input
                 type={isEyeOpen ? "text" : "password"}
-                name="password"
                 id="password"
+                name="password"
+                placeholder="Password"
                 onChange={handlePasswordChange}
                 onFocus={() => setIsDropdownOpen(true)}
-                onBlur={() => setIsDropdownOpen(false)}
-                placeholder="Password"
-                className="peer border-border border rounded-md outline-none pl-11 pr-12 py-3 w-full focus:ring ring-gray-300 transition-colors duration-300"
+                // onBlur={() => setIsDropdownOpen(false)}
+                className="peer border-blue-200 border rounded-md outline-none pl-11 pr-12 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
 
               {isEyeOpen ? (
@@ -245,49 +272,43 @@ const Register = () => {
                   onClick={() => setIsEyeOpen(true)}
                 />
               )}
+            </div>
 
-              <div
-                className={`${
-                  isDropdownOpen
-                    ? "opacity-100 translate-y-0 z-30"
-                    : "opacity-0 translate-y-[-10px] z-[-1]"
-                } bg-white boxShadow rounded-md py-3 px-4 absolute top-[60px] left-0 w-full transition-all duration-300`}
-              >
-                <h3 className="text-gray-900 font-[500] text-[1rem]">
-                  Your password must contain:
-                </h3>
-
-                <div className="w-full mt-2 flex-col flex gap-[6px]">
+            {/* Password hint dropdown positioned below */}
+            {isDropdownOpen && (
+              <div className="bg-white shadow rounded-md py-3 px-4 mt-1 w-full transition-all duration-700">
+                {/* <h3 className="text-gray-900 text-center font-[600] text-base">
+                  Your password must contain
+                </h3> */}
+                <div className="w-full mt-2 flex flex-col items-center gap-[6px]">
                   {hintList?.map((hint, index) => (
                     <div
                       key={index}
-                      className={`${
-                        signal[hint.type]
-                          ? "text-green-500"
-                          : "dark:text-slate-400 text-gray-500"
-                      } text-[0.8rem] flex items-center gap-[8px]`}
+                      className={`text-[14px] flex items-center gap-[8px] font-medium w-fit ${
+                        signal[hint.type] ? "text-blue-500" : "text-gray-700"
+                      }`}
                     >
                       {signal[hint.type] ? (
                         <MdDone className="text-[1rem]" />
                       ) : (
-                        <RxCross1 />
+                        <IoCloseOutline className="text-[1rem] mt-[2px]" />
                       )}
                       {hint.text}
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Register Button */}
-          <Button
-            disabled={loading}
+          <button
             type="submit"
-            className="mt-1 bg-black cursor-pointer"
+            disabled={loading}
+            className="btn border-none rounded-lg text-white text-lg xmt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer"
           >
             {loading ? "Registering..." : "Register"}
-          </Button>
+          </button>
         </form>
         {/* SocialLogin */}
         {/* <SocialLogin /> */}
