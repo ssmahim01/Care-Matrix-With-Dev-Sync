@@ -2,24 +2,40 @@ import logo from "@/assets/logo.jpg";
 import { Button } from "@/components/ui/button";
 import { IoIosLogIn } from "react-icons/io";
 import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
-import { MdOutlineMail } from "react-icons/md";
+import { MdDelete, MdOutlineMail } from "react-icons/md";
 import { Link } from "react-router";
 import { useState } from "react";
+import { FaFileUpload } from "react-icons/fa";
 
 const Register = () => {
   // states for name, email
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   // states for photo
-  const [photo, setPhoto] = useState("");
+  const [image, setImage] = useState("");
+  const [preview, setPreview] = useState("");
   // states for password
   const [password, setPassword] = useState("");
   // states for loading & error
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState("");
 
+  // Image Upload Functionality
+  const handleUploadImage = () => {
+    document.getElementById("image_input").click();
+  };
+
+  const handleFileChange = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-base-200 fixed top-0 left-0 z-50 px-4">
+    <div className="w-full min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
       <div className="max-w-md md:max-w-lg mx-auto p-6 bg-white border border-border shadow rounded-lg">
         {/* Header & Logo */}
         <div>
@@ -60,8 +76,52 @@ const Register = () => {
               />
             </div>
           </div>
-
           {/* Photo File */}
+          <div className="w-full">
+            <input
+              type="file"
+              name="image"
+              id="image_input"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+            {preview === "" ? (
+              <div
+                className="w-full md:w-[100%] flex items-center justify-center flex-col gap-4 border-border border rounded-md py-6 cursor-pointer"
+                onClick={handleUploadImage}
+              >
+                <FaFileUpload className="text-[2rem] text-[#777777]" />
+                <p className="text-gray-700">
+                  Browse To Upload Ranking Image File
+                </p>
+              </div>
+            ) : (
+              <div className="relative w-full border border-border rounded-xl p-4">
+                <img
+                  src={preview}
+                  alt="Selected file preview"
+                  className="mx-auto object-cover rounded-full w-24 h-24"
+                />
+                <MdDelete
+                  className="text-[2rem] text-white bg-[#000000ad] p-1 absolute top-0 right-0 cursor-pointer"
+                  onClick={() => {
+                    setPreview("");
+                    setImage(null);
+                  }}
+                />
+                {image && (
+                  <div className="mt-4 text-center">
+                    <p className="text-sm font-medium text-gray-700">
+                      {image.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {(image.size / 1024).toFixed(2)} KB | {image.type}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Email input */}
           <div>
