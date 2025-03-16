@@ -19,12 +19,12 @@ export default function ClinicAndSpecialties() {
 
   return (
     
-    <section className="-mt-14 min-h-screen mx-auto bg-gradient-to-b from-sky-50 to-white max-w-[98rem]">
+    <section className="min-h-screen mx-auto bg-gradient-to-b from-sky-50 to-white max-w-[98rem]">
       {/* Hero Section */}
       <HeroSection />
 
       {/* Main Content */}
-      <main className="container mx-auto lg:w-[85%] w-11/12 lg:pt-20 pt-12 pb-8">
+      <main className="container mx-auto lg:w-[85%] w-11/12 lg:pt-16 pt-12 pb-8">
         {/* Search and Quick Actions */}
         <div className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-96">

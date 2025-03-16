@@ -5,7 +5,7 @@ import { Calendar, Phone } from "lucide-react"
 
 export default function HeroSection() {
   return (
-    <section className="bg-gradient-to-r from-sky-100 via-sky-50 to-white lg:pt-12 pt-8 pb-16">
+    <section className="bg-gradient-to-r from-sky-100 via-sky-50 to-white lg:pt-16 pt-12 pb-16">
       <div className="container lg:w-10/12 w-11/12 mx-auto px-4">
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 items-center">
           <motion.div
