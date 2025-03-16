@@ -18,7 +18,11 @@ export default function ClinicAndSpecialties() {
   const [, setActiveTab] = useState("specialties")
 
   return (
-    <section className="min-h-screen mx-auto bg-gradient-to-b from-sky-50 to-white max-w-[98rem]">
+    
+    <section className="-mt-14 min-h-screen mx-auto bg-gradient-to-b from-sky-50 to-white max-w-[98rem]">
+      {/* Hero Section */}
+      <HeroSection />
+
       {/* Main Content */}
       <main className="container mx-auto lg:w-[85%] w-11/12 lg:pt-20 pt-12 pb-8">
         {/* Search and Quick Actions */}
