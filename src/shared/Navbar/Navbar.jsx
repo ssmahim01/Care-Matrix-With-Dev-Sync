@@ -1,43 +1,37 @@
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
 import { FaHome } from "react-icons/fa";
-import {
-  MdContacts,
-  MdHealthAndSafety,
-  MdLocalPharmacy,
-  MdMedicalServices,
-  MdMenuBook,
-} from "react-icons/md";
+import { MdContacts, MdDelete, MdMedicalServices } from "react-icons/md";
+import {CiMenuFries} from "react-icons/ci";
 import { FaUserDoctor } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
 import CareMatrixLogo from "../../assets/Images/logo-care-matrix.webp";
-import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { closeMenu, toggleMenu } from "@/redux/menuSlice";
 import "./Navbar.css";
+import { useState } from "react";
 
 const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = null;
-  const dispatch = useDispatch();
-  const menuOpen = useSelector((state) => state.menu.menuOpen);
-  console.log(menuOpen);
-  const dropdownRef = useRef(null);
+  // const dispatch = useDispatch();
+  // const menuOpen = useSelector((state) => state.menu.menuOpen);
+  // console.log(menuOpen);
+  // const dropdownRef = useRef(null);
 
-  const handleToggleMenu = () => {
-    dispatch(toggleMenu());
-  };
+  // const handleToggleMenu = () => {
+  //   dispatch(toggleMenu());
+  // };
 
-  const handleClickOutSide = (e) => {
-    if (!e.target.closest(".dropdown")) {
-      dispatch(closeMenu());
-    }
-  };
+  // const handleClickOutSide = (e) => {
+  //   if (!e.target.closest(".dropdown")) {
+  //     dispatch(closeMenu());
+  //   }
+  // };
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutSide);
-    return () => {
-      document.removeEventListener("click", handleClickOutSide);
-    };
-  }, [dispatch]);
+  // useEffect(() => {
+  //   document.addEventListener("click", handleClickOutSide);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutSide);
+  //   };
+  // }, [dispatch]);
 
   const routes = (
     <>
@@ -53,22 +47,21 @@ const Navbar = () => {
       <NavLink className="flex gap-1 items-center" to="/contact-us">
         <MdContacts /> <span className="font-bold">Contact Us</span>
       </NavLink>
-      <NavLink className="flex gap-1 items-center" to="/pharmacy">
+      {/* <NavLink className="flex gap-1 items-center" to="/pharmacy">
         <MdLocalPharmacy /> <span className="font-bold">Pharmacy</span>
-      </NavLink>
-      <NavLink className="flex gap-1 items-center" to="/health-articles">
+      </NavLink> */}
+      {/* <NavLink className="flex gap-1 items-center" to="/health-articles">
         <MdHealthAndSafety /> <span className="font-bold">Health Articles</span>
-      </NavLink>
+      </NavLink> */}
     </>
   );
 
   return (
-   <div className="max-w-[98rem] mx-auto">
-     <div className="navbar border-b border-[#f3f6f9] fixed z-20 shadow-sm lg:px-24 md:px-6 px-4 bg-[#f3f6f9]">
-      <div className="navbar-start">
-        <div className="dropdown" ref={dropdownRef}>
+    <>
+      <div className="navbar border-b border-[#f3f6f9] fixed z-20 shadow-sm lg:px-24 md:px-6 px-4 bg-[#f3f6f9]">
+        <div className="navbar-start w-full">
+          {/* <div className="dropdown">
           <button
-            onClick={handleToggleMenu}
             tabIndex={0}
             role="button"
             className="btn btn-outline border border-sky-200 lg:hidden mr-3 shadow-sm"
@@ -114,48 +107,65 @@ const Navbar = () => {
               {routes}
             </ul>
           )}
-        </div>
-        <div className="flex items-center">
-          <img
-            src={CareMatrixLogo}
-            className="w-9 h-9 rounded-md"
-            referrerPolicy="no-referrer"
-            alt="Logo of Care Matrix"
-          />
-          <a
-            href="/"
-            className="lg:text-3xl text-xl p-2 hidden md:flex gap-0 items-center font-bold"
-          >
-            <span>Care</span> <span className="text-[#535ed1]">Matrix</span>
-          </a>
-        </div>
-      </div>
-
-      <div className="navbar-end w-full">
-        <div className="hidden lg:flex">
-          <ul className="menu menu-horizontal gap-4 mr-3 px-1">{routes}</ul>
-        </div>
-
-        {user ? (
-          <div className="flex gap-2 items-center">
-            <button className="btn btn-outline border-2 px-4 hover:text-white text-rose-500 hover:bg-rose-500 rounded-md font-bold flex gap-1 items-center">
-              <BiLogOutCircle />
-              <span>Log Out</span>
-            </button>
+        </div> */}
+          {/* mobile sidebar */}
+          <aside
+            className={` ${
+              isMenuOpen
+                ? "translate-x-0 opacity-100 z-20"
+                : "translate-x-[200px] opacity-0 z-[-1]"
+            } lg:hidden bg-[#e2ebee] p-4 text-center absolute top-[60px] right-0 w-full md:right-2 sm:w-[300px] md:rounded-md transition-all duration-300`}
+          >              
+            <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
+             {routes}
+            </ul>
+          </aside>
+          <div className="flex items-center">
+            <img
+              src={CareMatrixLogo}
+              className="w-9 h-9 rounded-md"
+              referrerPolicy="no-referrer"
+              alt="Logo of Care Matrix"
+            />
+            <a
+              href="/"
+              className="lg:text-3xl text-xl p-2 hidden md:flex gap-0 items-center font-bold"
+            >
+              <span>Care</span> <span className="text-[#535ed1]">Matrix</span>
+            </a>
           </div>
-        ) : (
-          <>
-            <button className="btn btn-outline border-2 text-[#0E82FD] hover:bg-sky-600 hover:text-white rounded-md md:ml-2 font-bold">
-              <Link to="/login" className="flex gap-1 items-center">
-                <span>Login</span>
-                <BiLogInCircle className="text-base" />
-              </Link>
-            </button>
-          </>
-        )}
+        </div>
+
+        <div className="navbar-end w-full">
+          <div className="hidden lg:flex">
+            <ul className="menu menu-horizontal gap-4 mr-3 px-1">{routes}</ul>
+          </div>
+
+          <CiMenuFries
+            className="text-[1.6rem] text-[#353333] cursor-pointer lg:hidden flex mr-4"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          />
+
+          {user ? (
+            <div className="flex gap-2 items-center">
+              <button className="btn btn-outline border-2 px-4 hover:text-white text-rose-500 hover:bg-rose-500 rounded-md font-bold flex gap-1 items-center">
+                <BiLogOutCircle />
+                <span>Log Out</span>
+              </button>
+            </div>
+          ) : (
+            <>
+              <button className="btn btn-outline border-2 text-[#0E82FD] hover:bg-sky-600 hover:text-white rounded-md md:ml-2 font-bold">
+                <Link to="/login" className="flex gap-1 items-center">
+                  <span>Login</span>
+                  <BiLogInCircle className="text-base" />
+                </Link>
+              </button>
+            </>
+          )}
+        </div>
       </div>
-    </div>
-   </div>
+    </>
   );
 };
 

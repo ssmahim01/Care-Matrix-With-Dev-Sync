@@ -1,5 +1,3 @@
-import React from 'react';
-
 const WhyChooseUs = () => {
   return (
     <div>
@@ -18,9 +16,9 @@ const WhyChooseUs = () => {
       </div>
       {/* Main content */}
       <div className="mt-6 grid gap-4 grid-cols-1 lg:grid-cols-2">
-        <div>
-          <img className='w-full h-full object-cover rounded-md' src="https://i.ibb.co.com/S48PYgBW/a5a95fd5-2b1e-4080-b7e1-312f87259900.webp" alt="" />
-        </div>
+        <figure>
+          <img className='w-full h-full max-w-[98rem] object-cover rounded-md' src="https://i.ibb.co.com/S48PYgBW/a5a95fd5-2b1e-4080-b7e1-312f87259900.webp" alt="Image of Care Matrix Building" />
+        </figure>
         <div className='space-y-4'>
           <div className="collapse collapse-arrow bg-base-100 border border-base-300 ">
             <input type="radio" name="my-accordion-2" defaultChecked />

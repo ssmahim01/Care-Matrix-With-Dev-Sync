@@ -2,7 +2,7 @@ import { Award, Heart } from "lucide-react";
 
 const StatsSection = () => {
   return (
-    <div className="bg-gradient-to-r from-blue-600 to-blue-300/80 rounded p-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center">
+    <div className="bg-gradient-to-r from-blue-600 to-blue-300/80 rounded-md p-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center container-mx-auto">
       {/* Medical Experts */}
       <div className="flex gap-2 items-center w-fit">
         <div>

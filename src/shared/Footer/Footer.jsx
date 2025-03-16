@@ -3,7 +3,7 @@ import logo from "@/assets/logo.jpg";
 const Footer = () => {
   return (
     <footer className="bg-white">
-      <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12">
+      <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-8">
         <div className="flex flex-col sm:flex-row flex-wrap gap-12 justify-between items-stretch">
           {/* Logo DIV */}
           <div>

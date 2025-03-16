@@ -5,6 +5,7 @@ import ExpertDoctors from "@/pages/Doctors/ExpertDoctors";
 import ContactUs from "@/pages/ContactUs/ContactUs";
 import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
+import Services from "@/pages/services/Services";
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
           <Route index element={<Home />} />
           <Route path="/doctors" element={<ExpertDoctors />} />
           <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/services" element={ <Services /> }/>
         </Route>
       </Routes>
       {/* Authentication Routes */}
