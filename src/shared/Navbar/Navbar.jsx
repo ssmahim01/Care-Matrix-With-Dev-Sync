@@ -1,6 +1,6 @@
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
-import { FaHome } from "react-icons/fa";
-import { MdContacts, MdDelete, MdMedicalServices } from "react-icons/md";
+import { FaHome, FaInfoCircle } from "react-icons/fa";
+import { MdContacts, MdMedicalServices } from "react-icons/md";
 import { CiMenuFries } from "react-icons/ci";
 import { FaUserDoctor } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
@@ -56,6 +56,9 @@ const Navbar = () => {
       </NavLink>
       <NavLink className="flex gap-1 items-center" to="/services" onClick={() => setIsMenuOpen(false)}>
         <MdMedicalServices /> <span className="font-bold">Services</span>
+      </NavLink>
+      <NavLink className="flex gap-1 items-center" to="/about-us" onClick={() => setIsMenuOpen(false)}>
+        <FaInfoCircle /> <span className="font-bold">About Us</span>
       </NavLink>
       <NavLink className="flex gap-1 items-center" to="/contact-us" onClick={() => setIsMenuOpen(false)}>
         <MdContacts /> <span className="font-bold">Contact Us</span>

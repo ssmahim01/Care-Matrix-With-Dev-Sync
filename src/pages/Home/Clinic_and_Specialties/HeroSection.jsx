@@ -1,4 +1,3 @@
-
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -6,9 +5,9 @@ import { Calendar, Phone } from "lucide-react"
 
 export default function HeroSection() {
   return (
-    <section className="bg-gradient-to-r rounded-2xl from-sky-100 via-sky-50 to-white py-16 md:py-20">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
+    <section className="bg-gradient-to-r from-sky-100 via-sky-50 to-white lg:pt-16 pt-12 pb-16">
+      <div className="container lg:w-10/12 w-11/12 mx-auto px-4">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 items-center">
           <motion.div
             className="space-y-6"
             initial={{ opacity: 0, x: -20 }}
