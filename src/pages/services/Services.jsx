@@ -3,7 +3,10 @@ import ClinicAndSpecialties from '../Home/Clinic_and_Specialties/ClinicAndSpecia
 
 const Services = () => {
   return (
-    <ClinicAndSpecialties/>
+    <div className='mt-20 mb-12'>
+
+      <ClinicAndSpecialties />
+    </div>
   )
 }
 

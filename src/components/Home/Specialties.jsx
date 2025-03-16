@@ -108,9 +108,15 @@ const Specialties = () => {
                 transition={{ duration: 0.6, delay: 0.5 }}
                 viewport={{ once: true }}
             >
-                <button className="mt-6 px-6 py-3 bg-[#0E82FD] text-white font-semibold rounded-md flex items-center gap-2 hover:bg-[#0e81fdc6] transition cursor-pointer">
-                    ➜ See All Specialities
+                <button className="mt-6 px-6 py-3 bg-[#0E82FD] text-white font-semibold rounded-md flex items-center gap-2  transition cursor-pointer relative overflow-hidden group">
+                    <span className="absolute left-4 transition-all duration-300 group-hover:translate-x-[150px]">
+                        ➜
+                    </span>
+                    <span className="relative transition-all group-hover:ml-0 ml-3 duration-300  group-hover:-translate-x-[10px]">
+                        See All Specialities
+                    </span>
                 </button>
+
             </motion.div>
         </motion.div>
     );

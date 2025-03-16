@@ -19,7 +19,7 @@ export default function ClinicAndSpecialties() {
 
   return (
     
-    <section className="min-h-screen mx-auto bg-gradient-to-b from-sky-50 to-white max-w-[98rem]">
+    <section className="lg:-mt-[60px] -mt-20 min-h-screen mx-auto bg-gradient-to-b from-sky-50 to-white max-w-[98rem]">
       {/* Hero Section */}
       <HeroSection />
 
