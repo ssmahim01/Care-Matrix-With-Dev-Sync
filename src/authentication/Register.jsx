@@ -13,6 +13,7 @@ import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
 import AuthHeader from "./AuthHeader";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
+import IsError from "./IsError";
 
 const Register = () => {
   // states for name, email
@@ -307,12 +308,7 @@ const Register = () => {
             )}
           </div>
           {/* Error Message */}
-          {isError && (
-            <div className="text-red-500 flex items-center justify-center gap-2 text-base py-[8px] bg-red-100/80 rounded-lg font-semibold text-center">
-              <MdError size={20} />
-              {isError}
-            </div>
-          )}
+          <IsError isError={isError} />
           {/* Register Button */}
           <button
             type="submit"
