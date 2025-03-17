@@ -14,6 +14,7 @@ import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
 import { Link } from "react-router";
 import SocialLogin from "./SocialLogin";
 import NavigateTo from "./NavigateTo";
+import { imgUpload } from "@/lib/imgUpload";
 
 const Register = () => {
   // states for name, email
@@ -103,13 +104,30 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    // Show error is image not selected
     if (!image) {
       setIsError("Please select an image for your profile!");
       return;
     }
-    const user = { name, email, password: strongPassword };
+    // Upload Image To imgBB
+    const imageUrl = await imgUpload(image);
+    // Show error if image upload failed
+    if (!imageUrl) {
+      setIsError("Image Upload Failed!");
+      return;
+    }
+
+    const user = {
+      name,
+      image: imageUrl,
+      email,
+      password: strongPassword,
+      phoneNumber,
+    };
+
+    setIsError("");
     console.table(user);
   };
 
