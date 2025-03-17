@@ -8,15 +8,23 @@ import AuthHeader from "./AuthHeader";
 import IsError from "./IsError";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
+import { useSelector } from "react-redux";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import auth from "@/firebase/firebase.config";
+import axios from "axios";
 
 const Register = () => {
+  // Get user
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
+
   // states for name, email
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   // states for photo, phoneNumber
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState(880);
   // states for password
   const [isEyeOpen, setIsEyeOpen] = useState(false);
   const [signal, setSignal] = useState({
@@ -32,6 +40,25 @@ const Register = () => {
   // states for loading & error
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState("");
+
+  // Bangladeshi phone number validation
+  const validateBangladeshiNumber = (number) => {
+    const cleanNumber = number.replace(/[^\d+]/g, "");
+    const bdNumberRegex = /^\8801[3-9][0-9]{8}$/;
+    return bdNumberRegex.test(cleanNumber);
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setPhoneNumber(value);
+    if (value && !validateBangladeshiNumber(value)) {
+      setIsError(
+        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 XXNN-NNNNNN.)"
+      );
+    } else {
+      setIsError("");
+    }
+  };
 
   // Password Validation Functionality
   const handlePasswordChange = (e) => {
@@ -96,21 +123,42 @@ const Register = () => {
     }
   };
 
+  // Create new user functionality
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Show error is image not selected
     if (!image) {
-      setIsError("Please select an image for your profile!");
+      setIsError("Please Select An Image For Your Profile!");
       return;
     }
     // Upload Image To imgBB
     const imageUrl = await imgUpload(image);
     // Show error if image upload failed
     if (!imageUrl) {
-      setIsError("Image Upload Failed!");
+      setIsError("Image Upload Failed! Try Again");
+      return;
+    }
+    // Password Validation
+    if (
+      !signal.lowercase ||
+      !signal.uppercase ||
+      !signal.number ||
+      !signal.symbol ||
+      !signal.length ||
+      !signal.strong
+    ) {
+      setIsError("Password Doesn't Meet All The Requirements");
+      return;
+    }
+    // Phone Number Validation
+    if (!validateBangladeshiNumber(phoneNumber)) {
+      setIsError(
+        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 XXNN-NNNNNN.)"
+      );
       return;
     }
 
+    // user data
     const user = {
       email,
       name,
@@ -119,8 +167,50 @@ const Register = () => {
       phoneNumber,
     };
 
-    setIsError("");
-    console.table(user);
+    // Create new user --->
+    createUserWithEmailAndPassword(auth, user?.email, user?.password)
+      .then((result) => {
+        setIsError("");
+        const currentUser = result?.user;
+        updateProfile(currentUser, {
+          displayName: user?.name,
+          photoURL: user?.image,
+        })
+          .then(async () => {
+            // userData for save in db
+            const userData = {
+              email: currentUser?.email,
+              name: currentUser?.displayName,
+              photo: currentUser?.photoURL,
+              phoneNumber: user?.phoneNumber,
+              uid: currentUser?.uid,
+              createdAt: new Date(
+                currentUser?.metadata?.creationTime
+              ).toLocaleString(),
+              lastLoginAt: new Date(
+                currentUser?.metadata?.lastSignInTime
+              ).toLocaleString(),
+            };
+            // save userData in db --->
+            const { data } = await axios.post(
+              `${import.meta.env.VITE_API_URL}/users`,
+              userData
+            );
+            console.log(data);
+          })
+          .catch((error) =>
+            setIsError(error.message || "Registration Failed!")
+          );
+      })
+      .catch((error) =>
+        setIsError(
+          error?.message.includes("Firebase:")
+            ? error?.message.split("Firebase:")[1]
+            : error?.message || "Registration Failed!"
+        )
+      );
+
+    // console.table(user);
   };
 
   return (
@@ -144,6 +234,7 @@ const Register = () => {
                 name="text"
                 id="text"
                 required
+                value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter Your Name"
                 className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
@@ -177,7 +268,7 @@ const Register = () => {
                   className="mx-auto object-cover rounded-full w-24 h-24"
                 />
                 <MdDelete
-                  className="text-[2rem] text-white bg-[#000000ad] p-1 absolute top-0 right-0 cursor-pointer"
+                  className="text-[2rem] text-white bg-[#000000ad] p-1 absolute top-0 right-0 cursor-pointer rounded-tr-[13px]"
                   onClick={() => {
                     setPreview("");
                     setImage(null);
@@ -203,7 +294,7 @@ const Register = () => {
               htmlFor="number"
               className="text-[16px] text-text font-[600]"
             >
-              Phone Number
+              Phone Number <span className="text-[10px]">(Bangladeshi)</span>
             </label>
             {/* Input with icon */}
             <div className="w-full mt-2 relative">
@@ -213,7 +304,10 @@ const Register = () => {
                 name="phoneNumber"
                 id="phoneNumber"
                 required
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                value={phoneNumber}
+                onChange={handlePhoneChange}
+                pattern="\8801[3-9][0-9]{8}"
+                maxLength={13}
                 placeholder="Phone Number"
                 className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
@@ -233,6 +327,7 @@ const Register = () => {
                 name="email"
                 id="email"
                 required
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
                 className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
@@ -255,6 +350,7 @@ const Register = () => {
                 type={isEyeOpen ? "text" : "password"}
                 id="password"
                 name="password"
+                value={strongPassword}
                 placeholder="Password"
                 onChange={handlePasswordChange}
                 onFocus={() => setIsDropdownOpen(true)}
@@ -312,7 +408,6 @@ const Register = () => {
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
-
         {/* SocialLogin */}
         <SocialLogin setIsError={setIsError} />
         {/* Navigate to login */}
