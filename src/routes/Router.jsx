@@ -8,18 +8,19 @@ import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
 import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
 import DashboardLayout from "@/layouts/DashboardLayout";
+import Error from "@/ErrorPage/Error";
 
 const Router = () => {
   return (
     <>
-    {/* Main Routes */}
+      {/* Main Routes */}
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="/doctors" element={<ExpertDoctors />} />
           <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/services" element={ <Services /> }/>
-          <Route path="/about-us" element={ <DetailsAboutUs /> }/>
+          <Route path="/services" element={<Services />} />
+          <Route path="/about-us" element={<DetailsAboutUs />} />
         </Route>
       </Routes>
       {/* Authentication Routes */}
@@ -31,8 +32,11 @@ const Router = () => {
       {/* Dashboard Routes */}
       <Routes>
         <Route path="/dashboard" element={<DashboardLayout />}>
-        {/* Upcoming... */}
+          {/* Upcoming... */}
         </Route>
+
+        {/* Catch All For 404 Error Page */}
+        <Route path="*" element={<Error />} />
       </Routes>
     </>
   );
