@@ -6,6 +6,7 @@ import ContactUs from "@/pages/ContactUs/ContactUs";
 import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
+import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
 
 const Router = () => {
   return (
@@ -16,6 +17,8 @@ const Router = () => {
           <Route path="/doctors" element={<ExpertDoctors />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/services" element={ <Services /> }/>
+          <Route path="/about-us" element={ <DetailsAboutUs /> }/>
         </Route>
       </Routes>
       {/* Authentication Routes */}
