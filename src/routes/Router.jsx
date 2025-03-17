@@ -17,7 +17,7 @@ const Router = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/services" element={ <Services /> }/>
         </Route>
-      </Routes>
+      </Routes>  
       {/* Authentication Routes */}
       <Routes>
         <Route path="/login" element={<Login />} />
