@@ -6,6 +6,7 @@ import { MdError, MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
+import AuthHeader from "./AuthHeader";
 
 const Login = () => {
   // states for email & password
@@ -15,25 +16,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [isEyeOpen, setIsEyeOpen] = useState(false);
   const [isError, setIsError] = useState("");
+
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
       <div className="max-w-lg lg:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
         {/* Header & Logo */}
-        <div>
-          <div>
-            <img src={logo} alt="Care-Matrix logo" className="w-44" />
-          </div>
-          <div className="mt-6">
-            <h1 className="text-2xl -ml-[4px] font-bold tracking-wider flex items-center gap-1">
-              <IoIosLogIn className="mt-[2px]" size={35} /> Welcome Back, Login!
-            </h1>
-            <p className="text-[15px] tracking-wide mt-1 text-gray-800">
-              Unlock Seamless Healthcare Management with Care-Matrix{" "}
-              <span className="text-gray-500">——</span> Your Gateway to Smarter,
-              Faster, and More Efficient Care.
-            </p>
-          </div>
-        </div>
+        <AuthHeader />
         {/* Register Form */}
         <form
           // onSubmit={handleSubmit}
