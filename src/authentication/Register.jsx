@@ -126,7 +126,7 @@ const Register = () => {
   // Create new user functionality
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Show error is image not selected
     if (!image) {
       setIsError("Please Select An Image For Your Profile!");
