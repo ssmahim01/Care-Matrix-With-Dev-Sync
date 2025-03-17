@@ -1,8 +1,6 @@
-import logo from "@/assets/logo.jpg";
 import { imgUpload } from "@/lib/imgUpload";
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
-import { IoIosLogIn } from "react-icons/io";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import {
   MdDelete,
@@ -12,9 +10,9 @@ import {
   MdOutlineMail,
 } from "react-icons/md";
 import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
+import AuthHeader from "./AuthHeader";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
-import AuthHeader from "./AuthHeader";
 
 const Register = () => {
   // states for name, email

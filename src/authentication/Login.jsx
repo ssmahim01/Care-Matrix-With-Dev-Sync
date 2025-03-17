@@ -1,12 +1,10 @@
-import logo from "@/assets/logo.jpg";
 import { useState } from "react";
-import { IoIosLogIn } from "react-icons/io";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdError, MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+import AuthHeader from "./AuthHeader";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
-import AuthHeader from "./AuthHeader";
 
 const Login = () => {
   // states for email & password
