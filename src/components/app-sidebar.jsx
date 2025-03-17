@@ -28,47 +28,6 @@ const data = {
     email: "ssmahim03@gmail.com",
     avatar: "/public/Doctor.jpg",
   },
-  navMain: [
-    {
-      title: "Overview",
-      icon: SquareTerminal,
-      url: "#",
-      isActive: true,
-    },
-    {
-      title: "Manage Users",
-      url: "#",
-      icon: Bot,
-    },
-    {
-      title: "Reports & Analytics",
-      url: "#",
-      icon: BookOpen,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
   projects: [
     {
       name: "Design Engineering",
@@ -95,8 +54,8 @@ export function AppSidebar({ ...props }) {
         <HeadingPlatform />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain />
+        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

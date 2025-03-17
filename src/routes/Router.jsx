@@ -12,33 +12,26 @@ import Error from "@/ErrorPage/Error";
 
 const Router = () => {
   return (
-    <>
+    <Routes>
       {/* Main Routes */}
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/doctors" element={<ExpertDoctors />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/about-us" element={<DetailsAboutUs />} />
-        </Route>
-      </Routes>
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Home />} />
+        <Route path="doctors" element={<ExpertDoctors />} />
+        <Route path="contact-us" element={<ContactUs />} />
+        <Route path="services" element={<Services />} />
+        <Route path="about-us" element={<DetailsAboutUs />} />
+      </Route>
+
       {/* Authentication Routes */}
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
       {/* Dashboard Routes */}
-      <Routes>
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          {/* Upcoming... */}
-        </Route>
+      <Route path="/dashboard" element={<DashboardLayout />} />
 
-        {/* Catch All For 404 Error Page */}
-        <Route path="*" element={<Error />} />
-      </Routes>
-    </>
+      {/* Catch-all for 404 Error Page */}
+      <Route path="*" element={<Error />} />
+    </Routes>
   );
 };
 
