@@ -8,15 +8,18 @@ import AuthHeader from "./AuthHeader";
 import IsError from "./IsError";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
 import axios from "axios";
+import { setUser } from "@/redux/auth/authSlice";
+import { toast } from "sonner";
 
 const Register = () => {
   // Get user
   const { user } = useSelector((state) => state.auth);
   console.log(user);
+  const dispatch = useDispatch();
 
   // states for name, email
   const [name, setName] = useState("");
@@ -195,12 +198,16 @@ const Register = () => {
                 currentUser?.metadata?.lastSignInTime
               ).toLocaleString(),
             };
+            // save userData in user state
+            dispatch(setUser(userData));
             // save userData in db --->
             const { data } = await axios.post(
               `${import.meta.env.VITE_API_URL}/users`,
               userData
             );
-            console.log(data);
+            if (data.data.insertedId) {
+              return toast.success("Registration Completed Successfully");
+            }
           })
           .catch((error) =>
             setIsError(error.message || "Registration Failed!")
