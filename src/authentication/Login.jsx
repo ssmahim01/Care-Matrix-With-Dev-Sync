@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { MdError, MdOutlineMail } from "react-icons/md";
+import { MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import AuthHeader from "./AuthHeader";
+import IsError from "./IsError";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
-import IsError from "./IsError";
 
 const Login = () => {
   // states for email & password

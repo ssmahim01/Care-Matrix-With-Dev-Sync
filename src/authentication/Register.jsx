@@ -2,18 +2,12 @@ import { imgUpload } from "@/lib/imgUpload";
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import {
-  MdDelete,
-  MdDone,
-  MdError,
-  MdLocalPhone,
-  MdOutlineMail,
-} from "react-icons/md";
+import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
 import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
 import AuthHeader from "./AuthHeader";
+import IsError from "./IsError";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
-import IsError from "./IsError";
 
 const Register = () => {
   // states for name, email
