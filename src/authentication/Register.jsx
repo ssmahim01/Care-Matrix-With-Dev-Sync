@@ -3,7 +3,13 @@ import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoIosLogIn } from "react-icons/io";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
+import {
+  MdDelete,
+  MdDone,
+  MdError,
+  MdLocalPhone,
+  MdOutlineMail,
+} from "react-icons/md";
 import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
 import { Link } from "react-router";
 import SocialLogin from "./SocialLogin";
@@ -100,7 +106,8 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!image) {
-      return console.error("Pls select an image for your profile");
+      setIsError("Please select an image for your profile!");
+      return;
     }
     const user = { name, email, password: strongPassword };
     console.table(user);
@@ -298,7 +305,13 @@ const Register = () => {
               </div>
             )}
           </div>
-
+          {/* Error Message */}
+          {isError && (
+            <div className="text-red-500 flex items-center justify-center gap-2 text-base py-[8px] bg-red-100 rounded-lg font-semibold text-center">
+              <MdError size={20} />
+              {isError}
+            </div>
+          )}
           {/* Register Button */}
           <button
             type="submit"
@@ -308,6 +321,7 @@ const Register = () => {
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
+
         {/* SocialLogin */}
         <SocialLogin />
         {/* Navigate to login */}
