@@ -6,14 +6,17 @@ import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
 import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
 import { Link } from "react-router";
+import SocialLogin from "./SocialLogin";
+import NavigateTo from "./NavigateTo";
 
 const Register = () => {
   // states for name, email
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  // states for photo
+  // states for photo, phoneNumber
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(null);
   // states for password
   const [isEyeOpen, setIsEyeOpen] = useState(false);
   const [signal, setSignal] = useState({
@@ -55,27 +58,27 @@ const Register = () => {
     });
   };
 
-  // Password Hinst
+  // Password Hints
   const hintList = [
     {
-      text: "Minimum number of characters is 8.",
+      text: "Minimum number of characters is 8",
       type: "length",
     },
     {
-      text: "Password should contain uppercase.",
+      text: "Password should contain uppercase",
       type: "uppercase",
     },
     {
-      text: "Password should contain numbers.",
+      text: "Password should contain numbers",
       type: "number",
     },
     {
-      text: "Password should contain lowercase.",
+      text: "Password should contain lowercase",
       type: "lowercase",
     },
 
     {
-      text: "Password should contain special characters.",
+      text: "Password should contain special characters",
       type: "symbol",
     },
   ];
@@ -102,11 +105,6 @@ const Register = () => {
     const user = { name, email, password: strongPassword };
     console.table(user);
   };
-  // console.log({
-  //   name,
-  //   email,
-  //   image
-  // })
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
@@ -209,10 +207,10 @@ const Register = () => {
               <MdLocalPhone className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
               <input
                 type="number"
-                name="email"
-                id="email"
+                name="phoneNumber"
+                id="phoneNumber"
                 required
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="Phone Number"
                 className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
@@ -311,16 +309,9 @@ const Register = () => {
           </button>
         </form>
         {/* SocialLogin */}
-        {/* <SocialLogin /> */}
+        <SocialLogin />
         {/* Navigate to login */}
-        <div className="mt-4 text-center text-sm text-gray-900">
-          Already have an account?{" "}
-          <Link to={"/login"}>
-            <span className="text-black cursor-pointer hover:underline">
-              Login
-            </span>
-          </Link>
-        </div>
+        <NavigateTo />
       </div>
     </div>
   );

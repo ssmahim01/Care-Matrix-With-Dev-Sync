@@ -1,10 +1,11 @@
 import { Link } from "react-router";
+import NavigateTo from "./NavigateTo";
 
 const Login = () => {
   return (
     <div>
       Login
-      <Link to={"/register"}>GO TOO REGISTER</Link>
+      <NavigateTo />
     </div>
   );
 };
