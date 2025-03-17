@@ -314,7 +314,7 @@ const Register = () => {
         </form>
 
         {/* SocialLogin */}
-        <SocialLogin />
+        <SocialLogin setIsError={setIsError} />
         {/* Navigate to login */}
         <NavigateTo />
       </div>

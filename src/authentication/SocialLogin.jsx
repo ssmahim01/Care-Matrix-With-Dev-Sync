@@ -1,7 +1,7 @@
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 
-const SocialLogin = () => {
+const SocialLogin = ({ setIsError }) => {
   return (
     <div>
       <div className="flex w-full flex-col">
@@ -14,6 +14,9 @@ const SocialLogin = () => {
         <div className="w-full">
           <Button
             variant="outline"
+            onClick={() =>
+              setIsError("Google sign in is available now! coming soon...")
+            }
             className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 py-5"
           >
             <FaGoogle /> Google
@@ -23,6 +26,9 @@ const SocialLogin = () => {
         <div className="w-full">
           <Button
             variant="outline"
+            onClick={() =>
+              setIsError("Github sign in is available now! coming soon...")
+            }
             className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 py-5"
           >
             <FaGithub /> Github

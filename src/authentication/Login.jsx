@@ -23,7 +23,10 @@ const Login = () => {
         <AuthHeader />
         {/* Register Form */}
         <form
-          // onSubmit={handleSubmit}
+          onSubmit={(e) => {
+            e.preventDefault();
+            setIsError("Login functionality is available now! Coming Soon...");
+          }}
           className="flex flex-col gap-4 mt-4"
         >
           {/* Email input */}
@@ -93,7 +96,7 @@ const Login = () => {
         </form>
 
         {/* SocialLogin */}
-        <SocialLogin />
+        <SocialLogin setIsError={setIsError}/>
         {/* Navigate to login */}
         <NavigateTo />
       </div>
