@@ -1,16 +1,13 @@
 import DoctorCard from "@/components/DoctorCard";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import useDoctors from "@/hooks/useDoctors";
 
 const Doctors = () => {
-  const [doctors, setDoctors] = useState([]);
-  useEffect(() => {
-    fetch("/doctors.json")
-      .then((res) => res.json())
-      .then((data) => setDoctors(data));
-  }, []);
+  const [doctors] = useDoctors();
+
 
   let settings = {
     dots: false,

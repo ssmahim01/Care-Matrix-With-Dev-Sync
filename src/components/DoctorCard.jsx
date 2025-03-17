@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const DoctorCard = ({ doctor }) => {
   return (
-    <Link 
+    <Link to='/doctor-details'
       className="relative w-full h-[400px] overflow-hidden rounded-lg group border border-border block"
     >
       <img
