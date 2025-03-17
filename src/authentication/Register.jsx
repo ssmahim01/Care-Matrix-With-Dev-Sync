@@ -1,4 +1,5 @@
 import logo from "@/assets/logo.jpg";
+import { imgUpload } from "@/lib/imgUpload";
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoIosLogIn } from "react-icons/io";
@@ -11,10 +12,8 @@ import {
   MdOutlineMail,
 } from "react-icons/md";
 import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
-import { Link } from "react-router";
-import SocialLogin from "./SocialLogin";
 import NavigateTo from "./NavigateTo";
-import { imgUpload } from "@/lib/imgUpload";
+import SocialLogin from "./SocialLogin";
 
 const Register = () => {
   // states for name, email
@@ -68,24 +67,23 @@ const Register = () => {
   // Password Hints
   const hintList = [
     {
-      text: "Minimum number of characters is 8",
+      text: "Minimum 8 characters required",
       type: "length",
     },
     {
-      text: "Password should contain uppercase",
+      text: "Password must contain uppercase",
       type: "uppercase",
     },
     {
-      text: "Password should contain numbers",
+      text: "Password must contain numbers",
       type: "number",
     },
     {
-      text: "Password should contain lowercase",
+      text: "Password must contain lowercase",
       type: "lowercase",
     },
-
     {
-      text: "Password should contain special characters",
+      text: "Password must contain symbols",
       type: "symbol",
     },
   ];
@@ -120,9 +118,9 @@ const Register = () => {
     }
 
     const user = {
+      email,
       name,
       image: imageUrl,
-      email,
       password: strongPassword,
       phoneNumber,
     };
@@ -133,7 +131,7 @@ const Register = () => {
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
-      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
+      <div className="max-w-lg lg:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
         {/* Header & Logo */}
         <div>
           <div>
