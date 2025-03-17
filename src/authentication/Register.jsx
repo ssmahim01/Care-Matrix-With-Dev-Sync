@@ -126,11 +126,13 @@ const Register = () => {
   // Create new user functionality
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     // Show error is image not selected
     if (!image) {
       setIsError("Please Select An Image For Your Profile!");
       return;
     }
+
     // Upload Image To imgBB
     const imageUrl = await imgUpload(image);
     // Show error if image upload failed
@@ -138,6 +140,7 @@ const Register = () => {
       setIsError("Image Upload Failed! Try Again");
       return;
     }
+
     // Password Validation
     if (
       !signal.lowercase ||
@@ -150,6 +153,7 @@ const Register = () => {
       setIsError("Password Doesn't Meet All The Requirements");
       return;
     }
+
     // Phone Number Validation
     if (!validateBangladeshiNumber(phoneNumber)) {
       setIsError(
