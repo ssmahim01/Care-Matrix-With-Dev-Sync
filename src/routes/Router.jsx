@@ -7,10 +7,12 @@ import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
 import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
+import DashboardLayout from "@/layouts/DashboardLayout";
 
 const Router = () => {
   return (
     <>
+    {/* Main Routes */}
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
@@ -24,6 +26,13 @@ const Router = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+      </Routes>
+
+      {/* Dashboard Routes */}
+      <Routes>
+        <Route path="/dashboard" element={<DashboardLayout />}>
+        {/* Upcoming... */}
+        </Route>
       </Routes>
     </>
   );
