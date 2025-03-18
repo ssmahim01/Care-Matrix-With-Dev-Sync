@@ -6,13 +6,14 @@ import ContactUs from "@/pages/ContactUs/ContactUs";
 import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
-import { useDispatch, useSelector } from "react-redux";
 import { logOutUser, setLoading, setUser } from "@/redux/auth/authSlice";
+import { useAuthUser } from "@/redux/auth/authActions";
 import { onAuthStateChanged } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
+import PrivateRoute from "./PrivateRoute";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
-import { useAuthUser } from "@/redux/auth/authActions";
 
 const Router = () => {
   const dispatch = useDispatch();
