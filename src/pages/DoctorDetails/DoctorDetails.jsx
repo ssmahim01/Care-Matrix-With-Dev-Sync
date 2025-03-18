@@ -199,18 +199,16 @@ const DoctorDetails = () => {
 
     const doctorInfo = doctors.find(doctor => doctor.id === location.state)
 
-
     return (
         <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-24'>
-            Doctors details page:
             <div className='flex flex-col gap-6 '>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 border p-4 rounded-md'>
                     <div className=''>
                         <img className='h-[320px] md:h-[270px] lg:h-[200px] w-full object-cover rounded-md' src={doctorInfo.image} alt="" />
                     </div>
                     <div className='flex flex-col gap-1'>
-                        <h3>{doctorInfo.name}</h3>
-                        <h3>{doctorInfo.title}</h3>
+                        <h3 className='font-semibold text-xl'>{doctorInfo.name}</h3>
+                        <h3 className='text-[#0E82FD]'>{doctorInfo.title}</h3>
                         <div>
                        
                         <Rating className='text-center mx-auto'
@@ -219,7 +217,7 @@ const DoctorDetails = () => {
                             readOnly
                         />
                         </div>
-                        <div className='flex items-center gap-2'>
+                        <div className='flex items-center gap-2 mt-1'>
                             <button className='p-1 border-2 cursor-pointer hover:text-[#0E82FD] hover:border-[#0E82FD] text-lg rounded-md text-gray-400 bg-white border-gray-400'><FaRegHeart></FaRegHeart></button>
                             {/* <span>Add to favorites</span> */}
                         </div>
@@ -231,11 +229,11 @@ const DoctorDetails = () => {
                         </div>
                         <div className='flex justify-between bg-slate-100 p-4 rounded-md mt-4'>
                             <div className=' '>
-                                <h3>Name</h3>
+                                <h3 className='font-medium'>Name</h3>
                                 <p>CareMatrix</p>
                             </div>
                             <div className='bg-slate-100'>
-                                <h3>Location</h3>
+                                <h3 className='font-medium'>Location</h3>
                                 <p>Mirpur-10, Dhaka, Bangladesh</p>
                             </div>
                         </div>
@@ -265,8 +263,8 @@ const DoctorDetails = () => {
                     </div>
 
                     <div className='flex gap-2 mt-4'>
-                        <Link><button className="btn">Add Feedback</button></Link>
-                        <Link><button className="btn">Book Appointment</button></Link>
+                        <Link><button className="btn hover:bg-[#0E82FD] hover:text-white">Add Feedback</button></Link>
+                        <Link><button className="btn hover:bg-[#0E82FD] hover:text-white">Book Appointment</button></Link>
                     </div>
 
                 </div>
