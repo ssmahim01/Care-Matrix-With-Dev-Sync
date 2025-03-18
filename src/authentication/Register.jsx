@@ -1,5 +1,7 @@
-import loginImg from "@/assets/loginPage.png";
+import auth from "@/firebase/firebase.config";
 import { imgUpload } from "@/lib/imgUpload";
+import axios from "axios";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
@@ -9,18 +11,8 @@ import AuthHeader from "./AuthHeader";
 import IsError from "./IsError";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
-import { useDispatch, useSelector } from "react-redux";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import auth from "@/firebase/firebase.config";
-import axios from "axios";
-import { setUser } from "@/redux/auth/authSlice";
-import { toast } from "sonner";
 
 const Register = () => {
-  // Get user
-  const { user } = useSelector((state) => state.auth);
-  console.table(user);
-
   // states for name, email
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

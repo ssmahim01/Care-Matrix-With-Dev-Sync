@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import loginImg from "@/assets/loginPage.png";
+import { useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -7,15 +7,11 @@ import AuthHeader from "./AuthHeader";
 import IsError from "./IsError";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import auth from "@/firebase/firebase.config";
+import axios from "axios";
 
 const Login = () => {
-  useEffect(() => {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
-  });
-
   // states for email & password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +19,29 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [isEyeOpen, setIsEyeOpen] = useState(false);
   const [isError, setIsError] = useState("");
+
+  // Login User functionality --->
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setIsError("");
+    signInWithEmailAndPassword(auth, email, password)
+      .then(async (result) => {
+        const currentUser = result.user;
+        // Update lastLoginAt Time
+     
+      })
+      .catch((error) => {
+        setIsError(
+          error?.message.includes("Firebase:")
+            ? error?.message.split("Firebase:")[1]
+            : error?.message || "Login Failed!"
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <div className="bg-blue-100/20">
@@ -35,15 +54,7 @@ const Login = () => {
           {/* Header & Logo */}
           <AuthHeader />
           {/* Register Form */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setIsError(
-                "Login functionality is available now! Coming Soon..."
-              );
-            }}
-            className="flex flex-col gap-4 mt-4"
-          >
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
             {/* Email input */}
             <div>
               {/* Label */}
