@@ -9,6 +9,7 @@ import Services from "@/pages/services/Services";
 import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import Error from "@/ErrorPage/Error";
+import AdministratorOverview from "@/pages/DashboardPages/Administrator/AdministratorOverview";
 
 const Router = () => {
   return (
@@ -27,7 +28,9 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
 
       {/* Dashboard Routes */}
-      <Route path="/dashboard" element={<DashboardLayout />} />
+      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
+      </Route>
 
       {/* Catch-all for 404 Error Page */}
       <Route path="*" element={<Error />} />
