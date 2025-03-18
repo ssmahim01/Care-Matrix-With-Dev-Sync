@@ -14,6 +14,7 @@ import WhyChooseUs from "./WhyChooseUs";
 import Chat from "@/components/Home/Chat";
 
 const Home = () => {
+
   return (
     <section className="w-full space-y-6">
       {/* Hero Section */}
