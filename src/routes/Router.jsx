@@ -6,6 +6,7 @@ import ContactUs from "@/pages/ContactUs/ContactUs";
 import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
+import DoctorDetails from "@/pages/DoctorDetails/DoctorDetails";
 import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import Error from "@/ErrorPage/Error";
