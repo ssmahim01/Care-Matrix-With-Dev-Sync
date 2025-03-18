@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import loginImg from "@/assets/loginPage.png";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdOutlineMail } from "react-icons/md";
@@ -9,6 +9,13 @@ import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
 
 const Login = () => {
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+
   // states for email & password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
