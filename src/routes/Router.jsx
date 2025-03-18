@@ -7,11 +7,10 @@ import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { listenAuthState } from "@/redux/auth/authActions";
 import { logOutUser, setLoading, setUser } from "@/redux/auth/authSlice";
 import { onAuthStateChanged } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
+import { useEffect } from "react";
 import axios from "axios";
 
 const Router = () => {
@@ -24,10 +23,10 @@ const Router = () => {
       if (currentUser) {
         dispatch(
           setUser({
-            uid: currentUser.uid,
             email: currentUser.email,
             displayName: currentUser.displayName,
             photoURL: currentUser.photoURL,
+            uid: currentUser.uid,
             createdAt: currentUser.metadata.creationTime,
             lastLoginAt: currentUser.metadata.lastSignInTime,
           })

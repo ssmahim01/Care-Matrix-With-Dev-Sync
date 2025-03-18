@@ -1,3 +1,4 @@
+import loginImg from "@/assets/loginPage.png";
 import { imgUpload } from "@/lib/imgUpload";
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
@@ -18,8 +19,7 @@ import { toast } from "sonner";
 const Register = () => {
   // Get user
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
-  const dispatch = useDispatch();
+  console.table(user);
 
   // states for name, email
   const [name, setName] = useState("");
@@ -56,7 +56,7 @@ const Register = () => {
     setPhoneNumber(value);
     if (value && !validateBangladeshiNumber(value)) {
       setIsError(
-        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 XXNN-NNNNNN.)"
+        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 1XNN-NNNNNN)"
       );
     } else {
       setIsError("");
@@ -160,7 +160,7 @@ const Register = () => {
     // Phone Number Validation
     if (!validateBangladeshiNumber(phoneNumber)) {
       setIsError(
-        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 XXNN-NNNNNN.)"
+        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 1XNN-NNNNNN)"
       );
       return;
     }
@@ -198,16 +198,8 @@ const Register = () => {
                 currentUser?.metadata?.lastSignInTime
               ).toLocaleString(),
             };
-            // save userData in user state
-            // dispatch(setUser(userData));
             // save userData in db --->
-            const { data } = await axios.post(
-              `${import.meta.env.VITE_API_URL}/users`,
-              userData
-            );
-            if (data.data.insertedId) {
-             toast.success("Registration Completed Successfully");
-            }
+            await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
           })
           .catch((error) =>
             setIsError(error.message || "Registration Failed!")
