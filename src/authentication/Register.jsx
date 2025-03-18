@@ -410,13 +410,13 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn border-none rounded-lg text-white text-lg xmt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
+            className="btn border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
           >
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
         {/* SocialLogin */}
-        <SocialLogin setIsError={setIsError} />
+        {/* <SocialLogin setIsError={setIsError} /> */}
         {/* Navigate to login */}
         <NavigateTo />
       </div>
