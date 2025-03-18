@@ -1,7 +1,51 @@
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import auth from "@/firebase/firebase.config";
+import {
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import axios from "axios";
+
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 const SocialLogin = ({ setIsError }) => {
+  // Google & Github SignIn Function
+  const handleSocialLogin = (provider) => {
+    setIsError("")
+    signInWithPopup(
+      auth,
+      provider === "google" ? googleProvider : githubProvider
+    )
+      .then(async (result) => {
+        const currentUser = result.user;
+        const userData = {
+          email: currentUser?.email,
+          name: currentUser?.displayName,
+          photo: currentUser?.photoURL,
+          phoneNumber: "",
+          uid: currentUser?.uid,
+          createdAt: new Date(
+            currentUser?.metadata?.creationTime
+          ).toLocaleString(),
+          lastLoginAt: new Date(
+            currentUser?.metadata?.lastSignInTime
+          ).toLocaleString(),
+          providerId: currentUser?.providerData[0].providerId,
+        };
+        // save userData in db --->
+        await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
+      })
+      .catch((error) =>
+        setIsError(
+          error?.message.includes("Firebase:")
+            ? error?.message.split("Firebase:")[1]
+            : error?.message || "Registration Failed!"
+        )
+      );
+  };
   return (
     <div>
       <div className="flex w-full flex-col">
@@ -14,9 +58,7 @@ const SocialLogin = ({ setIsError }) => {
         <div className="w-full">
           <Button
             variant="outline"
-            onClick={() =>
-              setIsError("Google sign in is available now! coming soon...")
-            }
+            onClick={() => handleSocialLogin("google")}
             className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 py-5"
           >
             <FaGoogle /> Google
@@ -26,9 +68,7 @@ const SocialLogin = ({ setIsError }) => {
         <div className="w-full">
           <Button
             variant="outline"
-            onClick={() =>
-              setIsError("Github sign in is available now! coming soon...")
-            }
+            onClick={() => handleSocialLogin("github")}
             className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 py-5"
           >
             <FaGithub /> Github

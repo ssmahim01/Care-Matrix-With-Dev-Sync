@@ -12,10 +12,11 @@ import { onAuthStateChanged } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
 import { useEffect } from "react";
 import axios from "axios";
+import { useAuthUser } from "@/redux/auth/authActions";
 
 const Router = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
+  const user = useAuthUser();
   console.log(user);
 
   useEffect(() => {
