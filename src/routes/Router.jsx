@@ -7,6 +7,7 @@ import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
 import DoctorDetails from "@/pages/DoctorDetails/DoctorDetails";
+import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/services" element={ <Services /> }/>
           <Route path="/doctor-details/:id" element={<DoctorDetails />} />
+          <Route path="/about-us" element={ <DetailsAboutUs /> }/>
         </Route>
       </Routes>  
       {/* Authentication Routes */}
