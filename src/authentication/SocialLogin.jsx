@@ -14,7 +14,7 @@ const githubProvider = new GithubAuthProvider();
 const SocialLogin = ({ setIsError }) => {
   // Google & Github SignIn Function
   const handleSocialLogin = (provider) => {
-    setIsError("")
+    setIsError("");
     signInWithPopup(
       auth,
       provider === "google" ? googleProvider : githubProvider
@@ -37,6 +37,17 @@ const SocialLogin = ({ setIsError }) => {
         };
         // save userData in db --->
         await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
+        // Update lastLoginAt Time
+        await axios.patch(
+          `${import.meta.env.VITE_API_URL}/users/last-login-at/${
+            currentUser.email
+          }`,
+          {
+            lastLoginAt: new Date(
+              currentUser?.metadata?.lastSignInTime
+            ).toLocaleString(),
+          }
+        );
       })
       .catch((error) =>
         setIsError(
