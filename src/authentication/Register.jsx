@@ -199,14 +199,14 @@ const Register = () => {
               ).toLocaleString(),
             };
             // save userData in user state
-            dispatch(setUser(userData));
+            // dispatch(setUser(userData));
             // save userData in db --->
             const { data } = await axios.post(
               `${import.meta.env.VITE_API_URL}/users`,
               userData
             );
             if (data.data.insertedId) {
-              return toast.success("Registration Completed Successfully");
+             toast.success("Registration Completed Successfully");
             }
           })
           .catch((error) =>

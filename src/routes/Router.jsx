@@ -6,8 +6,55 @@ import ContactUs from "@/pages/ContactUs/ContactUs";
 import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { listenAuthState } from "@/redux/auth/authActions";
+import { logOutUser, setLoading, setUser } from "@/redux/auth/authSlice";
+import { onAuthStateChanged } from "firebase/auth";
+import auth from "@/firebase/firebase.config";
+import axios from "axios";
 
 const Router = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setLoading(true));
+
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        dispatch(
+          setUser({
+            uid: currentUser.uid,
+            email: currentUser.email,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+            createdAt: currentUser.metadata.creationTime,
+            lastLoginAt: currentUser.metadata.lastSignInTime,
+          })
+        );
+
+        // Set Token in Cookies
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/jwt`,
+          { email: currentUser.email },
+          { withCredentials: true }
+        );
+      } else {
+        dispatch(logOutUser());
+
+        // Clear Token from Cookies
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/logout`,
+          {},
+          { withCredentials: true }
+        );
+      }
+      dispatch(setLoading(false));
+    });
+
+    return () => unsubscribe();
+  }, [dispatch]);
+
   return (
     <>
       <Routes>
@@ -15,7 +62,7 @@ const Router = () => {
           <Route index element={<Home />} />
           <Route path="/doctors" element={<ExpertDoctors />} />
           <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/services" element={ <Services /> }/>
+          <Route path="/services" element={<Services />} />
         </Route>
       </Routes>
       {/* Authentication Routes */}
