@@ -8,6 +8,7 @@ import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
 import DoctorDetails from "@/pages/DoctorDetails/DoctorDetails";
 import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
+import BookAppointment from "@/pages/BookAppointment/BookAppointment";
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/services" element={ <Services /> }/>
           <Route path="/doctor-details/:id" element={<DoctorDetails />} />
+          <Route path="/book-appointment/:doctor-name" element={<BookAppointment />} />
           <Route path="/about-us" element={ <DetailsAboutUs /> }/>
         </Route>
       </Routes>  
