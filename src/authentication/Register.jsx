@@ -7,6 +7,7 @@ import { Link } from "react-router";
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { RxCross1 } from "react-icons/rx";
 
 const Register = () => {
   // states for name, email
