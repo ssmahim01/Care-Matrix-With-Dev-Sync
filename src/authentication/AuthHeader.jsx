@@ -1,6 +1,6 @@
 import logo from "@/assets/logo.jpg";
 import { IoIosLogIn } from "react-icons/io";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 
 const AuthHeader = () => {
   const location = useLocation();
@@ -8,7 +8,9 @@ const AuthHeader = () => {
   return (
     <div>
       <div>
-        <img src={logo} alt="Care-Matrix logo" className="w-44" />
+        <Link to="/">
+          <img src={logo} alt="Care-Matrix logo" className="w-44" />
+        </Link>
       </div>
       <div className="mt-6">
         <h1 className="text-2xl -ml-[4px] font-bold tracking-wider flex items-center gap-1">

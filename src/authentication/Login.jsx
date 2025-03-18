@@ -7,11 +7,16 @@ import AuthHeader from "./AuthHeader";
 import IsError from "./IsError";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
+import { useNavigate } from "react-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useAuthUser } from "@/redux/auth/authActions";
 import auth from "@/firebase/firebase.config";
 import axios from "axios";
 
 const Login = () => {
+  const user = useAuthUser();
+  const navigate = useNavigate();
+
   // states for email & password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +34,7 @@ const Login = () => {
       .then(async (result) => {
         const currentUser = result.user;
         // Update lastLoginAt Time
-        const { data } = await axios.patch(
+        await axios.patch(
           `${import.meta.env.VITE_API_URL}/users/last-login-at/${
             currentUser.email
           }`,
@@ -39,8 +44,6 @@ const Login = () => {
             ).toLocaleString(),
           }
         );
-        console.log(data);
-        console.log(currentUser?.metadata?.lastSignInTime);
       })
       .catch((error) => {
         setIsError(
@@ -54,11 +57,18 @@ const Login = () => {
       });
   };
 
+  if (user) return navigate("/");
+
   return (
     <div className="bg-blue-100/20">
       <div className="w-11/12 mx-auto xl:w-10/12 min-h-screen px-4 py-12 flex flex-col md:flex-row gap-6 items-center justify-center max-w-screen-xl">
         {/* Image Div */}
-        <div className="hidden lg:flex w-5/12">
+        <div className="hidden lg:flex flex-col w-5/12">
+          {/* <div className="mb-4">
+            <button className="btn border-none btn-sm text-base font-medium bg-blue-400 text-white ">
+              Go Back!
+            </button>
+          </div> */}
           <img src={loginImg} alt="loginImg" className="w-full h-full" />
         </div>
         <div className="max-w-lg lg:max-w-md xl:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">

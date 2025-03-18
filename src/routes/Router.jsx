@@ -6,7 +6,7 @@ import ContactUs from "@/pages/ContactUs/ContactUs";
 import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOutUser, setLoading, setUser } from "@/redux/auth/authSlice";
 import { onAuthStateChanged } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
@@ -15,6 +15,8 @@ import axios from "axios";
 
 const Router = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  console.log(user);
 
   useEffect(() => {
     dispatch(setLoading(true));

@@ -7,12 +7,17 @@ import { FaFileUpload } from "react-icons/fa";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
 import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
+import { useAuthUser } from "@/redux/auth/authActions";
+import { useNavigate } from "react-router";
 import AuthHeader from "./AuthHeader";
-import IsError from "./IsError";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
+import IsError from "./IsError";
 
 const Register = () => {
+  const user = useAuthUser();
+  const navigate = useNavigate();
+
   // states for name, email
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -207,6 +212,8 @@ const Register = () => {
 
     // console.table(user);
   };
+
+  if (user) return navigate("/");
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
