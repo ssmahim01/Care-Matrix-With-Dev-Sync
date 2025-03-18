@@ -1,6 +1,6 @@
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
 import { FaHome, FaInfoCircle } from "react-icons/fa";
-import { MdContacts, MdMedicalServices } from "react-icons/md";
+import { MdContacts, MdDashboard, MdMedicalServices } from "react-icons/md";
 import { CiMenuFries } from "react-icons/ci";
 import { FaUserDoctor } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
@@ -63,6 +63,9 @@ const Navbar = () => {
       <NavLink className="flex gap-1 items-center" to="/contact-us" onClick={() => setIsMenuOpen(false)}>
         <MdContacts /> <span className="font-bold">Contact Us</span>
       </NavLink>
+      <NavLink className="flex gap-1 items-center" to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+        <MdDashboard /> <span className="font-bold">Dashboard</span>
+      </NavLink>
     </>
   );
 
@@ -89,12 +92,12 @@ const Navbar = () => {
               referrerPolicy="no-referrer"
               alt="Logo of Care Matrix"
             />
-            <a
-              href="/"
+            <Link
+              to="/"
               className="lg:text-3xl text-2xl p-2 hidden md:flex gap-0 items-center font-bold"
             >
               <span>Care</span> <span className="text-[#535ed1]">Matrix</span>
-            </a>
+            </Link>
           </div>
         </div>
 
