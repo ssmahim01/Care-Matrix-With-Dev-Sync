@@ -7,6 +7,9 @@ import { FaRegHeart, FaUser } from 'react-icons/fa';
 import { IoLocation, IoLocationOutline } from 'react-icons/io5';
 import { MdOutlinePriceChange } from 'react-icons/md';
 import { Link, useLocation } from 'react-router';
+import { Rating } from '@smastrom/react-rating'
+
+import '@smastrom/react-rating/style.css'
 
 const DoctorDetails = () => {
 
@@ -208,7 +211,14 @@ const DoctorDetails = () => {
                     <div className='flex flex-col gap-1'>
                         <h3>{doctorInfo.name}</h3>
                         <h3>{doctorInfo.title}</h3>
-                        <p>rating</p>
+                        <div>
+                       
+                        <Rating className='text-center mx-auto'
+                            style={{ maxWidth: 90, margin: 0, marginLeft:0,  marginRight: '4px' }}
+                            value={doctorInfo.rating}
+                            readOnly
+                        />
+                        </div>
                         <div className='flex items-center gap-2'>
                             <button className='p-1 border-2 cursor-pointer hover:text-[#0E82FD] hover:border-[#0E82FD] text-lg rounded-md text-gray-400 bg-white border-gray-400'><FaRegHeart></FaRegHeart></button>
                             {/* <span>Add to favorites</span> */}
@@ -219,7 +229,7 @@ const DoctorDetails = () => {
                             <FaUser></FaUser>
                             <span>10 Patients Treated</span>
                         </div>
-                        <div className='flex justify-between bg-slate-100 p-4 rounded-md'>
+                        <div className='flex justify-between bg-slate-100 p-4 rounded-md mt-4'>
                             <div className=' '>
                                 <h3>Name</h3>
                                 <p>CareMatrix</p>
@@ -244,29 +254,37 @@ const DoctorDetails = () => {
 
                             <span>{doctorInfo.available_days.map((day, index) => <span key={index}>{day} </span>)}</span>
                         </div>
-                        <div className='flex items-center gap-2'>
-                            <LucideMessageCircle size={16}></LucideMessageCircle>
-                            <span>{doctorInfo.number_of_feedback} Feedback</span>
-                        </div>
-
-                        <div className='flex items-center gap-2'>
-                            <MdOutlinePriceChange size={16}></MdOutlinePriceChange>
-                            <span>{doctorInfo.consultation_fee}</span>
-                        </div>
-
-                        <div className='flex gap-2'>
-                            <Link><button className="btn">Add Feedback</button></Link>
-                            <Link><button className="btn">Book Appointment</button></Link>
-                        </div>
-
+                    <div className='flex items-center gap-2'>
+                        <LucideMessageCircle size={16}></LucideMessageCircle>
+                        <span>{doctorInfo.number_of_feedback} Feedback</span>
                     </div>
-                </div>
-                {/* About  */}
-                <div className='border p-4 rounded-md'>
-                    <p>{doctorInfo.bio}</p>
+
+                    <div className='flex items-center gap-2'>
+                        <MdOutlinePriceChange size={16}></MdOutlinePriceChange>
+                        <span>{doctorInfo.consultation_fee}</span>
+                    </div>
+
+                    <div className='flex gap-2 mt-4'>
+                        <Link><button className="btn">Add Feedback</button></Link>
+                        <Link><button className="btn">Book Appointment</button></Link>
+                    </div>
+
                 </div>
             </div>
+            {/* About  */}
+            <div className='border p-4 rounded-md'>
+                <h3 className='text-lg font-semibold'>About "{doctorInfo.name}"</h3>
+                <p>{doctorInfo.bio}</p>
+
+                <h3 className='text-base font-semibold mt-4'>{doctorInfo.name}'s services</h3>
+                <ul>
+                    {
+                        doctorInfo.services.map((service, index) => <li key={index}>{service}</li>)
+                    }
+                </ul>
+            </div>
         </div>
+        </div >
     );
 };
 
