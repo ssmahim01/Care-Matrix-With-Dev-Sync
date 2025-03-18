@@ -65,7 +65,7 @@ const OurDepartments = () => {
         }
       />
       {/* Main Container */}
-      <div className="mt-6 grid gap-7 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-6 grid gap-7 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         {departments?.map((department) => (
           <div
             key={department?._id}
@@ -79,7 +79,7 @@ const OurDepartments = () => {
             <img
               src={department?.image}
               alt="animated_card"
-              className="w-full h-[200px] rounded-t object-cover"
+              className="w-full h-[250px] rounded-t object-cover"
             />
 
             {/*  contents  */}
