@@ -126,9 +126,10 @@ const Register = () => {
   // Create new user functionality
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     // Show error is image not selected
     if (!image) {
+      setLoading(false);
       setIsError("Please Select An Image For Your Profile!");
       return;
     }
@@ -137,6 +138,7 @@ const Register = () => {
     const imageUrl = await imgUpload(image);
     // Show error if image upload failed
     if (!imageUrl) {
+      setLoading(false);
       setIsError("Image Upload Failed! Try Again");
       return;
     }
@@ -150,12 +152,14 @@ const Register = () => {
       !signal.length ||
       !signal.strong
     ) {
+      setLoading(false);
       setIsError("Password Doesn't Meet All The Requirements");
       return;
     }
 
     // Phone Number Validation
     if (!validateBangladeshiNumber(phoneNumber)) {
+      setLoading(false);
       setIsError(
         "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 1XNN-NNNNNN)"
       );
@@ -198,9 +202,10 @@ const Register = () => {
             // save userData in db --->
             await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
           })
-          .catch((error) =>
-            setIsError(error.message || "Registration Failed!")
-          );
+          .catch((error) => setIsError(error.message || "Registration Failed!"))
+          .finally(() => {
+            setLoading(false);
+          });
       })
       .catch((error) =>
         setIsError(
@@ -405,7 +410,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn border-none rounded-lg text-white text-lg xmt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer"
+            className="btn border-none rounded-lg text-white text-lg xmt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
           >
             {loading ? "Registering..." : "Register"}
           </button>
