@@ -8,7 +8,6 @@ import useDoctors from "@/hooks/useDoctors";
 const Doctors = () => {
   const [doctors] = useDoctors();
 
-
   let settings = {
     dots: false,
     infinite: true,

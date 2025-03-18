@@ -1,9 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const DoctorCard = ({ doctor }) => {
+  
   return (
-    <Link to='/doctor-details'
+    <Link to={`/doctor-details/${doctor.id}`}
+    state={doctor.id}
       className="relative w-full h-[400px] overflow-hidden rounded-lg group border border-border block"
     >
       <img
