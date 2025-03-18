@@ -11,6 +11,7 @@ import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import Error from "@/ErrorPage/Error";
 import AdministratorOverview from "@/pages/DashboardPages/Administrator/AdministratorOverview";
+import OurPharmacy from "@/pages/OurPharmacy";
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
         <Route path="doctors" element={<ExpertDoctors />} />
         <Route path="contact-us" element={<ContactUs />} />
         <Route path="services" element={<Services />} />
+        <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
       </Route>
 
