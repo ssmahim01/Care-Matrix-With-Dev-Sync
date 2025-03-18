@@ -8,6 +8,11 @@ export const useAuthUser = () => {
   return user;
 };
 
+export const useAuthLoading = () => {
+  const loading = useSelector((state) => state.auth.loading);
+  return loading;
+};
+
 export const logOut = async (dispatch) => {
   dispatch(setLoading(true));
   await signOut(auth);
