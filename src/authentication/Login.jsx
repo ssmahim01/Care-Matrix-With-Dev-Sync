@@ -29,7 +29,18 @@ const Login = () => {
       .then(async (result) => {
         const currentUser = result.user;
         // Update lastLoginAt Time
-     
+        const { data } = await axios.patch(
+          `${import.meta.env.VITE_API_URL}/users/last-login-at/${
+            currentUser.email
+          }`,
+          {
+            lastLoginAt: new Date(
+              currentUser?.metadata?.lastSignInTime
+            ).toLocaleString(),
+          }
+        );
+        console.log(data);
+        console.log(currentUser?.metadata?.lastSignInTime);
       })
       .catch((error) => {
         setIsError(
