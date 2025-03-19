@@ -3,7 +3,9 @@ import ClinicAndSpecialties from "../Home/Clinic_and_Specialties/ClinicAndSpecia
 
 const Services = () => {
   return (
-    <div className="mt-12 mb-12 min-h-screen mx-auto bg-gradient-to-b from-sky-50 to-white">
+    <div className="mt-12 mb-12 min-h-screen mx-auto 
+    //bg-gradient-to-b from-sky-50 to-white
+    ">
       <ClinicAndSpecialties />
     </div>
   );

@@ -38,7 +38,7 @@ export default function ClinicAndSpecialties() {
       <HeroSection />
 
       {/* Main Content */}
-      <main className="mx-auto w-11/12 lg:pt-16 pt-12 pb-8">
+      <main className="lg:pt-16 pt-12 pb-8">
         {/* Search and Quick Actions */}
         <div className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-96">
@@ -69,11 +69,11 @@ export default function ClinicAndSpecialties() {
 
         {/* Tabs Navigation */}
         <Tabs
-          defaultValue="specialties"
           className="w-full"
+          defaultValue="specialties"
           onValueChange={setActiveTab}
         >
-          <TabsList className="bg-sky-50 w-full justify-start overflow-x-auto flex-nowrap mb-8">
+          <TabsList className="bg-sky-50 w-full grid grid-cols-2 sm:flex sm:justify-start flex-wrap h-full sm:flex-nowrap mb-8">
             <TabsTrigger
               value="specialties"
               className="data-[state=active]:bg-sky-600 data-[state=active]:text-white cursor-pointer py-2"
