@@ -9,7 +9,8 @@ import "swiper/css/pagination";
 import Slide from '@/components/Pharmacy/Slide';
 
 
-const OurPharmacy = () => {
+
+const BannerPharma = () => {
     const [banners, setBanners] = useState([])
     const [loading, setLoading] = useState(false)
     useEffect(() => {
@@ -53,4 +54,4 @@ const OurPharmacy = () => {
     );
 };
 
-export default OurPharmacy;
+export default BannerPharma;
