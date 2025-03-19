@@ -13,7 +13,7 @@ const MoreAboutUs = () => {
             className="w-full object-cover rounded-xl shadow-lg"
           />
           <img
-            src="/public/hospital bed.jpg"
+            src="/hospital bed.jpg"
             alt="Hospital bed"
             className="absolute bottom-4 left-4 w-20 h-20 sm:w-40 sm:h-40 object-cover rounded-lg shadow-md border-4 border-white"
           />
@@ -40,7 +40,7 @@ const MoreAboutUs = () => {
           <div className="mt-6 flex items-center space-x-6">
             {/* Doctor Image */}
             <img
-              src="/public/Doctor.jpg"
+              src="/Doctor.jpg"
               alt="Doctor"
               className="w-28 h-28 rounded-xl object-cover shadow-lg"
             />
