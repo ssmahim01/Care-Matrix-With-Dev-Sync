@@ -6,7 +6,7 @@ const SectionHeader = ({
 }) => {
   return (
     <div className="text-center space-y-2">
-      <h1 className="text-[22px] md:text-[26px] font-extrabold tracking-wide">
+      <h1 className="text-[22px] md:text-[26px] lg:text-3xl font-extrabold tracking-wide">
         {title_1st_slice && title_1st_slice}{" "}
         <span className="text-[#0E82FD] tracking-wider underline underline-offset-4">
           {title_2nd_slice && title_2nd_slice}

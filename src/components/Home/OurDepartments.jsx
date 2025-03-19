@@ -61,7 +61,7 @@ const OurDepartments = () => {
         title_2nd_slice={"MEDICAL"}
         title_3rd_slice={"DEPARTMENTS"}
         subTitle={
-          " Delivering Advanced, Specialized Care Across a Wide Range of \n  Medical Fields. Compassionate Experts Dedicated to Your Health and Well-Being."
+          " Delivering Advanced, Specialized Care Across a Wide Range of Medical \n Fields. Compassionate Experts Dedicated to Your Health and Well-Being."
         }
       />
       {/* Main Container */}
