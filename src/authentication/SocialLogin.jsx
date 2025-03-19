@@ -29,10 +29,10 @@ const SocialLogin = ({ setIsError }) => {
           uid: currentUser?.uid,
           createdAt: new Date(
             currentUser?.metadata?.creationTime
-          ).toLocaleString(),
+          ).toISOString(),
           lastLoginAt: new Date(
             currentUser?.metadata?.lastSignInTime
-          ).toLocaleString(),
+          ).toISOString(),
           providerId: currentUser?.providerData[0].providerId,
         };
         // save userData in db --->
@@ -45,7 +45,7 @@ const SocialLogin = ({ setIsError }) => {
           {
             lastLoginAt: new Date(
               currentUser?.metadata?.lastSignInTime
-            ).toLocaleString(),
+            ).toISOString(),
           }
         );
       })
