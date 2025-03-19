@@ -9,7 +9,7 @@ const useDoctors = () => {
         .then((data) => setDoctors(data));
     }, []);
 
-    console.log(doctors);
+    // console.log(doctors);
     
     return [doctors]
 };
