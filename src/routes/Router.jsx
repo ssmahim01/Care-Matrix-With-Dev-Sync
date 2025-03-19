@@ -19,8 +19,9 @@ import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import Error from "@/ErrorPage/Error";
 import AdministratorOverview from "@/pages/DashboardPages/Administrator/AdministratorOverview";
-import OurPharmacy from "@/pages/OurPharmacy";
+
 import BookAppointment from "@/pages/BookAppointment/BookAppointment";
+import OurPharmacy from "@/pages/OurPharmacy/OurPharmacy";
 
 const Router = () => {
   const dispatch = useDispatch();
