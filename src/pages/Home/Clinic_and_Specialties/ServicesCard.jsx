@@ -10,7 +10,7 @@ export default function ServiceCard({ icon, title, description, features }) {
 
   return (
     <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
-      <Card className="h-full border-sky-100 hover:shadow-md transition-shadow overflow-hidden">
+      <Card className="h-full border-sky-100 hover:shadow-md transition-shadow overflow-hidden cursor-pointer">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
             <div className="bg-sky-50 p-3 rounded-full">{icon}</div>
@@ -28,11 +28,6 @@ export default function ServiceCard({ icon, title, description, features }) {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="p-6 pt-0">
-          <Button variant="outline" className="border-sky-200 text-sky-700 hover:bg-sky-50">
-            Learn More
-          </Button>
-        </CardFooter>
       </Card>
     </motion.div>
   )
