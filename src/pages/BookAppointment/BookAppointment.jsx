@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { FaStar } from 'react-icons/fa';
 import { useLocation } from 'react-router';
 
 const BookAppointment = () => {
@@ -212,7 +213,10 @@ const BookAppointment = () => {
             <div className='border p-4 bg-slate-100 flex gap-2 rounded-md'>
                <img className='w-20 h-20 md:w-24 md:h-24 rounded-full object-cover' src={doctorInfo?.image} alt="" />
                <div>
+                <div className='relative'>
                 <h3 className='text-lg font-semibold'>{doctorInfo?.name}</h3>
+                <div className="badge bg-amber-500 absolute top-0 -right-14 p-1"><FaStar></FaStar> {doctorInfo?.rating}</div>
+                </div>
                 <h3 className='text-[#0E82FD]'>{doctorInfo?.title}</h3>
                 <h3 className='text-sm'>{doctorInfo?.chamber}</h3>
                </div>
