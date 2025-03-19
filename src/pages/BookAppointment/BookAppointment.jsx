@@ -1,4 +1,5 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router';
 
 const BookAppointment = () => {
@@ -182,9 +183,28 @@ const BookAppointment = () => {
         }
     ]
 
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+      } = useForm();
+
     const location = useLocation();
 
     const doctorInfo = doctors.find(doctor => doctor.id === location.state)
+
+    const onSubmit = (data) => {
+        const name = data.name;
+        const phone = data.phone;
+        const age = data.age;
+        const email = data.email;
+        const date = data.date;
+        const time = data.time;
+        const reason = data.reason;
+
+        console.log(name, phone, email, age, date, time, reason);
+    }
 
 
     return (
@@ -199,11 +219,11 @@ const BookAppointment = () => {
             </div>
 
             <div className='border p-4 bg-slate-100 flex gap-2 rounded-md'>
-            <form className="w-full">
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                 <div className="flex flex-col sm:flex-row items-center gap-[20px]">
                     <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
                         <label className="relative">
-                            <input type="text"
+                            <input type="text"  {...register("name", { required: true })}
                                 className="peer border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300"
                             />
                             <span
@@ -215,7 +235,7 @@ const BookAppointment = () => {
 
                     <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
                         <label className="relative">
-                            <input type="number"
+                            <input type="number"  {...register("phone", { required: true })}
                                 className="peer border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300"
                             />
                             <span
@@ -226,7 +246,7 @@ const BookAppointment = () => {
                     </div>
                     <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
                         <label className="relative">
-                            <input type="email"
+                            <input type="email" {...register("email", { required: true })}
                                 className="peer border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300"
                             />
                             <span
@@ -241,7 +261,7 @@ const BookAppointment = () => {
 
                     <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
                         <label className="relative">
-                            <input type="number"
+                            <input type="number" {...register("age", { required: true })}
                                 className="peer border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300"
                             />
                             <span
@@ -253,7 +273,7 @@ const BookAppointment = () => {
 
                     <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
                         <label className="relative">
-                            <input type="date"
+                            <input type="date" {...register("date", { required: true })}
                                 className="peer border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300"
                             />
                             <span
@@ -264,11 +284,9 @@ const BookAppointment = () => {
                     </div>
 
                     <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
-                        <label className="relative">
-                            {/* <input type="date"
-                                className="peer border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300"
-                            /> */}
-                             <select className="peer border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300" defaultValue="Pick a browser">
+                        <label className="relative"> 
+                             <select {...register("time", { required: true })}
+                              className="peer border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300" defaultValue="Pick a browser">
                                 <option >Pick a time slot</option>
                                 <option>10:00am - 10:29am</option>
                                 <option>10:30am - 10:59am</option>
@@ -294,7 +312,7 @@ const BookAppointment = () => {
 
                 <div className="flex flex-col gap-[5px] w-full mt-[20px]">
                     <label className="relative w-full">
-                        <textarea
+                        <textarea {...register("reason", { required: true })}
                             className="peer min-h-[200px] border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300"
                         ></textarea>
                         <span
