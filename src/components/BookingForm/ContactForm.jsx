@@ -81,15 +81,14 @@ const ContactForm = () => {
                                 <option>10:30am - 10:59am</option>
                                 <option>11:00am - 11:29am</option>
                                 <option>11:30am - 11:59am</option>
-                                <option>12:00am - 11:30am</option>
-                                <option>11:30am - 11:59am</option>
                                 <option>12:00am - 12:30am</option>
                                 <option>03:30am - 03:59am</option>
                                 <option>04:00am - 04:29am</option>
                                 <option>04:30am - 04:59am</option>
                                 <option>05:00am - 05:29am</option>
                                 <option>05:30am - 05:59am</option>
-                           
+                                <option>06:00am - 06:29am</option>
+                                <option>06:30am - 07:00am</option>                   
 
                             </select>
                             <span
