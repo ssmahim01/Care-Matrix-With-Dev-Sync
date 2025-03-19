@@ -7,9 +7,9 @@ import { Link, NavLink } from "react-router-dom";
 import CareMatrixLogo from "../../assets/Images/logo-care-matrix.webp";
 import "./Navbar.css";
 import { useEffect, useRef, useState } from "react";
-import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
+import { Pill, X } from "lucide-react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -72,11 +72,10 @@ const Navbar = () => {
       >
         <MdMedicalServices /> <span className="font-bold">Services</span>
       </NavLink>
-      <NavLink
-        className="flex gap-1 items-center"
-        to="/about-us"
-        onClick={() => setIsMenuOpen(false)}
-      >
+      <NavLink className="flex items-center" to="/pharmacy" onClick={() => setIsMenuOpen(false)}>
+        <Pill className=" h-[15px] font-extrabold  "/> <span className="font-bold">Our Pharmacy</span>
+      </NavLink>
+      <NavLink className="flex gap-1 items-center" to="/about-us" onClick={() => setIsMenuOpen(false)}>
         <FaInfoCircle /> <span className="font-bold">About Us</span>
       </NavLink>
       <NavLink
@@ -128,8 +127,8 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-end w-full ">
-          <div className="hidden lg:flex">
-            <ul className="menu menu-horizontal gap-4 mr-3 px-1">{routes}</ul>
+          <div className="hidden lg:flex ">
+            <ul className="menu menu-horizontal gap-4 mr-3 px-1 ">{routes}</ul>
           </div>
 
           {user ? (

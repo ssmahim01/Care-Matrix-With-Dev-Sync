@@ -192,10 +192,7 @@ const DoctorDetails = () => {
         }
     ]
 
-
     const location = useLocation();
-    console.log("State id is ", location.state);
-    console.log("doctors are", doctors);
 
     const doctorInfo = doctors.find(doctor => doctor.id === location.state)
 
@@ -225,7 +222,7 @@ const DoctorDetails = () => {
                     <div className='col-span-1 lg:col-span-2'>
                         <div className='flex items-center gap-2'>
                             <FaUser></FaUser>
-                            <span>10 Patients Treated</span>
+                            <span>{doctorInfo.treated_patients} Patients Treated</span>
                         </div>
                         <div className='flex justify-between bg-slate-100 p-4 rounded-md mt-4'>
                             <div className=' '>
@@ -263,8 +260,8 @@ const DoctorDetails = () => {
                     </div>
 
                     <div className='flex gap-2 mt-4'>
-                        <Link><button className="btn hover:bg-[#0E82FD] hover:text-white">Add Feedback</button></Link>
-                        <Link><button className="btn hover:bg-[#0E82FD] hover:text-white">Book Appointment</button></Link>
+                        <Link ><button className="btn hover:bg-[#0E82FD] hover:text-white">Add Feedback</button></Link>
+                        <Link to={`/book-appointment/${doctorInfo.name}`} state={doctorInfo.id} ><button className="btn hover:bg-[#0E82FD] hover:text-white">Book Appointment</button></Link>
                     </div>
 
                 </div>
