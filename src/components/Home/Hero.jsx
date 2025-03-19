@@ -9,15 +9,15 @@ const Hero = () => {
     <div className="w-full mx-auto bg-cover bg-center  bg-no-repeat" style={{
       backgroundImage: `url('${HeroBG}')`
     }}>
-      <div className="lg:w-10/12 px-6 py-6 flex flex-col lg:flex-row items-center justify-between lg:gap-12  mx-auto">
+      <div className="lg:w-10/12 px-6 pt-14 pb-6 lg:pt-0 flex flex-col lg:flex-row items-center justify-between lg:gap-12  mx-auto">
         {/* Left Content */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className="lg:w-1/2 md:space-y-4 space-y-2 lg:py-0 md:pt-8 pt-6">
-          <h2 className="md:text-4xl xl:text-5xl text-3xl font-bold text-white/90">
+          className="lg:w-1/2 md:space-y-4 space-y-2 lg:pt-4">
+          <h2 className="md:text-5xl text-3xl font-bold text-white/90">
             Streamline Healthcare Management
             <br className="md:block hidden" />
             With Care Matrix

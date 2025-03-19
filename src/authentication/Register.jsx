@@ -13,6 +13,7 @@ import AuthHeader from "./AuthHeader";
 import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
 import IsError from "./IsError";
+import { RxCross1 } from "react-icons/rx";
 
 const Register = () => {
   const user = useAuthUser();

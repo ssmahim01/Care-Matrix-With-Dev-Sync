@@ -14,6 +14,11 @@ import PrivateRoute from "./PrivateRoute";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
+import DoctorDetails from "@/pages/DoctorDetails/DoctorDetails";
+import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
+import DashboardLayout from "@/layouts/DashboardLayout";
+import Error from "@/ErrorPage/Error";
+import AdministratorOverview from "@/pages/DashboardPages/Administrator/AdministratorOverview";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -59,21 +64,28 @@ const Router = () => {
   }, [dispatch]);
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/doctors" element={<ExpertDoctors />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/services" element={<Services />} />
-        </Route>
-      </Routes>
+    <Routes>
+      {/* Main Routes */}
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Home />} />
+        <Route path="doctors" element={<ExpertDoctors />} />
+        <Route path="contact-us" element={<ContactUs />} />
+        <Route path="services" element={<Services />} />
+        <Route path="about-us" element={<DetailsAboutUs />} />
+      </Route>
+
       {/* Authentication Routes */}
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      {/* Dashboard Routes */}
+      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
+      </Route>
+
+      {/* Catch-all for 404 Error Page */}
+      <Route path="*" element={<Error />} />
+    </Routes>
   );
 };
 
