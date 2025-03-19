@@ -26,7 +26,7 @@ const data = {
   user: {
     name: "SS Mahim",
     email: "ssmahim03@gmail.com",
-    avatar: "/public/Doctor.jpg",
+    avatar: "/Doctor.jpg",
   },
   projects: [
     {

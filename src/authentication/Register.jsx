@@ -1,20 +1,31 @@
-import logo from "@/assets/logo.jpg";
-import { Button } from "@/components/ui/button";
-import { IoIosLogIn } from "react-icons/io";
-import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
-import { MdDelete, MdDone, MdOutlineMail } from "react-icons/md";
-import { Link } from "react-router";
+import auth from "@/firebase/firebase.config";
+import { imgUpload } from "@/lib/imgUpload";
+import axios from "axios";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
+import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
+import { useAuthUser } from "@/redux/auth/authActions";
+import { useNavigate } from "react-router";
+import AuthHeader from "./AuthHeader";
+import NavigateTo from "./NavigateTo";
+import SocialLogin from "./SocialLogin";
+import IsError from "./IsError";
+import { RxCross1 } from "react-icons/rx";
 
 const Register = () => {
+  const user = useAuthUser();
+  const navigate = useNavigate();
+
   // states for name, email
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  // states for photo
+  // states for photo, phoneNumber
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(880);
   // states for password
   const [isEyeOpen, setIsEyeOpen] = useState(false);
   const [signal, setSignal] = useState({
@@ -26,10 +37,29 @@ const Register = () => {
     strong: false,
   });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [StrongPassword, setStrongPassword] = useState("");
+  const [strongPassword, setStrongPassword] = useState("");
   // states for loading & error
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState("");
+
+  // Bangladeshi phone number validation
+  const validateBangladeshiNumber = (number) => {
+    const cleanNumber = number.replace(/[^\d+]/g, "");
+    const bdNumberRegex = /^\8801[3-9][0-9]{8}$/;
+    return bdNumberRegex.test(cleanNumber);
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setPhoneNumber(value);
+    if (value && !validateBangladeshiNumber(value)) {
+      setIsError(
+        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 1XNN-NNNNNN)"
+      );
+    } else {
+      setIsError("");
+    }
+  };
 
   // Password Validation Functionality
   const handlePasswordChange = (e) => {
@@ -56,26 +86,26 @@ const Register = () => {
     });
   };
 
-  // Password Hinst
+  // Password Hints
   const hintList = [
     {
-      text: "Minimum number of characters is 8.",
+      text: "Minimum 8 characters required",
       type: "length",
     },
     {
-      text: "Should contain uppercase.",
+      text: "Password must contain uppercase",
       type: "uppercase",
     },
     {
-      text: "Should contain lowercase.",
-      type: "lowercase",
-    },
-    {
-      text: "Should contain numbers.",
+      text: "Password must contain numbers",
       type: "number",
     },
     {
-      text: "Should contain special characters.",
+      text: "Password must contain lowercase",
+      type: "lowercase",
+    },
+    {
+      text: "Password must contain symbols",
       type: "symbol",
     },
   ];
@@ -94,36 +124,110 @@ const Register = () => {
     }
   };
 
-  // console.log({
-  //   name,
-  //   email,
-  //   image
-  // })
+  // Create new user functionality
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    // Show error is image not selected
+    if (!image) {
+      setLoading(false);
+      setIsError("Please Select An Image For Your Profile!");
+      return;
+    }
+
+    // Upload Image To imgBB
+    const imageUrl = await imgUpload(image);
+    // Show error if image upload failed
+    if (!imageUrl) {
+      setLoading(false);
+      setIsError("Image Upload Failed! Try Again");
+      return;
+    }
+
+    // Password Validation
+    if (
+      !signal.lowercase ||
+      !signal.uppercase ||
+      !signal.number ||
+      !signal.symbol ||
+      !signal.length ||
+      !signal.strong
+    ) {
+      setLoading(false);
+      setIsError("Password Doesn't Meet All The Requirements");
+      return;
+    }
+
+    // Phone Number Validation
+    if (!validateBangladeshiNumber(phoneNumber)) {
+      setLoading(false);
+      setIsError(
+        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 1XNN-NNNNNN)"
+      );
+      return;
+    }
+
+    // user data
+    const user = {
+      email,
+      name,
+      image: imageUrl,
+      password: strongPassword,
+      phoneNumber,
+    };
+
+    // Create new user --->
+    createUserWithEmailAndPassword(auth, user?.email, user?.password)
+      .then((result) => {
+        setIsError("");
+        const currentUser = result?.user;
+        updateProfile(currentUser, {
+          displayName: user?.name,
+          photoURL: user?.image,
+        })
+          .then(async () => {
+            // userData for save in db
+            const userData = {
+              email: currentUser?.email,
+              name: currentUser?.displayName,
+              photo: currentUser?.photoURL,
+              phoneNumber: user?.phoneNumber,
+              uid: currentUser?.uid,
+              createdAt: new Date(
+                currentUser?.metadata?.creationTime
+              ).toLocaleString(),
+              lastLoginAt: new Date(
+                currentUser?.metadata?.lastSignInTime
+              ).toLocaleString(),
+            };
+            // save userData in db --->
+            await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
+          })
+          .catch((error) => setIsError(error.message || "Registration Failed!"))
+          .finally(() => {
+            setLoading(false);
+          });
+      })
+      .catch((error) =>
+        setIsError(
+          error?.message.includes("Firebase:")
+            ? error?.message.split("Firebase:")[1]
+            : error?.message || "Registration Failed!"
+        )
+      );
+
+    // console.table(user);
+  };
+
+  if (user) return navigate("/");
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-base-200 px-4 py-12">
-      <div className="max-w-md md:max-w-lg mx-auto p-6 bg-white border border-border shadow rounded-lg">
+    <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
+      <div className="max-w-lg lg:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
         {/* Header & Logo */}
-        <div>
-          <div>
-            <img src={logo} alt="Care-Matrix logo" className="w-44" />
-          </div>
-          <div className="mt-6">
-            <h1 className="text-2xl -ml-[4px] font-bold tracking-wider flex items-center gap-1">
-              <IoIosLogIn className="mt-[2px]" size={35} /> Create Your Account!
-            </h1>
-            <p className="text-[15px] tracking-wide mt-1 text-gray-800">
-              Unlock Seamless Healthcare Management with Care-Matrix{" "}
-              <span className="text-gray-500">——</span> Your Gateway to Smarter,
-              Faster, and More Efficient Care.
-            </p>
-          </div>
-        </div>
+        <AuthHeader />
         {/* Register Form */}
-        <form
-          // action={handleSubmit}
-          className="flex flex-col gap-4 mt-4"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
           {/* Name input */}
           <div>
             {/* Label */}
@@ -138,9 +242,10 @@ const Register = () => {
                 name="text"
                 id="text"
                 required
+                value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter Your Name"
-                className="peer border-border border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-gray-300 transition-colors duration-300"
+                className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
             </div>
           </div>
@@ -155,7 +260,7 @@ const Register = () => {
             />
             {preview === "" ? (
               <div
-                className="w-full md:w-[100%] flex items-center justify-center flex-col gap-4 border-border border rounded-md py-4 cursor-pointer"
+                className="w-full md:w-[100%] flex items-center justify-center flex-col gap-4 border-blue-200 border rounded-md py-4 cursor-pointer"
                 onClick={handleUploadImage}
               >
                 <FaFileUpload className="text-[2rem] text-[#777777]" />
@@ -164,14 +269,14 @@ const Register = () => {
                 </p>
               </div>
             ) : (
-              <div className="relative w-full border border-border rounded-xl p-4">
+              <div className="relative w-full border border-blue-200 rounded-xl p-4">
                 <img
                   src={preview}
                   alt="Selected file preview"
                   className="mx-auto object-cover rounded-full w-24 h-24"
                 />
                 <MdDelete
-                  className="text-[2rem] text-white bg-[#000000ad] p-1 absolute top-0 right-0 cursor-pointer"
+                  className="text-[2rem] text-white bg-[#000000ad] p-1 absolute top-0 right-0 cursor-pointer rounded-tr-[13px]"
                   onClick={() => {
                     setPreview("");
                     setImage(null);
@@ -190,6 +295,32 @@ const Register = () => {
               </div>
             )}
           </div>
+          {/* Number input */}
+          <div>
+            {/* Label */}
+            <label
+              htmlFor="number"
+              className="text-[16px] text-text font-[600]"
+            >
+              Phone Number <span className="text-[10px]">(Bangladeshi)</span>
+            </label>
+            {/* Input with icon */}
+            <div className="w-full mt-2 relative">
+              <MdLocalPhone className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
+              <input
+                type="number"
+                name="phoneNumber"
+                id="phoneNumber"
+                required
+                value={phoneNumber}
+                onChange={handlePhoneChange}
+                pattern="\8801[3-9][0-9]{8}"
+                maxLength={13}
+                placeholder="Phone Number"
+                className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
+              />
+            </div>
+          </div>
           {/* Email input */}
           <div>
             {/* Label */}
@@ -204,13 +335,13 @@ const Register = () => {
                 name="email"
                 id="email"
                 required
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
-                className="peer border-border border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-gray-300 transition-colors duration-300"
+                className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
             </div>
           </div>
-
           {/* Password input */}
           <div>
             {/* Label */}
@@ -225,13 +356,14 @@ const Register = () => {
               <RiLockPasswordLine className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
               <input
                 type={isEyeOpen ? "text" : "password"}
-                name="password"
                 id="password"
+                name="password"
+                value={strongPassword}
+                placeholder="Password"
                 onChange={handlePasswordChange}
                 onFocus={() => setIsDropdownOpen(true)}
-                onBlur={() => setIsDropdownOpen(false)}
-                placeholder="Password"
-                className="peer border-border border rounded-md outline-none pl-11 pr-12 py-3 w-full focus:ring ring-gray-300 transition-colors duration-300"
+                // onBlur={() => setIsDropdownOpen(false)}
+                className="peer border-blue-200 border rounded-md outline-none pl-11 pr-12 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
 
               {isEyeOpen ? (
@@ -245,61 +377,49 @@ const Register = () => {
                   onClick={() => setIsEyeOpen(true)}
                 />
               )}
+            </div>
 
-              <div
-                className={`${
-                  isDropdownOpen
-                    ? "opacity-100 translate-y-0 z-30"
-                    : "opacity-0 translate-y-[-10px] z-[-1]"
-                } bg-white boxShadow rounded-md py-3 px-4 absolute top-[60px] left-0 w-full transition-all duration-300`}
-              >
-                <h3 className="text-gray-900 font-[500] text-[1rem]">
-                  Your password must contain:
-                </h3>
-
-                <div className="w-full mt-2 flex-col flex gap-[6px]">
+            {/* Password hint dropdown positioned below */}
+            {isDropdownOpen && (
+              <div className="bg-white shadow rounded-md py-3 px-4 mt-1 w-full transition-all duration-700">
+                {/* <h3 className="text-gray-900 text-center font-[600] text-base">
+                  Your password must contain
+                </h3> */}
+                <div className="w-full mt-2 flex flex-col items-center gap-[6px]">
                   {hintList?.map((hint, index) => (
                     <div
                       key={index}
-                      className={`${
-                        signal[hint.type]
-                          ? "text-green-500"
-                          : "dark:text-slate-400 text-gray-500"
-                      } text-[0.8rem] flex items-center gap-[8px]`}
+                      className={`text-[14px] flex items-center gap-[8px] font-medium w-fit ${
+                        signal[hint.type] ? "text-blue-500" : "text-gray-700"
+                      }`}
                     >
                       {signal[hint.type] ? (
                         <MdDone className="text-[1rem]" />
                       ) : (
-                        <RxCross1 />
+                        <IoCloseOutline className="text-[1rem] mt-[2px]" />
                       )}
                       {hint.text}
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
+            )}
           </div>
-
+          {/* Error Message */}
+          <IsError isError={isError} />
           {/* Register Button */}
-          <Button
-            disabled={loading}
+          <button
             type="submit"
-            className="mt-1 bg-black cursor-pointer"
+            disabled={loading}
+            className="btn border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
           >
             {loading ? "Registering..." : "Register"}
-          </Button>
+          </button>
         </form>
         {/* SocialLogin */}
-        {/* <SocialLogin /> */}
+        {/* <SocialLogin setIsError={setIsError} /> */}
         {/* Navigate to login */}
-        <div className="mt-4 text-center text-sm text-gray-900">
-          Already have an account?{" "}
-          <Link to={"/login"}>
-            <span className="text-black cursor-pointer hover:underline">
-              Login
-            </span>
-          </Link>
-        </div>
+        <NavigateTo />
       </div>
     </div>
   );
