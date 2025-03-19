@@ -39,6 +39,9 @@ function AddBanners({ isOpen, setIsOpen, refetch }) {
     };
 
     const onSubmit = async (data) => {
+        if (!user) {
+            return toast.error("You're not authorized to do this action")
+        }
 
         setLoading(true)
         if (!image) {
@@ -57,6 +60,7 @@ function AddBanners({ isOpen, setIsOpen, refetch }) {
             toast.error("Image Upload Failed! Try Again");
             return;
         }
+
 
         const medicineBanner = {
             ...data,
@@ -157,7 +161,7 @@ function AddBanners({ isOpen, setIsOpen, refetch }) {
                                         {image && (
                                             <div className="mt-4 text-center">
                                                 <p className="text-sm font-medium text-gray-700">
-                                                    {image.name}
+                                                    {image.name.length > 20 ? image.name.slice(0, 10) + "..." + image.name.slice(-15) : image.name}
                                                 </p>
                                                 <p className="text-xs text-gray-500">
                                                     {(image.size / 1024).toFixed(2)} KB | {image.type}
