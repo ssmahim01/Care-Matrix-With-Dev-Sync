@@ -1,0 +1,34 @@
+[
+    {
+        "_id": "6787f93aa082a706a2e50fcd",
+        "medicineName": "Digital Thermometer",
+        "description": "Get accurate and quick temperature readings with the Infrared Digital Thermometer. Designed for ease of use and precision, it's perfect for your family's health needs.",
+        "image": "https://i.ibb.co.com/M8H1rJ9/01-2.png",
+        "status": "active",
+        "insertedBy": "Yead"
+    },
+    {
+        "_id": "6787f93aa082a706a2e50fce",
+        "medicineName": "Lab Hand Sanitizer",
+        "description": "Stay protected with Lab Hand Sanitizer. Designed to eliminate germs effectively while keeping your hands soft and refreshed—perfect for daily use!",
+        "image": "https://i.ibb.co.com/mT3Gc2f/image-removebg-preview-1.png",
+        "status": "active",
+        "insertedBy": "Yead"
+    },
+    {
+        "_id": "67894387643cdef3eb36bcf2",
+        "medicineName": "test",
+        "image": "https://i.chaldn.com/_mpimage/maxpro-tablet-20mg-14-tablets?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D110112&q=low&v=1",
+        "description": "dsaaaaa",
+        "status": "inactive",
+        "insertedBy": "Saiyam"
+    },
+    {
+        "_id": "678d206c8fcc5ae497268728",
+        "medicineName": "Ticamet",
+        "image": "https://www.squarepharma.com.bd/products/TICAMET-HFA-CFC-FREE-250.jpg",
+        "description": "Effortlessly manage asthma and COPD symptoms with Ticamet 250— a dual-action inhaler providing anti-inflammatory relief and improved breathing.",
+        "status": "active",
+        "insertedBy": "Seller"
+    }
+]

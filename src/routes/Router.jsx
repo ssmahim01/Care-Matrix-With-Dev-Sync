@@ -11,6 +11,7 @@ import DetailsAboutUs from "@/pages/AboutUs/DetailsAboutUs";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import Error from "@/ErrorPage/Error";
 import AdministratorOverview from "@/pages/DashboardPages/Administrator/AdministratorOverview";
+import OurPharmacy from "@/pages/OurPharmacy";
 import BookAppointment from "@/pages/BookAppointment/BookAppointment";
 
 const Router = () => {
@@ -22,6 +23,7 @@ const Router = () => {
         <Route path="doctors" element={<ExpertDoctors />} />
         <Route path="contact-us" element={<ContactUs />} />
         <Route path="services" element={<Services />} />
+        <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path='book-appointment/:name' element={<BookAppointment />} />
         <Route path='doctor-details/:id' element={<DoctorDetails />} />
