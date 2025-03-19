@@ -195,10 +195,10 @@ const Register = () => {
               uid: currentUser?.uid,
               createdAt: new Date(
                 currentUser?.metadata?.creationTime
-              ).toLocaleString(),
+              ).toISOString(),
               lastLoginAt: new Date(
                 currentUser?.metadata?.lastSignInTime
-              ).toLocaleString(),
+              ).toISOString(),
             };
             // save userData in db --->
             await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);

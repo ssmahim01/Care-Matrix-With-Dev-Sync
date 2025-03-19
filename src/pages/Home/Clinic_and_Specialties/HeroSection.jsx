@@ -1,12 +1,13 @@
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Calendar, Phone } from "lucide-react"
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Calendar, Phone } from "lucide-react";
+import { Link } from "react-router";
 
 export default function HeroSection() {
   return (
-    <section className="bg-gradient-to-r from-sky-100 via-sky-50 to-white lg:pt-16 pt-12 pb-16">
-      <div className="container lg:w-10/12 w-11/12 mx-auto px-4">
+    <section className="bg-gradient-to-r from-sky-300/10 via-sky-200/50 to-sky-100/75 rounded-xl p-10 md:p-14 lg:p-16">
+      <div className="w-11/12 mx-auto">
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 items-center">
           <motion.div
             className="space-y-6"
@@ -16,20 +17,29 @@ export default function HeroSection() {
           >
             <div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-sky-900 leading-tight">
-                Expert Care for <span className="text-sky-600">Your Health</span>
+                Expert Care for{" "}
+                <span className="text-sky-600">Your Health</span>
               </h1>
               <p className="mt-4 text-lg text-sky-700 max-w-lg">
-                Discover our comprehensive range of medical specialties and services designed to provide you with the
-                highest standard of healthcare.
+                Discover our comprehensive range of medical specialties and
+                services designed to provide you with the highest standard of
+                healthcare.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-sky-600 hover:bg-sky-700">
-                <Calendar className="mr-2 h-4 w-4" /> Book Appointment
-              </Button>
-              <Button variant="outline" className="border-sky-200 text-sky-700 hover:bg-sky-50">
-                <Phone className="mr-2 h-4 w-4" /> Contact Us
-              </Button>
+              <Link to={"/doctors"}>
+                <Button className="bg-sky-600 hover:bg-sky-700 cursor-pointer">
+                  <Calendar className="mr-2 h-4 w-4" /> Book Appointment
+                </Button>
+              </Link>
+              <Link to={"/contact-us"}>
+                <Button
+                  variant="outline"
+                  className="border-sky-200 text-sky-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <Phone className="mr-2 h-4 w-4" /> Contact Us
+                </Button>
+              </Link>
             </div>
             <div className="flex items-center gap-6 pt-4">
               <div className="text-center">
@@ -68,7 +78,9 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <div className="font-bold">Book Today</div>
-                  <div className="text-sm text-sky-600">Next available: Tomorrow</div>
+                  <div className="text-sm text-sky-600">
+                    Next available: Tomorrow
+                  </div>
                 </div>
               </div>
             </div>
@@ -76,6 +88,5 @@ export default function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

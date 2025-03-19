@@ -1,30 +1,44 @@
 /* eslint-disable no-unused-vars */
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search, Calendar, Phone, ChevronRight, Heart, Brain, Stethoscope, Baby, Bone, Eye, Pill, SmileIcon, } from "lucide-react"
-import { doctors, facilities, services, specialties } from "@/lib/data"
-import HeroSection from "./HeroSection"
-import SpecialtyCard from "./SpecieltiesCard"
-import DoctorCard from "./DoctorsCard"
-import ServiceCard from "./ServicesCard"
-import FacilityCard from "./FacilityCard"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Search,
+  Calendar,
+  Phone,
+  ChevronRight,
+  Heart,
+  Brain,
+  Stethoscope,
+  Baby,
+  Bone,
+  Eye,
+  Pill,
+  SmileIcon,
+} from "lucide-react";
+import { doctors, facilities, services, specialties } from "@/lib/data";
+import HeroSection from "./HeroSection";
+import SpecialtyCard from "./SpecieltiesCard";
+import DoctorCard from "./DoctorsCard";
+import ServiceCard from "./ServicesCard";
+import FacilityCard from "./FacilityCard";
+import { Link } from "react-router";
 
 export default function ClinicAndSpecialties() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [, setActiveTab] = useState("specialties")
+  const [searchQuery, setSearchQuery] = useState("");
+  const [, setActiveTab] = useState("specialties");
 
   return (
-    
-    <section className="lg:-mt-[60px] -mt-20 min-h-screen mx-auto bg-gradient-to-b from-sky-50 to-white max-w-[98rem]">
+    <section className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
       {/* Hero Section */}
+      <div className="pb-10" />
       <HeroSection />
 
       {/* Main Content */}
-      <main className="container mx-auto lg:w-[85%] w-11/12 lg:pt-16 pt-12 pb-8">
+      <main className="lg:pt-16 pt-12 pb-8">
         {/* Search and Quick Actions */}
         <div className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-96">
@@ -37,28 +51,51 @@ export default function ClinicAndSpecialties() {
             />
           </div>
           <div className="flex gap-3 w-full md:w-auto">
-            <Button className="bg-sky-600 hover:bg-sky-700 flex-1 md:flex-none">
-              <Calendar className="mr-2 h-4 w-4" /> Book Appointment
-            </Button>
-            <Button variant="outline" className="border-sky-200 text-sky-700 hover:bg-sky-50 flex-1 md:flex-none">
-              <Phone className="mr-2 h-4 w-4" /> Contact Us
-            </Button>
+            <Link to={"/doctors"}>
+              <Button className="bg-sky-600 hover:bg-sky-700 cursor-pointer">
+                <Calendar className="mr-2 h-4 w-4" /> Book Appointment
+              </Button>
+            </Link>
+            <Link to={"/contact-us"}>
+              <Button
+                variant="outline"
+                className="border-sky-200 text-sky-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <Phone className="mr-2 h-4 w-4" /> Contact Us
+              </Button>
+            </Link>
           </div>
         </div>
 
         {/* Tabs Navigation */}
-        <Tabs defaultValue="specialties" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="bg-sky-50 w-full justify-start overflow-x-auto flex-nowrap mb-8">
-            <TabsTrigger value="specialties" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">
+        <Tabs
+          className="w-full"
+          defaultValue="specialties"
+          onValueChange={setActiveTab}
+        >
+          <TabsList className="bg-sky-50 w-full grid grid-cols-2 sm:flex sm:justify-start flex-wrap h-full sm:flex-nowrap mb-8">
+            <TabsTrigger
+              value="specialties"
+              className="data-[state=active]:bg-sky-600 data-[state=active]:text-white cursor-pointer py-2"
+            >
               Medical Specialties
             </TabsTrigger>
-            <TabsTrigger value="doctors" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">
+            <TabsTrigger
+              value="doctors"
+              className="data-[state=active]:bg-sky-600 data-[state=active]:text-white cursor-pointer py-2"
+            >
               Our Doctors
             </TabsTrigger>
-            <TabsTrigger value="services" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">
+            <TabsTrigger
+              value="services"
+              className="data-[state=active]:bg-sky-600 data-[state=active]:text-white cursor-pointer py-2"
+            >
               Services
             </TabsTrigger>
-            <TabsTrigger value="facilities" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">
+            <TabsTrigger
+              value="facilities"
+              className="data-[state=active]:bg-sky-600 data-[state=active]:text-white cursor-pointer py-2"
+            >
               Facilities
             </TabsTrigger>
           </TabsList>
@@ -72,24 +109,36 @@ export default function ClinicAndSpecialties() {
               transition={{ duration: 0.3 }}
             >
               <div className="mb-8">
-                <h2 className="text-3xl font-bold text-sky-800 mb-2">Our Medical Specialties</h2>
+                <h2 className="text-3xl font-bold text-sky-800 mb-2">
+                  Our Medical Specialties
+                </h2>
                 <p className="text-sky-600 max-w-3xl">
-                  Horizon Medical Center offers comprehensive care across multiple specialties, with state-of-the-art
-                  facilities and experienced specialists.
+                  Horizon Medical Center offers comprehensive care across
+                  multiple specialties, with state-of-the-art facilities and
+                  experienced specialists.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {specialties.map(({ id, Icon, title, description, patientCount, doctorCount }) => (
-                  <SpecialtyCard
-                    key={id}
-                    icon={<Icon className="h-8 w-8 text-sky-600" />}
-                    title={title}
-                    description={description}
-                    patientCount={patientCount}
-                    doctorCount={doctorCount}
-                  />
-                ))}
+                {specialties.map(
+                  ({
+                    id,
+                    Icon,
+                    title,
+                    description,
+                    patientCount,
+                    doctorCount,
+                  }) => (
+                    <SpecialtyCard
+                      key={id}
+                      icon={<Icon className="h-8 w-8 text-sky-600" />}
+                      title={title}
+                      description={description}
+                      patientCount={patientCount}
+                      doctorCount={doctorCount}
+                    />
+                  )
+                )}
               </div>
             </motion.div>
           </TabsContent>
@@ -103,9 +152,12 @@ export default function ClinicAndSpecialties() {
               transition={{ duration: 0.3 }}
             >
               <div className="mb-8">
-                <h2 className="text-3xl font-bold text-sky-800 mb-2">Our Medical Experts</h2>
+                <h2 className="text-3xl font-bold text-sky-800 mb-2">
+                  Our Medical Experts
+                </h2>
                 <p className="text-sky-600 max-w-3xl">
-                  Meet our team of highly qualified and experienced doctors dedicated to providing exceptional care.
+                  Meet our team of highly qualified and experienced doctors
+                  dedicated to providing exceptional care.
                 </p>
               </div>
 
@@ -126,20 +178,23 @@ export default function ClinicAndSpecialties() {
               transition={{ duration: 0.3 }}
             >
               <div className="mb-8">
-                <h2 className="text-3xl font-bold text-sky-800 mb-2">Our Services</h2>
+                <h2 className="text-3xl font-bold text-sky-800 mb-2">
+                  Our Services
+                </h2>
                 <p className="text-sky-600 max-w-3xl">
-                  We offer a wide range of medical services to meet all your healthcare needs.
+                  We offer a wide range of medical services to meet all your
+                  healthcare needs.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {services.map(({id, Icon, description,features,title}) => (
-                  <ServiceCard 
-                  key={id} 
-                  icon={<Icon className="h-8 w-8 text-sky-600" />}
-                  description={description}
-                  features={features}
-                  title={title}
+                {services.map(({ id, Icon, description, features, title }) => (
+                  <ServiceCard
+                    key={id}
+                    icon={<Icon className="h-8 w-8 text-sky-600" />}
+                    description={description}
+                    features={features}
+                    title={title}
                   />
                 ))}
               </div>
@@ -155,9 +210,12 @@ export default function ClinicAndSpecialties() {
               transition={{ duration: 0.3 }}
             >
               <div className="mb-8">
-                <h2 className="text-3xl font-bold text-sky-800 mb-2">Our Facilities</h2>
+                <h2 className="text-3xl font-bold text-sky-800 mb-2">
+                  Our Facilities
+                </h2>
                 <p className="text-sky-600 max-w-3xl">
-                  Explore our state-of-the-art facilities designed to provide the highest standard of care.
+                  Explore our state-of-the-art facilities designed to provide
+                  the highest standard of care.
                 </p>
               </div>
 
@@ -171,6 +229,5 @@ export default function ClinicAndSpecialties() {
         </Tabs>
       </main>
     </section>
-  )
+  );
 }
-

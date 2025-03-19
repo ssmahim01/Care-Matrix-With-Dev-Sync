@@ -71,7 +71,7 @@ const Home = () => {
       </div>
 
       {/* FAQ */}
-      <div className="mx-auto w-full max-w-screen-2xl">
+      <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
         <Faq />
       </div>
     </section>

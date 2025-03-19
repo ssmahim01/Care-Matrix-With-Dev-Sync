@@ -23,11 +23,6 @@ import { HeadingPlatform } from "./heading-platform";
 
 // This is sample data.
 const data = {
-  user: {
-    name: "SS Mahim",
-    email: "ssmahim03@gmail.com",
-    avatar: "/Doctor.jpg",
-  },
   projects: [
     {
       name: "Design Engineering",
@@ -58,7 +53,7 @@ export function AppSidebar({ ...props }) {
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
