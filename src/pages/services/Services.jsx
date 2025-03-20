@@ -1,5 +1,6 @@
 import React from "react";
 import ClinicAndSpecialties from "../Home/Clinic_and_Specialties/ClinicAndSpecialties";
+import BedPage from "../BedBooking/BedPage";
 
 const Services = () => {
   return (
@@ -7,6 +8,7 @@ const Services = () => {
     //bg-gradient-to-b from-sky-50 to-white
     ">
       <ClinicAndSpecialties />
+      <BedPage />
     </div>
   );
 };
