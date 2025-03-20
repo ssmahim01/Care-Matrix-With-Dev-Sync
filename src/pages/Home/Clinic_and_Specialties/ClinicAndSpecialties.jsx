@@ -108,7 +108,7 @@ export default function ClinicAndSpecialties() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="mb-8">
+              {/* <div className="mb-8">
                 <h2 className="text-3xl font-bold text-sky-800 mb-2">
                   Our Medical Specialties
                 </h2>
@@ -117,7 +117,7 @@ export default function ClinicAndSpecialties() {
                   multiple specialties, with state-of-the-art facilities and
                   experienced specialists.
                 </p>
-              </div>
+              </div> */}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {specialties.map(
@@ -151,7 +151,7 @@ export default function ClinicAndSpecialties() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="mb-8">
+              {/* <div className="mb-8">
                 <h2 className="text-3xl font-bold text-sky-800 mb-2">
                   Our Medical Experts
                 </h2>
@@ -159,7 +159,7 @@ export default function ClinicAndSpecialties() {
                   Meet our team of highly qualified and experienced doctors
                   dedicated to providing exceptional care.
                 </p>
-              </div>
+              </div> */}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {doctors.map((doctor) => (
@@ -177,7 +177,7 @@ export default function ClinicAndSpecialties() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="mb-8">
+              {/* <div className="mb-8">
                 <h2 className="text-3xl font-bold text-sky-800 mb-2">
                   Our Services
                 </h2>
@@ -185,7 +185,7 @@ export default function ClinicAndSpecialties() {
                   We offer a wide range of medical services to meet all your
                   healthcare needs.
                 </p>
-              </div>
+              </div> */}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {services.map(({ id, Icon, description, features, title }) => (
@@ -209,7 +209,7 @@ export default function ClinicAndSpecialties() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="mb-8">
+              {/* <div className="mb-8">
                 <h2 className="text-3xl font-bold text-sky-800 mb-2">
                   Our Facilities
                 </h2>
@@ -217,7 +217,7 @@ export default function ClinicAndSpecialties() {
                   Explore our state-of-the-art facilities designed to provide
                   the highest standard of care.
                 </p>
-              </div>
+              </div> */}
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {facilities.map((facility) => (
