@@ -12,7 +12,7 @@ const BedCard = ({ title, price, image, onRequestBooking, onShowDetails, isDetai
           onClick={() => onRequestBooking(title)}
           className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
         >
-          Request for Booking
+          Request for Bed Booking
         </button>
         <button
           onClick={() => onShowDetails(bed)}
