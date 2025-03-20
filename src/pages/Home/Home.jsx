@@ -37,7 +37,7 @@ const Home = () => {
       </div>
 
       {/* Introduction of Chat dashboard */}
-      <div className="pb-8">
+      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Chat />
       </div>
 
@@ -70,7 +70,7 @@ const Home = () => {
       </div>
 
       {/* FAQ */}
-      <div className="mx-auto w-full max-w-screen-2xl">
+      <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
         <Faq />
       </div>
     </section>

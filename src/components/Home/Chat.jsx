@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Chat = () => {
   return (
-    <div className="bg-[#F2F4F5] p-5 md:p-8 w-full rounded-md max-w-[98rem] mx-auto">
+    <div className="bg-[#F2F4F5] py-5 md:py-8 w-full rounded-md mx-auto">
      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[30px] md:gap-[15px] lg:px-28">
      <div className="w-full md:w-[55%]">
         <p className="py-1.5 px-4 text-[0.8rem] rounded-md bg-sky-600 text-white flex gap-2 items-center lg:w-[30%] w-1/2">
