@@ -6,10 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 const DoctorsManagement = () => {
   const dispatch = useDispatch();
-  const [form, setForm] = useState({
-    name: "",
-  });
   const { doctors, status } = useSelector((state) => state.doctors);
+  const [form, setForm] = useState(doctors);
+  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     dispatch(fetchDoctors());
@@ -17,7 +16,17 @@ const DoctorsManagement = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
+    if (editId) {
+      dispatch(updateDoctor({ id: editId, updatedData: form })).then(() => {
+        toast.success("Doctor updated successfully");
+      });
+    } else {
+      dispatch(addDoctor(form)).then(() => {
+        toast.success("Doctor added successfully");
+      });
+    }
+    setForm({ name: "", specialty: "", availability: "" });
+    setEditId(null);
   };
 
   return (

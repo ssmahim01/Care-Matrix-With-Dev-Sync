@@ -1,6 +1,9 @@
 import { Edit2, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 const DoctorsTableRow = ({ doctor, index }) => {
+    const [availability, setAvailability] = useState(doctor.available_days.length > 0 ? "Available" : "Not Available");
+
   return (
     <tr
       className={`${
@@ -21,26 +24,27 @@ const DoctorsTableRow = ({ doctor, index }) => {
       <td>{doctor?.consultation_fee}</td>
       <td>
         <select
-          defaultValue={doctor.availability.length > 0 && "Available"}
-          className="select select-neutral"
+          className="select select-neutral hover:cursor-pointer"
+          value={availability}
+          onChange={(e) => setAvailability(e.target.value)}
         >
           <option disabled={true} value={"Select Availability"}>Select Availability</option>
-          <option value={"Available"}>Available</option>
-          <option value={"No Available"}>Not Available</option>
+          <option value={doctor.available_days.length > 0 ? "Available" : "Not Available"}>{doctor?.available_days.length > 0 ? "Available" : "Not Available"}</option>
+          <option value={"Not Available"}>Not Available</option>
         </select>
       </td>
       <td className="flex gap-2 lg:py-4 py-10 w-72">
         <button
-          className="inline-flex items-center gap-1 bg-rose-500 text-white rounded-none font-semibold py-2 px-4"
+          className="btn btn-md inline-flex items-center gap-1 bg-rose-600 text-white rounded-none font-semibold px-4"
         >
           <Trash2 />
-          Remove
+         <span className="text-base">Remove</span>
         </button>
         <button
-          className="inline-flex items-center gap-1 bg-teal-500 text-white rounded-none font-semibold py-2 px-4"
+          className="btn btn-md inline-flex items-center gap-1 bg-teal-600 text-white rounded-none font-semibold px-4"
         >
          <Edit2 />
-         Edit
+         <span className="text-base">Edit</span>
         </button>
       </td>
     </tr>
