@@ -23,6 +23,7 @@ import AdministratorOverview from "@/pages/DashboardPages/Administrator/Administ
 import BookAppointment from "@/pages/BookAppointment/BookAppointment";
 import OurPharmacy from "@/pages/OurPharmacy/OurPharmacy";
 import ManageBanners from "@/pages/DashboardPages/Pharmacist/ManageBanners";
+import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManagement";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -88,6 +89,7 @@ const Router = () => {
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
       <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
+      <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
       <Route path="/dashboard/pharmacist/manage-banner" element={<ManageBanners />} />
       </Route>
 
