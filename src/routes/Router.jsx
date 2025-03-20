@@ -79,8 +79,8 @@ const Router = () => {
         <Route path="services" element={<Services />} />
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
-        <Route path='book-appointment/:name' element={<BookAppointment />} />
-        <Route path='doctor-details/:id' element={<DoctorDetails />} />
+        <Route path="book-appointment/:name" element={<BookAppointment />} />
+        <Route path="doctor-details/:id" element={<DoctorDetails />} />
       </Route>
 
       {/* Authentication Routes */}
@@ -89,10 +89,31 @@ const Router = () => {
 
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
-      <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
-      <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
-      <Route path="/dashboard/administrator/manage-users" element={<ManageUsers />} />
-      <Route path="/dashboard/pharmacist/manage-banner" element={<ManageBanners />} />
+        {/* Admin Routes */}
+        <Route
+          path="/dashboard/administrator-overview"
+          element={<AdministratorOverview />}
+        />
+        <Route
+          path="/dashboard/administrator/manage-doctors"
+          element={<DoctorsManagement />}
+        />
+        <Route
+          path="/dashboard/administrator/manage-users"
+          element={<ManageUsers />}
+        />
+
+        {/* Pharmacist Routes */}
+        <Route
+          path="/dashboard/pharmacist/manage-banner"
+          element={<ManageBanners />}
+        />
+
+        {/* Doctors Routes */}
+
+        {/* Receptionist Routes */}
+
+        {/* Patient Routes */}
       </Route>
 
       {/* Catch-all for 404 Error Page */}
