@@ -1,10 +1,8 @@
-
 import {
   BadgeInfo,
   BriefcaseMedical,
   CalendarDays,
   ChartPie,
-  ChevronRight,
   ClipboardPlus,
   Contact,
   CreditCard,
@@ -21,23 +19,18 @@ import { GiMedicines } from "react-icons/gi";
 
 import {
   Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { NavLink } from "react-router";
+import { FaUserDoctor } from "react-icons/fa6";
 
 export function NavMain() {
-  const administrator = false;
+  const administrator = true;
   const isDoctor = false
   const isPharmacist = true
 
@@ -51,9 +44,14 @@ export function NavMain() {
                 <LayoutDashboard className="text-base" /> Overview
               </h3>
             </NavLink>
-            <NavLink to="/dashboard/manage-users">
+            <NavLink to="/dashboard/administrator/manage-users">
               <h3 className="flex gap-2 items-center">
                 <Users className="text-base" /> Manage Users
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/administrator/manage-doctors">
+              <h3 className="flex gap-2 items-center">
+                <FaUserDoctor className="text-base" /> Doctors Management
               </h3>
             </NavLink>
             <NavLink to="/dashboard/reports">
