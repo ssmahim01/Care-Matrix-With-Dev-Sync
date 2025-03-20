@@ -1,3 +1,4 @@
+import UnderLineButton from "@/shared/Section/UnderLineButton";
 import { useState } from "react";
 
 const ContactUsForm = () => {
@@ -92,11 +93,7 @@ const ContactUsForm = () => {
       </div>
       {/* Submit Button */}
       <div className="w-full flex items-center justify-end mt-3">
-        <button className="btn border-none hover:bg-[#46a0ff] text-[1rem] duration-700 bg-[#0E82FD] text-white mt-4 relative group">
-          <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[1px] after:bg-white after:transition-all after:duration-300 group-hover:after:w-full">
-            Send Message
-          </span>
-        </button>
+        <UnderLineButton text={"Send Message"} />
       </div>
     </form>
   );
