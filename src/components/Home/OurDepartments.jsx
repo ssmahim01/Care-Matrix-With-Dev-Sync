@@ -1,4 +1,5 @@
 import SectionHeader from "@/shared/Section/SectionHeader";
+import UnderLineButton from "@/shared/Section/UnderLineButton";
 
 const OurDepartments = () => {
   // Departments Data --->
@@ -61,7 +62,7 @@ const OurDepartments = () => {
         title_2nd_slice={"MEDICAL"}
         title_3rd_slice={"DEPARTMENTS"}
         subTitle={
-          " Delivering Advanced, Specialized Care Across a Wide Range of \n  Medical Fields. Compassionate Experts Dedicated to Your Health and Well-Being."
+          " Delivering Advanced, Specialized Care Across a Wide Range of Medical \n Fields. Compassionate Experts Dedicated to Your Health and Well-Being."
         }
       />
       {/* Main Container */}
@@ -90,11 +91,7 @@ const OurDepartments = () => {
               <p className="text-[1rem] mt-1 font-[400] text-gray-600">
                 {department?.description}
               </p>
-              <button className="btn border-none hover:bg-[#0e6efd] text-[1rem] duration-500 bg-[#0E82FD] text-white mt-4 relative group">
-                <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[1px] after:bg-white after:transition-all after:duration-300 group-hover:after:w-full">
-                  Read More...
-                </span>
-              </button>
+              <UnderLineButton text={"Read More..."} />
             </div>
           </div>
         ))}
