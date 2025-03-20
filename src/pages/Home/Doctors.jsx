@@ -1,20 +1,16 @@
 import DoctorCard from "@/components/DoctorCard";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import useDoctors from "@/hooks/useDoctors";
 
 const Doctors = () => {
-  const [doctors, setDoctors] = useState([]);
-  useEffect(() => {
-    fetch("/doctors.json")
-      .then((res) => res.json())
-      .then((data) => setDoctors(data));
-  }, []);
+  const [doctors] = useDoctors();
 
   let settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 2,
@@ -61,14 +57,14 @@ const Doctors = () => {
             DOCTORS
           </h1>
           <p className="text-[#464646] font-medium tracking-wider">
-            Meet Our Skilled Team Committed to Providing Exceptional{" "}
-            <br className="hidden md:block" /> Medical Care and Personalized
-            Treatment.
+
+            Meet our highly skilled team of expert  {" "}
+            <br className="hidden md:block" /> doctors, dedicated to providing top-quality medical care with a personalized approach to ensure your well-being.
           </p>
         </div>
         {/* section-content */}
 
-        <div className="mt-6">
+        <div className="mt-6 w-11/12 md:w-full mx-auto">
         <Slider {...settings}>
       {doctors.map((doctor) => (
             <DoctorCard key={doctor.id} doctor={doctor}></DoctorCard>
@@ -76,9 +72,9 @@ const Doctors = () => {
     </Slider>
         </div>
 
-        
+
       </div>
-      </div>
+    </div>
   );
 };
 

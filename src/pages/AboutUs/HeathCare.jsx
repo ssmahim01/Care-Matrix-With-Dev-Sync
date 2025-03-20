@@ -10,10 +10,8 @@ const HealthCare = () => {
         { title: "Unparalleled expertise", description: "We offer a wide range of health services to meet all your needs." },
       ];
 
-
-
   return (
-   <section className='grid grid-cols-1 lg:grid-cols-2 gap-12 py-20 lg:py-30'>
+   <section className='grid grid-cols-1 lg:grid-cols-2 gap-12 pt-20 lg:pt-30'>
      {/* Left Side: Text */}
     <div>
     <div className="text-white flex flex-col items-center">
