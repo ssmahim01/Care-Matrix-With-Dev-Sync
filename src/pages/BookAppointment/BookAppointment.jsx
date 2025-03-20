@@ -1,10 +1,12 @@
+import useAxiosSecure from '@/hooks/useAxiosSecure';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { FaStar } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 
 const BookAppointment = () => {
-
     const doctors = [
         {
             "id": 1,
@@ -183,6 +185,9 @@ const BookAppointment = () => {
             "treated_patients": 1150
         }
     ]
+    const { user } = useSelector((state) => state.auth);
+    // console.log("User is ", user?.displayName);
+    const axiosSecure = useAxiosSecure()
 
     const {
         register,
@@ -203,8 +208,32 @@ const BookAppointment = () => {
         const date = data.date;
         const time = data.time;
         const reason = data.reason;
+        
 
         console.log(name, phone, email, age, date, time, reason);
+        const patientInfo = {
+            name,
+            email,
+            phone,
+            age,
+            date,
+            time,
+            reason
+        }
+
+        console.log("Patients infos ", patientInfo);
+
+        axiosSecure.post('/appointments', patientInfo)
+        .then(res => {
+            console.log(res);
+            if(res?.data.insertedId){
+                toast.success("Appointment booked successfully!")
+            }
+        })
+        .catch(err => {
+            toast.error("Something went wrong please try again")
+        })
+        
     }
 
 
@@ -252,6 +281,7 @@ const BookAppointment = () => {
                         <label className="relative">
                             <input type="email" {...register("email", { required: true })}
                                 className="peer border-[#e5eaf2] border rounded-md outline-none px-4 py-3 w-full focus:border-[#3B9DF8] transition-colors duration-300"
+                                defaultValue={user?.email} readOnly
                             />
                             <span
                                 className=" absolute -top-3 peer-focus:bg-white left-5 peer-focus:scale-[0.9] peer-focus:text-[#3B9DF8] text-[#777777] peer-focus:px-1 transition-all duration-300 ">
@@ -327,7 +357,7 @@ const BookAppointment = () => {
                 </div>
 
 
-                <button type="submit" className="py-2 px-6 border border-[#3B9DF8] text-[#3B9DF8] rounded font-[500] relative overflow-hidden z-10 mt-[10px]">Submit</button>
+                <button type="submit" className="py-2 px-6 border border-[#3B9DF8] text-[#3B9DF8] rounded font-[500] relative overflow-hidden z-10 mt-[10px] cursor-pointer">Submit</button>
 
             </form>
             </div>
