@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import Loader from "@/shared/Loader";
+import { motion } from "framer-motion";
 
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -68,7 +69,11 @@ function ManageBanners() {
 
     if (isLoading) return <Loader text={"Loading Banners"} />
     return (
-        <div>
+        <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
+        >
             <div className="container mx-auto">
                 <div className="flex justify-end mb-4">
                     <Button className="cursor-pointer" onClick={() => setIsOpen(true)}>Add New Banner</Button>
@@ -88,7 +93,8 @@ function ManageBanners() {
                     </TableHeader>
                     <TableBody>
                         {banners?.map((banner, i) => (
-                            <TableRow key={banner._id}>
+                            <TableRow
+                                key={banner._id}>
                                 <TableCell className="font-medium">{i + 1}</TableCell>
 
                                 <TableCell>
@@ -129,7 +135,7 @@ function ManageBanners() {
                 {/* modal */}
                 <AddBanners isOpen={setOpen} setIsOpen={setIsOpen} refetch={refetch}></AddBanners>
             </div>
-        </div>
+        </motion.div>
     );
 }
 
