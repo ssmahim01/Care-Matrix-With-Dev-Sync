@@ -1,15 +1,16 @@
+import SectionHeader from "@/shared/Section/SectionHeader";
 import { useState } from "react";
 import BedCard from "./BedCard";
-import BedDetails from "./BedDetails";
 import BookingModal from "./BookingModal";
+import BedDetailsModal from "./BedDetails";
 
 
 // Placeholder images (replace with actual image URLs)
 const bedData = [
   {
     title: "GENERAL",
-    price: "₹ 3,500.00",
-    image: "https://via.placeholder.com/300x150?text=General",
+    price: "$25",
+    image: "https://i.ibb.co/7dMRk97c/General.webp",
     details: [
       "Multiple beds in a shared ward",
       "Basic medical facilities",
@@ -20,8 +21,8 @@ const bedData = [
   },
   {
     title: "TWIN SHARING",
-    price: "₹ 4,950.00",
-    image: "https://via.placeholder.com/300x150?text=Twin+Sharing",
+    price: "$45",
+    image: "https://i.ibb.co/DdJ9gy2/Twin-Sharing.webp",
     details: [
       "2 beds in a room",
       "Air-conditioned",
@@ -34,8 +35,8 @@ const bedData = [
   },
   {
     title: "SINGLE CLASSIC",
-    price: "₹ 12,000.00",
-    image: "https://via.placeholder.com/300x150?text=Single+Classic",
+    price: "$35",
+    image: "https://i.ibb.co/7xGjRbkG/Single-Classic.webp",
     details: [
       "Private room with 1 bed",
       "Air-conditioned",
@@ -49,8 +50,8 @@ const bedData = [
   },
   {
     title: "DELUXE SINGLE",
-    price: "₹ 16,000.00",
-    image: "https://via.placeholder.com/300x150?text=Deluxe+Single",
+    price: "$40",
+    image: "https://i.ibb.co/9kKKXBfp/King-Suite.webp",
     details: [
       "Spacious private room with 1 bed",
       "Air-conditioned with temperature control",
@@ -64,8 +65,8 @@ const bedData = [
   },
   {
     title: "PRINCE SUITE",
-    price: "₹ 18,000.00",
-    image: "https://via.placeholder.com/300x150?text=Prince+Suite",
+    price: "$45",
+    image: "https://i.ibb.co/pv4n1cNs/Prince-Suite.jpg",
     details: [
       "Premium private suite with 1 bed",
       "Air-conditioned with smart controls",
@@ -79,8 +80,8 @@ const bedData = [
   },
   {
     title: "QUEEN SUITE",
-    price: "₹ 23,000.00",
-    image: "https://via.placeholder.com/300x150?text=Queen+Suite",
+    price: "$50",
+    image: "https://i.ibb.co/2YWrtn3C/Queen-Suite.webp",
     details: [
       "Luxury private suite with 1 bed",
       "Air-conditioned with ambient lighting",
@@ -94,8 +95,8 @@ const bedData = [
   },
   {
     title: "EXECUTIVE WARD",
-    price: "₹ 8,000.00",
-    image: "https://via.placeholder.com/300x150?text=Executive+Ward",
+    price: "$55",
+    image: "https://i.ibb.co/gbKmRYXp/EXECUTIVE-WARD.jpg",
     details: [
       "Semi-private ward with 3 beds",
       "Air-conditioned",
@@ -109,8 +110,8 @@ const bedData = [
   },
   {
     title: "PREMIUM TWIN",
-    price: "₹ 6,500.00",
-    image: "https://via.placeholder.com/300x150?text=Premium+Twin",
+    price: "$60",
+    image: "https://i.ibb.co/pBmmFjvL/PREMIUM-TWIN.jpg",
     details: [
       "2 beds in a premium room",
       "Air-conditioned with UV sanitization",
@@ -124,8 +125,8 @@ const bedData = [
   },
   {
     title: "ROYAL SUITE",
-    price: "₹ 30,000.00",
-    image: "https://via.placeholder.com/300x150?text=Royal+Suite",
+    price: "$100",
+    image: "https://i.ibb.co/YFXyN1Zw/ROYAL-SUITE.jpg",
     details: [
       "Exclusive private suite with 1 bed",
       "Air-conditioned with voice control",
@@ -141,58 +142,65 @@ const bedData = [
 
 const BedPage = () => {
   const [selectedBed, setSelectedBed] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedBedType, setSelectedBedType] = useState("");
 
   const handleShowDetails = (bed) => {
-    if (selectedBed && selectedBed.title === bed.title) {
-      setSelectedBed(null); // Hide details if the same card is clicked again
-    } else {
-      setSelectedBed(bed); // Show details for the clicked card
-    }
+    setSelectedBed(bed);
+    setIsDetailsModalOpen(true);
   };
 
   const handleRequestBooking = (bedType) => {
     setSelectedBedType(bedType);
-    setIsModalOpen(true);
+    setIsBookingModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeBookingModal = () => {
+    setIsBookingModalOpen(false);
     setSelectedBedType("");
   };
 
+  const closeDetailsModal = () => {
+    setIsDetailsModalOpen(false);
+    setSelectedBed(null);
+  };
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold border-b-2 border-gray-300 pb-2 mb-4">
-        About various class of beds
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {bedData.map((bed, index) => (
-          <BedCard
-            key={index}
-            title={bed.title}
-            price={bed.price}
-            image={bed.image}
-            bed={bed}
-            onRequestBooking={handleRequestBooking}
-            onShowDetails={handleShowDetails}
-            isDetailsVisible={selectedBed && selectedBed.title === bed.title}
-          />
-        ))}
+    <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
+      <SectionHeader
+        className="text-center"
+        title_1st_slice={"OUR"}
+        title_2nd_slice={"AVAILABLE"}
+        title_3rd_slice={"BEDS"}
+        subTitle={
+          "We are privileged to work with hundreds of future-thinking \n medical industries, ensuring the best services for patients."
+        }
+      />
+      <div className="mt-6 sm:mt-8 lg:mt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          {bedData.map((bed, index) => (
+            <BedCard
+              key={index}
+              title={bed.title}
+              price={bed.price}
+              image={bed.image}
+              bed={bed}
+              onRequestBooking={handleRequestBooking}
+              onShowDetails={handleShowDetails}
+            />
+          ))}
+        </div>
       </div>
-      {selectedBed && (
-        <BedDetails
-          title={selectedBed.title}
-          details={selectedBed.details}
-          image={selectedBed.image}
-          onRequestBooking={handleRequestBooking}
-        />
-      )}
       <BookingModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
+        isOpen={isBookingModalOpen}
+        onClose={closeBookingModal}
         bedType={selectedBedType}
+      />
+      <BedDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={closeDetailsModal}
+        bed={selectedBed}
       />
     </div>
   );
