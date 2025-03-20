@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import axios from 'axios';
-import React from 'react';
-
-const axiosSecure = axios.create({
-    baseURL: 'http://localhost:3000',
-})
-const useAxiosSecure = () => {
-    return axiosSecure;
-=======
 import { useAuthUser } from '@/redux/auth/authActions';
 import axios from 'axios';
 import React from 'react';
@@ -46,7 +36,6 @@ const useAxiosSecure = () => {
 
 
     return axiosSecure
->>>>>>> 1751d8836a0ddadd0a0e124cc36d33c3b9686461
 };
 
 export default useAxiosSecure;
