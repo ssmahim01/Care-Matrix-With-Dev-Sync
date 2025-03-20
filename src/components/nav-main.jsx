@@ -47,7 +47,7 @@ export function NavMain() {
             </NavLink>
             <NavLink to="/dashboard/manage-users">
               <h3 className="flex gap-2 items-center">
-                <Users className="text-base" /> Manage Users
+                <Users className="text-base" /> Staff Management
               </h3>
             </NavLink>
             <NavLink to="/dashboard/reports">
