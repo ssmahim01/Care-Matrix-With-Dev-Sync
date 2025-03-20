@@ -24,7 +24,7 @@ const DoctorsManagement = () => {
   return (
     <div className="">
       <h2 className="md:text-4xl text-base-content text-2xl font-bold mb-5">
-        Doctor Management
+       Add & Update Doctor
       </h2>
 
       {/* Doctor Form */}
@@ -62,7 +62,7 @@ const DoctorsManagement = () => {
             <span className="absolute inset-0 w-full h-full bg-teal-500 rounded-md "></span>
             <span className="absolute inset-0 w-full h-full transition-all duration-200 ease-in-out delay-100 bg-primary rounded-md opacity-0 group-hover:opacity-100 "></span>
             <span className="relative text-white transition-colors duration-200 ease-in-out delay-100 group-hover:text-white/80">
-            {editId ? "Update Doctor" : "Add Doctor"}
+              {editId ? "Update Doctor" : "Add Doctor"}
             </span>
           </button>
         </form>
@@ -72,46 +72,33 @@ const DoctorsManagement = () => {
       {status === "loading" ? (
         <p>Loading...</p>
       ) : (
-        <table className="w-full border mt-8">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Specialty</th>
-              <th className="border p-2">Availability</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          {/* <tbody>
-            {doctors.map((doctor) => (
-              <tr key={doctor._id}>
-                <td className="border p-2">{doctor.name}</td>
-                <td className="border p-2">{doctor.specialty}</td>
-                <td className="border p-2">{doctor.availability}</td>
-                <td className="border p-2">
-                  <button
-                    className="bg-yellow-500 text-white p-1 mx-1"
-                    onClick={() => {
-                      setEditId(doctor._id);
-                      setForm(doctor);
-                    }}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="bg-red-500 text-white p-1 mx-1"
-                    onClick={() =>
-                      dispatch(deleteDoctor(doctor._id)).then(() =>
-                        toast.success("Doctor deleted")
-                      )
-                    }
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="py-8">
+          <h2 className="md:text-4xl text-2xl font-bold text-base-content mb-5">Manage Doctors</h2>
+           <div className="rounded-md overflow-x-auto w-full">
+          <table className="table border border-gray-200 border-collapse">
+            <thead>
+              <tr className="bg-gray-100 *:text-gray-800 *:font-bold">
+                <th className="p-4">Serial No.</th>
+                <th className="p-4">Image</th>
+                <th className="p-4">Name</th>
+                <th className="p-4">Specialty</th>
+                <th className="p-4">Availability</th>
+                <th className="p-4">Actions</th>
               </tr>
-            ))}
-          </tbody> */}
-        </table>
+            </thead>
+            <tbody>
+              {doctors.map((doctor, index) => (
+                <DoctorsTableRow
+                  key={doctor?._id}
+                  doctors={doctors}
+                  doctor={doctor}
+                  index={index}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+        </div>
       )}
     </div>
   );
