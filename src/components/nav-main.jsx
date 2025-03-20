@@ -44,7 +44,7 @@ export function NavMain() {
                 <LayoutDashboard className="text-base" /> Overview
               </h3>
             </NavLink>
-            <NavLink to="/dashboard/manage-users">
+            <NavLink to="/dashboard/administrator/manage-users">
               <h3 className="flex gap-2 items-center">
                 <Users className="text-base" /> Manage Users
               </h3>
