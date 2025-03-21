@@ -25,7 +25,7 @@ const BannerPharma = () => {
           disableOnInteraction: false,
         }}
         modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper w-11/12 lg:w-10/12 mx-auto "
+        className="mySwiper w-11/12 lg:w-10/12 mx-auto"
       >
         {banners?.map((medicine) => (
           <SwiperSlide key={medicine._id}>
