@@ -1,5 +1,6 @@
 import sliderbg from "@/assets/slider/slide-bg.jpg";
 import Slide from "@/components/Pharmacy/Slide";
+import useBanners from "@/hooks/useBanners";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import "swiper/css";
@@ -9,13 +10,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const BannerPharma = () => {
-  const { data: banners = [], isLoading } = useQuery({
-    queryKey: ["pharmacy-banners"],
-    queryFn: async () => {
-      const { data } = await axios(`${import.meta.env.VITE_API_URL}/banners`);
-      return data;
-    },
-  });
+  const [banners] = useBanners({ isActive: "active" });
 
   return (
     <div
