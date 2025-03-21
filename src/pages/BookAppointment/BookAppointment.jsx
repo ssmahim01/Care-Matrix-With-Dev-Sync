@@ -211,19 +211,20 @@ const BookAppointment = () => {
         
 
         console.log(name, phone, email, age, date, time, reason);
-        const patientInfo = {
+        const appointmentInfo = {
             name,
             email,
             phone,
             age,
             date,
             time,
-            reason
+            reason,
+            doctorId: doctorInfo.id
         }
 
-        console.log("Patients infos ", patientInfo);
+        console.log("Patients infos ", appointmentInfo);
 
-        axiosSecure.post('/appointments', patientInfo)
+        axiosSecure.post('/appointments', appointmentInfo)
         .then(res => {
             console.log(res);
             if(res?.data.insertedId){
