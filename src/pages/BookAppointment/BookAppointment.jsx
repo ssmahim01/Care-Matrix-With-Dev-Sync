@@ -1,3 +1,4 @@
+
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -187,7 +188,9 @@ const BookAppointment = () => {
     ]
     const { user } = useSelector((state) => state.auth);
     // console.log("User is ", user?.displayName);
-    const axiosSecure = useAxiosSecure()
+    const axiosSecure = useAxiosSecure();
+
+
 
     const {
         register,
@@ -237,6 +240,7 @@ const BookAppointment = () => {
         
     }
 
+    console.log(user);
 
     return (
         <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-24 space-y-4'>

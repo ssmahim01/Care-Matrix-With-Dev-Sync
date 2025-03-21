@@ -40,6 +40,8 @@ const Navbar = () => {
   //     document.removeEventListener("click", handleClickOutSide);
   //   };
   // }, [dispatch]);
+
+  console.log("user from nav ", user);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -167,7 +169,7 @@ const Navbar = () => {
                 >
                   <NavLink
                     className="flex gap-1 items-center"
-                    to="/dashboard"
+                    to="/dashboard/manage-appointments"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <FiUser />{" "}
