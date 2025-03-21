@@ -25,11 +25,11 @@ const ManageAppointments = () => {
                     .then(res => {
                         if (res.data.deletedCount > 0) {
                             refetch()
-                              Swal.fire({
+                            Swal.fire({
                                 title: "Deleted!",
                                 text: "Appointment has been canceled.",
                                 icon: "success"
-                              });
+                            });
                         }
                     })
                     .catch(err => {
@@ -37,12 +37,22 @@ const ManageAppointments = () => {
                             title: "Error!",
                             text: "Appointment has not been canceled.",
                             icon: "error"
-                          });
+                        });
                     })
 
             }
         });
     }
+
+    // const handleConfirmAppointment = (_id) => {
+
+    //     const changeAppointmentStatus = {
+
+    //     }
+    //     axiosSecure.patch(`/appointments/status/${_id}`,)
+
+
+    // }
 
 
     return (
@@ -75,7 +85,8 @@ const ManageAppointments = () => {
                                 <td>{appointment.reason}</td>
                                 <td>
                                     <div>
-                                        <button onClick={() => handleConfirmAppointment(appointment._id)} className='btn btn-sm bg-green-500 text-white'><FaCheck></FaCheck></button>
+                                    {/* onClick={() => handleConfirmAppointment(appointment._id)} */}
+                                        <button  className='btn btn-sm bg-green-500 text-white'><FaCheck></FaCheck></button>
                                         <button onClick={() => handleDeleteAppointment(appointment._id)} className='btn btn-sm bg-red-500 text-white'><FaTrashAlt ></FaTrashAlt></button>
                                     </div>
                                 </td>
