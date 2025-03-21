@@ -19,7 +19,7 @@ const OurPharmacy = () => {
       {/* Medicines */}
       <div className="mt-12 flex flex-col lg:flex-row w-full gap-6">
         {/* categories */}
-        <div className="w-full lg:w-4/12 xl:w-3/12 border rounded min-h-screen">
+        <div className="w-full lg:w-4/12 xl:w-3/12 border rounded h-fit">
           <div className="p-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-1 space-y-4">
             {medicine_categories.map((category) => (
               <div className="bg-gray-100 rounded py-2 px-4 font-medium text-xl opacity-90 tracking-wider">
@@ -29,7 +29,7 @@ const OurPharmacy = () => {
           </div>
         </div>
         {/* medicines */}
-        <div className="w-full lg:w-8/12 xl:w-9/12 min-h-screen">
+        <div className="w-full lg:w-8/12 xl:w-9/12">
           <Medicines />
         </div>
       </div>
