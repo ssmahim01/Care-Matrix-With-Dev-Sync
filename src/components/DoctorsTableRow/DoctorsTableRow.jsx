@@ -2,7 +2,7 @@ import { Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 const DoctorsTableRow = ({ doctor, index }) => {
-    const [availability, setAvailability] = useState(doctor.available_days.length > 0 ? "Available" : "Not Available");
+    const [availability, setAvailability] = useState(doctor.available_days ? "Available" : "Not Available");
 
   return (
     <tr
@@ -29,7 +29,7 @@ const DoctorsTableRow = ({ doctor, index }) => {
           onChange={(e) => setAvailability(e.target.value)}
         >
           <option disabled={true} value={"Select Availability"}>Select Availability</option>
-          <option value={doctor.available_days.length > 0 ? "Available" : "Not Available"}>{doctor?.available_days.length > 0 ? "Available" : "Not Available"}</option>
+          <option value={doctor.available_days ? "Available" : "Not Available"}>{doctor?.available_days ? "Available" : "Not Available"}</option>
           <option value={"Not Available"}>Not Available</option>
         </select>
       </td>

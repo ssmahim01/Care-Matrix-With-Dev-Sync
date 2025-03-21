@@ -2,20 +2,7 @@ import { useState } from "react";
 import { IoMdCloudUpload } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 
-const FileInput = ({image, setImage}) => {
-
-  const handleImageUpload = () => {
-    document.getElementById("image_input").click();
-  };
-
-  const handleFileChange = (event) => {
-    event.preventDefault();
-    const file = event.target.files[0];
-    if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setImage(imageURL);
-    }
-  };
+const FileInput = ({image, setImage, handleFileChange, handleImageUpload}) => {
 
   return (
     <div className="flex flex-col gap-5 items-center">
