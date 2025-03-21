@@ -23,7 +23,6 @@ export function StaffManagement() {
     shift: [],
   })
   const [activeTab, setActiveTab] = useState("all-staff")
-
   useEffect(() => {
     const loadStaff = async () => {
       try {
