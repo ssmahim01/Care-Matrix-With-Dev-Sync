@@ -47,7 +47,7 @@ const BookAppointment = () => {
             date,
             time,
             reason,
-            doctorId: doctorInfo.id,
+            doctorId: doctorInfo._id,
             status: "pending"
         }
 

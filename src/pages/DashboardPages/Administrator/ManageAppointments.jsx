@@ -1,10 +1,12 @@
 import useAppointment from '@/hooks/useAppointment';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
+import useDoctors from '@/hooks/useDoctors';
 import React from 'react';
 import { FaCheck, FaTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 
 const ManageAppointments = () => {
+    const [doctors] = useDoctors()
     const [appointments, refetch, isLoading] = useAppointment()
     const axiosSecure = useAxiosSecure();
 
@@ -44,6 +46,9 @@ const ManageAppointments = () => {
         });
     }
 
+    console.log("doctors from manage appointment ", doctors);
+    console.log("appointments from manage appointment ", appointments);
+
     // const handleConfirmAppointment = (_id) => {
 
     //     const changeAppointmentStatus = {
@@ -77,7 +82,10 @@ const ManageAppointments = () => {
                         {
                             appointments?.map((appointment, index) => <tr key={appointment._id}>
                                 <th>{index + 1}</th>
-                                <td>{ }</td>
+                                <td>
+                                    {doctors?.find(doctor => doctor._id === appointment.doctorId)?.name}
+                                </td>
+
                                 <td>{appointment.name}</td>
                                 <td>{appointment.age}</td>
                                 <td>{appointment.phone}</td>
@@ -85,8 +93,8 @@ const ManageAppointments = () => {
                                 <td>{appointment.reason}</td>
                                 <td>
                                     <div>
-                                    {/* onClick={() => handleConfirmAppointment(appointment._id)} */}
-                                        <button  className='btn btn-sm bg-green-500 text-white'><FaCheck></FaCheck></button>
+                                        {/* onClick={() => handleConfirmAppointment(appointment._id)} */}
+                                        <button className='btn btn-sm bg-green-500 text-white'><FaCheck></FaCheck></button>
                                         <button onClick={() => handleDeleteAppointment(appointment._id)} className='btn btn-sm bg-red-500 text-white'><FaTrashAlt ></FaTrashAlt></button>
                                     </div>
                                 </td>
