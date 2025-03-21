@@ -41,7 +41,6 @@ const Navbar = () => {
   //   };
   // }, [dispatch]);
 
-  console.log("user from nav ", user);
   const menuRef = useRef(null);
 
   useEffect(() => {

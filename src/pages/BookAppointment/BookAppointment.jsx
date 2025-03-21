@@ -1,4 +1,4 @@
-
+import useAppointment from '@/hooks/useAppointment';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -190,7 +190,8 @@ const BookAppointment = () => {
     // console.log("User is ", user?.displayName);
     const axiosSecure = useAxiosSecure();
 
-
+    const [appointments] = useAppointment()
+    console.log("appointments are  " ,appointments);
 
     const {
         register,
@@ -222,7 +223,8 @@ const BookAppointment = () => {
             date,
             time,
             reason,
-            doctorId: doctorInfo.id
+            doctorId: doctorInfo.id,
+            status: "pending"
         }
 
         console.log("Patients infos ", appointmentInfo);
