@@ -30,7 +30,6 @@ const OurPharmacy = () => {
     },
   });
 
-  console.log(medicines);
   return (
     <div className="w-11/12 mx-auto max-w-screen-2xl">
       <div className="pt-24 rounded-lg">
@@ -52,8 +51,8 @@ const OurPharmacy = () => {
                 className={`rounded h-full grid place-content-stretch py-2 px-4 font-medium text-xl tracking-wider w-full text-left cursor-pointer 
                 ${
                   selectedCategory === category?.category_name
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 opacity-90"
+                    ? "bg-blue-500/95 text-white"
+                    : "bg-gray-100 opacity-90 hover:bg-gray-200 duration-300"
                 }`}
               >
                 {category?.category_name}

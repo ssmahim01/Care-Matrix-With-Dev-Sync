@@ -1,4 +1,3 @@
-import UnderLineButton from "@/shared/Section/UnderLineButton";
 import { FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router";
 
@@ -21,14 +20,14 @@ const Medicines = ({ medicines, isLoading }) => {
           ))
         : // Medicines List
           medicines.map((medicine, index) => (
-            <Link key={index} to={"?"}>
-              <div className="border rounded p-4">
+            <Link key={index} to={`/medicine/${medicine._id}`}>
+              <div className="border rounded p-4 hover:shadow-xl duration-300 group">
                 {/* Image */}
-                <div>
+                <div className="overflow-hidden">
                   <img
                     src={medicine?.imageURL}
                     alt={medicine?.brandName}
-                    className="h-[150px] w-full"
+                    className="h-[150px] w-full transform group-hover:scale-105 transition-transform duration-300 object-cover"
                   />
                 </div>
                 {/* Text content */}
@@ -39,7 +38,7 @@ const Medicines = ({ medicines, isLoading }) => {
                       {medicine?.strength}
                     </span>
                   </h1>
-                  <h3 className="mt-[3px] text-xl font-semibold">
+                  <h3 className="text-xl font-semibold">
                     <span className="text-4xl">৳</span>
                     {medicine?.price?.amount} -{" "}
                     <span className="opacity-70 text-[16px] font-medium">
