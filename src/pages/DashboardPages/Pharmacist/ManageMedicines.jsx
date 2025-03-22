@@ -99,7 +99,6 @@ const ManageMedicines = () => {
         <TableCaption>A List Of All Medicines</TableCaption>
         <TableHeader>
           <TableRow className={"bg-base-200 hover:bg-base-200"}>
-            <TableHead></TableHead>
             <TableHead>Image</TableHead>
             <TableHead>Brand || Generic Name</TableHead>
             <TableHead>Category</TableHead>
@@ -116,7 +115,7 @@ const ManageMedicines = () => {
         </TableHeader>
         <TableBody>
           {isLoading
-            ? Array.from({ length: 10 }).map((_, i) => (
+            ? Array.from({ length: 8 }).map((_, i) => (
                 <TableRow key={i}>
                   {Array.from({ length: 11 }).map((_, j) => (
                     <TableCell key={j}>
@@ -127,7 +126,6 @@ const ManageMedicines = () => {
               ))
             : data?.medicines?.map((medicine, i) => (
                 <TableRow key={medicine._id}>
-                  <TableCell className="font-medium">{i + 1}</TableCell>
                   <TableCell>
                     <Avatar>
                       <AvatarImage
@@ -205,25 +203,37 @@ const ManageMedicines = () => {
         <PaginationContent>
           {/* Previous */}
           <PaginationItem>
-            <PaginationPrevious onClick={handlePrevPage} />
+            <PaginationPrevious
+              className={"cursor-pointer"}
+              onClick={handlePrevPage}
+            />
           </PaginationItem>
 
           {/* Page Numbers */}
-          {Array.from({ length: data.totalPages }, (_, i) => i + 1).map(
-            (pageNumber) => (
-              <PaginationItem key={pageNumber}>
-                <PaginationLink
-                  isActive={pageNumber === page}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlePageChange(pageNumber);
-                  }}
-                >
-                  {pageNumber}
-                </PaginationLink>
-              </PaginationItem>
-            )
-          )}
+          {isLoading
+            ? // Skeleton Loader
+              Array.from({ length: 3 }).map((_, i) => (
+                <PaginationItem key={i}>
+                  <div className="w-8 h-8 skeleton rounded-md"></div>
+                </PaginationItem>
+              ))
+            : // Page Numbers
+              Array.from({ length: data.totalPages }, (_, i) => i + 1).map(
+                (pageNumber) => (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      className="cursor-pointer"
+                      isActive={pageNumber === page}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageNumber);
+                      }}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              )}
 
           {/* Ellipsis */}
           {data.totalPages > 5 && (
@@ -234,7 +244,10 @@ const ManageMedicines = () => {
 
           {/* Next */}
           <PaginationItem>
-            <PaginationNext onClick={handleNextPage} />
+            <PaginationNext
+              className={"cursor-pointer"}
+              onClick={handleNextPage}
+            />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
