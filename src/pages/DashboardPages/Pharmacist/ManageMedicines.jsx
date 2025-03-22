@@ -100,30 +100,25 @@ const ManageMedicines = () => {
       showCancelButton: true,
       confirmButtonText: "Yes, delete it",
       cancelButtonText: "No, cancel",
-      background: "#ffffff",
-      color: "#000000",
-      confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#6b7280",
     });
 
     if (result.isConfirmed) {
       try {
-        const { data } = await axios.delete(`/pharmacy/delete-medicine/${id}`);
-        if (data.deletedCount) {
+        const { data } = await axios.delete(
+          `${import.meta.env.VITE_API_URL}/pharmacy/delete-medicine/${id}`
+        );
+        if (data.data.deletedCount) {
           refetch();
           Swal.fire({
             title: "Deleted!",
-            text: "Medicine has been deleted successfully.",
+            text: "Medicine has been deleted successfully!",
             icon: "success",
-            background: "#ffffff",
-            color: "#000000",
-            confirmButtonColor: "#10b981",
           });
         }
       } catch (error) {
         Swal.fire({
           title: "Error!",
-          text: error.message || "Failed to delete the medicine.",
+          text: error.message || "Failed to delete the medicine!",
           icon: "error",
           background: "#ffffff",
           color: "#000000",
@@ -299,7 +294,9 @@ const ManageMedicines = () => {
                         <DropdownMenuItem>
                           <Pencil className="w-4 h-4 mr-2" /> Update
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleMedicineDelete}>
+                        <DropdownMenuItem
+                          onClick={() => handleMedicineDelete(medicine._id)}
+                        >
                           <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
