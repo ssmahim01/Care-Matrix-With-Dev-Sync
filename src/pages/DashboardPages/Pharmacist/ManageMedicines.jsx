@@ -46,23 +46,26 @@ import { medicine_categories } from "@/lib/pharmacy";
 import { Button } from "@/components/ui/button";
 
 const ManageMedicines = () => {
+  const [page, setPage] = useState(1);
+  const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");
   const [selectedCategory, setCategory] = useState("All Medicines");
-  const [page, setPage] = useState(1);
 
   const {
     data = { medicines: [], totalPages: 1 },
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["manage-medicines", search, selectedCategory, page],
+    queryKey: ["manage-medicines", search, selectedCategory, page, sort],
     queryFn: async () => {
       const { data } = await axios(
         `${
           import.meta.env.VITE_API_URL
         }/pharmacy/manage-medicines?search=${encodeURIComponent(
           search
-        )}&category=${encodeURIComponent(selectedCategory)}&page=${page}`
+        )}&category=${encodeURIComponent(
+          selectedCategory
+        )}&sort=${sort}&page=${page}`
       );
       return data;
     },
@@ -72,6 +75,17 @@ const ManageMedicines = () => {
   const handlePrevPage = () => setPage((prev) => Math.max(prev - 1, 1));
   const handleNextPage = () => {
     setPage((prev) => (prev < data.totalPages ? prev + 1 : prev));
+  };
+
+  const sortOptions = {
+    "price-asc": "Original Price (asc)",
+    "price-desc": "Original Price (desc)",
+    "discountedPrice-asc": "Discounted Price (asc)",
+    "discountedPrice-desc": "Discounted Price (desc)",
+    "manufactureDate-asc": "Manufacture Date (asc)",
+    "manufactureDate-desc": "Manufacture Date (desc)",
+    "expiryDate-asc": "Expiry Date (asc)",
+    "expiryDate-desc": "Expiry Date (desc)",
   };
 
   return (
@@ -114,8 +128,33 @@ const ManageMedicines = () => {
               </SelectContent>
             </Select>
           </div>
-          {/* Add Button */}
+          {/* Sort By */}
           <div>
+            <Select value={sort} onValueChange={setSort}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Sort By">
+                  {sort ? sortOptions[sort] : "Sort By"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(sortOptions).map(([value, label]) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {/* Add Button */}
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => {
+                setCategory("");
+                setSort("");
+              }}
+            >
+              Reset
+            </Button>
             <Button>Add Medicines</Button>
           </div>
         </div>
@@ -130,8 +169,9 @@ const ManageMedicines = () => {
             <TableHead>Category</TableHead>
             <TableHead>Dosage</TableHead>
             <TableHead>Strength</TableHead>
-            <TableHead>
-              Price <sub className="text-[9px]">(BDT)</sub>
+            <TableHead className={"text-[11px] font-semibold"}>
+              Main || <br /> Discount Price{" "}
+              <sub className="text-[9px]">(BDT)</sub>
             </TableHead>
             <TableHead>Availability</TableHead>
             <TableHead>Manufacture</TableHead>
@@ -169,7 +209,8 @@ const ManageMedicines = () => {
                   <TableCell>{medicine.dosageForm || "N/A"}</TableCell>
                   <TableCell>{medicine.strength || "N/A"}</TableCell>
                   <TableCell>
-                    {medicine.price?.amount.toFixed(2) || "N/A"}
+                    ৳{medicine.price?.amount.toFixed(2) || "N/A"} || ৳
+                    {medicine.price?.discount?.discountedAmount || "NA"}
                   </TableCell>
                   <TableCell>
                     <span
@@ -223,7 +264,6 @@ const ManageMedicines = () => {
               ))}
         </TableBody>
       </Table>
-
       {/* Pagination */}
       <Pagination className="mt-4">
         <PaginationContent>
