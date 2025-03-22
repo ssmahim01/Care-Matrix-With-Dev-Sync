@@ -25,6 +25,7 @@ import OurPharmacy from "@/pages/OurPharmacy/OurPharmacy";
 import ManageBanners from "@/pages/DashboardPages/Pharmacist/ManageBanners";
 import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManagement";
 import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
+import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -89,6 +90,7 @@ const Router = () => {
 
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route path="/dashboard/manage-appointments" element={<ManageAppointments />} />
       <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
       <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
       <Route path="/dashboard/administrator/manage-users" element={<ManageUsers />} />
