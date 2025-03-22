@@ -391,6 +391,24 @@ const DoctorsManagement = () => {
                     doctor={doctor}
                     dispatch={dispatch}
                     index={index}
+                    availability={availability}
+                    setAvailability={setAvailability}
+                    services={services}
+                    setServices={setServices}
+                    inputValue={inputValue}
+                    image={image}
+                    setImage={setImage}
+                    previewImage={previewImage}
+                    setPreviewImage={setPreviewImage}
+                    serviceValue={serviceValue}
+                    setInputValue={setInputValue}
+                    setServiceValue={setServiceValue}
+                    handleInputChange={handleInputChange}
+                    handleServiceChange={handleServiceChange}
+                    handleKeyDown={handleKeyDown}
+                    handleServiceKeyDown={handleServiceKeyDown}
+                    removeAvailability={removeAvailability}
+                    removeServices={removeServices}
                   />
                 ))}
               </tbody>

@@ -9,6 +9,12 @@ export const fetchDoctors = createAsyncThunk("doctors/fetchAll", async () => {
   return response.data;
 });
 
+// Fetch specific doctor
+export const fetchSpecificDoctor = createAsyncThunk("doctors/fetchDoctor", async (id) => {
+  const response = await axios.get(`${API_URL}/${id}`);
+  return response.data;
+});
+
 // Add new doctor
 export const addDoctor = createAsyncThunk("doctors/add", async (doctorData) => {
   const response = await axios.post(API_URL, doctorData);
