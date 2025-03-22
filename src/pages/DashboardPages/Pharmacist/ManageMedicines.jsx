@@ -35,6 +35,16 @@ import { Eye, MoreVertical, Pencil, Trash } from "lucide-react";
 import { GiMedicines } from "react-icons/gi";
 import { IoIosSearch } from "react-icons/io";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { medicine_categories } from "@/lib/pharmacy";
+import { Button } from "@/components/ui/button";
+
 const ManageMedicines = () => {
   const [search, setSearch] = useState("");
   const [selectedCategory, setCategory] = useState("All Medicines");
@@ -74,9 +84,9 @@ const ManageMedicines = () => {
       {/* Searchbar & add button */}
       <div className="flex justify-between gap-4 items-center flex-wrap mb-8">
         {/* Searchbar */}
-        <div className="relative w-full sm:w-[80%] md:w-[70%] lg:w-[60%] product_search_input">
+        <div className="relative flex flex-1">
           <input
-            className="px-4 py-2 border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
+            className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
             placeholder="Search Medicines..."
             onChange={(e) => setSearch(e.target.value)}
             value={search}
@@ -84,14 +94,30 @@ const ManageMedicines = () => {
           <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
 
           {/* shortcut hint */}
-          <div className="absolute top-[5px] right-1.5 text-[0.6rem] font-bold border border-gray-100 p-[8px] rounded-md text-gray-500">
+          <div className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-100 p-[6px] rounded-md text-gray-500">
             Ctrl + E
           </div>
         </div>
-        {/* My Cart */}
-        <div>
-          {/* Buttons Container */}
-          <div className="flex gap-4"></div>
+        <div className="flex items-center gap-4">
+          {/* Select Category */}
+          <div>
+            <Select value={selectedCategory} onValueChange={setCategory}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent>
+                {medicine_categories.map((item, i) => (
+                  <SelectItem key={i} value={item.category_name}>
+                    {item.category_name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {/* Add Button */}
+          <div>
+            <Button>Add Medicines</Button>
+          </div>
         </div>
       </div>
       {/* Medicine Table */}
@@ -131,7 +157,7 @@ const ManageMedicines = () => {
                       <AvatarImage
                         src={medicine.imageURL}
                         alt="Medicine Image"
-                        className="w-24 h-16"
+                        className="min-w-24 h-16"
                       />
                     </Avatar>
                   </TableCell>
