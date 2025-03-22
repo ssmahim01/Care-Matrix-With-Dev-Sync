@@ -17,7 +17,7 @@ const Doctors = () => {
     initialSlide: 0,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1026,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,

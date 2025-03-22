@@ -22,11 +22,16 @@ import AdministratorOverview from "@/pages/DashboardPages/Administrator/Administ
 
 import BookAppointment from "@/pages/BookAppointment/BookAppointment";
 import OurPharmacy from "@/pages/OurPharmacy/OurPharmacy";
+import ManageBanners from "@/pages/DashboardPages/Pharmacist/ManageBanners";
+import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManagement";
+import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
+import ManageMedicines from "@/pages/DashboardPages/Pharmacist/ManageMedicines";
+import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
 
 const Router = () => {
   const dispatch = useDispatch();
   const user = useAuthUser();
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -76,8 +81,8 @@ const Router = () => {
         <Route path="services" element={<Services />} />
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
-        <Route path='book-appointment/:name' element={<BookAppointment />} />
-        <Route path='doctor-details/:id' element={<DoctorDetails />} />
+        <Route path="book-appointment/:name" element={<BookAppointment />} />
+        <Route path="doctor-details/:id" element={<DoctorDetails />} />
       </Route>
 
       {/* Authentication Routes */}
@@ -86,7 +91,39 @@ const Router = () => {
 
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
-      <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
+        {/* Admin Routes */}
+        <Route
+          path="/dashboard/administrator-overview"
+          element={<AdministratorOverview />}
+        />
+        <Route
+          path="/dashboard/administrator/manage-doctors"
+          element={<DoctorsManagement />}
+        />
+        <Route
+          path="/dashboard/administrator/manage-users"
+          element={<ManageUsers />}
+        />
+
+        {/* Pharmacist Routes */}
+        <Route
+          path="/dashboard/pharmacist/manage-medicines"
+          element={<ManageMedicines />}
+        />
+        <Route
+          path="/dashboard/pharmacist/manage-banner"
+          element={<ManageBanners />}
+        />
+
+        {/* Doctors Routes */}
+
+        {/* Receptionist Routes */}
+        <Route
+          path="/dashboard/manage-appointments"
+          element={<ManageAppointments />}
+        />
+        
+        {/* Patient Routes */}
       </Route>
 
       {/* Catch-all for 404 Error Page */}

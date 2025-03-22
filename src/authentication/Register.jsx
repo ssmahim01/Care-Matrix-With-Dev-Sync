@@ -14,10 +14,13 @@ import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
 import IsError from "./IsError";
 import { RxCross1 } from "react-icons/rx";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/auth/authSlice";
 
 const Register = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // states for name, email
   const [name, setName] = useState("");
@@ -195,11 +198,17 @@ const Register = () => {
               uid: currentUser?.uid,
               createdAt: new Date(
                 currentUser?.metadata?.creationTime
-              ).toLocaleString(),
+              ).toISOString(),
               lastLoginAt: new Date(
                 currentUser?.metadata?.lastSignInTime
-              ).toLocaleString(),
+              ).toISOString(),
             };
+            dispatch(
+              setUser({
+                displayName: currentUser?.displayName,
+                photoURL: currentUser?.photoURL,
+              })
+            );
             // save userData in db --->
             await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
           })

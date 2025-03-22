@@ -84,7 +84,7 @@ const Faq = () => {
                         viewport={{ once: true }}
                         className="w-full lg:w-1/2"
                     >
-                        <h5 className="text-xs font-semibold text-[#0B55E5]">FREQUENTLY ASKED QUESTIONS</h5>
+                        <h5 className="text-xs font-semibold text-[#006eff]">FREQUENTLY ASKED QUESTIONS</h5>
                         <h2 className="text-3xl lg:text-4xl font-bold  lg:text-left mb-6">Frequently Asked Questions <br className="hidden lg:flex" /> Guide Here</h2>
                         <Accordion type="single" collapsible>
                             {faqData.map(({ id, question, answer }) => (

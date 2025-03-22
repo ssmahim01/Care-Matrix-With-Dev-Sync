@@ -1,53 +1,54 @@
-"use client";
 import {
   BadgeInfo,
   BriefcaseMedical,
   CalendarDays,
   ChartPie,
-  ChevronRight,
   ClipboardPlus,
   Contact,
   CreditCard,
+  FileSpreadsheet,
   Home,
   Hospital,
   LayoutDashboard,
   Stethoscope,
+  TicketSlash,
   Users,
 } from "lucide-react";
+import { GiMedicines } from "react-icons/gi";
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { NavLink } from "react-router";
+import { FaUserDoctor } from "react-icons/fa6";
 
 export function NavMain() {
   const administrator = true;
+  const isDoctor = false;
+  const isPharmacist = true;
 
   const dashboardRoutes = (
     <>
       <ul className="menu *:font-semibold *:text-gray-700 flex flex-col gap-6">
-        {administrator ? (
+        {administrator && (
           <>
             <NavLink to="/dashboard/administrator-overview">
               <h3 className="flex gap-2 items-center">
                 <LayoutDashboard className="text-base" /> Overview
               </h3>
             </NavLink>
-            <NavLink to="/dashboard/manage-users">
+            <NavLink to="/dashboard/administrator/manage-users">
               <h3 className="flex gap-2 items-center">
                 <Users className="text-base" /> Manage Users
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/administrator/manage-doctors">
+              <h3 className="flex gap-2 items-center">
+                <FaUserDoctor className="text-base" /> Doctors Management
               </h3>
             </NavLink>
             <NavLink to="/dashboard/reports">
@@ -67,9 +68,10 @@ export function NavMain() {
             </NavLink>
             <div className="divider mt-2"></div>
           </>
-        ) : (
+        )}
+        {isDoctor && (
           <>
-            <NavLink to="/dashboard/patient-overview">
+            <NavLink to="/dashboard/administrator-overview">
               <h3 className="flex gap-2 items-center">
                 <LayoutDashboard className="text-base" /> Overview
               </h3>
@@ -87,6 +89,36 @@ export function NavMain() {
             <NavLink to="/dashboard/medical-records">
               <h3 className="flex gap-2 items-center">
                 <Hospital className="text-base" /> Medical Records
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/my-prescriptions">
+              <h3 className="flex gap-2 items-center">
+                <ClipboardPlus className="text-base" /> My Prescriptions
+              </h3>
+            </NavLink>
+            <div className="divider"></div>
+          </>
+        )}
+        {isPharmacist && (
+          <>
+            <NavLink to="/dashboard/patient-overview">
+              <h3 className="flex gap-2 items-center">
+                <LayoutDashboard className="text-base" /> Overview
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/pharmacist/manage-medicines">
+              <h3 className="flex gap-2 items-center">
+                <GiMedicines className="text-2xl" /> Manage Medicines
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/pharmacist/manage-banner">
+              <h3 className="flex gap-2 items-center">
+                <TicketSlash className="text-base" /> Manage Banners
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/medical-records">
+              <h3 className="flex gap-2 items-center">
+                <FileSpreadsheet className="text-base" /> Sales Report
               </h3>
             </NavLink>
             <NavLink to="/dashboard/my-prescriptions">

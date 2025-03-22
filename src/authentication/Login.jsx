@@ -41,7 +41,7 @@ const Login = () => {
           {
             lastLoginAt: new Date(
               currentUser?.metadata?.lastSignInTime
-            ).toLocaleString(),
+            ).toISOString(),
           }
         );
       })
