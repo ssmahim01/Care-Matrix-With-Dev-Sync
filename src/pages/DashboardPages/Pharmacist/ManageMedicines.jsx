@@ -41,7 +41,7 @@ const ManageMedicines = () => {
   const [page, setPage] = useState(1);
 
   const {
-    data = [],
+    data = { medicines: [], totalPages: 1 },
     isLoading,
     refetch,
   } = useQuery({
@@ -58,9 +58,11 @@ const ManageMedicines = () => {
     },
   });
 
+  const handlePageChange = (pageNumber) => setPage(pageNumber);
   const handlePrevPage = () => setPage((prev) => Math.max(prev - 1, 1));
-  const handleNextPage = () =>
+  const handleNextPage = () => {
     setPage((prev) => (prev < data.totalPages ? prev + 1 : prev));
+  };
 
   return (
     <div>
@@ -203,13 +205,7 @@ const ManageMedicines = () => {
         <PaginationContent>
           {/* Previous */}
           <PaginationItem>
-            <PaginationPrevious
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                handlePageChange(page - 1);
-              }}
-            />
+            <PaginationPrevious onClick={handlePrevPage} />
           </PaginationItem>
 
           {/* Page Numbers */}
@@ -217,7 +213,6 @@ const ManageMedicines = () => {
             (pageNumber) => (
               <PaginationItem key={pageNumber}>
                 <PaginationLink
-                  href="#"
                   isActive={pageNumber === page}
                   onClick={(e) => {
                     e.preventDefault();
@@ -239,13 +234,7 @@ const ManageMedicines = () => {
 
           {/* Next */}
           <PaginationItem>
-            <PaginationNext
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                handlePageChange(page + 1);
-              }}
-            />
+            <PaginationNext onClick={handleNextPage} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
