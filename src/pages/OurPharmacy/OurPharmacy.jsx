@@ -1,12 +1,16 @@
-import BannerPharma from "@/components/Pharmacy/BannerPharma";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Medicines from "./Medicines";
 import PharmacyNavbar from "./PharmacyNavbar";
+import BannerPharma from "@/components/Pharmacy/BannerPharma";
 import { medicine_categories } from "@/lib/pharmacy";
+import { useState } from "react";
 
 const OurPharmacy = () => {
+  const [search, setSearch] = useState("");
+  const [selectedCategory, setCategory] = useState("All Medicines");
+
   return (
     <div className="w-11/12 mx-auto max-w-screen-2xl">
       <div className="pt-24 rounded-lg">
@@ -14,17 +18,26 @@ const OurPharmacy = () => {
       </div>
       {/* Pharmacy Navbar */}
       <div className="mt-12">
-        <PharmacyNavbar />
+        <PharmacyNavbar search={search} setSearch={setSearch} />
       </div>
       {/* Medicines */}
       <div className="mt-12 flex flex-col lg:flex-row w-full gap-6">
         {/* categories */}
         <div className="w-full lg:w-4/12 xl:w-3/12 border rounded h-fit">
           <div className="p-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-1 space-y-4">
-            {medicine_categories.map((category) => (
-              <div className="bg-gray-100 rounded py-2 px-4 font-medium text-xl opacity-90 tracking-wider">
+            {medicine_categories.map((category, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCategory(category.category_name)}
+                className={`rounded py-2 px-4 font-medium text-xl tracking-wider w-full text-left cursor-pointer 
+                ${
+                  selectedCategory === category?.category_name
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 opacity-90"
+                }`}
+              >
                 {category?.category_name}
-              </div>
+              </button>
             ))}
           </div>
         </div>

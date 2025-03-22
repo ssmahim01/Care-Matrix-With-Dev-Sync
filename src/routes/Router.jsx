@@ -29,7 +29,7 @@ import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
 const Router = () => {
   const dispatch = useDispatch();
   const user = useAuthUser();
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     dispatch(setLoading(true));

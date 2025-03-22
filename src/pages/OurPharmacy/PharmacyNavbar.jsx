@@ -1,7 +1,7 @@
 import { FaShoppingCart, FaTruck } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 
-const PharmacyNavbar = () => {
+const PharmacyNavbar = ({ search, setSearch }) => {
   return (
     <div className="flex justify-between gap-4 items-center flex-wrap">
       {/* Searchbar */}
@@ -9,7 +9,8 @@ const PharmacyNavbar = () => {
         <input
           className="px-4 py-2 border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
           placeholder="Search Medicines..."
-          onClick={() => setKeyPressOpen(true)}
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
         />
         <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
 
