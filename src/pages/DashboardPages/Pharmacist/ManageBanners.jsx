@@ -19,6 +19,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import useBanners from "@/hooks/useBanners";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { RiAdvertisementFill } from "react-icons/ri";
 function ManageBanners() {
   const [setOpen, setIsOpen] = useState(false);
   const [banners, isLoading, refetch] = useBanners({ isActive: "all" });
@@ -60,47 +62,54 @@ function ManageBanners() {
 
   if (isLoading) return <Loader text={"Loading Banners"} />;
   return (
-    <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
-    >
-      <div className="container mx-auto">
-        <div className="flex justify-end mb-4">
-          <Button className="cursor-pointer" onClick={() => setIsOpen(true)}>
-            Add New Banner
-          </Button>
-        </div>
-        <Table>
-          <TableCaption>A list of all Banners.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="">ID</TableHead>
-              <TableHead>Image</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Inserted By</TableHead>
-              <TableHead>Banner Added</TableHead>
-              <TableHead className="text-right">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {banners?.map((banner, i) => (
-              <TableRow key={banner._id}>
-                <TableCell className="font-medium">{i + 1}</TableCell>
+    <div>
+      <DashboardPagesHeader
+        title={"Manage Banners"}
+        subtitle={"Create, edit, and showcase promotional banners"}
+        icon={RiAdvertisementFill}
+      />
 
-                <TableCell>
-                  <Avatar>
-                    <AvatarImage src={banner.image} />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell>{banner.medicineName}</TableCell>
-                <TableCell>{banner.description.slice(0, 22)}...</TableCell>
-                <TableCell>{banner.insertedBy}</TableCell>
-                <TableCell>{banner.date}</TableCell>
-                <TableCell className="text-right flex justify-end">
-                  {/* {banner.status === "added" ? (
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      >
+        <div className="mx-auto">
+          <div className="flex justify-end mb-4">
+            <Button className="cursor-pointer" onClick={() => setIsOpen(true)}>
+              Add New Banner
+            </Button>
+          </div>
+          <Table>
+            <TableCaption>A List Of All Promotional Banners</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead></TableHead>
+                <TableHead>Image</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Inserted By</TableHead>
+                <TableHead>Banner Added</TableHead>
+                <TableHead className="text-right">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {banners?.map((banner, i) => (
+                <TableRow key={banner._id}>
+                  <TableCell className="font-medium">{i + 1}</TableCell>
+
+                  <TableCell>
+                    <Avatar>
+                      <AvatarImage src={banner.image} />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  </TableCell>
+                  <TableCell>{banner.medicineName}</TableCell>
+                  <TableCell>{banner.description.slice(0, 22)}...</TableCell>
+                  <TableCell>{banner.insertedBy}</TableCell>
+                  <TableCell>{banner.date}</TableCell>
+                  <TableCell className="text-right flex justify-end">
+                    {/* {banner.status === "added" ? (
                                         <Button onClick={() => handleBannerRemove(banner._id)}>
                                             Remove Slide
                                         </Button>
@@ -112,26 +121,27 @@ function ManageBanners() {
                                             Add Slide
                                         </Button>
                                     )} */}
-                  <Switch
-                    checked={banner.status === "active"}
-                    onCheckedChange={(checked) => {
-                      const newStatus = checked ? "active" : "inactive";
-                      handleBannerStatusChange(banner._id, newStatus);
-                    }}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        {/* modal */}
-        <AddBanners
-          isOpen={setOpen}
-          setIsOpen={setIsOpen}
-          refetch={refetch}
-        ></AddBanners>
-      </div>
-    </motion.div>
+                    <Switch
+                      checked={banner.status === "active"}
+                      onCheckedChange={(checked) => {
+                        const newStatus = checked ? "active" : "inactive";
+                        handleBannerStatusChange(banner._id, newStatus);
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          {/* modal */}
+          <AddBanners
+            isOpen={setOpen}
+            setIsOpen={setIsOpen}
+            refetch={refetch}
+          ></AddBanners>
+        </div>
+      </motion.div>
+    </div>
   );
 }
 
