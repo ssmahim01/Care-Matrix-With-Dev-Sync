@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/dashboard/admin/doctors";
+const API_URL = `${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors`;
 
 // Fetch all doctors
 export const fetchDoctors = createAsyncThunk("doctors/fetchAll", async () => {

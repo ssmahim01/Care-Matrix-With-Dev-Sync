@@ -2,7 +2,7 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const BedCard = ({ title, price, image, onRequestBooking, onShowDetails, isDetailsVisible, bed }) => {
   return (
-    <div className="border rounded-lg shadow-lg p-4 flex flex-col items-center">
+    <div className="border rounded-lg shadow-lg p-4 flex flex-col items-center transition-transform duration-300 hover:scale-105">
      <div className="flex justify-between items-center w-full">
      <h3 className="text-lg font-semibold">{title}</h3>
      <div>
@@ -10,7 +10,7 @@ const BedCard = ({ title, price, image, onRequestBooking, onShowDetails, isDetai
      <p className="text-xl font-bold">{price}/day</p>
      </div>
      </div>
-      <img src={image} alt={title} className="w-full h-60 object-cover rounded-md my-2 transition-transform duration-300 hover:scale-105" />
+      <img src={image} alt={title} className="w-full h-60 object-cover rounded-md my-2" />
       <div className="flex justify-between w-full space-x-2 my-1">
         <button
           onClick={() => onRequestBooking(title)}

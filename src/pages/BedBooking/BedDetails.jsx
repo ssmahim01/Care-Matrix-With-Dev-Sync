@@ -1,4 +1,5 @@
 import { FaTimes } from "react-icons/fa";
+import { FaCheckDouble } from "react-icons/fa";
 
 const BedDetailsModal = ({ isOpen, onClose, bed }) => {
   if (!isOpen || !bed) return null;
@@ -19,10 +20,13 @@ const BedDetailsModal = ({ isOpen, onClose, bed }) => {
             className="w-full h-48 sm:h-56 md:h-64 object-cover rounded-md"
           />
           <div>
-            <h3 className="text-sm sm:text-base font-semibold">Details</h3>
+           <div className="flex justify-between items-center">
+           <h3 className="text-xl sm:text-base font-semibold">Details</h3>
+           <p className="text-xl font-bold">{bed.price}/day</p>
+           </div>
             <ul className="list-disc list-inside text-gray-700 mt-2 text-xs sm:text-sm md:text-base">
               {bed.details.map((detail, index) => (
-                <li key={index}>{detail}</li>
+                <p key={index} className="flex gap-2 items-center"> <FaCheckDouble className="text-[#0E82FD]"/> {detail}</p>
               ))}
             </ul>
           </div>
