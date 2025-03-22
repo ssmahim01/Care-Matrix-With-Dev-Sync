@@ -44,6 +44,7 @@ import {
 } from "@/components/ui/select";
 import { medicine_categories } from "@/lib/pharmacy";
 import { Button } from "@/components/ui/button";
+import Swal from "sweetalert2";
 
 const ManageMedicines = () => {
   const [page, setPage] = useState(1);
@@ -71,12 +72,14 @@ const ManageMedicines = () => {
     },
   });
 
+  // Pagination Functions
   const handlePageChange = (pageNumber) => setPage(pageNumber);
   const handlePrevPage = () => setPage((prev) => Math.max(prev - 1, 1));
   const handleNextPage = () => {
     setPage((prev) => (prev < data.totalPages ? prev + 1 : prev));
   };
 
+  // Sort Options
   const sortOptions = {
     "price-asc": "Original Price (asc)",
     "price-desc": "Original Price (desc)",
@@ -88,6 +91,48 @@ const ManageMedicines = () => {
     "expiryDate-desc": "Expiry Date (desc)",
   };
 
+  // Medicine Delete Function
+  const handleMedicineDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action will permanently delete the medicine!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "No, cancel",
+      background: "#ffffff",
+      color: "#000000",
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const { data } = await axios.delete(`/pharmacy/delete-medicine/${id}`);
+        if (data.deletedCount) {
+          refetch();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Medicine has been deleted successfully.",
+            icon: "success",
+            background: "#ffffff",
+            color: "#000000",
+            confirmButtonColor: "#10b981",
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: error.message || "Failed to delete the medicine.",
+          icon: "error",
+          background: "#ffffff",
+          color: "#000000",
+          confirmButtonColor: "#ef4444",
+        });
+      }
+    }
+  };
+
   return (
     <div>
       <DashboardPagesHeader
@@ -95,10 +140,10 @@ const ManageMedicines = () => {
         subtitle={"Track And Organize Medicine Inventory Efficiently"}
         icon={GiMedicines}
       />
-      {/* Searchbar & add button */}
+      {/* Searchbar & Select & Add button */}
       <div className="flex justify-between gap-4 items-center flex-wrap mb-8">
         {/* Searchbar */}
-        <div className="relative flex flex-1">
+        <div className="relative w-[50%] xl:w-full flex flex-1">
           <input
             className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
             placeholder="Search Medicines..."
@@ -112,11 +157,11 @@ const ManageMedicines = () => {
             Ctrl + E
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center flex-wrap gap-4">
           {/* Select Category */}
-          <div>
+          <div className="flex flex-1 w-full">
             <Select value={selectedCategory} onValueChange={setCategory}>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-[100%] md:w-[150px] lg:w-[200px]">
                 <SelectValue placeholder="Select Category" />
               </SelectTrigger>
               <SelectContent>
@@ -129,9 +174,9 @@ const ManageMedicines = () => {
             </Select>
           </div>
           {/* Sort By */}
-          <div>
+          <div className="flex flex-1 w-full">
             <Select value={sort} onValueChange={setSort}>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-[100%] md:w-[150px] lg:w-[200px]">
                 <SelectValue placeholder="Sort By">
                   {sort ? sortOptions[sort] : "Sort By"}
                 </SelectValue>
@@ -145,8 +190,8 @@ const ManageMedicines = () => {
               </SelectContent>
             </Select>
           </div>
-          {/* Add Button */}
-          <div className="flex items-center gap-2">
+          {/* Reset & Add Button */}
+          <div className="flex items-center flex-wrap gap-2">
             <Button
               onClick={() => {
                 setCategory("");
@@ -254,7 +299,7 @@ const ManageMedicines = () => {
                         <DropdownMenuItem>
                           <Pencil className="w-4 h-4 mr-2" /> Update
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleMedicineDelete}>
                           <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
