@@ -27,7 +27,7 @@ const Medicines = ({ medicines, isLoading }) => {
                   <img
                     src={medicine?.imageURL}
                     alt={medicine?.brandName}
-                    className="h-[150px] w-full transform group-hover:scale-105 transition-transform duration-300 object-cover"
+                    className="h-[150px] w-full transform group-hover:scale-110 transition-transform duration-300 object-cover"
                   />
                 </div>
                 {/* Text content */}

@@ -24,7 +24,9 @@ const OurPharmacy = () => {
       const { data } = await axios(
         `${
           import.meta.env.VITE_API_URL
-        }/pharmacy/medicines?search=${search}&category=${selectedCategory}`
+        }/pharmacy/medicines?search=${encodeURIComponent(
+          search
+        )}&category=${encodeURIComponent(selectedCategory)}`
       );
       return data;
     },
@@ -62,7 +64,11 @@ const OurPharmacy = () => {
         </div>
         {/* medicines */}
         <div className="w-full lg:w-8/12 xl:w-9/12">
-          <Medicines medicines={medicines} isLoading={isLoading} />
+          {medicines.length === 0 ? (
+            "No Medicine Available"
+          ) : (
+            <Medicines medicines={medicines} isLoading={isLoading} />
+          )}
         </div>
       </div>
     </div>
