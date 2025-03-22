@@ -1,5 +1,3 @@
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-
 const BedCard = ({ title, price, image, onRequestBooking, onShowDetails, isDetailsVisible, bed }) => {
   return (
     <div className="border rounded-lg shadow-lg p-4 flex flex-col items-center transition-transform duration-300 hover:scale-105">

@@ -25,6 +25,8 @@ import OurPharmacy from "@/pages/OurPharmacy/OurPharmacy";
 import ManageBanners from "@/pages/DashboardPages/Pharmacist/ManageBanners";
 import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManagement";
 import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
+import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/ReceptionistOverview";
+import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -93,6 +95,13 @@ const Router = () => {
       <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
       <Route path="/dashboard/administrator/manage-users" element={<ManageUsers />} />
       <Route path="/dashboard/pharmacist/manage-banner" element={<ManageBanners />} />
+
+      {/* Receptionist */}
+      <Route path="/dashboard/receptionist-overview" element={<ReceptionistOverview />} />
+      <Route path="/dashboard/receptionist/manage-beds" element={<ManageBeds />} />
+
+
+
       </Route>
 
       {/* Catch-all for 404 Error Page */}

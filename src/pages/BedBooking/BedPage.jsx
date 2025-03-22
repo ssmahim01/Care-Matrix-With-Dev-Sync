@@ -78,7 +78,7 @@ const BedPage = () => {
         onClose={closeBookingModal}
         bedType={selectedBedType}
       />
-      <BedDetailsModal
+     <BedDetailsModal
         isOpen={isDetailsModalOpen}
         onClose={closeDetailsModal}
         bed={selectedBed}
