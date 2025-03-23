@@ -1,19 +1,12 @@
-import { useState } from "react";
-import { FaFileUpload, FaRegEye } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useState } from "react";
+import { FaFileUpload } from "react-icons/fa";
 
-import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { GiMedicines } from "react-icons/gi";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { GiMedicines } from "react-icons/gi";
 import { MdDelete } from "react-icons/md";
 
 import {
@@ -23,18 +16,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { medicine_categories } from "@/lib/pharmacy";
 import { Textarea } from "@/components/ui/textarea";
+import { medicine_categories } from "@/lib/pharmacy";
 
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
 const AddMedicine = ({ isOpen, setIsOpen }) => {
   const [image, setImage] = useState("");
@@ -45,6 +38,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
   const [selectedCategory, setCategory] = useState("");
   const [availability, setAvailability] = useState("");
   const [prescriptionRequired, setPrescriptionRequired] = useState("");
+  const [isReviewable, setIsReviewable] = useState("");
 
   // Image Upload Functionality
   const handleUploadImage = () => {
@@ -65,7 +59,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
       <DialogTrigger asChild>
         <Button>Add Medicines</Button>
       </DialogTrigger>
-      <DialogContent className="w-[80%] max-w-none max-h-[80vh] overflow-y-auto p-6">
+      <DialogContent className="w-[100%] max-w-none max-h-[80vh] overflow-y-auto p-6">
         <DashboardPagesHeader
           title={"Add Medicine"}
           subtitle={"Add new medicines to the pharmacy inventory"}
@@ -221,35 +215,50 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
               <Input type="number" placeholder={"Enter Discounted Price"} />
             </div>
           </div>
-          {/* Discount Valid Until */}
-          <div className="space-y-2">
-            <Label>Discount Price Valid Until</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !validUntil && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {validUntil ? (
-                    format(validUntil, "PPP")
-                  ) : (
-                    <span>Pick a date</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={validUntil}
-                  onSelect={setValidUntil}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+          {/* Discount Valid Until & isReviewable */}
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label>Discount Price Valid Until</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !validUntil && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {validUntil ? (
+                      format(validUntil, "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={validUntil}
+                    onSelect={setValidUntil}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            {/* isReviewable */}
+            <div className="space-y-2">
+              <Label>Can users review?</Label>
+              <Select value={isReviewable} onValueChange={setIsReviewable}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select an option" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={true}>Yes, Users can review</SelectItem>
+                  <SelectItem value={false}>No, Users can't review</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           {/* Manufacture Date & Expiry Date */}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
@@ -283,7 +292,6 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
                 </PopoverContent>
               </Popover>
             </div>
-
             {/* Expiry Date */}
             <div className="space-y-2">
               <Label>Medicine Expiry Date</Label>
