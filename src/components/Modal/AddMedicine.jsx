@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { dosageForms, medicine_categories } from "@/lib/pharmacy";
+import { dosageForms, medicine_categories, medicineStrengths } from "@/lib/pharmacy";
 
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -38,6 +38,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
   const [selectedCategory, setCategory] = useState("");
   const [availability, setAvailability] = useState("");
   const [prescriptionRequired, setPrescriptionRequired] = useState("");
+  const [selectedStrength, setSelectedStrength] = useState("");
   const [isReviewable, setIsReviewable] = useState("");
   const [loading, setLoading] = useState(false);
   const [brandName, setBrandName] = useState("");
@@ -162,6 +163,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
           </div>
           {/* Dosage Form & Strength */}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            {/* Dosage Form */}
             <div className="space-y-2">
               <Label>Dosage Form</Label>
               <Select value={dosageForm} onValueChange={setDosageForm}>
@@ -184,9 +186,33 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
                 </SelectContent>
               </Select>
             </div>
+            {/* Strength */}
             <div className="space-y-2">
               <Label>Strength</Label>
-              <Input placeholder={"Enter Medicine Strength"} />
+              <Select
+                value={selectedStrength}
+                onValueChange={setSelectedStrength}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Medicine Strength" />
+                </SelectTrigger>
+                <SelectContent className="max-h-80 overflow-y-auto">
+                  {Object.entries(medicineStrengths).map(
+                    ([category, strengths]) => (
+                      <div key={category}>
+                        <div className="px-4 py-2 bg-gray-100 text-sm font-medium">
+                          {category}
+                        </div>
+                        {strengths.map((strength, i) => (
+                          <SelectItem key={`${category}-${i}`} value={strength}>
+                            {strength}
+                          </SelectItem>
+                        ))}
+                      </div>
+                    )
+                  )}
+                </SelectContent>
+              </Select>
             </div>
           </div>
           {/* Batch Number */}
