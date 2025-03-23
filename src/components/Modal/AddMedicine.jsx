@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { medicine_categories } from "@/lib/pharmacy";
+import { dosageForms, medicine_categories } from "@/lib/pharmacy";
 
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -39,6 +39,10 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
   const [availability, setAvailability] = useState("");
   const [prescriptionRequired, setPrescriptionRequired] = useState("");
   const [isReviewable, setIsReviewable] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [brandName, setBrandName] = useState("");
+  const [genericName, setGenericName] = useState("");
+  const [dosageForm, setDosageForm] = useState("");
 
   // Image Upload Functionality
   const handleUploadImage = () => {
@@ -54,6 +58,14 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
     }
   };
 
+  // Function for post medicine in db
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const medicine = {};
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -67,7 +79,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
         />
 
         {/* Form */}
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Brand & Generic Name */}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">
@@ -152,7 +164,25 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">
               <Label>Dosage Form</Label>
-              <Input placeholder={"Enter Medicine Dosage Form"} />
+              <Select value={dosageForm} onValueChange={setDosageForm}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Dosage Form" />
+                </SelectTrigger>
+                <SelectContent className="max-h-80 overflow-y-auto">
+                  {dosageForms.map((category, index) => (
+                    <div key={index}>
+                      <div className="px-3 py-1 text-sm font-semibold bg-gray-100">
+                        {category.category}
+                      </div>
+                      {category.forms.map((form, i) => (
+                        <SelectItem key={form} value={form} className="px-4">
+                          {form}
+                        </SelectItem>
+                      ))}
+                    </div>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label>Strength</Label>
@@ -322,6 +352,16 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
                 </PopoverContent>
               </Popover>
             </div>
+          </div>
+          {/* Submit Button */}
+          <div>
+            <Button
+              disabled={loading}
+              className={"w-full cursor-pointer"}
+              type="submit"
+            >
+              {loading ? "Adding Medicine....." : "Add Medicine"}
+            </Button>
           </div>
         </form>
       </DialogContent>
