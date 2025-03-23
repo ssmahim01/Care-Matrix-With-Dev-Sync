@@ -1,120 +1,118 @@
 import {
   deleteDoctor,
-  fetchDoctors,
-  fetchSpecificDoctor,
-  updateDoctor,
+  // fetchSpecificDoctor,
+  // updateDoctor,
 } from "@/redux/doctors/doctorSlice";
 import { Edit2, Trash2, X } from "lucide-react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
-import { MdDelete } from "react-icons/md";
-import { IoMdCloudUpload } from "react-icons/io";
-import { useState } from "react";
-import { useAxiosPublic } from "@/hooks/useAxiosPublic";
+// import { MdDelete } from "react-icons/md";
+// import { IoMdCloudUpload } from "react-icons/io";
+// import { useState } from "react";
+// import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 
 const DoctorsTableRow = ({
   doctor,
   index,
   dispatch,
-  image,
-  setImage,
-  previewImage,
-  setPreviewImage,
-  handleKeyDown,
-  handleServiceKeyDown,
-  removeAvailability,
-  removeServices,
-  availability,
-  services,
-  handleInputChange,
-  handleServiceChange,
+  // image,
+  // setImage,
+  // previewImage,
+  // setPreviewImage,
+  // handleKeyDown,
+  // handleServiceKeyDown,
+  // removeAvailability,
+  // removeServices,
+  // availability,
+  // services,
+  // handleInputChange,
+  // handleServiceChange,
 }) => {
-  const [doctorData, setDoctorData] = useState({});
-  const axiosPublic = useAxiosPublic();
+  // const [doctorData, setDoctorData] = useState({});
+  // const axiosPublic = useAxiosPublic();
 
-  const handleImageUpload = () => {
-    document.getElementById("image_input").click();
-  };
+  // const handleImageUpload = () => {
+  //   document.getElementById("image_input").click();
+  // };
 
-  const handleEditModal = async (id) => {
-    try {
-      const response = await dispatch(fetchSpecificDoctor(id)); // Fetch data using the correct ID
-      if (response?.payload) {
-        setDoctorData(response.payload);
-        document.getElementById("update_modal_01").showModal();
-        return dispatch(fetchSpecificDoctor(id));
-      }
-    } catch (error) {
-      console.error("Failed to fetch doctor data:", error);
-    }
-  };
+  // const handleEditModal = async (doctor) => {
+  //   try {
+  //     const response = await dispatch(fetchSpecificDoctor(doctor._id));
+  //     if (response?.payload) {
+  //       setDoctorData(response?.payload);
+  //       document.getElementById("update_modal_01").showModal();
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to fetch doctor data:", error);
+  //   }
+  // };
 
-  const handleFileChange = (event) => {
-    event.preventDefault();
-    const file = event.target.files[0];
-    if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setPreviewImage(file);
-      setImage(imageURL);
-    }
-  };
+  // const handleFileChange = (event) => {
+  //   event.preventDefault();
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const imageURL = URL.createObjectURL(file);
+  //     setPreviewImage(file);
+  //     setImage(imageURL);
+  //   }
+  // };
 
-  const imageHostingKey = `https://api.imgbb.com/1/upload?key=${
-    import.meta.env.VITE_IMGBB_API_URL
-  }`;
+  // const imageHostingKey = `https://api.imgbb.com/1/upload?key=${
+  //   import.meta.env.VITE_IMGBB_API_URL
+  // }`;
 
-  const handleUpdate = async (e, id) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("image", previewImage);
+  // const handleUpdate = async (e, id) => {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append("image", previewImage);
 
-    const form = e.target;
-    const name = form.name.value;
-    const title = form.title.value;
-    const experience = form.experience.value;
-    const consultation_fee = form.consultation_fee.value;
+  //   const form = e.target;
+  //   const name = form.name.value;
+  //   const title = form.title.value;
+  //   const experience = form.experience.value;
+  //   const consultation_fee = form.consultation_fee.value;
 
-    try {
-      // Upload image to ImgBB
-      const imgResponse = await axiosPublic.post(imageHostingKey, formData, {
-        headers: { "content-type": "multipart/form-data" },
-      });
+  //   try {
+  //     // Upload image to ImgBB
+  //     const imgResponse = await axiosPublic.post(imageHostingKey, formData, {
+  //       headers: { "content-type": "multipart/form-data" },
+  //     });
 
-      if (imgResponse.data.success) {
-        const imageURL = imgResponse.data.data.display_url;
+  //     if (imgResponse.data.success) {
+  //       const imageURL = imgResponse.data.data.display_url;
 
-        if (!imageURL) {
-          console.error("Image upload failed");
-          toast.error("Failed to upload the image!");
-        }
+  //       if (!imageURL) {
+  //         console.error("Image upload failed");
+  //         toast.error("Failed to upload the image!");
+  //       }
 
-        const updatedData = {
-          name: name,
-          title: title,
-          experience: experience,
-          consultation_fee: consultation_fee,
-          available_days: availability,
-          services: services,
-          image: imageURL,
-        };
+  //       const updatedData = {
+  //         name: name,
+  //         title: title,
+  //         experience: experience,
+  //         consultation_fee: consultation_fee,
+  //         available_days: availability,
+  //         services: services,
+  //         image: imageURL,
+  //       };
 
-        //  console.log(updatedData);
-        // Use unwrap for handle the async errors
-        const response = await dispatch(
-          updateDoctor({ id, updatedData })
-        ).unwrap();
-        if (response) {
-          toast.success("Successfully updated the doctor info");
-          // Fetch latest doctor list
-          dispatch(fetchDoctors());
-          document.getElementById("update_modal_01").close();
-        }
-      }
-    } catch (error) {
-      console.error("Error updating doctor:", error);
-      toast.error("Something went wrong!");
-    }
-  };
+  //       //  console.log(updatedData);
+  //       // Use unwrap for handle the async errors
+  //       const response = await dispatch(
+  //         updateDoctor({ id, updatedData })
+  //       ).unwrap();
+  //       if (response) {
+  //         toast.success("Successfully updated the doctor info");
+  //         // Fetch latest doctor list
+  //         dispatch(fetchSpecificDoctor());
+  //         document.getElementById("update_modal_01").close();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating doctor:", error);
+  //     toast.error("Something went wrong!");
+  //   }
+  // };
 
   const handleDeleteDoctor = async (id) => {
     Swal.fire({
@@ -167,7 +165,7 @@ const DoctorsTableRow = ({
               : "N/A"}
           </p>
         </td>
-        <td className="flex gap-2 lg:py-4 py-10 w-72">
+        <td className="lg:py-4 py-10">
           <button
             onClick={() => handleDeleteDoctor(doctor?._id)}
             className="btn btn-md inline-flex items-center gap-1 bg-rose-600 text-white rounded-none font-semibold px-4"
@@ -175,17 +173,17 @@ const DoctorsTableRow = ({
             <Trash2 />
             <span className="text-base">Remove</span>
           </button>
-          <button
-            onClick={() => handleEditModal(doctor?._id)}
+          {/* <button
+            onClick={() => handleEditModal(doctor)}
             className="btn btn-md inline-flex items-center gap-1 bg-teal-600 text-white rounded-none font-semibold px-4"
           >
             <Edit2 />
             <span className="text-base">Edit</span>
-          </button>
+          </button> */}
         </td>
       </tr>
 
-      <dialog
+      {/* <dialog
         id="update_modal_01"
         className="modal modal-bottom sm:modal-middle"
       >
@@ -402,7 +400,7 @@ const DoctorsTableRow = ({
             </form>
           </div>
         )}
-      </dialog>
+      </dialog> */}
     </>
   );
 };

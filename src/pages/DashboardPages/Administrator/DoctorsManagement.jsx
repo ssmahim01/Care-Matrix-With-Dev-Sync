@@ -1,25 +1,30 @@
 import DoctorsTableRow from "@/components/DoctorsTableRow/DoctorsTableRow";
 import FileInput from "@/components/FileInput/FileInput";
-import {
-  addDoctor,
-  fetchDoctors,
-} from "@/redux/doctors/doctorSlice";
+import { addDoctor, fetchDoctors } from "@/redux/doctors/doctorSlice";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
+import auth from "@/firebase/firebase.config";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 const DoctorsManagement = () => {
   const dispatch = useDispatch();
   const { doctors, status } = useSelector((state) => state.doctors);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
 
   const [form, setForm] = useState({
     name: "",
     title: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+    schedule: "",
     available_days: "",
     experience: "",
     consultation_fee: "",
@@ -42,7 +47,7 @@ const DoctorsManagement = () => {
       setPreviewImage(file);
       setImage(imageURL);
     }
-  };  
+  };
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -83,11 +88,7 @@ const DoctorsManagement = () => {
   };
 
   const removeServices = (serviceToRemove) => {
-    setServices(
-      services.filter(
-        (services) => services !== serviceToRemove
-      )
-    );
+    setServices(services.filter((services) => services !== serviceToRemove));
   };
 
   useEffect(() => {
@@ -97,42 +98,120 @@ const DoctorsManagement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!image) {
+      return toast.error("Please provide an image!");
+    }
+
     const formData = new FormData();
     formData.append("image", previewImage);
 
     try {
+      // Register user in Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
+
+      const user = userCredential.user;
+      if (!user) {
+        return toast.error("User registration failed!");
+      }
+
       // Upload image to ImgBB
       const imgResponse = await axiosPublic.post(imageHostingKey, formData, {
         headers: { "content-type": "multipart/form-data" },
       });
 
-      if(imgResponse.data.success){
-        const imageURL = imgResponse.data.data.display_url;
-    
-        if (!imageURL) {
-          console.error("Image upload failed");
-          toast.error("Failed to upload the image!");
-        }
-    
-        const doctorInfo = {
-          ...form,
-          available_days: availability,
-          services,
-          image: imageURL,
-        };
-        console.log(doctorInfo);
-
-        // Use unwrap for handle the async errors
-        const response = await dispatch(addDoctor(doctorInfo)).unwrap();
-        if (response) {
-          toast.success("Doctor added successfully");
-          // Fetch latest doctor list
-          dispatch(fetchDoctors());
-        }
+      if (!imgResponse.data.success) {
+        return toast.error("Failed to upload the image!");
       }
+
+      const imageURL = imgResponse.data.data.display_url;
+
+      // Update Firebase user profile
+      await updateProfile(user, {
+        displayName: form.name,
+        photoURL: imageURL,
+      });
+
+      // Prepare user data
+      const userData = {
+        role: "doctor",
+        email: form.email,
+        name: form.name,
+        photo: imageURL,
+        phoneNumber: form.phoneNumber,
+        uid: user.uid,
+        createdAt: new Date(
+          userCredential.user.metadata.creationTime
+        ).toISOString(),
+        lastLoginAt: new Date(
+          userCredential.user.metadata.lastSignInTime
+        ).toISOString(),
+      };
+
+      // Send user data to backend
+      try {
+        const userResponse = await axiosSecure.post(
+          `${import.meta.env.VITE_API_URL}/users`,
+          userData
+        );
+
+        if (userResponse.status === 201 || userResponse.status === 200) {
+          console.log("User added successfully:", userResponse.data);
+        } else {
+          console.error("Failed to add user:", userResponse.data);
+          return toast.error("Failed to add user!");
+        }
+      } catch (apiError) {
+        console.error("Error saving user to MongoDB:", apiError);
+        return toast.error(
+          apiError.response?.data?.message || "User data not saved!"
+        );
+      }
+
+      // Prepare doctor info
+      const doctorInfo = {
+        ...form,
+        role: "doctor",
+        available_days: availability,
+        services,
+        image: imageURL,
+        createdAt: new Date(
+          userCredential.user.metadata.creationTime
+        ).toISOString(),
+        lastLoginAt: new Date(
+          userCredential.user.metadata.lastSignInTime
+        ).toISOString(),
+      };
+
+      // Dispatch Redux action
+      const response = await dispatch(addDoctor(doctorInfo)).unwrap();
+      if (response) {
+        toast.success("Doctor added & registered successfully");
+        dispatch(fetchDoctors());
+      }
+
+      // Reset form
+      setForm({
+        name: "",
+        title: "",
+        email: "",
+        password: "",
+        phoneNumber: "",
+        schedule: "",
+        available_days: "",
+        experience: "",
+        consultation_fee: "",
+      });
+      setInputValue("");
+      setServiceValue("");
+      setImage("");
+      setPreviewImage("");
     } catch (error) {
-      console.error("Error adding doctor:", error);
-      toast.error("Something went wrong!");
+      console.error("Error registering doctor:", error);
+      toast.error(error.message || "Something went wrong!");
     }
   };
 
@@ -227,6 +306,105 @@ const DoctorsManagement = () => {
                     />
                   </div>
                 </div>
+                <div className="flex justify-between lg:flex-row flex-col gap-4 items-center">
+                  <div className="w-full">
+                    <label
+                      htmlFor="email"
+                      className="text-[15px] text-text font-[400]"
+                    >
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      value={form.email}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          email: e.target.value,
+                        })
+                      }
+                      placeholder="Provide an email"
+                      className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
+                      required
+                    />
+                  </div>
+
+                  <div className="w-full">
+                    <label
+                      htmlFor="schedule"
+                      className="text-[15px] text-text font-[400]"
+                    >
+                      Schedule <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      name="schedule"
+                      id="schedule"
+                      value={form.schedule}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          schedule: e.target.value,
+                        })
+                      }
+                      placeholder="Select a schedule"
+                      className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-4 lg:flex-row flex-col justify-between items-center">
+                  <div className="w-full">
+                    <label
+                      htmlFor="password"
+                      className="text-[15px] text-text font-[400]"
+                    >
+                      Password <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      value={form.password}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          password: e.target.value,
+                        })
+                      }
+                      placeholder="********"
+                      className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
+                      required
+                    />
+                  </div>
+
+                  <div className="w-full">
+                    <label
+                      htmlFor="phoneNumber"
+                      className="text-[15px] text-text font-[400]"
+                    >
+                      Phone Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="phoneNumber"
+                      id="phoneNumber"
+                      value={form.phoneNumber}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          phoneNumber: e.target.value,
+                        })
+                      }
+                      placeholder="Provide a valid phone number"
+                      className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
+                      required
+                    />
+                  </div>
+                </div>
 
                 <div className="lg:w-1/2 md:w-4/5 w-full">
                   <div className="p-4 border rounded w-full">
@@ -311,38 +489,38 @@ const DoctorsManagement = () => {
                   </div>
                 </div>
 
-                  <div className="lg:w-1/2 md:w-4/5 w-full">
-                    <div className="p-4 border rounded w-full">
-                      <label className="block mb-2">
-                        Enter Services (Press Enter or , to add){" "}
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <div className="flex flex-wrap gap-2 border p-2 rounded">
-                        {services.map((service, index) => (
-                          <span
-                            key={index}
-                            className="px-2 py-1 bg-[#3794da] text-white rounded flex items-center gap-1"
+                <div className="lg:w-1/2 md:w-4/5 w-full">
+                  <div className="p-4 border rounded w-full">
+                    <label className="block mb-2">
+                      Enter Services (Press Enter or , to add){" "}
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <div className="flex flex-wrap gap-2 border p-2 rounded">
+                      {services.map((service, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 bg-[#3794da] text-white rounded flex items-center gap-1"
+                        >
+                          {service}
+                          <button
+                            className="ml-2 text-gray-600 font-bold hover:cursor-pointer hover:text-rose-500"
+                            onClick={() => removeServices(service)}
                           >
-                            {service}
-                            <button
-                              className="ml-2 text-gray-600 font-bold hover:cursor-pointer hover:text-rose-500"
-                              onClick={() => removeServices(service)}
-                            >
-                              <X />
-                            </button>
-                          </span>
-                        ))}
-                        <input
-                          type="text"
-                          className="outline-none flex-1"
-                          value={serviceValue}
-                          onChange={handleServiceChange}
-                          onKeyDown={handleServiceKeyDown}
-                          placeholder="Add Services..."
-                        />
-                      </div>
+                            <X />
+                          </button>
+                        </span>
+                      ))}
+                      <input
+                        type="text"
+                        className="outline-none flex-1"
+                        value={serviceValue}
+                        onChange={handleServiceChange}
+                        onKeyDown={handleServiceKeyDown}
+                        placeholder="Add Services..."
+                      />
                     </div>
                   </div>
+                </div>
 
                 <FileInput
                   image={image}
@@ -350,7 +528,10 @@ const DoctorsManagement = () => {
                   handleFileChange={handleFileChange}
                 />
 
-                <button type="submit" className="lg:w-1/6 md:w-2/5 relative inline-flex items-center justify-center px-6 btn font-bold tracking-tighter text-white bg-[#469ade] rounded-md group mt-2">
+                <button
+                  type="submit"
+                  className="lg:w-1/6 md:w-2/5 relative inline-flex items-center justify-center px-6 btn font-bold tracking-tighter text-white bg-[#469ade] rounded-md group mt-2"
+                >
                   <span className="absolute inset-0 w-full h-full mt-1 ml-1 transition-all duration-300 ease-in-out bg-primary rounded-md group-hover:mt-0 group-hover:ml-0"></span>
                   <span className="absolute inset-0 w-full h-full bg-teal-500 rounded-md "></span>
                   <span className="absolute inset-0 w-full h-full transition-all duration-200 ease-in-out delay-100 bg-primary rounded-md opacity-0 group-hover:opacity-100 "></span>
