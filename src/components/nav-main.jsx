@@ -26,13 +26,17 @@ import {
 } from "@/components/ui/sidebar";
 import { NavLink } from "react-router";
 import { FaUserDoctor } from "react-icons/fa6";
+import { ShoppingBag } from "lucide-react";
 
 export function NavMain() {
   const administrator = true;
   const isDoctor = false;
   const isPharmacist = true;
+  const isPatient = true
+
   const { state } = useSidebar();
   // console.log(state);
+
 
   const dashboardRoutes = (
 
@@ -161,7 +165,48 @@ export function NavMain() {
             <div className="divider"></div>
           </>
         )}
-        
+
+        {/* Patient Dashboard Menu */}
+        {/* {!isPharmacist && !isDoctor && !administrator &&( */}
+        {isPatient && (
+          <>
+            <NavLink to="/dashboard/patient-overview">
+              <h3 className="flex gap-2 items-center">
+                <LayoutDashboard className="text-base" /> Overview
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/patient/manage-cart">
+              <h3 className="flex gap-2 items-center">
+                <ShoppingBag className="text-xl" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}> Manage Cart </span>
+
+              </h3>
+            </NavLink>
+            {/* <NavLink to="/dashboard/pharmacist/manage-banner">
+              <h3 className="flex gap-2 items-center">
+                <TicketSlash className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}> Manage Banners </span>
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/medical-records">
+              <h3 className="flex gap-2 items-center">
+                <FileSpreadsheet className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}> Sales Report </span>
+
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/my-prescriptions">
+              <h3 className="flex gap-2 items-center">
+                <ClipboardPlus className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}> My Prescriptions </span>
+
+              </h3>
+            </NavLink> */}
+            <div className="divider"></div>
+          </>
+        )}
+
+
       </ul>
     </>
   );

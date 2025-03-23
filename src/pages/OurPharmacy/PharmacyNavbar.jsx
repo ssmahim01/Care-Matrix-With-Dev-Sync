@@ -1,8 +1,10 @@
+import useCart from "@/hooks/useCart";
 import { FaShoppingCart, FaTruck } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { Link } from "react-router";
 
 const PharmacyNavbar = ({ search, setSearch }) => {
+  const [cart, cartLoading, refetch] = useCart()
   return (
     <div className="flex justify-between gap-4 items-center flex-wrap">
       {/* Searchbar */}
@@ -25,13 +27,13 @@ const PharmacyNavbar = ({ search, setSearch }) => {
         {/* Buttons Container */}
         <div className="flex gap-4">
           {/* My Cart Button */}
-          <Link to={'/pharmacy/cart'} className="relative flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors cursor-pointer">
+          <Link to={'/dashboard/patient/manage-cart'} className="relative flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors cursor-pointer">
             <FaShoppingCart className="text-lg" />
             <span>My Cart</span>
             {/* Floating Cart Count Badge */}
 
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-              {2}
+              {cart?.length}
             </span>
           </Link>
 

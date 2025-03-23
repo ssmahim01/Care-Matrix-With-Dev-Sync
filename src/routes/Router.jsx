@@ -84,7 +84,6 @@ const Router = () => {
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="book-appointment/:name" element={<BookAppointment />} />
         <Route path="doctor-details/:id" element={<DoctorDetails />} />
-        <Route path="pharmacy/cart" element={<Cart />} />
 
       </Route>
 
@@ -127,6 +126,8 @@ const Router = () => {
         />
 
         {/* Patient Routes */}
+        <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
+
       </Route>
 
       {/* Catch-all for 404 Error Page */}
