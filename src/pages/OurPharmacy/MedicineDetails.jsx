@@ -74,21 +74,9 @@ const MedicineDetails = () => {
     batchNumber,
     manufactureDate,
     expiryDate,
-    manufacturer: {
-      name: manufacturerName,
-      location: manufacturerLocation,
-      contact: manufacturerContact,
-    },
-    supplier: {
-      name: supplierName,
-      location: supplierLocation,
-      contact: supplierContact,
-    },
-    price: {
-      amount,
-      currency,
-      discount: { percentage, discountedAmount, validUntil },
-    },
+    manufacturer,
+    supplier,
+    price,
     prescriptionRequired,
     storageConditions,
     availabilityStatus,
@@ -99,6 +87,8 @@ const MedicineDetails = () => {
     totalReviews,
     isReviewable,
   } = medicine || {};
+
+  console.log(medicine)
 
   return (
     <div className="pt-24 pb-12 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
@@ -111,14 +101,14 @@ const MedicineDetails = () => {
               <span className="inline-block px-2 py-1 text-xs font-semibold bg-black text-white">
                 Discount
               </span>
-              <div className="inline-block px-2 py-1 text-xs font-semibold bg-emerald-500 text-white">
-                -50%
+              <div className="inline-block px-2 py-1 text-xs font-semibold bg-blue-500 text-white">
+                -{price?.discount?.percentage}%
               </div>
             </div>
 
             {/* Main image with navigation arrows */}
             <div className="relative">
-            <ImageWithMagnifier imageURL={imageURL} />
+              <ImageWithMagnifier imageURL={imageURL} />
             </div>
           </div>
         </div>
@@ -139,9 +129,7 @@ const MedicineDetails = () => {
           </h1>
           <Separator />
 
-          <p className="text-gray-600 mt-3 text-[0.9rem]">
-            {description}
-          </p>
+          <p className="text-gray-600 mt-3 text-[0.9rem]">{description}</p>
 
           <div className="flex items-center gap-3">
             <span className="text-[1.5rem] text-gray-800 font-medium">
