@@ -207,6 +207,8 @@ const DoctorsManagement = () => {
       });
       setInputValue("");
       setServiceValue("");
+      setServices([]);
+      setAvailability([]);
       setImage("");
       setPreviewImage("");
     } catch (error) {
