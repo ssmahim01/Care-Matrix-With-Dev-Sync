@@ -1,4 +1,5 @@
 import logo from "@/assets/logo.jpg";
+import { Link } from "react-router";
 
 const Footer = () => {
   return (
@@ -96,48 +97,48 @@ const Footer = () => {
 
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={"/about-us"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   About Us
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={"/contact-us"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Contact Us
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={"/doctors"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Expert Doctors
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={"/"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Our Departments
-                </a>
+                  Our Department
+                </Link>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={"/services"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Our Services
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
