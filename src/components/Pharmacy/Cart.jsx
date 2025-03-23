@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { motion } from "framer-motion";
 
 
 const globalStyles = {
@@ -117,12 +118,17 @@ const Cart = () => {
     return (
         <div className="w-full flex flex-col gap-8 md:gap-0 md:flex-row">
             {/* Left Column - Order Summary */}
-            <div className="bg-gray-50 rounded-md p-4 md:p-8 flex-1">
+            <div
+
+                className="bg-gray-50 rounded-md p-4 md:p-8 flex-1">
                 <div>
                     <h2 className="text-[1.2rem] text-gray-700 font-semibold mb-6">Your order</h2>
                     <div className="border border-gray-200 rounded-md">
-                        {cart?.map((item) => (
-                            <div
+                        {cart?.map((item, idx) => (
+                            <motion.div
+                                initial={{ y: 20, opacity: 0 }}
+                                whileInView={{ y: 0, opacity: 1 }}
+                                transition={{ duration: 0.6, ease: 'easeInOut', delay: idx * 0.1 }}
                                 key={item._id}
                                 className="flex flex-col md:flex-row md:items-center gap-4 border-t p-4 border-gray-200"
                             >
@@ -160,7 +166,7 @@ const Cart = () => {
                                     </div>
                                 </div>
                                 <span className="font-medium">৳ {item.price * item.quantity}</span>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
 
@@ -183,7 +189,11 @@ const Cart = () => {
                     </div>
 
                     {/* Clear Cart Button */}
-                    <div className="flex items-center justify-center gap-5">
+                    <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.8, ease: 'easeInOut', delay: 0.8 }}
+                        className="flex items-center justify-center gap-5">
                         <Link to={'/pharmacy'} >
                             <Button className=" cursor-pointer">
                                 Continue Shopping
@@ -196,7 +206,7 @@ const Cart = () => {
 
                         </Button>
 
-                    </div>
+                    </motion.div>
 
                 </div>
             </div>
