@@ -1,5 +1,6 @@
 import { FaShoppingCart, FaTruck } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
+import { Link } from "react-router";
 
 const PharmacyNavbar = ({ search, setSearch }) => {
   return (
@@ -24,7 +25,7 @@ const PharmacyNavbar = ({ search, setSearch }) => {
         {/* Buttons Container */}
         <div className="flex gap-4">
           {/* My Cart Button */}
-          <button className="relative flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors">
+          <Link to={'/pharmacy/cart'} className="relative flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors cursor-pointer">
             <FaShoppingCart className="text-lg" />
             <span>My Cart</span>
             {/* Floating Cart Count Badge */}
@@ -32,7 +33,7 @@ const PharmacyNavbar = ({ search, setSearch }) => {
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
               {2}
             </span>
-          </button>
+          </Link>
 
           {/* Track My Order Button */}
           <button className="flex items-center gap-2 px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors">
