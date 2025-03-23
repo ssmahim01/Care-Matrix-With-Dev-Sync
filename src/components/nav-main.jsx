@@ -111,6 +111,7 @@ export function NavMain() {
             <NavLink to="/dashboard/pharmacist/manage-medicines">
               <h3 className="flex gap-2 items-center">
                 <GiMedicines className="text-base" /> Manage Medicines
+                <GiMedicines className="text-2xl" /> Manage Medicines
               </h3>
             </NavLink>
             <NavLink to="/dashboard/pharmacist/manage-banner">
