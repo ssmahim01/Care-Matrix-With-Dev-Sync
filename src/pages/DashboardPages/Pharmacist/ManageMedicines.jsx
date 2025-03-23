@@ -42,14 +42,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { medicine_categories } from "@/lib/pharmacy";
+
 import { Button } from "@/components/ui/button";
+import { medicine_categories } from "@/lib/pharmacy";
+import AddMedicine from "@/components/Modal/AddMedicine";
 import Swal from "sweetalert2";
 
 const ManageMedicines = () => {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");
+  const [setOpen, setIsOpen] = useState(false);
   const [selectedCategory, setCategory] = useState("All Medicines");
 
   const {
@@ -196,7 +199,7 @@ const ManageMedicines = () => {
               Reset
             </Button>
             <Button>Add Category</Button>
-            <Button>Add Medicines</Button>
+            <AddMedicine setOpen={setOpen} setIsOpen={setIsOpen} />
           </div>
         </div>
       </div>
