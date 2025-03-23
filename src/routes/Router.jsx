@@ -27,6 +27,7 @@ import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManag
 import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
 import ManageMedicines from "@/pages/DashboardPages/Pharmacist/ManageMedicines";
 import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
+import MedicineDetails from "@/pages/OurPharmacy/MedicineDetails";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -83,6 +84,7 @@ const Router = () => {
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="book-appointment/:name" element={<BookAppointment />} />
         <Route path="doctor-details/:id" element={<DoctorDetails />} />
+        <Route path="medicine/:id" element={<MedicineDetails />} />
       </Route>
 
       {/* Authentication Routes */}

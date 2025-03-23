@@ -39,10 +39,10 @@ const Medicines = ({ medicines, isLoading }) => {
                     </span>
                   </h1>
                   <h3 className="text-xl font-semibold">
-                    <span className="text-4xl">৳</span>
+                    <span className="text-2xl mr-1">৳</span>
                     {medicine?.price?.discountedAmount} -{" "}
                     <span className="opacity-70 text-[16px] font-medium">
-                      <span className="text-4xl">৳</span>
+                      <span className="text-2xl mr-1">৳</span>
                       <span className="line-through">
                         {medicine?.price?.amount}
                       </span>
