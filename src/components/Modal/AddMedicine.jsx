@@ -17,7 +17,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { dosageForms, medicine_categories, medicineStrengths } from "@/lib/pharmacy";
+import {
+  dosageForms,
+  medicine_categories,
+  medicineStrengths,
+} from "@/lib/pharmacy";
 
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -28,6 +32,8 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import toast from "react-hot-toast";
+import { imgUpload } from "@/lib/imgUpload";
 
 const AddMedicine = ({ isOpen, setIsOpen }) => {
   const [image, setImage] = useState("");
@@ -44,6 +50,11 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
   const [brandName, setBrandName] = useState("");
   const [genericName, setGenericName] = useState("");
   const [dosageForm, setDosageForm] = useState("");
+  const [batchNumber, setBatchNumber] = useState("");
+  const [price, setPrice] = useState(0);
+  const [discountedAmount, setDiscountedAmount] = useState(0);
+  const [storageConditions, setStorageConditions] = useState("");
+  const [description, setDescription] = useState("");
 
   // Image Upload Functionality
   const handleUploadImage = () => {
@@ -59,12 +70,75 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
     }
   };
 
+  const discountPercentage = ((price - discountedAmount) / price) * 100;
+  const roundedDiscountPercentage = parseFloat(discountPercentage.toFixed(2));
+
   // Function for post medicine in db
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const medicine = {};
+    if (!image) {
+      setLoading(false);
+      toast.error("Please Select An Image For Your Profile!");
+      return;
+    }
+
+    // Upload Image To imgBB
+    const imageUrl = await imgUpload(image);
+    // Show error if image upload failed
+    if (!imageUrl) {
+      setLoading(false);
+      toast.error("Image Upload Failed! Try Again");
+      return;
+    }
+
+    const medicine = {
+      brandName,
+      genericName,
+      category: selectedCategory,
+      dosageForm,
+      strength: selectedStrength,
+      batchNumber,
+      manufactureDate,
+      expiryDate,
+      manufacturer: {
+        name: "Beximco Pharmaceuticals Ltd.",
+        location: "Dhaka, Bangladesh",
+        contact: "+880-2-9876543",
+      },
+      supplier: {
+        name: "Incepta Pharmaceuticals",
+        location: "Dhaka, Bangladesh",
+        contact: "+880-2-11223344",
+      },
+      price: {
+        amount: price,
+        currency: "BDT",
+        discount: {
+          percentage: roundedDiscountPercentage,
+          discountedAmount: discountedAmount,
+          validUntil,
+        },
+      },
+      prescriptionRequired: prescriptionRequired,
+      storageConditions: storageConditions,
+      availabilityStatus: availability,
+      lastUpdated: new Date().toISOString(),
+      imageURL: imageUrl,
+      description: description,
+      customerReviews: [],
+      totalReviews: 0,
+      isReviewable: isReviewable,
+    };
+
+    try {
+      console.log(medicine);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -173,7 +247,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
                 <SelectContent className="max-h-80 overflow-y-auto">
                   {dosageForms.map((category, index) => (
                     <div key={index}>
-                      <div className="px-3 py-1 text-sm font-semibold bg-gray-100">
+                      <div className="px-3 py-1 text-sm font-semibold">
                         {category.category}
                       </div>
                       {category.forms.map((form, i) => (
@@ -200,11 +274,14 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
                   {Object.entries(medicineStrengths).map(
                     ([category, strengths]) => (
                       <div key={category}>
-                        <div className="px-4 py-2 bg-gray-100 text-sm font-medium">
+                        <div className="px-4 py-2 text-sm font-medium">
                           {category}
                         </div>
                         {strengths.map((strength, i) => (
-                          <SelectItem key={`${category}-${i}`} value={strength}>
+                          <SelectItem
+                            key={`${category}-${strength}-${i}`}
+                            value={strength}
+                          >
                             {strength}
                           </SelectItem>
                         ))}
@@ -307,11 +384,14 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
               <Label>Can users review?</Label>
               <Select value={isReviewable} onValueChange={setIsReviewable}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select an option" />
+                  <SelectValue placeholder="Select an option">
+                    {isReviewable === "" ? "Select an option" : isReviewable}
+                  </SelectValue>
                 </SelectTrigger>
+
                 <SelectContent>
-                  <SelectItem value={true}>Yes, Users can review</SelectItem>
-                  <SelectItem value={false}>No, Users can't review</SelectItem>
+                  <SelectItem value={"Yes"}>Yes, Users can review</SelectItem>
+                  <SelectItem value={"No"}>No, Users can't review</SelectItem>
                 </SelectContent>
               </Select>
             </div>
