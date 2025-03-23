@@ -9,17 +9,17 @@ const Medicines = ({ medicines, isLoading }) => {
           Array.from({ length: 8 }).map((_, index) => (
             <div key={index} className="border rounded p-4 animate-pulse">
               {/* Image Skeleton */}
-              <div className="h-[150px] w-full bg-base-300"></div>
+              <div className="h-[150px] w-full skeleton"></div>
               {/* Text Skeleton */}
               <div className="mt-4 space-y-2">
-                <div className="h-6 bg-base-300 rounded w-4/5"></div>
-                <div className="h-5 bg-base-300 rounded w-2/3"></div>
-                <div className="h-7 bg-base-300 rounded mt-4 w-2/5"></div>
+                <div className="h-6 skeleton rounded w-4/5"></div>
+                <div className="h-5 skeleton rounded w-2/3"></div>
+                <div className="h-7 skeleton rounded mt-4 w-2/5"></div>
               </div>
             </div>
           ))
         : // Medicines List
-          medicines.map((medicine, index) => (
+          medicines?.map((medicine, index) => (
             <Link key={index} to={`/medicine/${medicine._id}`}>
               <div className="border rounded p-4 hover:shadow-xl duration-300 group">
                 {/* Image */}
@@ -40,11 +40,11 @@ const Medicines = ({ medicines, isLoading }) => {
                   </h1>
                   <h3 className="text-xl font-semibold">
                     <span className="text-4xl">৳</span>
-                    {medicine?.price?.amount} -{" "}
+                    {medicine?.price?.discountedAmount} -{" "}
                     <span className="opacity-70 text-[16px] font-medium">
                       <span className="text-4xl">৳</span>
                       <span className="line-through">
-                        {medicine?.price?.discountedAmount}
+                        {medicine?.price?.amount}
                       </span>
                     </span>
                   </h3>

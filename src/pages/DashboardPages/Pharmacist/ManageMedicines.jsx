@@ -226,7 +226,7 @@ const ManageMedicines = () => {
                 <TableRow key={i}>
                   {Array.from({ length: 11 }).map((_, j) => (
                     <TableCell key={j}>
-                      <div className="skeleton h-4 rounded w-full"></div>
+                      <div className="skeleton h-8 rounded w-full"></div>
                     </TableCell>
                   ))}
                 </TableRow>
