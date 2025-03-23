@@ -59,7 +59,7 @@ const ImageWithMagnifier = ({ imageURL }) => {
           width: "150px",
           height: "150px",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
-        //   cursor: 
+          cursor: "pointer"
         }}
       />
     </div>
