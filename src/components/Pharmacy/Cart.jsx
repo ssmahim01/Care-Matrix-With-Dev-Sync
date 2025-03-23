@@ -146,7 +146,7 @@ const Cart = () => {
                                     <h3 className="font-medium">{item.medicineName}</h3>
                                     <div className="flex items-center gap-[30px] mt-2">
                                         <p className="text-sm text-gray-500">
-                                            Strength: <b className="text-gray-800">{item.strength}</b>
+                                            <b className="text-gray-800">{item.strength}</b>
                                         </p>
                                         <div className="flex items-center gap-2">
                                             <button
