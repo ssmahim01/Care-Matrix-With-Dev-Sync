@@ -195,6 +195,7 @@ const ManageMedicines = () => {
             >
               Reset
             </Button>
+            <Button>Add Category</Button>
             <Button>Add Medicines</Button>
           </div>
         </div>
