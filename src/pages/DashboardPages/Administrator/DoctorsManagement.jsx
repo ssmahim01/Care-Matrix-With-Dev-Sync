@@ -9,14 +9,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import auth from "@/firebase/firebase.config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
+import axios from "axios";
 
 const DoctorsManagement = () => {
   const dispatch = useDispatch();
   const { doctors, status } = useSelector((state) => state.doctors);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const axiosPublic = useAxiosPublic();
-  const axiosSecure = useAxiosSecure();
 
   const [form, setForm] = useState({
     name: "",
@@ -107,16 +106,16 @@ const DoctorsManagement = () => {
 
     try {
       // Register user in Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password
-      );
+      // const userCredential = await createUserWithEmailAndPassword(
+      //   auth,
+      //   form.email,
+      //   form.password
+      // );
 
-      const user = userCredential.user;
-      if (!user) {
-        return toast.error("User registration failed!");
-      }
+      // const user = userCredential.user;
+      // if (!user) {
+      //   return toast.error("User registration failed!");
+      // }
 
       // Upload image to ImgBB
       const imgResponse = await axiosPublic.post(imageHostingKey, formData, {
@@ -130,46 +129,46 @@ const DoctorsManagement = () => {
       const imageURL = imgResponse.data.data.display_url;
 
       // Update Firebase user profile
-      await updateProfile(user, {
-        displayName: form.name,
-        photoURL: imageURL,
-      });
+      // await updateProfile(user, {
+      //   displayName: form.name,
+      //   photoURL: imageURL,
+      // });
 
       // Prepare user data
-      const userData = {
-        role: "doctor",
-        email: form.email,
-        name: form.name,
-        photo: imageURL,
-        phoneNumber: form.phoneNumber,
-        uid: user.uid,
-        createdAt: new Date(
-          userCredential.user.metadata.creationTime
-        ).toISOString(),
-        lastLoginAt: new Date(
-          userCredential.user.metadata.lastSignInTime
-        ).toISOString(),
-      };
+      // const userData = {
+      //   role: "doctor",
+      //   email: form.email,
+      //   name: form.name,
+      //   photo: imageURL,
+      //   phoneNumber: form.phoneNumber,
+      //   uid: user.uid,
+      //   createdAt: new Date(
+      //     userCredential.user.metadata.creationTime
+      //   ).toISOString(),
+      //   lastLoginAt: new Date(
+      //     userCredential.user.metadata.lastSignInTime
+      //   ).toISOString(),
+      // };
 
       // Send user data to backend
-      try {
-        const userResponse = await axiosSecure.post(
-          `${import.meta.env.VITE_API_URL}/users`,
-          userData
-        );
+      // try {
+      //   const userResponse = await axios.post(
+      //     `${import.meta.env.VITE_API_URL}/users`,
+      //     userData
+      //   );
 
-        if (userResponse.status === 201 || userResponse.status === 200) {
-          console.log("User added successfully:", userResponse.data);
-        } else {
-          console.error("Failed to add user:", userResponse.data);
-          return toast.error("Failed to add user!");
-        }
-      } catch (apiError) {
-        console.error("Error saving user to MongoDB:", apiError);
-        return toast.error(
-          apiError.response?.data?.message || "User data not saved!"
-        );
-      }
+      //   if (userResponse.status === 201 || userResponse.status === 200) {
+      //     console.log("User added successfully:", userResponse.data);
+      //   } else {
+      //     console.error("Failed to add user:", userResponse.data);
+      //     return toast.error("Failed to add user!");
+      //   }
+      // } catch (apiError) {
+      //   console.error("Error saving user to MongoDB:", apiError);
+      //   return toast.error(
+      //     apiError.response?.data?.message || "User data not saved!"
+      //   );
+      // }
 
       // Prepare doctor info
       const doctorInfo = {
@@ -178,12 +177,13 @@ const DoctorsManagement = () => {
         available_days: availability,
         services,
         image: imageURL,
-        createdAt: new Date(
-          userCredential.user.metadata.creationTime
-        ).toISOString(),
-        lastLoginAt: new Date(
-          userCredential.user.metadata.lastSignInTime
-        ).toISOString(),
+        createdAt: new Date().toISOString(),
+        // createdAt: new Date(
+        //   userCredential.user.metadata.creationTime
+        // ).toISOString(),
+        // lastLoginAt: new Date(
+        //   userCredential.user.metadata.lastSignInTime
+        // ).toISOString(),
       };
 
       // Dispatch Redux action
@@ -218,8 +218,8 @@ const DoctorsManagement = () => {
   return (
     <>
       {/* Doctor List */}
-      {status === "loading" ? (
-        <Skeleton />
+      {status === "idle" ? (
+        <div className="skeleton h-32 w-32"></div>
       ) : (
         <>
           <div className="flex justify-between items-center">
