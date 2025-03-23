@@ -24,9 +24,13 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useAuthUser } from "@/redux/auth/authActions";
+import { logOut, useAuthUser } from "@/redux/auth/authActions";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 export function NavUser() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useAuthUser();
   const { isMobile } = useSidebar();
   return (
@@ -99,8 +103,11 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <LogOut />
-              Log out
+              <p onClick={() => {
+                dispatch(logOut)
+                navigate("/");
+                }} className="cursor-pointer hover:text-rose-500 flex gap-2 items-center"><LogOut className="hover:text-rose-500" />
+              Log out</p>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

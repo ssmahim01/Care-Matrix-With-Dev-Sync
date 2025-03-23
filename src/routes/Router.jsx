@@ -28,6 +28,8 @@ import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
 import ManageMedicines from "@/pages/DashboardPages/Pharmacist/ManageMedicines";
 import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
 import Cart from "@/components/Pharmacy/Cart";
+import Payment from "@/pages/Payment/Payment";
+import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -67,7 +69,7 @@ const Router = () => {
         );
       }
       dispatch(setLoading(false));
-    });
+    })
 
     return () => unsubscribe();
   }, [dispatch]);
@@ -82,8 +84,10 @@ const Router = () => {
         <Route path="services" element={<Services />} />
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
-        <Route path="book-appointment/:name" element={<BookAppointment />} />
-        <Route path="doctor-details/:id" element={<DoctorDetails />} />
+        <Route path='book-appointment/:name' element={<BookAppointment />} />
+        <Route path='book-appointment/payment' element={<Payment />} />
+        <Route path='book-appointment/payment-success' element={<SuccessPayment />} />
+        <Route path='doctor-details/:id' element={<DoctorDetails />} />
 
       </Route>
 
@@ -93,6 +97,10 @@ const Router = () => {
 
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
+        <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
+        <Route path="/dashboard/administrator/manage-users" element={<ManageUsers />} />
+        <Route path="/dashboard/pharmacist/manage-banner" element={<ManageBanners />} />
         {/* Admin Routes */}
         <Route
           path="/dashboard/administrator-overview"

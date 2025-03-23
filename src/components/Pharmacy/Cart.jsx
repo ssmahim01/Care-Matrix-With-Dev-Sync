@@ -319,7 +319,7 @@ const Cart = () => {
                     </button>
                 </form>
 
-                
+
             </div>
 
             {/* Confirmation Modal */}
