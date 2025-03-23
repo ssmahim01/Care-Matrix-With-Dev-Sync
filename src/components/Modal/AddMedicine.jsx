@@ -26,20 +26,22 @@ import {
 import { medicine_categories } from "@/lib/pharmacy";
 import { Textarea } from "@/components/ui/textarea";
 
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 const AddMedicine = ({ isOpen, setIsOpen }) => {
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
-  const [date, setDate] = useState(null);
+  const [validUntil, setValidUntil] = useState(null);
+  const [manufactureDate, setManufactureDate] = useState(null);
+  const [expiryDate, setExpiryDate] = useState(null);
   const [selectedCategory, setCategory] = useState("");
   const [availability, setAvailability] = useState("");
   const [prescriptionRequired, setPrescriptionRequired] = useState("");
@@ -220,28 +222,99 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
             </div>
           </div>
           {/* Discount Valid Until */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-full justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+          <div className="space-y-2">
+            <Label>Discount Price Valid Until</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !validUntil && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {validUntil ? (
+                    format(validUntil, "PPP")
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={validUntil}
+                  onSelect={setValidUntil}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          {/* Manufacture Date & Expiry Date */}
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+            {/* Manufacture Date */}
+            <div className="space-y-2">
+              <Label>Manufacture Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !manufactureDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {manufactureDate ? (
+                      format(manufactureDate, "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={manufactureDate}
+                    onSelect={setManufactureDate}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            {/* Expiry Date */}
+            <div className="space-y-2">
+              <Label>Medicine Expiry Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !expiryDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {expiryDate ? (
+                      format(expiryDate, "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={expiryDate}
+                    onSelect={setExpiryDate}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
