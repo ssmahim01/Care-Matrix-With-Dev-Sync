@@ -12,7 +12,7 @@ const useAppointment = () => {
    const {data:appointments=[], isPending, isLoading, refetch} = useQuery({
     queryKey: "appointments",
     queryFn: async ()=>{
-        const {data} = await axiosSecure.get(`/appointments`)
+        const {data} = await axiosSecure.get(`/appointments/${user?.email}`)
         return data;
     }
    })
