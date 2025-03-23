@@ -25,16 +25,22 @@ import {
 } from "@/components/ui/sidebar";
 import { NavLink } from "react-router";
 import { FaUserDoctor } from "react-icons/fa6";
+import useRole from "@/hooks/useRole";
 
 export function NavMain() {
-  const administrator = true;
-  const isDoctor = false;
-  const isPharmacist = true;
+  const [role, isLoading] = useRole();
+  console.log(role);
 
+  if(isLoading){
+    <div>
+
+    </div>
+  }
+ 
   const dashboardRoutes = (
     <>
       <ul className="menu *:font-semibold *:text-gray-700 flex flex-col gap-6">
-        {administrator && (
+        {role === "administrator" && (
           <>
             <NavLink to="/dashboard/administrator-overview">
               <h3 className="flex gap-2 items-center">
@@ -69,7 +75,7 @@ export function NavMain() {
             <div className="divider mt-2"></div>
           </>
         )}
-        {isDoctor && (
+        {role === "doctor" && (
           <>
             <NavLink to="/dashboard/administrator-overview">
               <h3 className="flex gap-2 items-center">
@@ -99,7 +105,7 @@ export function NavMain() {
             <div className="divider"></div>
           </>
         )}
-        {isPharmacist && (
+        {role === "pharmacist" && (
           <>
             <NavLink to="/dashboard/patient-overview">
               <h3 className="flex gap-2 items-center">
