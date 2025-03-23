@@ -26,6 +26,8 @@ import ManageBanners from "@/pages/DashboardPages/Pharmacist/ManageBanners";
 import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManagement";
 import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
 import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
+import Payment from "@/pages/Payment/Payment";
+import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -65,7 +67,7 @@ const Router = () => {
         );
       }
       dispatch(setLoading(false));
-    });
+    })
 
     return () => unsubscribe();
   }, [dispatch]);
@@ -81,6 +83,8 @@ const Router = () => {
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path='book-appointment/:name' element={<BookAppointment />} />
+        <Route path='book-appointment/payment' element={<Payment />} />
+        <Route path='book-appointment/payment-success' element={<SuccessPayment />} />
         <Route path='doctor-details/:id' element={<DoctorDetails />} />
       </Route>
 
@@ -90,11 +94,11 @@ const Router = () => {
 
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
-      <Route path="/dashboard/manage-appointments" element={<ManageAppointments />} />
-      <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
-      <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
-      <Route path="/dashboard/administrator/manage-users" element={<ManageUsers />} />
-      <Route path="/dashboard/pharmacist/manage-banner" element={<ManageBanners />} />
+        <Route path="/dashboard/manage-appointments" element={<ManageAppointments />} />
+        <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
+        <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
+        <Route path="/dashboard/administrator/manage-users" element={<ManageUsers />} />
+        <Route path="/dashboard/pharmacist/manage-banner" element={<ManageBanners />} />
       </Route>
 
       {/* Catch-all for 404 Error Page */}
