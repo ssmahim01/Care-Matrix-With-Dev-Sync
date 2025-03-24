@@ -29,11 +29,11 @@ import useRole from "@/hooks/useRole";
 
 export function NavMain() {
   const [role, isLoading] = useRole();
-  console.log(role);
+  // console.log(role);
 
   if(isLoading){
-    <div>
-
+    <div className="flex justify-center items-center py-20">
+      <span className="loading loading-bars loading-xl"></span>
     </div>
   }
  
