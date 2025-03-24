@@ -9,7 +9,8 @@ import CareMatrixLogo from "../assets/logo.jpg";
 import { Link } from "react-router";
 
 export function HeadingPlatform() {
-  const { isSidebarCollapsed } = useSidebar();
+  const { state, isSidebarCollapsed } = useSidebar();
+
 
   return (
     <SidebarMenu>
