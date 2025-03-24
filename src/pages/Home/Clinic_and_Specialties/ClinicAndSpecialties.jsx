@@ -32,13 +32,15 @@ export default function ClinicAndSpecialties() {
   const [, setActiveTab] = useState("specialties");
 
   return (
-    <section className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
+    <section className="max-w-screen-2xl">
       {/* Hero Section */}
-      <div className="pb-10" />
+      <div className="-mt-8" />
+      <div className="mb-12">
       <HeroSection />
+      </div>
 
       {/* Main Content */}
-      <main className="lg:pt-16 pt-12 pb-8">
+      <main className="mx-auto w-11/12 xl:w-10/12 pb-8">
         {/* Search and Quick Actions */}
         <div className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-96">
