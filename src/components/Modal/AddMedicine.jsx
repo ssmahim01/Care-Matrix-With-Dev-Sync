@@ -19,8 +19,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import {
   dosageForms,
+  manufacturers,
   medicine_categories,
   medicineStrengths,
+  suppliers,
 } from "@/lib/pharmacy";
 
 import { Calendar } from "@/components/ui/calendar";
@@ -55,6 +57,8 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
   const [discountedAmount, setDiscountedAmount] = useState(0);
   const [storageConditions, setStorageConditions] = useState("");
   const [description, setDescription] = useState("");
+  const [manufacturer, setManufacturer] = useState({});
+  const [supplier, setSupplier] = useState({});
 
   // Image Upload Functionality
   const handleUploadImage = () => {
@@ -102,16 +106,8 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
       batchNumber,
       manufactureDate: manufactureDate.toISOString().split("T")[0],
       expiryDate: expiryDate.toISOString().split("T")[0],
-      manufacturer: {
-        name: "Beximco Pharmaceuticals Ltd.",
-        location: "Dhaka, Bangladesh",
-        contact: "+880-2-9876543",
-      },
-      supplier: {
-        name: "Incepta Pharmaceuticals",
-        location: "Dhaka, Bangladesh",
-        contact: "+880-2-11223344",
-      },
+      manufacturer,
+      supplier,
       price: {
         amount: parseInt(price),
         currency: "BDT",
@@ -459,6 +455,66 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
                 <SelectContent>
                   <SelectItem value={"Yes"}>Yes, Users can review</SelectItem>
                   <SelectItem value={"No"}>No, Users can't review</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          {/* Manufacture & Supplier */}
+          <div>
+            {/* Manufacturer Select */}
+            <div className="space-y-2">
+              <Label>Select Manufacturer</Label>
+              <Select
+                value={manufacturer.name || ""}
+                onValueChange={(value) => {
+                  const selectedManufacturer = manufacturers.find(
+                    (m) => m.name === value
+                  );
+                  setManufacturer(selectedManufacturer);
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  {manufacturer.name ? (
+                    <span>{manufacturer.name}</span>
+                  ) : (
+                    <SelectValue placeholder="Select Manufacturer" />
+                  )}
+                </SelectTrigger>
+                <SelectContent className="max-h-80 overflow-y-auto">
+                  {manufacturers.map((m) => (
+                    <SelectItem key={m.name} value={m.name}>
+                      {m.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Supplier Select */}
+            <div className="space-y-2">
+              <Label>Select Supplier</Label>
+              <Select
+                value={supplier.name || ""}
+                onValueChange={(value) => {
+                  const selectedSupplier = suppliers.find(
+                    (s) => s.name === value
+                  );
+                  setSupplier(selectedSupplier);
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  {supplier.name ? (
+                    <span>{supplier.name}</span>
+                  ) : (
+                    <SelectValue placeholder="Select Supplier" />
+                  )}
+                </SelectTrigger>
+                <SelectContent className="max-h-80 overflow-y-auto">
+                  {suppliers.map((s) => (
+                    <SelectItem key={s.name} value={s.name}>
+                      {s.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
