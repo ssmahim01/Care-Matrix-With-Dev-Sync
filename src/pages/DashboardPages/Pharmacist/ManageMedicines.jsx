@@ -235,7 +235,7 @@ const ManageMedicines = () => {
                   ))}
                 </TableRow>
               ))
-            : data?.medicines?.map((medicine, i) => (
+            : data?.medicines?.map((medicine) => (
                 <TableRow key={medicine._id}>
                   <TableCell>
                     <Avatar>

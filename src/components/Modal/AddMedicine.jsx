@@ -170,7 +170,6 @@ const AddMedicine = ({ isOpen, setIsOpen, refetch }) => {
     };
 
     try {
-      console.log("Medicine Data:", medicine);
       // Post medicine in db --->
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/pharmacy/medicine`,

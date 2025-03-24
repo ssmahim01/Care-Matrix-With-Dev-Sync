@@ -59,7 +59,7 @@ export function NavMain() {
           <>
             <NavLink to="/dashboard/administrator-overview">
               <h3 className="flex gap-2 items-center">
-                <LayoutDashboard className="text-base" /> Overview
+                <LayoutDashboard className="text-base" /> 
                 <span className={`${state === "collapsed" && "md:hidden"}`}>Overview </span>
 
 
@@ -105,7 +105,7 @@ export function NavMain() {
           <>
             <NavLink to="/dashboard/administrator-overview">
               <h3 className="flex gap-2 items-center">
-                <LayoutDashboard className="text-base" /> Overview
+                <LayoutDashboard className="text-base" />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>Overview </span>
 
               </h3>
