@@ -199,7 +199,7 @@ const ManageMedicines = () => {
               Reset
             </Button>
             <Button>Add Category</Button>
-            <AddMedicine setOpen={setOpen} setIsOpen={setIsOpen} />
+            <AddMedicine setOpen={setOpen} setIsOpen={setIsOpen} refetch={refetch} />
           </div>
         </div>
       </div>

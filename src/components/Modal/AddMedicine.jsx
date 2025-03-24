@@ -36,8 +36,9 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { imgUpload } from "@/lib/imgUpload";
+import axios from "axios";
 
-const AddMedicine = ({ isOpen, setIsOpen }) => {
+const AddMedicine = ({ isOpen, setIsOpen, refetch }) => {
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState("");
   const [validUntil, setValidUntil] = useState(null);
@@ -136,6 +137,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
       return;
     }
 
+    // Medicine Data
     const medicine = {
       brandName,
       genericName,
@@ -169,15 +171,17 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
 
     try {
       console.log("Medicine Data:", medicine);
-
-      // Debug Log
-      Object.entries(medicine).forEach(([key, value]) => {
-        console.log(`${key}:`, value);
-      });
-
-      toast.success("Medicine added successfully!");
+      // Post medicine in db --->
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/pharmacy/medicine`,
+        medicine
+      );
+      if (data.data.insertedId) {
+        refetch();
+        toast.success("Medicine Added Successfully!");
+      }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -249,7 +253,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
                 <img
                   src={preview}
                   alt="Selected file preview"
-                  className="mx-auto object-cover rounded-full w-[80%] h-44"
+                  className="mx-auto object-cover rounded w-[80%] h-44"
                 />
                 <MdDelete
                   className="text-[2rem] text-white bg-[#000000ad] p-1 absolute top-0 right-0 cursor-pointer rounded-tr-[13px]"
