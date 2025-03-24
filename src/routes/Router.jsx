@@ -27,6 +27,7 @@ import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManag
 import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
 import ManageMedicines from "@/pages/DashboardPages/Pharmacist/ManageMedicines";
 import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
+import Cart from "@/components/Pharmacy/Cart";
 import Payment from "@/pages/Payment/Payment";
 import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
 
@@ -87,7 +88,7 @@ const Router = () => {
         <Route path='book-appointment/payment' element={<Payment />} />
         <Route path='book-appointment/payment-success' element={<SuccessPayment />} />
         <Route path='doctor-details/:id' element={<DoctorDetails />} />
-        
+
       </Route>
 
       {/* Authentication Routes */}
@@ -131,8 +132,10 @@ const Router = () => {
           path="/dashboard/manage-appointments"
           element={<ManageAppointments />}
         />
-        
+
         {/* Patient Routes */}
+        <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
+
       </Route>
 
       {/* Catch-all for 404 Error Page */}
