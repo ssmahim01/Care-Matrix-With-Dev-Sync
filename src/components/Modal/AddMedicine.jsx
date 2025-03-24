@@ -100,8 +100,8 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
       dosageForm,
       strength: selectedStrength,
       batchNumber,
-      manufactureDate,
-      expiryDate,
+      manufactureDate: manufactureDate.toISOString().split("T")[0],
+      expiryDate: expiryDate.toISOString().split("T")[0],
       manufacturer: {
         name: "Beximco Pharmaceuticals Ltd.",
         location: "Dhaka, Bangladesh",
@@ -133,7 +133,30 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
     };
 
     try {
-      console.log(medicine);
+      console.log("Brand Name:", medicine.brandName);
+      console.log("Generic Name:", medicine.genericName);
+      console.log("Category:", medicine.category);
+      console.log("Dosage Form:", medicine.dosageForm);
+      console.log("Strength:", medicine.strength);
+      console.log("Batch Number:", medicine.batchNumber);
+      console.log("Manufacture Date:", medicine.manufactureDate);
+      console.log("Expiry Date:", medicine.expiryDate);
+      console.log("Manufacturer:", medicine.manufacturer);
+      console.log("Supplier:", medicine.supplier);
+      console.log("Price:", medicine.price);
+      console.log("Prescription Required:", medicine.prescriptionRequired);
+      console.log("Storage Conditions:", medicine.storageConditions);
+      console.log("Availability Status:", medicine.availabilityStatus);
+      console.log("Last Updated:", medicine.lastUpdated);
+      console.log("Image URL:", medicine.imageURL);
+      console.log("Description:", medicine.description);
+      console.log("Customer Reviews:", medicine.customerReviews);
+      console.log("Total Reviews:", medicine.totalReviews);
+      console.log("Is Reviewable:", medicine.isReviewable);
+
+      Object.entries(medicine).forEach(([key, value]) => {
+        console.log(`${key}:`, value);
+      });
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -159,17 +182,29 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">
               <Label>Brand Name</Label>
-              <Input placeholder={"Enter Medicine Brand Name"} />
+              <Input
+                required
+                placeholder={"Enter Medicine Brand Name"}
+                onChange={(e) => setBrandName(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <Label>Generic Name</Label>
-              <Input placeholder={"Enter Medicine Generic Name"} />
+              <Input
+                required
+                placeholder={"Enter Medicine Generic Name"}
+                onChange={(e) => setGenericName(e.target.value)}
+              />
             </div>
           </div>
           {/* Description */}
           <div className="space-y-2">
             <Label>Description</Label>
-            <Textarea placeholder={"Enter Medicine Description"} />
+            <Textarea
+              required
+              placeholder={"Enter Medicine Description"}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           {/* Image */}
           <div className="w-full">
@@ -295,12 +330,20 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
           {/* Batch Number */}
           <div className="space-y-2">
             <Label>Batch Number</Label>
-            <Input placeholder={"Enter Medicine Batch Number"} />
+            <Input
+              required
+              placeholder={"Enter Medicine Batch Number"}
+              onChange={(e) => setBatchNumber(e.target.value)}
+            />
           </div>
           {/* Storage Conditions */}
           <div className="space-y-2">
             <Label>Storage Conditions</Label>
-            <Input placeholder={"Enter Medicine Storage Conditions"} />
+            <Input
+              required
+              placeholder={"Enter Medicine Storage Conditions"}
+              onChange={(e) => setStorageConditions(e.target.value)}
+            />
           </div>
           {/* Availability & Prescription Required */}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
@@ -341,11 +384,21 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">
               <Label>Original Price</Label>
-              <Input type="number" placeholder={"Enter Original Price"} />
+              <Input
+                required
+                type="number"
+                placeholder={"Enter Original Price"}
+                onChange={(e) => setPrice(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <Label>Discounted Price</Label>
-              <Input type="number" placeholder={"Enter Discounted Price"} />
+              <Input
+                required
+                type="number"
+                placeholder={"Enter Discounted Price"}
+                onChange={(e) => setDiscountedAmount(e.target.value)}
+              />
             </div>
           </div>
           {/* Discount Valid Until & isReviewable */}
