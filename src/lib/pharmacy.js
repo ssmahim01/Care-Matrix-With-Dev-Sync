@@ -247,3 +247,184 @@ export const medicineStrengths = {
     "7.5%",
   ],
 };
+
+export const manufacturers = [
+  {
+    name: "ACI Limited",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-11220099",
+  },
+  {
+    name: "Square Pharmaceuticals Ltd.",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-12345678",
+  },
+  {
+    name: "Beximco Pharmaceuticals Ltd.",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-222262070",
+  },
+  {
+    name: "Renata Limited",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-222223410",
+  },
+  {
+    name: "Incepta Pharmaceuticals Ltd.",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-55012345",
+  },
+  {
+    name: "Eskayef Pharmaceuticals Ltd.",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-222285620",
+  },
+  {
+    name: "Opsonin Pharma Limited",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-8878687",
+  },
+  {
+    name: "Aristopharma Ltd.",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-222227490",
+  },
+  {
+    name: "Healthcare Pharmaceuticals Limited",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-9898788",
+  },
+  {
+    name: "Beacon Pharmaceuticals Limited",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-55568050",
+  },
+  {
+    name: "Sanofi",
+    location: "Paris, France",
+    contact: "+33-1-53777000",
+  },
+  {
+    name: "Pfizer Inc.",
+    location: "New York, USA",
+    contact: "+1-212-733-2323",
+  },
+  {
+    name: "Roche",
+    location: "Basel, Switzerland",
+    contact: "+41-61-6881111",
+  },
+  {
+    name: "Novartis",
+    location: "Basel, Switzerland",
+    contact: "+41-61-3241111",
+  },
+  {
+    name: "GSK (GlaxoSmithKline)",
+    location: "London, UK",
+    contact: "+44-20-80475000",
+  },
+  {
+    name: "Merck & Co., Inc.",
+    location: "New Jersey, USA",
+    contact: "+1-908-740-4000",
+  },
+  {
+    name: "AstraZeneca",
+    location: "Cambridge, UK",
+    contact: "+44-20-37494000",
+  },
+  {
+    name: "Johnson & Johnson",
+    location: "New Brunswick, USA",
+    contact: "+1-732-524-0400",
+  },
+  {
+    name: "Bayer AG",
+    location: "Leverkusen, Germany",
+    contact: "+49-214-301",
+  },
+];
+
+export const suppliers = [
+  {
+    name: "Biopharma Limited",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-222227368",
+  },
+  {
+    name: "Walton Healthcare",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-222285888",
+  },
+  {
+    name: "Globe Pharmaceuticals Ltd.",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-9551581",
+  },
+  {
+    name: "ACME Laboratories Ltd.",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-9887004",
+  },
+  {
+    name: "Nuvista Pharma Ltd.",
+    location: "Dhaka, Bangladesh",
+    contact: "+880-2-9820219",
+  },
+  {
+    name: "Cardinal Health",
+    location: "Ohio, USA",
+    contact: "+1-614-757-5000",
+  },
+  {
+    name: "McKesson Corporation",
+    location: "Texas, USA",
+    contact: "+1-415-983-8300",
+  },
+  {
+    name: "Celesio AG",
+    location: "Stuttgart, Germany",
+    contact: "+49-711-50010",
+  },
+  {
+    name: "Sinopharm",
+    location: "Beijing, China",
+    contact: "+86-10-64058888",
+  },
+  {
+    name: "Zuellig Pharma",
+    location: "Hong Kong",
+    contact: "+852-28996388",
+  },
+  {
+    name: "AmerisourceBergen",
+    location: "Pennsylvania, USA",
+    contact: "+1-610-727-7000",
+  },
+  {
+    name: "DHL Supply Chain",
+    location: "Bonn, Germany",
+    contact: "+49-228-1820",
+  },
+  {
+    name: "Mitsubishi Logistics Corporation",
+    location: "Tokyo, Japan",
+    contact: "+81-3-3278-6650",
+  },
+  {
+    name: "Medipal Holdings Corporation",
+    location: "Tokyo, Japan",
+    contact: "+81-3-3517-5111",
+  },
+  {
+    name: "Almac Group",
+    location: "Craigavon, Northern Ireland",
+    contact: "+44-28-38335000",
+  },
+  {
+    name: "Piramal Pharma Solutions",
+    location: "Mumbai, India",
+    contact: "+91-22-30466400",
+  },
+];

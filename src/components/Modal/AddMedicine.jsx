@@ -80,7 +80,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
 
     if (!image) {
       setLoading(false);
-      toast.error("Please Select An Image For Your Profile!");
+      toast.error("Please Select An Image For Medicine!");
       return;
     }
 
@@ -113,11 +113,11 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
         contact: "+880-2-11223344",
       },
       price: {
-        amount: price,
+        amount: parseInt(price),
         currency: "BDT",
         discount: {
           percentage: roundedDiscountPercentage,
-          discountedAmount: discountedAmount,
+          discountedAmount: parseInt(discountedAmount),
           validUntil,
         },
       },
@@ -129,7 +129,7 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
       description: description,
       customerReviews: [],
       totalReviews: 0,
-      isReviewable: isReviewable,
+      isReviewable: isReviewable === "Yes" ? true : false,
     };
 
     try {
@@ -365,15 +365,21 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
             <div className="space-y-2">
               <Label>Prescription Required</Label>
               <Select
-                value={prescriptionRequired}
-                onValueChange={setPrescriptionRequired}
+                value={
+                  prescriptionRequired === ""
+                    ? undefined
+                    : prescriptionRequired.toString()
+                }
+                onValueChange={(value) =>
+                  setPrescriptionRequired(value === "true")
+                }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select An option" />
+                  <SelectValue placeholder="Select an option" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={true}>Prescription Required</SelectItem>
-                  <SelectItem value={false}>
+                  <SelectItem value="true">Prescription Required</SelectItem>
+                  <SelectItem value="false">
                     Prescription Not Required
                   </SelectItem>
                 </SelectContent>
@@ -381,13 +387,13 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
             </div>
           </div>
           {/* Price & Discounted Price */}
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <div className="space-y-2">
               <Label>Original Price</Label>
               <Input
                 required
                 type="number"
-                placeholder={"Enter Original Price"}
+                placeholder={"Original Price"}
                 onChange={(e) => setPrice(e.target.value)}
               />
             </div>
@@ -396,9 +402,13 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
               <Input
                 required
                 type="number"
-                placeholder={"Enter Discounted Price"}
+                placeholder={"Discounted Price"}
                 onChange={(e) => setDiscountedAmount(e.target.value)}
               />
+            </div>
+            <div className="space-y-2 ">
+              <Label>Percentage</Label>
+              <Input readOnly value={roundedDiscountPercentage} />
             </div>
           </div>
           {/* Discount Valid Until & isReviewable */}
@@ -433,9 +443,13 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
               </Popover>
             </div>
             {/* isReviewable */}
-            <div className="space-y-2">
+            <div className="space-y-2 py-0 my-0">
               <Label>Can users review?</Label>
-              <Select value={isReviewable} onValueChange={setIsReviewable}>
+              <Select
+                className={"mb-0"}
+                value={isReviewable}
+                onValueChange={setIsReviewable}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select an option">
                     {isReviewable === "" ? "Select an option" : isReviewable}
