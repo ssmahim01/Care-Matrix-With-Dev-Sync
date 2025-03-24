@@ -123,9 +123,9 @@ const PharmacistOverview = () => {
           </div>
         </CardContent>
       </Card>
-      <div className="flex gap-6 items-center flex-col lg:flex-row">
+      <div className="flex gap-6 items-center flex-col lg:flex-row w-full">
         {/* Medicines Per Manufacturer Chart */}
-        <Card className="bg-white border border-gray-200 rounded-lg px-4 py-8 shadow-sm">
+        <Card className="bg-white border w-full border-gray-200 rounded-lg px-4 py-8 shadow-sm">
           <CardHeader>
             <CardTitle className="text-2xl font-bold mb-3">
               Medicines Per Manufacturer
@@ -178,7 +178,7 @@ const PharmacistOverview = () => {
           </CardContent>
         </Card>
         {/* Medicines Per Supplier Chart */}
-        <Card className="bg-white border border-gray-200 rounded-lg px-4 py-8 shadow-sm">
+        <Card className="bg-white border w-full border-gray-200 rounded-lg px-4 py-8 shadow-sm">
           <CardHeader>
             <CardTitle className="text-2xl font-bold mb-3">
               Medicines Per Supplier

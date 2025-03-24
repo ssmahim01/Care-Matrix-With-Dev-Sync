@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 export default function Hero() {
   return (
     <div className="relative w-full mx-auto overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400">
-      {/* Background elements */}
       <div className="absolute inset-0 opacity-10">
         <svg
           width="100%"
@@ -23,7 +22,6 @@ export default function Hero() {
         </svg>
       </div>
 
-      {/* Heartbeat line */}
       <div className="absolute bottom-0 left-0 right-0 h-20 opacity-20">
         <svg
           viewBox="0 0 1200 60"
@@ -41,7 +39,6 @@ export default function Hero() {
 
       <div className="relative mx-auto px-4 w-11/12 lg:w-10/12 max-w-screen-2xl py-16 lg:py-20">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
-          {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -49,7 +46,6 @@ export default function Hero() {
             viewport={{ once: true }}
             className="lg:w-1/2 space-y-6 z-10"
           >
-            {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -72,7 +68,6 @@ export default function Hero() {
               operations. Experience the future of hospital management today!
             </p>
 
-            {/* Stats */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -99,7 +94,6 @@ export default function Hero() {
               ))}
             </motion.div>
 
-            {/* Search Bar */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -123,7 +117,6 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right Image Content */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -132,11 +125,9 @@ export default function Hero() {
             className="lg:w-1/2 relative z-10"
           >
             <div className="relative">
-              {/* Decorative elements */}
               <div className="absolute -top-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
               <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
 
-              {/* Main image with frame */}
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
                   src={expertDoctors}
@@ -144,7 +135,6 @@ export default function Hero() {
                   className="relative w-full h-auto object-cover"
                 />
 
-                {/* Floating card */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -181,7 +171,6 @@ export default function Hero() {
                 </motion.div>
               </div>
 
-              {/* Feature badges */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
