@@ -9,6 +9,11 @@ import {
 } from "@/components/ui/table";
 
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 import {
@@ -200,7 +205,11 @@ const ManageMedicines = () => {
               Reset
             </Button>
             <Button>Add Category</Button>
-            <AddMedicine setOpen={setOpen} setIsOpen={setIsOpen} refetch={refetch} />
+            <AddMedicine
+              setOpen={setOpen}
+              setIsOpen={setIsOpen}
+              refetch={refetch}
+            />
           </div>
         </div>
       </div>
@@ -219,6 +228,8 @@ const ManageMedicines = () => {
               <sub className="text-[9px]">(BDT)</sub>
             </TableHead>
             <TableHead>Availability</TableHead>
+            <TableHead>Manufacturer</TableHead>
+            <TableHead>Supplier</TableHead>
             <TableHead>Manufacture</TableHead>
             <TableHead>Expiry Date</TableHead>
             <TableHead>Actions</TableHead>
@@ -257,21 +268,52 @@ const ManageMedicines = () => {
                     ৳{medicine?.price?.amount || "N/A"} || ৳
                     {medicine?.price?.discount?.discountedAmount || "NA"}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={"max-w-[45px]"}>
                     <span
                       className={
                         medicine.availabilityStatus === "In Stock"
-                          ? "text-green-500"
+                          ? "text-green-500 mr-1"
                           : medicine.availabilityStatus === "Limited Stock"
-                          ? "text-yellow-500"
+                          ? "text-yellow-500 mr-1"
                           : medicine.availabilityStatus === "Out of Stock"
-                          ? "text-red-500"
-                          : "text-gray-500"
+                          ? "text-red-500 mr-1"
+                          : "text-gray-500 mr-1"
                       }
                     >
                       ●
                     </span>
                     {medicine?.availabilityStatus || "N/A"}
+                  </TableCell>
+                  <TableCell className={"truncate max-w-[60px] cursor-pointer"}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>{medicine?.manufacturer?.name || "N/A"}</span>
+                      </TooltipTrigger>
+                      {medicine?.manufacturer?.name && (
+                        <TooltipContent className={"space-y-1.5 flex flex-col"}>
+                          <span>Name: {medicine?.manufacturer?.name}</span>
+                          <span>
+                            Location: {medicine?.manufacturer?.location}
+                          </span>
+                          <span>Phone: {medicine?.manufacturer?.contact}</span>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TableCell>
+
+                  <TableCell className={"truncate max-w-[80px] cursor-pointer"}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>{medicine?.supplier?.name || "N/A"}</span>
+                      </TooltipTrigger>
+                      {medicine?.supplier.name && (
+                        <TooltipContent className={"space-y-1.5 flex flex-col"}>
+                          <span>Name: {medicine?.supplier?.name}</span>
+                          <span>Location: {medicine?.supplier?.location}</span>
+                          <span>Phone: {medicine?.supplier?.contact}</span>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
                   </TableCell>
                   <TableCell>
                     {(medicine?.manufactureDate &&
