@@ -193,6 +193,7 @@ const ManageMedicines = () => {
             <Button
               onClick={() => {
                 setCategory("");
+                setSearch("");
                 setSort("");
               }}
             >
@@ -241,7 +242,7 @@ const ManageMedicines = () => {
                       <AvatarImage
                         src={medicine?.imageURL}
                         alt="Medicine Image"
-                        className="min-w-24 h-16"
+                        className="min-w-24 h-16 object-cover"
                       />
                     </Avatar>
                   </TableCell>

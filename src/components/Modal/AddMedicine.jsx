@@ -183,6 +183,7 @@ const AddMedicine = ({ isOpen, setIsOpen, refetch }) => {
     } catch (error) {
       toast.error(error.message);
     } finally {
+      setIsOpen(false);
       setLoading(false);
     }
   };
