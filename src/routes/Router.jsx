@@ -6,11 +6,7 @@ import ContactUs from "@/pages/ContactUs/ContactUs";
 import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
-import {
-  logOutUser,
-  setLoading,
-  setUser,
-} from "@/redux/auth/authSlice";
+import { logOutUser, setLoading, setUser } from "@/redux/auth/authSlice";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { onAuthStateChanged } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
@@ -32,6 +28,7 @@ import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManag
 import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
 import ManageMedicines from "@/pages/DashboardPages/Pharmacist/ManageMedicines";
 import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
+import MedicineDetails from "@/pages/OurPharmacy/MedicineDetails";
 import Cart from "@/components/Pharmacy/Cart";
 import Payment from "@/pages/Payment/Payment";
 import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
@@ -44,41 +41,37 @@ const Router = () => {
   useEffect(() => {
     dispatch(setLoading(true));
 
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      async (currentUser) => {
-        if (currentUser) {
-          dispatch(
-            setUser({
-              email: currentUser.email,
-              displayName: currentUser.displayName,
-              photoURL: currentUser.photoURL,
-              uid: currentUser.uid,
-              createdAt: currentUser.metadata.creationTime,
-              lastLoginAt:
-                currentUser.metadata.lastSignInTime,
-            })
-          );
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        dispatch(
+          setUser({
+            email: currentUser.email,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+            uid: currentUser.uid,
+            createdAt: currentUser.metadata.creationTime,
+            lastLoginAt: currentUser.metadata.lastSignInTime,
+          })
+        );
 
-          // Set Token in Cookies
-          await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/jwt`,
-            { email: currentUser.email },
-            { withCredentials: true }
-          );
-        } else {
-          dispatch(logOutUser());
+        // Set Token in Cookies
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/jwt`,
+          { email: currentUser.email },
+          { withCredentials: true }
+        );
+      } else {
+        dispatch(logOutUser());
 
-          // Clear Token from Cookies
-          await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/logout`,
-            {},
-            { withCredentials: true }
-          );
-        }
-        dispatch(setLoading(false));
+        // Clear Token from Cookies
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/logout`,
+          {},
+          { withCredentials: true }
+        );
       }
-    );
+      dispatch(setLoading(false));
+    });
 
     return () => unsubscribe();
   }, [dispatch]);
@@ -92,18 +85,18 @@ const Router = () => {
         <Route path="contact-us" element={<ContactUs />} />
         <Route path="services" element={<Services />} />
         <Route path="pharmacy" element={<OurPharmacy />} />
+        <Route path="about-us" element={<DetailsAboutUs />} />
+        <Route path="medicine/:id" element={<MedicineDetails />} />
+
+        <Route path="book-appointment/payment" element={<Payment />} />
         <Route
-          path="about-us"
-          element={<DetailsAboutUs />}
+          path="book-appointment/payment-success"
+          element={<SuccessPayment />}
         />
-        <Route
-          path="book-appointment/:name"
-          element={<BookAppointment />}
-        />
-        <Route
-          path="doctor-details/:id"
-          element={<DoctorDetails />}
-        />
+
+        <Route path="about-us" element={<DetailsAboutUs />} />
+        <Route path="book-appointment/:name" element={<BookAppointment />} />
+        <Route path="doctor-details/:id" element={<DoctorDetails />} />
       </Route>
 
       {/* Authentication Routes */}
@@ -113,6 +106,10 @@ const Router = () => {
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
         {/* Admin Routes */}
+        <Route
+          path="/dashboard/administrator/manage-users"
+          element={<ManageUsers />}
+        />
         <Route
           path="/dashboard/administrator-overview"
           element={<AdministratorOverview />}
@@ -146,7 +143,6 @@ const Router = () => {
 
         {/* Patient Routes */}
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
-
       </Route>
 
       {/* Catch-all for 404 Error Page */}
