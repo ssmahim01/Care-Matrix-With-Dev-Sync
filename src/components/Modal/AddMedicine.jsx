@@ -75,25 +75,64 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
   };
 
   const discountPercentage = ((price - discountedAmount) / price) * 100;
-  const roundedDiscountPercentage = parseFloat(discountPercentage.toFixed(2));
+  const roundedDiscountPercentage = parseInt(discountPercentage.toFixed(2));
 
   // Function for post medicine in db
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!image) {
-      setLoading(false);
-      toast.error("Please Select An Image For Medicine!");
-      return;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Form Validations
+    const validations = [
+      [!image, "Upload A Medicine Image To Proceed!"],
+      [!selectedCategory, "Select A Category For The Medicine!"],
+      [!dosageForm, "Specify A Dosage Form For The Medicine!"],
+      [!selectedStrength, "Select A Strength Value For The Medicine!"],
+      [!availability, "Indicate The Availability Status Of The Medicine!"],
+      [prescriptionRequired === "", "Specify If A Prescription Is Required!"],
+      [!validUntil, "Set A Valid Until Date For The Discount!"],
+      [!isReviewable, "Indicate If The Medicine Is Reviewable!"],
+      [!manufacturer?.name, "Provide The Manufacturer's Name!"],
+      [!supplier?.name, "Provide The Supplier's Name!"],
+      [
+        !manufactureDate ||
+          !(manufactureDate instanceof Date) ||
+          isNaN(manufactureDate),
+        "Please Provide A Valid Manufacture Date!",
+      ],
+      [
+        !expiryDate || !(expiryDate instanceof Date) || isNaN(expiryDate),
+        "Please Provide A Valid Expiry Date!",
+      ],
+      [
+        manufactureDate && expiryDate && manufactureDate >= expiryDate,
+        "Manufacture Date Must Be Earlier Than The Expiry Date!",
+      ],
+      [expiryDate && expiryDate <= today, "Expiry Date Must Be A Future Date!"],
+    ];
+
+    // Check all validations
+    for (const [condition, errorMessage] of validations) {
+      if (condition) {
+        setLoading(false);
+        toast.error(errorMessage);
+        return;
+      }
     }
 
-    // Upload Image To imgBB
-    const imageUrl = await imgUpload(image);
-    // Show error if image upload failed
-    if (!imageUrl) {
+    // Image upload
+    let imageUrl;
+    try {
+      imageUrl = await imgUpload(image);
+      if (!imageUrl) {
+        toast.error("Image upload failed");
+      }
+    } catch (error) {
       setLoading(false);
-      toast.error("Image Upload Failed! Try Again");
+      toast.error("Failed to upload image. Please try again later.");
       return;
     }
 
@@ -129,30 +168,14 @@ const AddMedicine = ({ isOpen, setIsOpen }) => {
     };
 
     try {
-      console.log("Brand Name:", medicine.brandName);
-      console.log("Generic Name:", medicine.genericName);
-      console.log("Category:", medicine.category);
-      console.log("Dosage Form:", medicine.dosageForm);
-      console.log("Strength:", medicine.strength);
-      console.log("Batch Number:", medicine.batchNumber);
-      console.log("Manufacture Date:", medicine.manufactureDate);
-      console.log("Expiry Date:", medicine.expiryDate);
-      console.log("Manufacturer:", medicine.manufacturer);
-      console.log("Supplier:", medicine.supplier);
-      console.log("Price:", medicine.price);
-      console.log("Prescription Required:", medicine.prescriptionRequired);
-      console.log("Storage Conditions:", medicine.storageConditions);
-      console.log("Availability Status:", medicine.availabilityStatus);
-      console.log("Last Updated:", medicine.lastUpdated);
-      console.log("Image URL:", medicine.imageURL);
-      console.log("Description:", medicine.description);
-      console.log("Customer Reviews:", medicine.customerReviews);
-      console.log("Total Reviews:", medicine.totalReviews);
-      console.log("Is Reviewable:", medicine.isReviewable);
+      console.log("Medicine Data:", medicine);
 
+      // Debug Log
       Object.entries(medicine).forEach(([key, value]) => {
         console.log(`${key}:`, value);
       });
+
+      toast.success("Medicine added successfully!");
     } catch (error) {
       console.log(error.message);
     } finally {

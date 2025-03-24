@@ -239,22 +239,22 @@ const ManageMedicines = () => {
                   <TableCell>
                     <Avatar>
                       <AvatarImage
-                        src={medicine.imageURL}
+                        src={medicine?.imageURL}
                         alt="Medicine Image"
                         className="min-w-24 h-16"
                       />
                     </Avatar>
                   </TableCell>
                   <TableCell>
-                    {medicine.brandName || "N/A"} ||{" "}
-                    {medicine.genericName || "N/A"}
+                    {medicine?.brandName || "N/A"} ||{" "}
+                    {medicine?.genericName || "N/A"}
                   </TableCell>
-                  <TableCell>{medicine.category || "N/A"}</TableCell>
-                  <TableCell>{medicine.dosageForm || "N/A"}</TableCell>
-                  <TableCell>{medicine.strength || "N/A"}</TableCell>
+                  <TableCell>{medicine?.category || "N/A"}</TableCell>
+                  <TableCell>{medicine?.dosageForm || "N/A"}</TableCell>
+                  <TableCell>{medicine?.strength || "N/A"}</TableCell>
                   <TableCell>
-                    ৳{medicine.price?.amount.toFixed(2) || "N/A"} || ৳
-                    {medicine.price?.discount?.discountedAmount || "NA"}
+                    ৳{medicine?.price?.amount || "N/A"} || ৳
+                    {medicine?.price?.discount?.discountedAmount || "NA"}
                   </TableCell>
                   <TableCell>
                     <span
@@ -269,15 +269,19 @@ const ManageMedicines = () => {
                       }
                     >
                       ●
-                    </span>{" "}
-                    {medicine.availabilityStatus || "N/A"}
+                    </span>
+                    {medicine?.availabilityStatus || "N/A"}
                   </TableCell>
                   <TableCell>
-                    {new Date(medicine.manufactureDate).toLocaleDateString() ||
+                    {(medicine?.manufactureDate &&
+                      new Date(
+                        medicine?.manufactureDate
+                      ).toLocaleDateString()) ||
                       "N/A"}
                   </TableCell>
                   <TableCell>
-                    {new Date(medicine.expiryDate).toLocaleDateString() ||
+                    {(medicine?.expiryDate &&
+                      new Date(medicine?.expiryDate).toLocaleDateString()) ||
                       "N/A"}
                   </TableCell>
                   <TableCell>
@@ -299,7 +303,7 @@ const ManageMedicines = () => {
                           <Pencil className="w-4 h-4 mr-2" /> Update
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={() => handleMedicineDelete(medicine._id)}
+                          onClick={() => handleMedicineDelete(medicine?._id)}
                         >
                           <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
                         </DropdownMenuItem>
