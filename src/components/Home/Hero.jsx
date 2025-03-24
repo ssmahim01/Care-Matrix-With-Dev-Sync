@@ -57,11 +57,11 @@ export default function Hero() {
             </motion.div>
 
             <h1 className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white tracking-tight">
-              Streamline Healthcare Management
-              <span className="block mt-2">With Care Matrix</span>
+              Streamline Healthcare{" "}
+              <span className="block mt-2">Management With Care Matrix</span>
             </h1>
 
-            <p className="text-base md:text-lg text-white/90 max-w-xl">
+            <p className="text-base md:text-lg font-medium text-white max-w-xl">
               Empower your hospital with an all-in-one management system. From
               patient appointments to medical records and staff coordination,
               Care Matrix ensures efficiency, accuracy, and seamless healthcare

@@ -291,7 +291,7 @@ const ManageMedicines = () => {
                       )}
                     </Tooltip>
                   </TableCell>
-                  <TableCell className={"max-w-[45px]"}>
+                  <TableCell>
                     <span
                       className={
                         medicine.availabilityStatus === "In Stock"
