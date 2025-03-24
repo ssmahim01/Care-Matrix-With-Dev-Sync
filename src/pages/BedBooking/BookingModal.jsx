@@ -12,8 +12,10 @@ import { useAuthUser } from "@/redux/auth/authActions";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-const BookingModal = ({ isOpen, onClose, bedType }) => {
+const BookingModal = ({ isOpen, onClose, bedType}) => {
   const user = useAuthUser();
+
+  // console.log(bedType);
 
   // Initialize React Hook Form
   const {
@@ -37,7 +39,9 @@ const BookingModal = ({ isOpen, onClose, bedType }) => {
     }
 
     const bedBookingInfo = {
-      bedType,
+      bedTitle: bedType?.title,
+      bedImg: bedType?.image,
+      bedPrice: bedType?.price,
       ...data,
       time: new Date(),
       authorName: user?.displayName,
@@ -67,7 +71,7 @@ const BookingModal = ({ isOpen, onClose, bedType }) => {
       <DialogContent className="sm:max-w-md p-3 sm:p-4 md:p-6">
         <DialogHeader>
           <DialogTitle className="text-base sm:text-lg md:text-xl font-bold">
-            Booking for {bedType}
+            Booking for {bedType?.title}
           </DialogTitle>
         </DialogHeader>
         <form

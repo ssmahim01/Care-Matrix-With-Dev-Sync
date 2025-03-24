@@ -25,11 +25,14 @@ import OurPharmacy from "@/pages/OurPharmacy/OurPharmacy";
 import ManageBanners from "@/pages/DashboardPages/Pharmacist/ManageBanners";
 import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManagement";
 import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
+import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/ReceptionistOverview";
+import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
+import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
 
 const Router = () => {
   const dispatch = useDispatch();
   const user = useAuthUser();
-  // console.log(user);
+  console.log(user);
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -79,8 +82,8 @@ const Router = () => {
         <Route path="services" element={<Services />} />
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
-        <Route path="book-appointment/:name" element={<BookAppointment />} />
-        <Route path="doctor-details/:id" element={<DoctorDetails />} />
+        <Route path='book-appointment/:name' element={<BookAppointment />} />
+        <Route path='doctor-details/:id' element={<DoctorDetails />} />
       </Route>
 
       {/* Authentication Routes */}
@@ -93,6 +96,14 @@ const Router = () => {
       <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
       <Route path="/dashboard/administrator/manage-users" element={<ManageUsers />} />
       <Route path="/dashboard/pharmacist/manage-banner" element={<ManageBanners />} />
+
+      {/* Receptionist */}
+      <Route path="/dashboard/receptionist-overview" element={<ReceptionistOverview />} />
+      <Route path="/dashboard/receptionist/manage-beds" element={<ManageBeds />} />
+      <Route path="/dashboard/receptionist/manage-bedBooking" element={<ManageBedBooking />} />
+
+
+
       </Route>
 
       {/* Catch-all for 404 Error Page */}

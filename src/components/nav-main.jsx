@@ -111,7 +111,6 @@ export function NavMain() {
             <NavLink to="/dashboard/pharmacist/manage-medicines">
               <h3 className="flex gap-2 items-center">
                 <GiMedicines className="text-base" /> Manage Medicines
-                <GiMedicines className="text-2xl" /> Manage Medicines
               </h3>
             </NavLink>
             <NavLink to="/dashboard/pharmacist/manage-banner">
@@ -144,9 +143,9 @@ export function NavMain() {
                 <LuBedSingle className="text-base" /> Manage Beds
               </h3>
             </NavLink>
-            <NavLink to="/dashboard/receptionist/manage-appointments">
+            <NavLink to="/dashboard/receptionist/manage-bedBooking">
               <h3 className="flex gap-2 items-center">
-                <LuBedSingle className="text-base" /> Manage Appointments
+                <LuBedSingle className="text-base" /> Manage Bed Booking
               </h3>
             </NavLink>
             <div className="divider"></div>

@@ -1,110 +1,108 @@
-import DoctorsTableRow from "@/components/DoctorsTableRow/DoctorsTableRow";
-import FileInput from "@/components/FileInput/FileInput";
-import SharedInput from "@/components/InputFields/SharedInput";
-import { fetchDoctors } from "@/redux/doctors/doctorSlice";
-import { X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 
-const ManageBeds = () => {
-  const dispatch = useDispatch();
-  const { doctors, status } = useSelector((state) => state.doctors);
-  const [form, setForm] = useState({
-    name: "",
-    specialty: "",
-    availability_days: "",
-    experience: "",
-    consultation_fee: "",
-  });
-  console.log(form);
-  const [editId, setEditId] = useState(null);
-  const [inputValue, setInputValue] = useState("");
-  const [availability, setAvailability] = useState([]);
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import Loader from "@/shared/Loader";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { RiAdvertisementFill } from "react-icons/ri";
+import AddBooking from "./AddBooking";
+import useBeds from "@/hooks/useBeds";
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      const trimmedValue = inputValue.trim();
-      if (trimmedValue && !availability.includes(trimmedValue)) {
-        setAvailability([...availability, trimmedValue]);
-        setInputValue("");
-      }
-    }
-  };
+function ManageBeds() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [beds, isLoading, refetch] = useBeds();
+  const axiosSecure = useAxiosSecure();
 
-  const removeAvailability = (availabilityToRemove) => {
-    setAvailability(
-      availability.filter(
-        (availability) => availability !== availabilityToRemove
-      )
-    );
-  };
+  console.log(beds);
 
-  useEffect(() => {
-    dispatch(fetchDoctors());
-  }, [dispatch]);
+//   const handleBookingStatusChange = async (id, newStatus) => {
+//     await toast.promise(
+//       axiosSecure.patch(`/bookings/status/${id}`, { status: newStatus }),
+//       {
+//         loading: "Updating status...",
+//         success: <b>Booking Status Updated Successfully!</b>,
+//         error: <b>Could not update status.</b>,
+//       }
+//     );
+//     refetch();
+//   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (editId) {
-      dispatch(updateDoctor({ id: editId, updatedData: form })).then(() => {
-        toast.success("Doctor updated successfully");
-      });
-    } else {
-      dispatch(addDoctor(form)).then(() => {
-        toast.success("Doctor added successfully");
-      });
-    }
-    setForm({
-      name: "",
-      specialty: "",
-      availability_days: "",
-      experience: "",
-      consultation_fee: "",
-    });
-    setEditId(null);
-  };
+  if (isLoading) return <Loader text={"Loading Bookings"} />;
 
   return (
-    <>
-     
-        <div className="py-8">
-          <h2 className="md:text-4xl text-3xl font-bold text-base-content mb-5">
-            Manage Doctors
-          </h2>
-          <div className="rounded-sm overflow-x-auto w-full">
-            <table className="table border border-gray-200 border-collapse">
-              <thead>
-                <tr className="bg-gray-100 *:text-gray-800 *:font-bold">
-                  <th className="p-4">Serial No.</th>
-                  <th className="p-4">Image</th>
-                  <th className="p-4">Name</th>
-                  <th className="p-4">Specialty</th>
-                  <th className="p-4">Experience</th>
-                  <th className="p-4">Consultation Fee</th>
-                  <th className="p-4">Availability</th>
-                  <th className="p-4">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {doctors.map((doctor, index) => (
-                  <DoctorsTableRow
-                    key={doctor?._id}
-                    doctor={doctor}
-                    index={index}
-                  />
-                ))}
-              </tbody>
-            </table>
+    <div>
+      <DashboardPagesHeader
+        title={"Manage Bed Bookings"}
+        subtitle={"View, approve, or reject bed booking requests"}
+        icon={RiAdvertisementFill}
+      />
+
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      >
+        <div className="mx-auto">
+          <div className="flex justify-end mb-4">
+            <Button className="cursor-pointer" onClick={() => setIsOpen(true)}>
+              Add New Booking
+            </Button>
           </div>
+          <Table>
+            <TableCaption>A List of All Bed Booking Requests</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead></TableHead>
+                <TableHead>Bed Image</TableHead>
+                <TableHead>Bed Title</TableHead>
+                <TableHead>Bed Price</TableHead>
+                <TableHead className="text-right">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {beds?.map((bed, i) => (
+                <TableRow key={bed._id}>
+                  <TableCell className="font-medium">{i + 1}</TableCell>
+                  <TableCell>
+                    <Avatar>
+                      <AvatarImage src={bed.image} />
+                    </Avatar>
+                  </TableCell>
+                  <TableCell>{bed.title}</TableCell>
+                  <TableCell>{bed.price}</TableCell>
+                  <TableCell className="text-right flex justify-end">
+                    <Switch
+                      checked={beds.status === "approved"}
+                      onCheckedChange={(checked) => {
+                        const newStatus = checked ? "approved" : "rejected";
+                        handleBookingStatusChange(beds._id, newStatus);
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          {/* Modal */}
+          <AddBooking isOpen={isOpen} setIsOpen={setIsOpen} refetch={refetch} />
         </div>
-    </>
+      </motion.div>
+    </div>
   );
-};
+}
 
 export default ManageBeds;
