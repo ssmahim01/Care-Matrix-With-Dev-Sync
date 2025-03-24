@@ -241,7 +241,7 @@ const ManageMedicines = () => {
           {isLoading
             ? Array.from({ length: 8 }).map((_, i) => (
                 <TableRow key={i}>
-                  {Array.from({ length: 11 }).map((_, j) => (
+                  {Array.from({ length: 13 }).map((_, j) => (
                     <TableCell key={j}>
                       <div className="skeleton h-8 rounded w-full"></div>
                     </TableCell>
@@ -313,7 +313,9 @@ const ManageMedicines = () => {
                         <span>{medicine?.manufacturer?.name || "N/A"}</span>
                       </TooltipTrigger>
                       {medicine?.manufacturer?.name && (
-                        <TooltipContent className={"space-y-1.5 flex flex-col"}>
+                        <TooltipContent
+                          className={"space-y-1.5 flex flex-col text-sm"}
+                        >
                           <span>
                             <strong>Name:</strong>{" "}
                             {medicine?.manufacturer?.name}
@@ -336,7 +338,9 @@ const ManageMedicines = () => {
                         <span>{medicine?.supplier?.name || "N/A"}</span>
                       </TooltipTrigger>
                       {medicine?.supplier.name && (
-                        <TooltipContent className={"space-y-1.5 flex flex-col"}>
+                        <TooltipContent
+                          className={"space-y-1.5 flex flex-col text-sm"}
+                        >
                           <span>
                             <strong>Name:</strong> {medicine?.supplier?.name}
                           </span>
