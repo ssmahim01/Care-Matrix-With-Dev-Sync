@@ -185,7 +185,17 @@ const Navbar = () => {
 
                     <NavLink
                       className="flex gap-1 items-center"
-                      to={`${role === "administrator" && "/dashboard/administrator-overview"} ${role === "doctor" && "/dashboard/doctor-overview"} ${role === "pharmacist" && "/dashboard/pharmacist-overview"} ${role === "patient" && "/dashboard/patient-overview"}`}
+                      to={
+                        role === "administrator"
+                          ? "/dashboard/administrator-overview"
+                          : role === "doctor"
+                          ? "/dashboard/doctor-overview"
+                          : role === "pharmacist"
+                          ? "/dashboard/pharmacist-overview"
+                          : role === "patient"
+                          ? "/dashboard/patient-overview"
+                          : "/dashboard"
+                      }
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <MdDashboard />{" "}
