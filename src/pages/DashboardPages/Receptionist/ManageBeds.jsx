@@ -24,22 +24,22 @@ import useBeds from "@/hooks/useBeds";
 
 function ManageBeds() {
   const [isOpen, setIsOpen] = useState(false);
-  const [beds, isLoading, refetch] = useBeds();
+  const [beds, isLoading, refetch] = useBeds({ isActive: "all" });
   const axiosSecure = useAxiosSecure();
 
-  console.log(beds);
+//   console.log(beds);
 
-//   const handleBookingStatusChange = async (id, newStatus) => {
-//     await toast.promise(
-//       axiosSecure.patch(`/bookings/status/${id}`, { status: newStatus }),
-//       {
-//         loading: "Updating status...",
-//         success: <b>Booking Status Updated Successfully!</b>,
-//         error: <b>Could not update status.</b>,
-//       }
-//     );
-//     refetch();
-//   };
+  const handleBedStatusChange = async (id, newStatus) => {
+    await toast.promise(
+      axiosSecure.patch(`/beds/status/${id}`, { status: newStatus }),
+      {
+        loading: "Updating status...",
+        success: <b>Bed Status Updated Successfully!</b>,
+        error: <b>Could not update status.</b>,
+      }
+    );
+    refetch();
+  };
 
   if (isLoading) return <Loader text={"Loading Bookings"} />;
 
@@ -86,10 +86,10 @@ function ManageBeds() {
                   <TableCell>{bed.price}</TableCell>
                   <TableCell className="text-right flex justify-end">
                     <Switch
-                      checked={beds.status === "approved"}
+                      checked={bed.status === "active"}
                       onCheckedChange={(checked) => {
-                        const newStatus = checked ? "approved" : "rejected";
-                        handleBookingStatusChange(beds._id, newStatus);
+                        const newStatus = checked ? "active" : "inactive";
+                        handleBedStatusChange(bed._id, newStatus);
                       }}
                     />
                   </TableCell>

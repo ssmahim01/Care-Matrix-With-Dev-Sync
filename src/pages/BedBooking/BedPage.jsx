@@ -10,7 +10,7 @@ import useBeds from "@/hooks/useBeds";
 
 const BedPage = () => {
 
-  const [ beds ] = useBeds({ isActive: "active" });
+  const [ beds, refetch ] = useBeds([""]);
 
 
 
@@ -22,7 +22,7 @@ const BedPage = () => {
   // console.log(selectedBedType);
 
 // getting bed data from backend
-  const axiosPublic = useAxiosPublic()
+  // const axiosPublic = useAxiosPublic()
   // const {
   //     data: bedData = [],
   //     refetch,
@@ -86,6 +86,7 @@ const BedPage = () => {
         isOpen={isBookingModalOpen}
         onClose={closeBookingModal}
         bedType={selectedBedType}
+        refetch={refetch}
       />
      <BedDetailsModal
         isOpen={isDetailsModalOpen}

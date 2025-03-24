@@ -11,9 +11,11 @@ import { Label } from "@/components/ui/label"; // Optional: Add Label component 
 import { useAuthUser } from "@/redux/auth/authActions";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 
-const BookingModal = ({ isOpen, onClose, bedType}) => {
+const BookingModal = ({ isOpen, onClose, bedType, refetch}) => {
   const user = useAuthUser();
+  const axiosPublic = useAxiosPublic()
 
   // console.log(bedType);
 
@@ -53,13 +55,25 @@ const BookingModal = ({ isOpen, onClose, bedType}) => {
     console.log(bedBookingInfo);
 
     try {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/bed-booking`,
+      await axiosPublic.post(
+        `/bed-booking`,
         bedBookingInfo
+      );
+
+      axiosPublic.patch(
+        `/beds/status/${bedType?._id}`,
+        { status
+        : "requested" }
       );
       toast.success("Booking Request Sent Successfully");
       reset(); // Reset the form after successful submission
       onClose(); // Close the modal
+      refetch(); // Refetch the data to display the updated booking
+
+      
+
+
+
     } catch (error) {
       toast.error("Failed to send booking request");
       console.error(error);
