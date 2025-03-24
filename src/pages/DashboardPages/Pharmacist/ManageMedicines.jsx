@@ -264,9 +264,32 @@ const ManageMedicines = () => {
                   <TableCell>{medicine?.category || "N/A"}</TableCell>
                   <TableCell>{medicine?.dosageForm || "N/A"}</TableCell>
                   <TableCell>{medicine?.strength || "N/A"}</TableCell>
-                  <TableCell>
-                    ৳{medicine?.price?.amount || "N/A"} || ৳
-                    {medicine?.price?.discount?.discountedAmount || "NA"}
+                  <TableCell className={"cursor-pointer"}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>
+                          ৳{medicine?.price?.amount || "N/A"} || ৳
+                          {medicine?.price?.discount?.discountedAmount || "NA"}
+                        </span>
+                      </TooltipTrigger>
+                      {medicine?.price?.discount && (
+                        <TooltipContent>
+                          <div className="text-sm">
+                            <p>
+                              <strong>Currency:</strong> BDT
+                            </p>
+                            <p>
+                              <strong>Discounted Amount:</strong> ৳
+                              {medicine?.price?.discount?.discountedAmount}
+                            </p>
+                            <p>
+                              <strong>Valid Until:</strong>{" "}
+                              {medicine?.price?.discount?.validUntil}
+                            </p>
+                          </div>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
                   </TableCell>
                   <TableCell className={"max-w-[45px]"}>
                     <span
@@ -291,16 +314,22 @@ const ManageMedicines = () => {
                       </TooltipTrigger>
                       {medicine?.manufacturer?.name && (
                         <TooltipContent className={"space-y-1.5 flex flex-col"}>
-                          <span>Name: {medicine?.manufacturer?.name}</span>
                           <span>
-                            Location: {medicine?.manufacturer?.location}
+                            <strong>Name:</strong>{" "}
+                            {medicine?.manufacturer?.name}
                           </span>
-                          <span>Phone: {medicine?.manufacturer?.contact}</span>
+                          <span>
+                            <strong>Location:</strong>{" "}
+                            {medicine?.manufacturer?.location}
+                          </span>
+                          <span>
+                            <strong>Phone:</strong>{" "}
+                            {medicine?.manufacturer?.contact}
+                          </span>
                         </TooltipContent>
                       )}
                     </Tooltip>
                   </TableCell>
-
                   <TableCell className={"truncate max-w-[80px] cursor-pointer"}>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -308,9 +337,17 @@ const ManageMedicines = () => {
                       </TooltipTrigger>
                       {medicine?.supplier.name && (
                         <TooltipContent className={"space-y-1.5 flex flex-col"}>
-                          <span>Name: {medicine?.supplier?.name}</span>
-                          <span>Location: {medicine?.supplier?.location}</span>
-                          <span>Phone: {medicine?.supplier?.contact}</span>
+                          <span>
+                            <strong>Name:</strong> {medicine?.supplier?.name}
+                          </span>
+                          <span>
+                            <strong>Location:</strong>{" "}
+                            {medicine?.supplier?.location}
+                          </span>
+                          <span>
+                            <strong>Phone:</strong>{" "}
+                            {medicine?.supplier?.contact}
+                          </span>
                         </TooltipContent>
                       )}
                     </Tooltip>
