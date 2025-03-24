@@ -19,13 +19,29 @@ import toast from "react-hot-toast";
 
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { RiAdvertisementFill } from "react-icons/ri";
-import AddBooking from "./AddBooking";
 import useBeds from "@/hooks/useBeds";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
+import AddBeds from "./AddBeds";
 
 function ManageBeds() {
   const [isOpen, setIsOpen] = useState(false);
-  const [beds, isLoading, refetch] = useBeds({ isActive: "all" });
+//   const [beds, isLoading, refetch] = useBeds([""]);
   const axiosSecure = useAxiosSecure();
+
+  // getting bed data from backend
+  const axiosPublic = useAxiosPublic()
+  const {
+      data: beds = [],
+      refetch,
+      isLoading,
+  } = useQuery({
+      queryKey: ["beds"],
+      queryFn: async () => {
+          const { data } = await axiosSecure.get("/beds");
+          return data;
+      },
+  });
 
 //   console.log(beds);
 
@@ -86,9 +102,9 @@ function ManageBeds() {
                   <TableCell>{bed.price}</TableCell>
                   <TableCell className="text-right flex justify-end">
                     <Switch
-                      checked={bed.status === "active"}
+                      checked={bed.status === "available"}
                       onCheckedChange={(checked) => {
-                        const newStatus = checked ? "active" : "inactive";
+                        const newStatus = checked ? "available" : "booked";
                         handleBedStatusChange(bed._id, newStatus);
                       }}
                     />
@@ -98,7 +114,7 @@ function ManageBeds() {
             </TableBody>
           </Table>
           {/* Modal */}
-          <AddBooking isOpen={isOpen} setIsOpen={setIsOpen} refetch={refetch} />
+          <AddBeds isOpen={isOpen} setIsOpen={setIsOpen} refetch={refetch} />
         </div>
       </motion.div>
     </div>
