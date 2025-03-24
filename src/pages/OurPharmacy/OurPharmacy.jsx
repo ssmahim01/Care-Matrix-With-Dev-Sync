@@ -5,32 +5,50 @@ import Medicines from "./Medicines";
 import PharmacyNavbar from "./PharmacyNavbar";
 import BannerPharma from "@/components/Pharmacy/BannerPharma";
 import { medicine_categories } from "@/lib/pharmacy";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import axios from "axios";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
 const OurPharmacy = () => {
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [selectedCategory, setCategory] = useState("All Medicines");
 
   // Get medicines data
   const {
-    data: medicines = [],
+    data = [],
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["medicines", search, selectedCategory],
+    queryKey: ["medicines", search, selectedCategory, page],
     queryFn: async () => {
       const { data } = await axios(
         `${
           import.meta.env.VITE_API_URL
         }/pharmacy/medicines?search=${encodeURIComponent(
           search
-        )}&category=${encodeURIComponent(selectedCategory)}`
+        )}&category=${encodeURIComponent(selectedCategory)}&page=${page}`
       );
       return data;
     },
   });
+
+  // Pagination Functions
+  const handlePageChange = (pageNumber) => setPage(pageNumber);
+  const handlePrevPage = () => setPage((prev) => Math.max(prev - 1, 1));
+  const handleNextPage = () => {
+    setPage((prev) => (prev < data.totalPages ? prev + 1 : prev));
+  };
 
   return (
     <div className="w-11/12 mx-auto max-w-screen-2xl">
@@ -64,13 +82,66 @@ const OurPharmacy = () => {
         </div>
         {/* medicines */}
         <div className="w-full lg:w-8/12 xl:w-9/12">
-          {medicines.length === 0 ? (
+          {data.medicines?.length === 0 ? (
             "No Medicine Available"
           ) : (
-            <Medicines medicines={medicines} isLoading={isLoading} />
+            <Medicines medicines={data.medicines} isLoading={isLoading} />
           )}
         </div>
       </div>
+      {/* Pagination */}
+      <Pagination className="mt-4">
+        <PaginationContent>
+          {/* Previous */}
+          <PaginationItem>
+            <PaginationPrevious
+              className={"cursor-pointer"}
+              onClick={handlePrevPage}
+            />
+          </PaginationItem>
+
+          {/* Page Numbers */}
+          {isLoading
+            ? // Skeleton Loader
+              Array.from({ length: 3 }).map((_, i) => (
+                <PaginationItem key={i}>
+                  <div className="w-8 h-8 skeleton rounded-md"></div>
+                </PaginationItem>
+              ))
+            : // Page Numbers
+              Array.from({ length: data.totalPages }, (_, i) => i + 1).map(
+                (pageNumber) => (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      className="cursor-pointer"
+                      isActive={pageNumber === page}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageNumber);
+                      }}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              )}
+
+          {/* Ellipsis */}
+          {data.totalPages > 5 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+
+          {/* Next */}
+          <PaginationItem>
+            <PaginationNext
+              className={"cursor-pointer"}
+              onClick={handleNextPage}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };

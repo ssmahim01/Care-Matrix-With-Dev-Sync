@@ -42,11 +42,11 @@ import useRole from "@/hooks/useRole";
 export function NavMain() {
   const { state } = useSidebar();
   const [role, isLoading] = useRole();
-  console.log(role);
+  // console.log(role);
 
-  if (isLoading) {
-    <div>
-
+  if(isLoading){
+    <div className="flex justify-center items-center py-20">
+      <span className="loading loading-bars loading-xl"></span>
     </div>
   }
 
@@ -58,7 +58,7 @@ export function NavMain() {
           <>
             <NavLink to="/dashboard/administrator-overview">
               <h3 className="flex gap-2 items-center">
-                <LayoutDashboard className="text-base" /> Overview
+                <LayoutDashboard className="text-base" /> 
                 <span className={`${state === "collapsed" && "md:hidden"}`}>Overview </span>
 
 
@@ -104,7 +104,7 @@ export function NavMain() {
           <>
             <NavLink to="/dashboard/administrator-overview">
               <h3 className="flex gap-2 items-center">
-                <LayoutDashboard className="text-base" /> Overview
+                <LayoutDashboard className="text-base" />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>Overview </span>
 
               </h3>

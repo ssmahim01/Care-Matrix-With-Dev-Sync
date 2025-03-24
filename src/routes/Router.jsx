@@ -22,11 +22,13 @@ import AdministratorOverview from "@/pages/DashboardPages/Administrator/Administ
 
 import BookAppointment from "@/pages/BookAppointment/BookAppointment";
 import OurPharmacy from "@/pages/OurPharmacy/OurPharmacy";
+import StuffManagement from "@/pages/Stuff-Management/StuffManagement";
 import ManageBanners from "@/pages/DashboardPages/Pharmacist/ManageBanners";
 import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManagement";
 import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
 import ManageMedicines from "@/pages/DashboardPages/Pharmacist/ManageMedicines";
 import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
+import MedicineDetails from "@/pages/OurPharmacy/MedicineDetails";
 import Cart from "@/components/Pharmacy/Cart";
 import Payment from "@/pages/Payment/Payment";
 import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
@@ -69,7 +71,7 @@ const Router = () => {
         );
       }
       dispatch(setLoading(false));
-    })
+    });
 
     return () => unsubscribe();
   }, [dispatch]);
@@ -84,11 +86,17 @@ const Router = () => {
         <Route path="services" element={<Services />} />
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
-        <Route path='book-appointment/:name' element={<BookAppointment />} />
-        <Route path='book-appointment/payment' element={<Payment />} />
-        <Route path='book-appointment/payment-success' element={<SuccessPayment />} />
-        <Route path='doctor-details/:id' element={<DoctorDetails />} />
+        <Route path="medicine/:id" element={<MedicineDetails />} />
 
+        <Route path="book-appointment/payment" element={<Payment />} />
+        <Route
+          path="book-appointment/payment-success"
+          element={<SuccessPayment />}
+        />
+
+        <Route path="about-us" element={<DetailsAboutUs />} />
+        <Route path="book-appointment/:name" element={<BookAppointment />} />
+        <Route path="doctor-details/:id" element={<DoctorDetails />} />
       </Route>
 
       {/* Authentication Routes */}
@@ -97,11 +105,11 @@ const Router = () => {
 
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
-        <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
-        <Route path="/dashboard/administrator/manage-users" element={<ManageUsers />} />
-        <Route path="/dashboard/pharmacist/manage-banner" element={<ManageBanners />} />
         {/* Admin Routes */}
+        <Route
+          path="/dashboard/administrator/manage-users"
+          element={<ManageUsers />}
+        />
         <Route
           path="/dashboard/administrator-overview"
           element={<AdministratorOverview />}
@@ -112,7 +120,7 @@ const Router = () => {
         />
         <Route
           path="/dashboard/administrator/manage-users"
-          element={<ManageUsers />}
+          element={<StuffManagement />}
         />
 
         {/* Pharmacist Routes */}
@@ -135,7 +143,6 @@ const Router = () => {
 
         {/* Patient Routes */}
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
-
       </Route>
 
       {/* Catch-all for 404 Error Page */}

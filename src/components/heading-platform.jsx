@@ -5,8 +5,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import CareMatrixLogo from "@/assets/Images/logo-care-matrix.webp";
+import CareMatrixLogo from "../assets/logo.jpg";
 import { Link } from "react-router";
+import collapseLogo from '/collapse-logo.png'
 
 export function HeadingPlatform() {
   const { state, isSidebarCollapsed } = useSidebar();
@@ -17,28 +18,26 @@ export function HeadingPlatform() {
       <SidebarMenuItem>
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground border-b border-sky-100 shadow-sm hover:shadow-md rounded"
+          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground border-b border-sky-100"
         >
           <div className="flex items-center text-left text-sm leading-tight w-full">
             {/* Sidebar Logo */}
             <div className="w-full flex items-center gap-2 ">
-              <Link to="/" className="flex gap-1 items-center">
-                <figure className="flex items-center justify-center">
-                  <img
-                    src={CareMatrixLogo}
-                    className="w-9 h-9 rounded-md transition-all duration-300"
-                    referrerPolicy="no-referrer"
-                    alt="Care Matrix Logo"
-                  />
+              <Link to="/">
+                <figure className={`transition-all duration-300`}>
+                  {
+                    state === "collapsed" ?
+                      <img src={collapseLogo} alt="" />
+                      :
+                      <img
+                        src="https://i.ibb.co.com/NgjF57xt/care-matrix-logo-Copy-removebg-preview.png"
+                        className="w-44 h-full transition-all duration-300"
+                        referrerPolicy="no-referrer"
+                        alt="Care Matrix Logo"
+                      />
+                  }
+
                 </figure>
-                {/* Hide text when sidebar is collapsed */}
-                <h4
-                  className={`font-bold text-2xl ${state === "collapsed" && "md:hidden"} flex flex-row flex-wrap gap-0 transition-all duration-300 ${isSidebarCollapsed ? "hidden" : "block"
-                    }`}
-                >
-                  <span>Care</span>
-                  <span className="text-[#535ed1]">Matrix</span>
-                </h4>
               </Link>
             </div>
           </div>

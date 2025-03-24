@@ -10,6 +10,11 @@ import Swal from "sweetalert2";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
+import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
+import CartCheckoutForm from "../CheckoutForm/CartCheckoutForm";
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 
 const globalStyles = {
@@ -23,6 +28,8 @@ const Cart = () => {
     const axiosSecure = useAxiosSecure()
     const [subtotal, setSubtotal] = useState(0)
     const shippingCost = cart.length ? 60 : 0
+    const [loadingClientSecret, setLoadingClientSecret] = useState(false);
+    const [clientSecret, setClientSecret] = useState('');
 
     // console.log(user);
 
@@ -96,8 +103,39 @@ const Cart = () => {
             console.error("Error clearing cart:", error)
         }
     };
+    const handlePaymentSuccess = () => {
+        e.preventDefault()
+        // Clear cart after successful payment
+        axiosSecure.delete(`/carts/clear/${user?.email}`)
+            .then(() => {
+                refetch();
+            })
+            .catch(err => console.error('Error clearing cart:', err));
+    };
+    useEffect(() => {
+        const initializePaymentIntent = async () => {
+            if (!subtotal || subtotal + shippingCost <= 0) return;
 
+            setLoadingClientSecret(true);
+            try {
+                const response = await axiosSecure.post('/carts/create-payment-intent', {
+                    price: subtotal + shippingCost
+                });
+                if (response.data.clientSecret) {
+                    setClientSecret(response.data.clientSecret);
+                } else {
+                    throw new Error('No client secret received');
+                }
+            } catch (err) {
+                console.error('Error fetching client secret:', err);
+                toast.error('Failed to initialize payment system');
+            } finally {
+                setLoadingClientSecret(false);
+            }
+        };
 
+        initializePaymentIntent();
+    }, [subtotal, shippingCost, axiosSecure]);
 
     const districts = [
         'Dhaka', 'Chittagong', 'Rajshahi', 'Khulna', 'Barisal', 'Sylhet', 'Rangpur', 'Mymensingh',
@@ -114,6 +152,14 @@ const Cart = () => {
         e.preventDefault();
 
     };
+    const parcel = {
+        price: subtotal + shippingCost,
+        parcelType: "Medicine Purchase",
+        _id: Date.now().toString()
+    };
+    const appearance = { theme: 'stripe' };
+    const options = clientSecret ? { clientSecret, appearance } : null;
+
 
     return (
         <div className="w-full flex flex-col gap-8 md:gap-0 md:flex-row">
@@ -129,6 +175,7 @@ const Cart = () => {
                                 initial={{ y: 20, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
                                 transition={{ duration: 0.6, ease: 'easeInOut', delay: idx * 0.1 }}
+                                viewport={{ once: true }}
                                 key={item._id}
                                 className="flex flex-col md:flex-row md:items-center gap-4 border-t p-4 border-gray-200"
                             >
@@ -191,9 +238,10 @@ const Cart = () => {
                     {/* Clear Cart Button */}
                     <motion.div
                         initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.8, ease: 'easeInOut', delay: 0.8 }}
-                        className="flex items-center justify-center gap-5">
+                        whileInView={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.8, ease: 'easeInOut', delay: 0.2 }}
+                        viewport={{ once: true }}
+                        className="flex items-center justify-center gap-5 mt-5">
                         <Link to={'/pharmacy'} >
                             <Button className=" cursor-pointer">
                                 Continue Shopping
@@ -213,7 +261,7 @@ const Cart = () => {
 
             {/* Right Column - Checkout Form (Sticky on large devices) */}
             <div className="flex-1 md:px-8 lg:sticky lg:top-16 lg:self-start">
-                <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className="space-y-6" >
                     <div>
                         <label htmlFor="email" className="text-[1rem] font-medium text-gray-800 mb-1">
                             Email
@@ -242,28 +290,6 @@ const Cart = () => {
                                 className={globalStyles.inputStyles}
                             />
                         </div>
-                    </div>
-                    <div>
-                        <div className="flex items-center justify-between mb-2">
-                            <label className="text-[1rem] font-medium text-gray-800">Payment method</label>
-                            {/* <button type="button" className="text-blue-600 text-right flex text-[0.9rem] items-center gap-[5px]">
-                                <AiOutlinePlus />
-                                Add new
-                            </button> */}
-                        </div>
-                        <label className="flex-1 flex items-center justify-between gap-2 border-gray-200 border rounded-lg p-4">
-                            <div>
-                                <div className="dark:text-[#abc2d3]">
-                                    <input type="radio" name="payment" value="stripe" className="form-radio" defaultChecked />
-                                    <span> **** 4242</span>
-                                </div>
-                                <div className="flex items-center gap-[5px] pl-5 mt-0.5">
-                                    <p className="text-[0.9rem] text-gray-500">Stripe •</p>
-                                    <p className="text-[0.9rem] text-gray-500 hover:text-[#0FABCA] cursor-pointer">Edit</p>
-                                </div>
-                            </div>
-                            <img src="https://thelettertwo.com/wp-content/uploads/2024/11/stripe-logo-wall-960x540-1.jpg" alt="Stripe" className="w-[50px] rounded-md" />
-                        </label>
                     </div>
                     <div>
                         <label htmlFor="billingAddress" className="text-[1rem] font-medium text-gray-800 mb-1">
@@ -315,19 +341,35 @@ const Cart = () => {
                             </select>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <input type="checkbox" id="sameAsShipping" className="form-checkbox" />
-                        <label htmlFor="sameAsShipping" className="text-sm text-gray-600">
-                            Billing address is same as shipping
+                    <div>
+                        <label className="text-[1rem] font-medium text-gray-800 mb-1">
+                            Payment method
                         </label>
+                        {loadingClientSecret ? (
+                            <p className="text-gray-500">Loading payment options...</p>
+                        ) : clientSecret === null ? (
+                            <p className="text-gray-500">Preparing payment options...</p>
+                        ) : clientSecret === '' ? (
+                            <p className="text-red-500">Failed to load payment options</p>
+                        ) : (
+                            <Elements stripe={stripePromise} options={options}>
+                                <CartCheckoutForm
+                                refetch={refetch}
+                                    parcel={parcel}
+                                    cartItems={cart}
+                                    clientSecret={clientSecret}
+                                    onPaymentSuccess={handlePaymentSuccess}
+                                />
+                            </Elements>
+                        )}
                     </div>
-                    <button
+                    {/* <button
                         type="submit"
                         className="w-full bg-[#0FABCA] text-white py-3 rounded-lg hover:bg-[#0FABCA]/90"
                     >
                         Pay ৳ {(subtotal + shippingCost).toFixed(2)}
-                    </button>
-                </form>
+                    </button> */}
+                </div>
 
 
             </div>
