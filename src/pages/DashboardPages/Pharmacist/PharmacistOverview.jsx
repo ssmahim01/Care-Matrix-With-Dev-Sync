@@ -66,12 +66,18 @@ const PharmacistOverview = () => {
       />
 
       {/* Medicines Per Category Chart */}
-      <CategoryChart chartData={chartData} />
+      <CategoryChart chartData={chartData} isLoading={isLoading} />
       <div className="flex gap-6 items-center flex-col lg:flex-row w-full">
         {/* Medicines Per Manufacturer Chart */}
-       <ManufacturerChart manufacturerChartData={manufacturerChartData} />
+        <ManufacturerChart
+          manufacturerChartData={manufacturerChartData}
+          isLoading={isLoading}
+        />
         {/* Medicines Per Supplier Chart */}
-     <SupplierChart supplierChartData={supplierChartData} />
+        <SupplierChart
+          supplierChartData={supplierChartData}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );
