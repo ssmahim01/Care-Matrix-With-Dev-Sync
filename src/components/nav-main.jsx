@@ -143,7 +143,7 @@ export function NavMain() {
         )}
         {role === "pharmacist" && (
           <>
-            <NavLink to="/dashboard/patient-overview">
+            <NavLink to="/dashboard/pharmacist-overview">
               <h3 className="flex gap-2 items-center">
                 <LayoutDashboard className="text-base" /> Overview
               </h3>

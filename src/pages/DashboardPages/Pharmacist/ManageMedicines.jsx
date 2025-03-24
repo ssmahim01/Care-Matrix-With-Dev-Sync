@@ -52,6 +52,7 @@ import { Button } from "@/components/ui/button";
 import { medicine_categories } from "@/lib/pharmacy";
 import AddMedicine from "@/components/Modal/AddMedicine";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const ManageMedicines = () => {
   const [page, setPage] = useState(1);
@@ -219,7 +220,8 @@ const ManageMedicines = () => {
         <TableHeader>
           <TableRow className={"bg-base-200 hover:bg-base-200"}>
             <TableHead>Image</TableHead>
-            <TableHead>Brand || Generic Name</TableHead>
+            <TableHead>Brand Name</TableHead>
+            <TableHead>Generic Name</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Dosage</TableHead>
             <TableHead>Strength</TableHead>
@@ -257,10 +259,8 @@ const ManageMedicines = () => {
                       />
                     </Avatar>
                   </TableCell>
-                  <TableCell>
-                    {medicine?.brandName || "N/A"} ||{" "}
-                    {medicine?.genericName || "N/A"}
-                  </TableCell>
+                  <TableCell>{medicine?.brandName || "N/A"}</TableCell>
+                  <TableCell>{medicine?.genericName || "N/A"}</TableCell>
                   <TableCell>{medicine?.category || "N/A"}</TableCell>
                   <TableCell>{medicine?.dosageForm || "N/A"}</TableCell>
                   <TableCell>{medicine?.strength || "N/A"}</TableCell>
@@ -376,13 +376,16 @@ const ManageMedicines = () => {
                         </div>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
-                        <DropdownMenuItem>
-                          <Eye className="w-4 h-4 mr-2" /> Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <Link to={`/medicine/${medicine._id}`}>
+                          <DropdownMenuItem className={"cursor-pointer"}>
+                            <Eye className="w-4 h-4 mr-2" /> Details
+                          </DropdownMenuItem>{" "}
+                        </Link>
+                        <DropdownMenuItem className={"cursor-pointer"}>
                           <Pencil className="w-4 h-4 mr-2" /> Update
                         </DropdownMenuItem>
                         <DropdownMenuItem
+                          className={"cursor-pointer"}
                           onClick={() => handleMedicineDelete(medicine?._id)}
                         >
                           <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
