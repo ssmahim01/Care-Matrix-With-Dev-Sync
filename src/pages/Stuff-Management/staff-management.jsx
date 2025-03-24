@@ -9,6 +9,7 @@ import { fetchStaff } from "@/lib/stuff"
 import { StaffTable } from "./staff-table"
 import { StaffForm } from "./staff-form"
 import { StaffFilters } from "./staff-filters"
+import { useQuery } from "@tanstack/react-query"
 
 export function StaffManagement() {
   const [staff, setStaff] = useState([])
@@ -22,6 +23,10 @@ export function StaffManagement() {
     status: [],
     shift: [],
   })
+
+ 
+
+
   const [activeTab, setActiveTab] = useState("all-staff")
   useEffect(() => {
     const loadStaff = async () => {
