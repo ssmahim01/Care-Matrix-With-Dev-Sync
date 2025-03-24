@@ -1,23 +1,30 @@
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
-import { FaHome, FaInfoCircle } from "react-icons/fa";
-import { MdContacts, MdDashboard, MdMedicalServices } from "react-icons/md";
+import { FaHome, FaInfoCircle, FaMapMarkerAlt } from "react-icons/fa";
+import {
+  MdContacts,
+  MdDashboard,
+  MdDashboardCustomize,
+  MdKeyboardArrowDown,
+  MdMedicalServices,
+} from "react-icons/md";
 import { CiMenuFries } from "react-icons/ci";
-import { FaUserDoctor } from "react-icons/fa6";
+import { FaCubesStacked, FaUserDoctor } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
-import { Pill, X } from "lucide-react";
-import { IoIosArrowUp } from "react-icons/io";
-import { IoSettingsOutline } from "react-icons/io5";
+import { X } from "lucide-react";
 import { FiUser } from "react-icons/fi";
+import useRole from "@/hooks/useRole";
+import { CgIfDesign } from "react-icons/cg";
+import { GiMedicines } from "react-icons/gi";
 import "./Navbar.css";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [role] = useRole();
   // console.log(user);
   // const dispatch = useDispatch();
   // const menuOpen = useSelector((state) => state.menu.menuOpen);
@@ -63,28 +70,7 @@ const Navbar = () => {
       >
         <FaHome /> <span className="font-bold">Home</span>
       </NavLink>
-      <NavLink
-        className="flex gap-1 items-center"
-        to="/doctors"
-        onClick={() => setIsMenuOpen(false)}
-      >
-        <FaUserDoctor /> <span className="font-bold">Doctors</span>
-      </NavLink>
-      <NavLink
-        className="flex gap-1 items-center"
-        to="/services"
-        onClick={() => setIsMenuOpen(false)}
-      >
-        <MdMedicalServices /> <span className="font-bold">Services</span>
-      </NavLink>
-      <NavLink
-        className="flex items-center"
-        to="/pharmacy"
-        onClick={() => setIsMenuOpen(false)}
-      >
-        <Pill className=" h-[15px] font-extrabold  " />{" "}
-        <span className="font-bold">Our Pharmacy</span>
-      </NavLink>
+
       <NavLink
         className="flex gap-1 items-center"
         to="/about-us"
@@ -113,7 +99,7 @@ const Navbar = () => {
               isMenuOpen
                 ? "translate-x-0 opacity-100 z-20"
                 : "translate-x-[200px] opacity-0 z-[-1]"
-            } lg:hidden bg-[#e2ebee] p-4 text-center absolute top-[76px] md:top-[79px] right-0 w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
+            } lg:hidden bg-[#e2ebee] p-4 text-center absolute top-[68px] md:top-[69px] right-0 w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
           >
             <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
               {routes}
@@ -125,7 +111,7 @@ const Navbar = () => {
                 src={
                   "https://i.ibb.co.com/NgjF57xt/care-matrix-logo-Copy-removebg-preview.png"
                 }
-                className="w-52 h-full rounded-md"
+                className="w-44 h-full rounded-md"
                 referrerPolicy="no-referrer"
                 alt="Logo of Care Matrix"
               />
@@ -134,38 +120,117 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-end w-full">
-          <div className={`hidden lg:flex w-[48rem] ${user ? "pl-24" : "pl-44"}`}>
-            <ul className="menu menu-horizontal w-full gap-4 mr-3 px-1">{routes}</ul>
-          </div>
+          <>
+            <ul className="items-center gap-4 text-[#1b1b1b] lg:flex hidden">
+              {routes}
+
+              <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] group relative">
+                <p className="flex gap-2 items-center">
+                  <MdMedicalServices />{" "}
+                  <span className="font-bold">Services</span>
+                </p>
+                <MdKeyboardArrowDown className="text-[1.5rem] text-[#424242] group-hover:text-[#3B9DF8] transition-all duration-500 group-hover:rotate-[180deg]" />
+                <article className="p-6 bg-base-200 rounded-md boxShadow w-[500px] absolute top-[40px] z-[-1] right-[-100px] group-hover:translate-y-0 translate-y-[-20px] group-hover:opacity-100 opacity-0 group-hover:z-30 transition-all duration-300">
+                  <div className="grid grid-cols-2">
+                    <ul className="flex flex-col gap-[10px] text-[#2b2a2a]">
+                      <NavLink
+                        to="/about-us"
+                        className="flex items-center gap-1 hover:text-[#3b9df8da] transition-all duration-300"
+                      >
+                        {" "}
+                        <FaInfoCircle />{" "}
+                        <span className="font-semibold">
+                          Details Of Care Matrix
+                        </span>
+                      </NavLink>
+                      <NavLink
+                        to="/contact-us"
+                        className="flex items-center gap-1 hover:text-[#3b9df8da] transition-all duration-300"
+                      >
+                        <FaMapMarkerAlt />
+                        <span className="font-semibold">Hospital Location</span>
+                      </NavLink>
+
+                      <NavLink
+                        className="flex gap-1 items-center hover:text-[#3b9df8da]"
+                        to="/doctors"
+                      >
+                        <FaUserDoctor />{" "}
+                        <span className="font-semibold">Our Doctors</span>
+                      </NavLink>
+                      <NavLink
+                        className="flex gap-1 items-center hover:text-[#3b9df8da]"
+                        to="/services"
+                      >
+                        <MdMedicalServices />{" "}
+                        <span className="font-semibold">Services</span>
+                      </NavLink>
+                      <NavLink
+                        className="flex gap-1 items-center"
+                        to="/pharmacy"
+                      >
+                        <GiMedicines className="h-[15px] font-extrabold  " />{" "}
+                        <span className="font-semibold">Our Pharmacy</span>
+                      </NavLink>
+                    </ul>
+
+                    <div className="flex flex-col gap-[10px] border-l border-[#e5eaf2] pl-[30px]">
+                      <div className="flex items-center gap-[10px] text-[1rem] text-[#424242]">
+                        <MdDashboardCustomize className="bg-blue-200 text-blue-900 p-1.5 rounded-full text-[2rem]" />
+                        Full Customize
+                      </div>
+
+                      <div className="flex items-center gap-[10px] text-[1rem] text-[#424242]">
+                        <CgIfDesign className="bg-orange-200 text-orange-800 p-1.5 rounded-full text-[2rem]" />
+                        Modern Design
+                      </div>
+
+                      <div className="flex items-center gap-[10px] text-[1rem] text-[#424242]">
+                        <FaCubesStacked className="bg-yellow-200 text-yellow-800 p-1.5 rounded-full text-[2rem]" />
+                        Well Stacktured
+                      </div>
+                    </div>
+                  </div>
+
+                  <img
+                    src="https://i.ibb.co.com/5WcYG7vw/435277693-8031332973561491-6366282168604454552-n.jpg"
+                    alt="image"
+                    className="w-full object-cover mt-4 rounded-sm h-full"
+                  />
+                </article>
+              </li>
+            </ul>
+          </>
 
           {user ? (
-            <div className="flex items-center gap-[15px]">
+            <div className="dropdown dropdown-end avatar-online">
               <div
-                className="flex items-center gap-[10px] cursor-pointer relative"
-                onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar w-12 h-12"
               >
-                <div className="relative">
-                  <img
-                    src={user?.photoURL}
-                    alt="avatar"
-                    referrerPolicy="no-referrer"
-                    className="md:w-16 w-12 h-12 rounded-full object-cover"
-                  />
-                  <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute bottom-0 right-0 border-2 border-white"></div>
-                </div>
+                <img
+                  src={user?.photoURL}
+                  alt={user ? user?.displayName : "Guest user"}
+                  className="w-full h-full border-4 border-sky-500 rounded-full hover:border-gray-300"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content bg-base-200 bg-opacity-60 rounded z-[20] mt-2 w-80 py-3 shadow-md"
+              >
+                <div className="pl-2 *:font-bold flex flex-col gap-2">
+                  <div className="flex flex-col">
+                    <h1 className="text-[1rem] font-semibold text-gray-800">
+                      {user?.displayName}
+                    </h1>
 
-                <h1 className="text-[1rem] font-[400] text-gray-600 sm:block w-[68%] hidden">
-                  {user?.displayName}
-                </h1>
+                    <p className="text-sm font-medium text-gray-700">
+                      {user?.email}
+                    </p>
+                  </div>
 
-                {/* Dropdown Menu */}
-                <div
-                  className={`${
-                    accountMenuOpen
-                      ? "translate-y-0 opacity-100 z-[1]"
-                      : "translate-y-[10px] opacity-0 z-[-1]"
-                  } bg-white w-max md:w-72 rounded-md absolute top-[60px] right-0 p-[10px] flex flex-col transition-all duration-300 gap-[7px]`}
-                >
                   <NavLink
                     className="flex gap-1 items-center"
                     to="/dashboard/manage-appointments"
@@ -179,34 +244,39 @@ const Navbar = () => {
 
                   <NavLink
                     className="flex gap-1 items-center"
-                    to="/dashboard"
+                    to={
+                      role === "administrator"
+                        ? "/dashboard/administrator-overview"
+                        : role === "doctor"
+                        ? "/dashboard/doctor-overview"
+                        : role === "pharmacist"
+                        ? "/dashboard/pharmacist-overview"
+                        : role === "patient"
+                        ? "/dashboard/patient-overview"
+                        : "/dashboard"
+                    }
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <MdDashboard />{" "}
                     <span className="font-medium text-gray-600">Dashboard</span>
                   </NavLink>
-
                   {/* Logout Button */}
                   <div className="mt-2 border-t border-gray-200 pt-[5px]">
-                    <button onClick={() => dispatch(logOut)} className="flex items-center gap-[5px] cursor-pointer rounded-md p-[8px] w-full pr-[45px] py-[3px] text-[1rem] text-red-500 hover:bg-red-50">
+                    <button
+                      onClick={() => dispatch(logOut)}
+                      className="flex items-center gap-[5px] cursor-pointer rounded-md p-[8px] w-full pr-[45px] py-[3px] text-[1rem] text-red-500 hover:bg-red-50"
+                    >
                       <BiLogOutCircle />
                       Logout
                     </button>
                   </div>
                 </div>
-
-                {/* Arrow Icon */}
-                <IoIosArrowUp
-                  className={`${
-                    accountMenuOpen ? "rotate-0" : "rotate-[180deg]"
-                  } transition-all duration-300 text-gray-600 sm:block hidden`}
-                />
-              </div>
+              </ul>
             </div>
           ) : (
             <>
               <Link to="/login">
-                <button className="btn btn-outline border-2 hover:border-[#0e6efd] text-[#0E82FD] hover:bg-[#0e6efd] duration-500 hover:text-white rounded-md md:ml-2 font-bold flex gap-1 items-center">
+                <button className="btn btn-outline border-2 hover:border-[#0e6efd] text-[#0E82FD] hover:bg-[#0e6efd] duration-500 hover:text-white rounded-md md:ml-2 font-bold flex gap-1 items-center w-full">
                   <span>Login</span>
                   <BiLogInCircle className="text-base" />
                 </button>{" "}

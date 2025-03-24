@@ -30,18 +30,16 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
         setErrorMessage('');
 
         try {
-            // Confirm payment with Stripe
+            // Confirm payment with Stripe (no return_url)
             const { error, paymentIntent } = await stripe.confirmPayment({
                 elements,
-                confirmParams: {
-                    return_url: `${window.location.origin}/book-appointment/payment-success`, // Required for some payment methods
-                },
-                redirect: 'if_required', // Avoid redirect unless necessary
+                redirect: 'if_required', // Only redirect if the payment method demands it
             });
 
             if (error) {
                 setErrorMessage(error.message);
                 toast.error(error.message);
+                setIsProcessing(false);
                 return;
             }
 
@@ -50,46 +48,39 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
                     appointmentInfo,
                     paymentStatus: 'succeeded',
                     amount: consultationFee,
-                    paymentDate: new Date().toISOString(), // Use ISO format for consistency
-                    transactionId: paymentIntent.id, // Save Stripe transaction ID for reference
+                    paymentDate: new Date().toISOString(),
+                    transactionId: paymentIntent.id,
                 };
 
                 // Save payment data to backend
-                try {
-                    const response = await axiosSecure.post('/payments', paymentData);
-                    if (response.data?.message === 'Payment data saved successfully') {
-                        toast.success('Payment successful and saved!');
-                        navigate('/book-appointment/payment-success');
+                const paymentResponse = await axiosSecure.post('/payments', paymentData);
+                if (paymentResponse.data?.message === 'Payment data saved successfully') {
+                    toast.success('Payment successful and saved!');
+
+                    // Save appointment info to appointments collection
+                    const appointmentResponse = await axiosSecure.post('/appointments', appointmentInfo);
+                    if (appointmentResponse?.data.insertedId) {
+                        toast.success("Appointment booked successfully!");
+                        // Redirect only after both payment and appointment are saved
+                        navigate('/book-appointment/payment-success', {
+                            state: {paymentData}
+                        });
                     } else {
-                        throw new Error('Unexpected response from server');
+                        throw new Error('Failed to book appointment');
                     }
-                } catch (saveError) {
-                    console.error('Error saving payment:', saveError);
-                    toast.error('Payment succeeded, but failed to save. Contact support.');
+                } else {
+                    throw new Error('Unexpected response from server');
                 }
             } else {
                 toast.error('Payment failed. Please try again.');
             }
         } catch (error) {
+            console.error('Error:', error);
             setErrorMessage(error.message || 'Payment failed. Please try again.');
             toast.error(error.message || 'Payment failed. Please try again.');
         } finally {
             setIsProcessing(false);
         }
-
-        //   book appointment and save appointment info to appointments collection
-
-        axiosSecure.post('/appointments', appointmentInfo)
-            .then(res => {
-                console.log(res);
-                if (res?.data.insertedId) {
-                    toast.success("Appointment booked successfully!")
-                }
-            })
-            .catch(err => {
-                toast.error("Something went wrong please try again")
-            })
-
     };
 
     return (
