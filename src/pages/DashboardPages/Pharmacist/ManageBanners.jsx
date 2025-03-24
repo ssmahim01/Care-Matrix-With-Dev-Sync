@@ -1,7 +1,9 @@
 import AddBanners from "@/components/Modal/AddBanner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+
 import {
   Table,
   TableBody,
@@ -11,44 +13,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+import useBanners from "@/hooks/useBanners";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { RiAdvertisementFill } from "react-icons/ri";
 import Loader from "@/shared/Loader";
 import { motion } from "framer-motion";
-
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import toast from "react-hot-toast";
-import useBanners from "@/hooks/useBanners";
-import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { RiAdvertisementFill } from "react-icons/ri";
+import { useState } from "react";
+
 function ManageBanners() {
   const [setOpen, setIsOpen] = useState(false);
   const [banners, isLoading, refetch] = useBanners({ isActive: "all" });
   const axiosSecure = useAxiosSecure();
-  // const handleBannerAdd = async (id) => {
-  //     await toast.promise(
-  //         axiosSecure.patch(`/banners/${id}`, { status: "added" }),
-  //         {
-  //             loading: "Updating status...",
-  //             success: <b>Updated successfull!</b>,
-  //             error: <b>Could not update.</b>,
-  //         }
-  //     );
-  //     refetch();
-  // };
-  // const handleBannerRemove = async (id) => {
-  //     await toast.promise(
-  //         axiosSecure.patch(`/banners/${id}`, { status: "removed" }),
-  //         {
-  //             loading: "Updating status...",
-  //             success: <b>Updated successfull!</b>,
-  //             error: <b>Could not update.</b>,
-  //         }
-  //     );
-  //     refetch();
-  // };
+
   const handleBannerStatusChange = async (id, newStatus) => {
-    // console.log(newStatus);
     await toast.promise(
       axiosSecure.patch(`/banners/status/${id}`, { status: newStatus }),
       {
@@ -95,37 +74,25 @@ function ManageBanners() {
             </TableHeader>
             <TableBody>
               {banners?.map((banner, i) => (
-                <TableRow key={banner._id}>
+                <TableRow key={banner?._id}>
                   <TableCell className="font-medium">{i + 1}</TableCell>
 
                   <TableCell>
                     <Avatar>
-                      <AvatarImage src={banner.image} />
+                      <AvatarImage src={banner?.image} />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                   </TableCell>
-                  <TableCell>{banner.medicineName}</TableCell>
-                  <TableCell>{banner.description.slice(0, 22)}...</TableCell>
-                  <TableCell>{banner.insertedBy}</TableCell>
-                  <TableCell>{banner.date}</TableCell>
+                  <TableCell>{banner?.medicineName}</TableCell>
+                  <TableCell>{banner?.description.slice(0, 22)}...</TableCell>
+                  <TableCell>{banner?.insertedBy}</TableCell>
+                  <TableCell>{banner?.date}</TableCell>
                   <TableCell className="text-right flex justify-end">
-                    {/* {banner.status === "added" ? (
-                                        <Button onClick={() => handleBannerRemove(banner._id)}>
-                                            Remove Slide
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            variant="outline"
-                                            onClick={() => handleBannerAdd(banner._id)}
-                                        >
-                                            Add Slide
-                                        </Button>
-                                    )} */}
                     <Switch
-                      checked={banner.status === "active"}
+                      checked={banner?.status === "active"}
                       onCheckedChange={(checked) => {
                         const newStatus = checked ? "active" : "inactive";
-                        handleBannerStatusChange(banner._id, newStatus);
+                        handleBannerStatusChange(banner?._id, newStatus);
                       }}
                     />
                   </TableCell>
