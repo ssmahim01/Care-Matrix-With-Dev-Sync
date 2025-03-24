@@ -112,10 +112,6 @@ const Router = () => {
 
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route path="/dashboard/administrator-overview" element={<AdministratorOverview />} />
-        <Route path="/dashboard/administrator/manage-doctors" element={<DoctorsManagement />} />
-        <Route path="/dashboard/administrator/manage-users" element={<ManageUsers />} />
-        <Route path="/dashboard/pharmacist/manage-banner" element={<ManageBanners />} />
         {/* Admin Routes */}
         <Route
           path="/dashboard/administrator-overview"
@@ -127,7 +123,7 @@ const Router = () => {
         />
         <Route
           path="/dashboard/administrator/manage-users"
-          element={<ManageUsers />}
+          element={<StuffManagement />}
         />
 
         {/* Pharmacist Routes */}

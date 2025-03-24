@@ -9,7 +9,7 @@ import {
 } from "react-icons/md";
 import { CiMenuFries } from "react-icons/ci";
 import { FaCubesStacked, FaUserDoctor } from "react-icons/fa6";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
@@ -19,9 +19,11 @@ import useRole from "@/hooks/useRole";
 import { CgIfDesign } from "react-icons/cg";
 import { GiMedicines } from "react-icons/gi";
 import "./Navbar.css";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const [role] = useRole();
@@ -121,7 +123,7 @@ const Navbar = () => {
 
         <div className="navbar-end w-full">
           <>
-            <ul className="items-center gap-4 text-[#1b1b1b] lg:flex hidden">
+            <ul className="items-center gap-4 text-[#1b1b1b] lg:flex hidden mr-3">
               {routes}
 
               <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] group relative">
@@ -248,11 +250,11 @@ const Navbar = () => {
                       role === "administrator"
                         ? "/dashboard/administrator-overview"
                         : role === "doctor"
-                        ? "/dashboard/doctor-overview"
+                        ? "/dashboard/administrator-overview"
                         : role === "pharmacist"
-                        ? "/dashboard/pharmacist-overview"
+                        ? "/dashboard/administrator-overview"
                         : role === "patient"
-                        ? "/dashboard/patient-overview"
+                        ? "/dashboard/administrator-overview"
                         : "/dashboard"
                     }
                     onClick={() => setIsMenuOpen(false)}
@@ -263,7 +265,11 @@ const Navbar = () => {
                   {/* Logout Button */}
                   <div className="mt-2 border-t border-gray-200 pt-[5px]">
                     <button
-                      onClick={() => dispatch(logOut)}
+                      onClick={() => {
+                        dispatch(logOut)
+                        toast.success("Log out successful");
+                      navigate("/");
+                      }}
                       className="flex items-center gap-[5px] cursor-pointer rounded-md p-[8px] w-full pr-[45px] py-[3px] text-[1rem] text-red-500 hover:bg-red-50"
                     >
                       <BiLogOutCircle />
