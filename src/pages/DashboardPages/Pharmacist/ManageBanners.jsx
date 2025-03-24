@@ -62,7 +62,7 @@ function ManageBanners() {
 
   if (isLoading) return <Loader text={"Loading Banners"} />;
   return (
-    <div>
+    <div className="p-7">
       <DashboardPagesHeader
         title={"Manage Banners"}
         subtitle={"Create, edit, and showcase promotional banners"}

@@ -138,7 +138,7 @@ const ManageMedicines = () => {
   };
 
   return (
-    <div>
+    <div className="p-7">
       <DashboardPagesHeader
         title={"Manage Medicines"}
         subtitle={"Track And Organize Medicine Inventory Efficiently"}

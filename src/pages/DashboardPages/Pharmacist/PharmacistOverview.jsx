@@ -41,7 +41,7 @@ const PharmacistOverview = () => {
     })) || [];
 
   return (
-    <div className="space-y-6 p-4 lg:p-6">
+    <div className="space-y-6 p-7">
       {/* Section Cards */}
       <SectionCards
         isLoading={isLoading}
