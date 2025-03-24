@@ -1,19 +1,8 @@
-import { useAxiosPublic } from "@/hooks/useAxiosPublic";
-import SectionCards from "./PharmacistOverview/SectionCards";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import CategoryChart from "./PharmacistOverview/categoryChart";
 import ManufacturerChart from "./PharmacistOverview/ManufacturerChart";
+import SectionCards from "./PharmacistOverview/SectionCards";
 import SupplierChart from "./PharmacistOverview/SupplierChart";
 
 const PharmacistOverview = () => {

@@ -16,7 +16,7 @@ const CategoryChart = ({ chartData, isLoading }) => {
         {isLoading ? (
           <div className="skeleton h-8 w-48 mb-3"></div>
         ) : (
-          <CardTitle className="text-2xl font-bold mb-3">
+          <CardTitle className="text-2xl font-bold text-gray-700 mb-3">
             Medicines Per Category
           </CardTitle>
         )}
@@ -75,10 +75,10 @@ const CategoryChart = ({ chartData, isLoading }) => {
                     color: "#F3F4F6",
                   }}
                 />
-                <Legend verticalAlign="top" height={36} />
+                {/* <Legend verticalAlign="top" height={36} color="#F3F4F6"/> */}
                 <Bar
                   dataKey="count"
-                  fill="#64748B"
+                  fill="#F3F4F6"
                   fillOpacity={0.5}
                   stroke="#64748B"
                   strokeWidth={1}

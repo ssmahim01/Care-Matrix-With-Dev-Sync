@@ -17,7 +17,7 @@ const SupplierChart = ({ supplierChartData, isLoading }) => {
         {isLoading ? (
           <div className="skeleton h-8 w-48 mb-3"></div>
         ) : (
-          <CardTitle className="text-2xl font-bold mb-3">
+          <CardTitle className="text-2xl font-bold text-gray-700 mb-3">
             Medicines Per Supplier
           </CardTitle>
         )}
@@ -72,10 +72,10 @@ const SupplierChart = ({ supplierChartData, isLoading }) => {
                     color: "#F3F4F6", // Gray-100
                   }}
                 />
-                <Legend verticalAlign="top" height={36} />
+                {/* <Legend verticalAlign="top" height={36} /> */}
                 <Bar
                   dataKey="count"
-                  fill="#64748B" // Slate-500
+                  fill="#F3F4F6" // Slate-500
                   fillOpacity={0.5}
                   stroke="#64748B" // Slate-600
                   strokeWidth={1}
