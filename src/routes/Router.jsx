@@ -32,6 +32,7 @@ import MedicineDetails from "@/pages/OurPharmacy/MedicineDetails";
 import Cart from "@/components/Pharmacy/Cart";
 import Payment from "@/pages/Payment/Payment";
 import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
+import PharmacistOverview from "@/pages/DashboardPages/Pharmacist/PharmacistOverview";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -124,6 +125,10 @@ const Router = () => {
         />
 
         {/* Pharmacist Routes */}
+        <Route
+          path="/dashboard/pharmacist-overview"
+          element={<PharmacistOverview />}
+        />
         <Route
           path="/dashboard/pharmacist/manage-medicines"
           element={<ManageMedicines />}
