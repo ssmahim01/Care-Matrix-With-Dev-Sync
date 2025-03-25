@@ -49,15 +49,16 @@ function AddBanners({ isOpen, setIsOpen, refetch }) {
     setLoading(true);
     if (!image) {
       setLoading(false);
-      toast.error("Please Select a Banner Image");
+      toast.error("Please Select A Banner Image!");
       return;
     }
 
     const imageUrl = await toast.promise(imgUpload(image), {
-      success: <b>Image Uploaded</b>,
+      // success: <b>Image Uploaded</b>,
       loading: "Image Uploading...",
       error: "Unable to upload!",
     });
+
     if (!imageUrl) {
       setLoading(false);
       toast.error("Image Upload Failed! Try Again");
@@ -158,7 +159,7 @@ function AddBanners({ isOpen, setIsOpen, refetch }) {
                     <img
                       src={preview}
                       alt="Selected file preview"
-                      className="mx-auto object-cover rounded-full w-24 h-24"
+                      className="mx-auto object-cover rounded w-[90%] h-28"
                     />
                     <MdDelete
                       className="text-[2rem] text-white bg-[#000000ad] p-1 absolute top-0 right-0 cursor-pointer rounded-tr-[13px]"

@@ -32,6 +32,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 function ManageBanners() {
   const [setOpen, setIsOpen] = useState(false);
@@ -48,6 +50,43 @@ function ManageBanners() {
       }
     );
     refetch();
+  };
+
+  // Medicine Delete Function
+  const handleBannerDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action will permanently delete the banner AD!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "No, cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const { data } = await axios.delete(
+          `${import.meta.env.VITE_API_URL}/banners/delete/${id}`
+        );
+        if (data.data.deletedCount) {
+          refetch();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Banner has been deleted successfully!",
+            icon: "success",
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: error.message || "Failed to delete the banner!",
+          icon: "error",
+          background: "#ffffff",
+          color: "#000000",
+          confirmButtonColor: "#ef4444",
+        });
+      }
+    }
   };
 
   return (
@@ -147,7 +186,10 @@ function ManageBanners() {
                             <DropdownMenuItem className="cursor-pointer">
                               <Pencil className="w-4 h-4 mr-2" /> Update
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
+                            <DropdownMenuItem
+                              onClick={() => handleBannerDelete(banner?._id)}
+                              className="cursor-pointer"
+                            >
                               <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
                               Delete
                             </DropdownMenuItem>
