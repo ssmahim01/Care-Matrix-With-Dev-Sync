@@ -12,10 +12,20 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuthUser } from "@/redux/auth/authActions";
 import auth from "@/firebase/firebase.config";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const Login = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
+  const {data: accountLock = {}} = useQuery({
+    queryKey: ["accountLock", user?.email],
+    queryFn: async() => {
+      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/users/lock-profile/${user?.email}`);
+      return data;
+    }
+  })
+
+  console.log(accountLock);
 
   // states for email & password
   const [email, setEmail] = useState("");
@@ -30,11 +40,17 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setIsError("");
+    
+    // Post the user data on database
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {email, password})
+    
     signInWithEmailAndPassword(auth, email, password)
-      .then(async (result) => {
+    .then(async (result) => {
         const currentUser = result.user;
-        // Update lastLoginAt Time
-        await axios.patch(
+        
+        if(response?.data?.message.includes("Login successful") && currentUser.uid){
+          // Update lastLoginAt Time
+        const updatedLoginTime = await axios.patch(
           `${import.meta.env.VITE_API_URL}/users/last-login-at/${
             currentUser.email
           }`,
@@ -44,17 +60,27 @@ const Login = () => {
             ).toISOString(),
           }
         );
+        }
       })
       .catch((error) => {
-        setIsError(
-          error?.message.includes("Firebase:")
-            ? error?.message.split("Firebase:")[1]
-            : error?.message || "Login Failed!"
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+        let errorMessage = "Login Failed!";
+      
+        if (error?.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        } else if (error?.message.includes("Firebase:")) {
+          errorMessage = error.message.split("Firebase:")[1] || "Login Failed!";
+        }
+      
+        // Handle lockout logic
+        if (accountLock?.lockUntil && accountLock.lockUntil > Date.now()) {
+          const minutesLeft = Math.ceil((accountLock.lockUntil - Date.now()) / (60 * 1000));
+          errorMessage = `Too many failed attempts. Try again in ${minutesLeft} minutes.`;
+        } else if (accountLock?.failedAttempts >= 1) {
+          errorMessage = `Incorrect password. Attempts: ${accountLock.failedAttempts}/4`;
+        }
+      
+        setIsError(errorMessage);
+      });      
   };
 
   if (user) return navigate("/");
@@ -138,7 +164,7 @@ const Login = () => {
             {/* Register Button */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || accountLock?.failedAttempts >= 4}
               className="btn border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
             >
               {loading ? "Login in..." : "Login"}
