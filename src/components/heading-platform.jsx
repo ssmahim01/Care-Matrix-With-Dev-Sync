@@ -5,7 +5,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import CareMatrixLogo from "../assets/logo.jpg";
+import CareMatrixLogo from "../assets/images/logo-care-matrix.webp";
 import { Link } from "react-router";
 import collapseLogo from '/collapse-logo.png'
 
@@ -20,7 +20,7 @@ export function HeadingPlatform() {
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground border-b border-sky-100"
         >
-          <div className="flex items-center text-left text-sm leading-tight w-full">
+          <div className="flex items-center leading-tight w-full">
             {/* Sidebar Logo */}
             <div className="w-full flex items-center gap-2 ">
               <Link to="/">
