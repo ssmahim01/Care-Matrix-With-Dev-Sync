@@ -17,6 +17,7 @@ const BannerPharma = () => {
       className="bg-no-repeat bg-cover bg-right-top py-12"
       style={{ backgroundImage: `url('${sliderbg}')` }}
     >
+      <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl">
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
@@ -25,7 +26,7 @@ const BannerPharma = () => {
           disableOnInteraction: false,
         }}
         modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper w-11/12 lg:w-10/12 mx-auto"
+        className="mySwiper"
       >
         {banners?.map((medicine) => (
           <SwiperSlide key={medicine._id}>
@@ -37,7 +38,7 @@ const BannerPharma = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </div></div>
   );
 };
 
