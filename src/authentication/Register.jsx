@@ -193,6 +193,7 @@ const Register = () => {
             const userData = {
               email: currentUser?.email,
               name: currentUser?.displayName,
+              password: user?.password,
               photo: currentUser?.photoURL,
               phoneNumber: user?.phoneNumber,
               uid: currentUser?.uid,
@@ -212,7 +213,9 @@ const Register = () => {
             // save userData in db --->
             await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
           })
-          .catch((error) => setIsError(error.message || "Registration Failed!"))
+          .catch((error) => {
+            setIsError(error.message || "Registration Failed!")
+          })
           .finally(() => {
             setLoading(false);
           });
