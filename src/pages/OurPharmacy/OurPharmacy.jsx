@@ -61,7 +61,7 @@ const OurPharmacy = () => {
           <PharmacyNavbar search={search} setSearch={setSearch} />
         </div>
         {/* Medicines */}
-        <div className="mt-12 flex flex-col lg:flex-row w-full gap-6">
+        <div className="mt-6 flex flex-col lg:flex-row w-full gap-6">
           {/* categories */}
           <div className="w-full lg:w-4/12 xl:w-3/12 border rounded h-fit">
             <div className="p-4 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
