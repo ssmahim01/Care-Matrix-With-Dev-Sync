@@ -9,6 +9,11 @@ import {
 } from "@/components/ui/table";
 
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 import {
@@ -47,6 +52,7 @@ import { Button } from "@/components/ui/button";
 import { medicine_categories } from "@/lib/pharmacy";
 import AddMedicine from "@/components/Modal/AddMedicine";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const ManageMedicines = () => {
   const [page, setPage] = useState(1);
@@ -132,7 +138,7 @@ const ManageMedicines = () => {
   };
 
   return (
-    <div>
+    <div className="p-7">
       <DashboardPagesHeader
         title={"Manage Medicines"}
         subtitle={"Track And Organize Medicine Inventory Efficiently"}
@@ -200,7 +206,11 @@ const ManageMedicines = () => {
               Reset
             </Button>
             <Button>Add Category</Button>
-            <AddMedicine setOpen={setOpen} setIsOpen={setIsOpen} refetch={refetch} />
+            <AddMedicine
+              setOpen={setOpen}
+              setIsOpen={setIsOpen}
+              refetch={refetch}
+            />
           </div>
         </div>
       </div>
@@ -210,7 +220,8 @@ const ManageMedicines = () => {
         <TableHeader>
           <TableRow className={"bg-base-200 hover:bg-base-200"}>
             <TableHead>Image</TableHead>
-            <TableHead>Brand || Generic Name</TableHead>
+            <TableHead>Brand Name</TableHead>
+            <TableHead>Generic Name</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Dosage</TableHead>
             <TableHead>Strength</TableHead>
@@ -219,6 +230,8 @@ const ManageMedicines = () => {
               <sub className="text-[9px]">(BDT)</sub>
             </TableHead>
             <TableHead>Availability</TableHead>
+            <TableHead>Manufacturer</TableHead>
+            <TableHead>Supplier</TableHead>
             <TableHead>Manufacture</TableHead>
             <TableHead>Expiry Date</TableHead>
             <TableHead>Actions</TableHead>
@@ -228,7 +241,7 @@ const ManageMedicines = () => {
           {isLoading
             ? Array.from({ length: 8 }).map((_, i) => (
                 <TableRow key={i}>
-                  {Array.from({ length: 11 }).map((_, j) => (
+                  {Array.from({ length: 13 }).map((_, j) => (
                     <TableCell key={j}>
                       <div className="skeleton h-8 rounded w-full"></div>
                     </TableCell>
@@ -246,32 +259,102 @@ const ManageMedicines = () => {
                       />
                     </Avatar>
                   </TableCell>
-                  <TableCell>
-                    {medicine?.brandName || "N/A"} ||{" "}
-                    {medicine?.genericName || "N/A"}
-                  </TableCell>
+                  <TableCell>{medicine?.brandName || "N/A"}</TableCell>
+                  <TableCell>{medicine?.genericName || "N/A"}</TableCell>
                   <TableCell>{medicine?.category || "N/A"}</TableCell>
                   <TableCell>{medicine?.dosageForm || "N/A"}</TableCell>
                   <TableCell>{medicine?.strength || "N/A"}</TableCell>
-                  <TableCell>
-                    ৳{medicine?.price?.amount || "N/A"} || ৳
-                    {medicine?.price?.discount?.discountedAmount || "NA"}
+                  <TableCell className={"cursor-pointer"}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>
+                          ৳{medicine?.price?.amount || "N/A"} || ৳
+                          {medicine?.price?.discount?.discountedAmount || "NA"}
+                        </span>
+                      </TooltipTrigger>
+                      {medicine?.price?.discount && (
+                        <TooltipContent>
+                          <div className="text-sm">
+                            <p>
+                              <strong>Currency:</strong> BDT
+                            </p>
+                            <p>
+                              <strong>Discounted Amount:</strong> ৳
+                              {medicine?.price?.discount?.discountedAmount}
+                            </p>
+                            <p>
+                              <strong>Valid Until:</strong>{" "}
+                              {medicine?.price?.discount?.validUntil}
+                            </p>
+                          </div>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
                   </TableCell>
                   <TableCell>
                     <span
                       className={
                         medicine.availabilityStatus === "In Stock"
-                          ? "text-green-500"
+                          ? "text-green-500 mr-1"
                           : medicine.availabilityStatus === "Limited Stock"
-                          ? "text-yellow-500"
+                          ? "text-yellow-500 mr-1"
                           : medicine.availabilityStatus === "Out of Stock"
-                          ? "text-red-500"
-                          : "text-gray-500"
+                          ? "text-red-500 mr-1"
+                          : "text-gray-500 mr-1"
                       }
                     >
                       ●
                     </span>
                     {medicine?.availabilityStatus || "N/A"}
+                  </TableCell>
+                  <TableCell className={"truncate max-w-[60px] cursor-pointer"}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>{medicine?.manufacturer?.name || "N/A"}</span>
+                      </TooltipTrigger>
+                      {medicine?.manufacturer?.name && (
+                        <TooltipContent
+                          className={"space-y-1.5 flex flex-col text-sm"}
+                        >
+                          <span>
+                            <strong>Name:</strong>{" "}
+                            {medicine?.manufacturer?.name}
+                          </span>
+                          <span>
+                            <strong>Location:</strong>{" "}
+                            {medicine?.manufacturer?.location}
+                          </span>
+                          <span>
+                            <strong>Phone:</strong>{" "}
+                            {medicine?.manufacturer?.contact}
+                          </span>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell className={"truncate max-w-[80px] cursor-pointer"}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>{medicine?.supplier?.name || "N/A"}</span>
+                      </TooltipTrigger>
+                      {medicine?.supplier.name && (
+                        <TooltipContent
+                          className={"space-y-1.5 flex flex-col text-sm"}
+                        >
+                          <span>
+                            <strong>Name:</strong> {medicine?.supplier?.name}
+                          </span>
+                          <span>
+                            <strong>Location:</strong>{" "}
+                            {medicine?.supplier?.location}
+                          </span>
+                          <span>
+                            <strong>Phone:</strong>{" "}
+                            {medicine?.supplier?.contact}
+                          </span>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
                   </TableCell>
                   <TableCell>
                     {(medicine?.manufactureDate &&
@@ -297,13 +380,16 @@ const ManageMedicines = () => {
                         </div>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
-                        <DropdownMenuItem>
-                          <Eye className="w-4 h-4 mr-2" /> Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <Link to={`/medicine/${medicine._id}`}>
+                          <DropdownMenuItem className={"cursor-pointer"}>
+                            <Eye className="w-4 h-4 mr-2" /> Details
+                          </DropdownMenuItem>{" "}
+                        </Link>
+                        <DropdownMenuItem className={"cursor-pointer"}>
                           <Pencil className="w-4 h-4 mr-2" /> Update
                         </DropdownMenuItem>
                         <DropdownMenuItem
+                          className={"cursor-pointer"}
                           onClick={() => handleMedicineDelete(medicine?._id)}
                         >
                           <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
