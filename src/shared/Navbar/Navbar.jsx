@@ -1,5 +1,5 @@
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
-import { FaHome, FaInfoCircle, FaMapMarkerAlt } from "react-icons/fa";
+import { FaHome, FaInfoCircle, FaMapMarkerAlt, FaPager } from "react-icons/fa";
 import {
   MdContacts,
   MdDashboard,
@@ -20,13 +20,18 @@ import { CgIfDesign } from "react-icons/cg";
 import { GiMedicines } from "react-icons/gi";
 import "./Navbar.css";
 import toast from "react-hot-toast";
+import kader from "/kader.jpg";
+import { Separator } from "@/components/ui/separator";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const [role] = useRole();
+
   // console.log(user);
   // const dispatch = useDispatch();
   // const menuOpen = useSelector((state) => state.menu.menuOpen);
@@ -126,60 +131,116 @@ const Navbar = () => {
             <ul className="items-center gap-4 text-[#1b1b1b] lg:flex hidden mr-3">
               {routes}
 
-              <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] group relative">
+              <li
+                className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
+                onClick={() => setIsOpen(!isOpen)}
+              >
                 <p className="flex gap-2 items-center">
-                  <MdMedicalServices />{" "}
-                  <span className="font-bold">Services</span>
+                  {/* <MdMedicalServices />{" "} */}
+                  <FaPager />
+                  <span className="font-bold">Pages</span>
                 </p>
-                <MdKeyboardArrowDown className="text-[1.5rem] text-[#424242] group-hover:text-[#3B9DF8] transition-all duration-500 group-hover:rotate-[180deg]" />
-                <article className="p-6 bg-base-200 rounded-md boxShadow w-[500px] absolute top-[40px] z-[-1] right-[-100px] group-hover:translate-y-0 translate-y-[-20px] group-hover:opacity-100 opacity-0 group-hover:z-30 transition-all duration-300">
-                  <div className="grid grid-cols-2">
-                    <ul className="flex flex-col gap-[10px] text-[#2b2a2a]">
-                      <NavLink
-                        to="/about-us"
-                        className="flex items-center gap-1 hover:text-[#3b9df8da] transition-all duration-300"
-                      >
-                        {" "}
-                        <FaInfoCircle />{" "}
-                        <span className="font-semibold">
-                          Details Of Care Matrix
-                        </span>
-                      </NavLink>
-                      <NavLink
-                        to="/contact-us"
-                        className="flex items-center gap-1 hover:text-[#3b9df8da] transition-all duration-300"
-                      >
-                        <FaMapMarkerAlt />
-                        <span className="font-semibold">Hospital Location</span>
-                      </NavLink>
+                <MdKeyboardArrowDown
+                  className={`text-[1.5rem] text-[#424242] transition-all duration-500 ${
+                    isOpen
+                      ? "rotate-180 text-[#3B9DF8]"
+                      : "group-hover:text-[#3B9DF8]"
+                  }`}
+                />
+                {isOpen && (
+                  <article className="p-6 bg-white border-gray-200 rounded-lg shadow-sm w-[550px] absolute top-[40px] right-[-100px] z-30 transition-all duration-300">
+                    <div className="grid grid-cols-2 gap-6">
+                      {/* Left Column */}
+                      <ul className="flex flex-col gap-4 text-gray-800">
+                        <NavLink
+                          to="/contact-us"
+                          className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                        >
+                          <div className="mt-1">
+                            <FaMapMarkerAlt
+                              size={20}
+                              className="text-gray-800"
+                            />
+                          </div>
+                          <div>
+                            <span className="font-semibold text-lg">
+                              Hospital Location
+                            </span>
+                            <p className="text-sm text-gray-600">
+                              Displays hospital address with interactive map
+                              feature.
+                            </p>
+                          </div>
+                        </NavLink>
+                        <NavLink
+                          to="/doctors"
+                          className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                        >
+                          <div className="mt-1">
+                            <FaUserDoctor size={20} className="text-gray-800" />
+                          </div>
+                          <div>
+                            <span className="font-semibold text-lg">
+                              Our Expert Doctors
+                            </span>
+                            <p className="text-sm text-gray-600">
+                              Showcases skilled doctors with medical expertise
+                              details.
+                            </p>
+                          </div>
+                        </NavLink>
+                      </ul>
 
-                      <NavLink
-                        className="flex gap-1 items-center hover:text-[#3b9df8da]"
-                        to="/doctors"
-                      >
-                        <FaUserDoctor />{" "}
-                        <span className="font-semibold">Our Doctors</span>
-                      </NavLink>
-                    </ul>
-
-                    <div className="flex flex-col gap-[10px] border-l border-[#e5eaf2] pl-[30px]">
-                      <NavLink
-                        className="flex gap-1 items-center hover:text-[#3b9df8da]"
-                        to="/services"
-                      >
-                        <MdMedicalServices />{" "}
-                        <span className="font-semibold">Services</span>
-                      </NavLink>
-                      <NavLink
-                        className="flex gap-1 items-center"
-                        to="/pharmacy"
-                      >
-                        <GiMedicines className="h-[15px] font-extrabold  " />{" "}
-                        <span className="font-semibold">Our Pharmacy</span>
-                      </NavLink>
+                      {/* Right Column */}
+                      <ul className="flex flex-col gap-4 text-gray-800">
+                        <NavLink
+                          to="/services"
+                          className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                        >
+                          <div className="mt-1">
+                            <MdMedicalServices
+                              size={20}
+                              className="text-gray-800"
+                            />
+                          </div>
+                          <div>
+                            <span className="font-semibold text-lg">
+                              Our Services
+                            </span>
+                            <p className="text-sm text-gray-600">
+                              Highlights diverse medical services for our
+                              patient care.
+                            </p>
+                          </div>
+                        </NavLink>
+                        <NavLink
+                          to="/pharmacy"
+                          className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                        >
+                          <div className="mt-1">
+                            <GiMedicines size={20} className="text-gray-800" />
+                          </div>
+                          <div>
+                            <span className="font-semibold text-lg">
+                              Our Pharmacy
+                            </span>
+                            <p className="text-sm text-gray-600">
+                              Presents essential pharmacy products for medical
+                              needs.
+                            </p>
+                          </div>
+                        </NavLink>
+                      </ul>
                     </div>
-                  </div>
-                </article>
+                    <div className="w-full rounded p-2 mt-4">
+                      <img
+                        alt="Sayman Shakil Kader"
+                        src={kader}
+                        className="rounded-lg"
+                      ></img>
+                    </div>
+                  </article>
+                )}
               </li>
             </ul>
           </>
@@ -189,12 +250,12 @@ const Navbar = () => {
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-ghost btn-circle avatar w-12 h-12"
+                className="btn btn-ghost border-none btn-circle avatar w-12 h-12"
               >
                 <img
                   src={user?.photoURL}
                   alt={user ? user?.displayName : "Guest user"}
-                  className="w-full h-full border-4 border-sky-500 rounded-full hover:border-gray-300"
+                  className="w-full h-full border-4 border-sky-500 rounded-full hover:border-gray-300 transition-all duration-300 hover:scale-105 cursor-pointer"
                   referrerPolicy="no-referrer"
                 />
               </div>
@@ -207,43 +268,36 @@ const Navbar = () => {
                     <h1 className="text-[1rem] font-semibold text-gray-800">
                       {user?.displayName}
                     </h1>
-
-                    <p className="text-sm font-medium text-gray-700">
+                    <p className="text-sm font-medium text-gray-800">
                       {user?.email}
                     </p>
                   </div>
 
-                  <NavLink
-                    className="flex gap-1 items-center"
-                    to="/dashboard/manage-appointments"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <FiUser />{" "}
-                    <span className="font-medium text-gray-600">
-                      View Appointments
-                    </span>
-                  </NavLink>
+                  <Separator />
 
                   <NavLink
-                    className="flex gap-1 items-center"
+                    className="flex gap-1 items-center text-lg"
                     to={
                       role === "administrator"
                         ? "/dashboard/administrator-overview"
                         : role === "doctor"
-                        ? "/dashboard/administrator-overview"
+                        ? "/dashboard/doctor-overview"
                         : role === "pharmacist"
-                        ? "/dashboard/administrator-overview"
+                        ? "/dashboard/pharmacist-overview"
                         : role === "patient"
-                        ? "/dashboard/administrator-overview"
-                        : "/dashboard"
+                        ? "/dashboard/patient-overview"
+                        : role === "receptionist"
+                        ? "/dashboard/receptionist-overview"
+                        : "/"
                     }
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <MdDashboard />{" "}
-                    <span className="font-medium text-gray-600">Dashboard</span>
+                    <span className="font-medium text-gray-800">Dashboard</span>
                   </NavLink>
+                  {/* <Separator /> */}
                   {/* Logout Button */}
-                  <div className="mt-2 border-t border-gray-200 pt-[5px]">
+                  {/* <div className="my-1">
                     <button
                       onClick={() => {
                         dispatch(logOut);
@@ -255,7 +309,7 @@ const Navbar = () => {
                       <BiLogOutCircle />
                       Logout
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </ul>
             </div>
