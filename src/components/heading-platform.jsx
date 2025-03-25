@@ -5,7 +5,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import CareMatrixLogo from "../assets/logo.jpg";
+import CareMatrixLogo from "../assets/images/logo-care-matrix.webp";
 import { Link } from "react-router";
 
 export function HeadingPlatform() {
@@ -19,22 +19,20 @@ export function HeadingPlatform() {
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground border-b border-sky-100"
         >
-          <div className="flex items-center text-left text-sm leading-tight w-full">
+          <div className="flex items-center leading-tight w-full">
             {/* Sidebar Logo */}
-            <div className="w-full flex items-center gap-2 px-4 py-2">
               <Link to="/">
-                <figure className={`${
-                    isSidebarCollapsed ? "hidden" : "block"
-                  } transition-all duration-300`}>
+            <div className="w-full flex items-center gap-1">
                   <img
                     src={CareMatrixLogo}
-                    className="w-44 h-full transition-all duration-300"
+                    className="w-9 h-9 rounded-md transition-all duration-300"
                     referrerPolicy="no-referrer"
                     alt="Care Matrix Logo"
                   />
-                </figure>              
-              </Link>
+
+                <h3 className={`${state === "collapsed" && "md:hidden"} font-bold text-2xl flex gap-0 items-center`}>Care<span className="text-sky-500">Matrix</span></h3>  
             </div>
+              </Link>
           </div>
         </SidebarMenuButton>
       </SidebarMenuItem>

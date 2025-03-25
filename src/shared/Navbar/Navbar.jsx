@@ -160,6 +160,9 @@ const Navbar = () => {
                         <FaUserDoctor />{" "}
                         <span className="font-semibold">Our Doctors</span>
                       </NavLink>
+                    </ul>
+
+                    <div className="flex flex-col gap-[10px] border-l border-[#e5eaf2] pl-[30px]">
                       <NavLink
                         className="flex gap-1 items-center hover:text-[#3b9df8da]"
                         to="/services"
@@ -174,31 +177,8 @@ const Navbar = () => {
                         <GiMedicines className="h-[15px] font-extrabold  " />{" "}
                         <span className="font-semibold">Our Pharmacy</span>
                       </NavLink>
-                    </ul>
-
-                    <div className="flex flex-col gap-[10px] border-l border-[#e5eaf2] pl-[30px]">
-                      <div className="flex items-center gap-[10px] text-[1rem] text-[#424242]">
-                        <MdDashboardCustomize className="bg-blue-200 text-blue-900 p-1.5 rounded-full text-[2rem]" />
-                        Full Customize
-                      </div>
-
-                      <div className="flex items-center gap-[10px] text-[1rem] text-[#424242]">
-                        <CgIfDesign className="bg-orange-200 text-orange-800 p-1.5 rounded-full text-[2rem]" />
-                        Modern Design
-                      </div>
-
-                      <div className="flex items-center gap-[10px] text-[1rem] text-[#424242]">
-                        <FaCubesStacked className="bg-yellow-200 text-yellow-800 p-1.5 rounded-full text-[2rem]" />
-                        Well Stacktured
-                      </div>
                     </div>
                   </div>
-
-                  <img
-                    src="https://i.ibb.co.com/5WcYG7vw/435277693-8031332973561491-6366282168604454552-n.jpg"
-                    alt="image"
-                    className="w-full object-cover mt-4 rounded-sm h-full"
-                  />
                 </article>
               </li>
             </ul>
@@ -266,9 +246,9 @@ const Navbar = () => {
                   <div className="mt-2 border-t border-gray-200 pt-[5px]">
                     <button
                       onClick={() => {
-                        dispatch(logOut)
+                        dispatch(logOut);
                         toast.success("Log out successful");
-                      navigate("/");
+                        navigate("/");
                       }}
                       className="flex items-center gap-[5px] cursor-pointer rounded-md p-[8px] w-full pr-[45px] py-[3px] text-[1rem] text-red-500 hover:bg-red-50"
                     >

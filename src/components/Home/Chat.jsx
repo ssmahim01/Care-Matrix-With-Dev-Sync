@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const Chat = () => {
   return (
     <div className="bg-[#F2F4F5] py-5 md:py-8 w-full rounded-md mx-auto">
-     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[30px] md:gap-[15px] lg:px-28">
+     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[30px] md:gap-[15px] md:px-8 px-5">
      <div className="w-full md:w-[55%]">
         <p className="py-1.5 px-4 text-[0.8rem] rounded-md bg-sky-600 text-white flex gap-2 items-center lg:w-[30%] w-1/2">
         <MdNetworkPing className="text-xl" />
@@ -45,13 +45,13 @@ const Chat = () => {
         </div>
       </div>
         <button className="mt-7 group w-max bg-[#4c61d5] text-white py-2.5 rounded-md hover:bg-[#4859b7] transition-all duration-300 px-8 justify-center font-semibold cursor-pointer">
-        <Link to="/" className="flex items-center gap-[10px]">
+        <Link to="/dashboard/administrator-overview" className="flex items-center gap-[10px]">
           Explore Chat Dashboard
           <BsArrowRight className="group-hover:ml-1 transition-all duration-300" />
         </Link>
         </button>
       </div>
-      <div className="w-full mx-auto md:w-[40%] md:h-80 h-60">
+      <div className="w-full mx-auto md:w-[50%] md:h-80 h-60">
         <img
           alt="Image of Medical Expert"
           src={MedicalExpertChat}
