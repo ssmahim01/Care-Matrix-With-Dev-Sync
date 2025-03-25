@@ -41,7 +41,6 @@ import useRole from "@/hooks/useRole";
 
 export function NavMain() {
   const { state } = useSidebar();
-
   const [role, isLoading] = useRole();
   // console.log(role);
 
