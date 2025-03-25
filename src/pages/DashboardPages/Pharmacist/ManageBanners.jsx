@@ -62,7 +62,7 @@ function ManageBanners() {
           <Table>
             <TableCaption>A List Of All Promotional Banners</TableCaption>
             <TableHeader>
-              <TableRow>
+              <TableRow className={"bg-base-200 hover:bg-base-200"}>
                 <TableHead></TableHead>
                 <TableHead>Image</TableHead>
                 <TableHead>Name</TableHead>
@@ -76,25 +76,29 @@ function ManageBanners() {
               {banners?.map((banner, i) => (
                 <TableRow key={banner?._id}>
                   <TableCell className="font-medium">{i + 1}</TableCell>
-
                   <TableCell>
-                    <Avatar>
-                      <AvatarImage src={banner?.image} />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+                    <img
+                      src={banner?.image}
+                      alt="Medicine Image"
+                      className="min-w-28 h-16 object-cover"
+                    />
                   </TableCell>
                   <TableCell>{banner?.medicineName}</TableCell>
-                  <TableCell>{banner?.description.slice(0, 22)}...</TableCell>
+                  <TableCell className={"max-w-[300px] truncate"}>
+                    {banner?.description}...
+                  </TableCell>
                   <TableCell>{banner?.insertedBy}</TableCell>
                   <TableCell>{banner?.date}</TableCell>
-                  <TableCell className="text-right flex justify-end">
-                    <Switch
-                      checked={banner?.status === "active"}
-                      onCheckedChange={(checked) => {
-                        const newStatus = checked ? "active" : "inactive";
-                        handleBannerStatusChange(banner?._id, newStatus);
-                      }}
-                    />
+                  <TableCell>
+                    <div className="text-right flex justify-end items-center">
+                      <Switch
+                        checked={banner?.status === "active"}
+                        onCheckedChange={(checked) => {
+                          const newStatus = checked ? "active" : "inactive";
+                          handleBannerStatusChange(banner?._id, newStatus);
+                        }}
+                      />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
