@@ -29,6 +29,7 @@ const Login = () => {
   // Login User functionality --->
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setIsError("");
   
     try {
@@ -47,6 +48,7 @@ const Login = () => {
               `${import.meta.env.VITE_API_URL}/users/last-login-at/${email}`,
               { lastLoginAt: new Date().toISOString()},
             );
+            setLoading(false);
           }
         })
         }
@@ -66,7 +68,7 @@ const Login = () => {
           errorMessage = `Incorrect password. Attempts: ${error.response.data.failedAttempts}/4`;
         }
       }
-  
+      setLoading(false);
       setIsError(errorMessage);
     }
   };

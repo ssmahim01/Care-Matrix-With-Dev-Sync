@@ -39,6 +39,9 @@ const doctorSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchDoctors.pending, (state) => {
+        state.status = "loading"
+      })
       .addCase(fetchDoctors.fulfilled, (state, action) => {
         state.doctors = action.payload;
         state.status = "succeeded";
