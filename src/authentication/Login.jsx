@@ -12,21 +12,12 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuthUser } from "@/redux/auth/authActions";
 import auth from "@/firebase/firebase.config";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 
 const Login = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
-  const {data: accountLock = {}} = useQuery({
-    queryKey: ["accountLock", user?.email],
-    queryFn: async() => {
-      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/users/lock-profile/${user?.email}`);
-      return data;
-    }
-  })
-
-  console.log(accountLock);
-
+  
+  
   // states for email & password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,53 +25,50 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [isEyeOpen, setIsEyeOpen] = useState(false);
   const [isError, setIsError] = useState("");
-
+ 
   // Login User functionality --->
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setIsError("");
-    
-    // Post the user data on database
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {email, password})
-    
-    signInWithEmailAndPassword(auth, email, password)
-    .then(async (result) => {
-        const currentUser = result.user;
-        
-        if(response?.data?.message.includes("Login successful") && currentUser.uid){
-          // Update lastLoginAt Time
-        const updatedLoginTime = await axios.patch(
-          `${import.meta.env.VITE_API_URL}/users/last-login-at/${
-            currentUser.email
-          }`,
-          {
-            lastLoginAt: new Date(
-              currentUser?.metadata?.lastSignInTime
-            ).toISOString(),
+  
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/login`,
+        { email, password }
+      );
+  
+      if (response?.data?.message === "Login successful") {
+        signInWithEmailAndPassword(auth, email, password)
+        .then(async(result) => {
+          const user = result.user;
+          if(user){
+            // Optionally update last login time
+            await axios.patch(
+              `${import.meta.env.VITE_API_URL}/users/last-login-at/${email}`,
+              { lastLoginAt: new Date().toISOString()},
+            );
           }
-        );
+        })
         }
-      })
-      .catch((error) => {
-        let errorMessage = "Login Failed!";
-      
-        if (error?.response?.data?.message) {
-          errorMessage = error.response.data.message;
-        } else if (error?.message.includes("Firebase:")) {
-          errorMessage = error.message.split("Firebase:")[1] || "Login Failed!";
-        }
-      
-        // Handle lockout logic
-        if (accountLock?.lockUntil && accountLock.lockUntil > Date.now()) {
-          const minutesLeft = Math.ceil((accountLock.lockUntil - Date.now()) / (60 * 1000));
+    } catch (error) {
+      let errorMessage = "Login Failed!";
+  
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+  
+        // Handle lockout or failed attempts from backend response
+        if (error.response.data.lockUntil) {
+          const minutesLeft = Math.ceil(
+            (error.response.data.lockUntil - Date.now()) / (60 * 1000)
+          );
           errorMessage = `Too many failed attempts. Try again in ${minutesLeft} minutes.`;
-        } else if (accountLock?.failedAttempts >= 1) {
-          errorMessage = `Incorrect password. Attempts: ${accountLock.failedAttempts}/4`;
+        } else if (error.response.data.failedAttempts) {
+          errorMessage = `Incorrect password. Attempts: ${error.response.data.failedAttempts}/4`;
         }
-      
-        setIsError(errorMessage);
-      });      
+      }
+  
+      setIsError(errorMessage);
+    }
   };
 
   if (user) return navigate("/");
@@ -164,7 +152,7 @@ const Login = () => {
             {/* Register Button */}
             <button
               type="submit"
-              disabled={loading || accountLock?.failedAttempts >= 4}
+              disabled={loading}
               className="btn border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
             >
               {loading ? "Login in..." : "Login"}
