@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/pagination";
 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Eye, MoreVertical, Pencil, Trash } from "lucide-react";
 import { GiMedicines } from "react-icons/gi";
@@ -55,6 +55,13 @@ import Swal from "sweetalert2";
 import { Link } from "react-router";
 
 const ManageMedicines = () => {
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");

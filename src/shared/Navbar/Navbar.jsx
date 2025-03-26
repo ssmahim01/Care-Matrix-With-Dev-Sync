@@ -304,21 +304,21 @@ const Navbar = () => {
                           Dashboard
                         </span>
                       </NavLink>
-                      {/* <Separator /> */}
+                      <Separator />
                       {/* Logout Button */}
-                      {/* <div className="my-1">
-                    <button
-                      onClick={() => {
-                        dispatch(logOut);
-                        toast.success("Log out successful");
-                        navigate("/");
-                      }}
-                      className="flex items-center gap-[5px] cursor-pointer rounded-md p-[8px] w-full pr-[45px] py-[3px] text-[1rem] text-red-500 hover:bg-red-50"
-                    >
-                      <BiLogOutCircle />
-                      Logout
-                    </button>
-                  </div> */}
+                      <div className="my-1">
+                        <button
+                          onClick={() => {
+                            dispatch(logOut);
+                            toast.success("Log out successful");
+                            navigate("/");
+                          }}
+                          className="flex items-center gap-[5px] cursor-pointer rounded-md p-[8px] w-full pr-[45px] py-[3px] text-[1rem] text-red-500 bg-red-50 hover:bg-red-100 duration-300"
+                        >
+                          <BiLogOutCircle />
+                          Logout
+                        </button>
+                      </div>
                     </div>
                   </ul>
                 </div>
