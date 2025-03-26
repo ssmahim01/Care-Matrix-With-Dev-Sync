@@ -62,8 +62,8 @@ function ManageBeds() {
   return (
     <div>
       <DashboardPagesHeader
-        title={"Manage Bed Bookings"}
-        subtitle={"View, approve, or reject bed booking requests"}
+        title={"Manage Beds"}
+        subtitle={"View and manage all beds"}
         icon={RiAdvertisementFill}
       />
 
@@ -79,7 +79,7 @@ function ManageBeds() {
             </Button>
           </div>
           <Table>
-            <TableCaption>A List of All Bed Booking Requests</TableCaption>
+            <TableCaption>A List of All Beds</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead></TableHead>
@@ -102,7 +102,7 @@ function ManageBeds() {
                   <TableCell>{bed.price}</TableCell>
                   <TableCell className="text-right flex justify-end">
                     <Switch
-                      checked={bed.status === "available"}
+                      checked={bed.status === "available" && "requested"}
                       onCheckedChange={(checked) => {
                         const newStatus = checked ? "available" : "booked";
                         handleBedStatusChange(bed._id, newStatus);

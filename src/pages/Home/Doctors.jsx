@@ -6,7 +6,8 @@ import "slick-carousel/slick/slick-theme.css";
 import useDoctors from "@/hooks/useDoctors";
 
 const Doctors = () => {
-  const [doctors] = useDoctors();
+  const [doctors] = useDoctors()
+  // console.log("Doctors ", doctors );
 
   let settings = {
     dots: false,
@@ -67,7 +68,7 @@ const Doctors = () => {
         <div className="mt-6 w-11/12 md:w-full mx-auto">
         <Slider {...settings}>
       {doctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor}></DoctorCard>
+            <DoctorCard key={doctor._id} doctor={doctor}></DoctorCard>
           ))}
     </Slider>
         </div>

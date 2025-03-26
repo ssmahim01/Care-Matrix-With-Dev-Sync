@@ -16,7 +16,8 @@ import axios from "axios";
 const Login = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
-
+  
+  
   // states for email & password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,37 +25,50 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [isEyeOpen, setIsEyeOpen] = useState(false);
   const [isError, setIsError] = useState("");
-
+ 
   // Login User functionality --->
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setIsError("");
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async (result) => {
-        const currentUser = result.user;
-        // Update lastLoginAt Time
-        await axios.patch(
-          `${import.meta.env.VITE_API_URL}/users/last-login-at/${
-            currentUser.email
-          }`,
-          {
-            lastLoginAt: new Date(
-              currentUser?.metadata?.lastSignInTime
-            ).toISOString(),
+  
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/login`,
+        { email, password }
+      );
+  
+      if (response?.data?.message === "Login successful") {
+        signInWithEmailAndPassword(auth, email, password)
+        .then(async(result) => {
+          const user = result.user;
+          if(user){
+            // Optionally update last login time
+            await axios.patch(
+              `${import.meta.env.VITE_API_URL}/users/last-login-at/${email}`,
+              { lastLoginAt: new Date().toISOString()},
+            );
           }
-        );
-      })
-      .catch((error) => {
-        setIsError(
-          error?.message.includes("Firebase:")
-            ? error?.message.split("Firebase:")[1]
-            : error?.message || "Login Failed!"
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+        })
+        }
+    } catch (error) {
+      let errorMessage = "Login Failed!";
+  
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+  
+        // Handle lockout or failed attempts from backend response
+        if (error.response.data.lockUntil) {
+          const minutesLeft = Math.ceil(
+            (error.response.data.lockUntil - Date.now()) / (60 * 1000)
+          );
+          errorMessage = `Too many failed attempts. Try again in ${minutesLeft} minutes.`;
+        } else if (error.response.data.failedAttempts) {
+          errorMessage = `Incorrect password. Attempts: ${error.response.data.failedAttempts}/4`;
+        }
+      }
+  
+      setIsError(errorMessage);
+    }
   };
 
   if (user) return navigate("/");

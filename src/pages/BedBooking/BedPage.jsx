@@ -7,10 +7,11 @@ import BedDetailsModal from "./BedDetails";
 import { useQuery } from "@tanstack/react-query";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import useBeds from "@/hooks/useBeds";
+import axios from "axios";
 
 const BedPage = () => {
 
-  const [ beds, refetch ] = useBeds([""]);
+  // const [ beds, isLoading, refetch ] = useBeds([""]);
 
 
 
@@ -18,6 +19,24 @@ const BedPage = () => {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedBedType, setSelectedBedType] = useState("");
+
+  const {
+    data: beds = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["beds"],
+    queryFn: async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/beds`);
+      console.log("Raw API Response:", data); // Debug: See all beds
+      // Filter only "available" or "requested" beds
+      const filteredBeds = data.filter(
+        (bed) => bed.status === "available" || bed.status === "requested"
+      );
+      console.log("Filtered Beds:", filteredBeds); // Debug: See filtered result
+      return filteredBeds;
+    },
+  });
 
   // console.log(selectedBedType);
 
@@ -76,6 +95,7 @@ const BedPage = () => {
               price={bed.price}
               image={bed.image}
               bed={bed}
+              status={bed.status}
               onRequestBooking={handleRequestBooking}
               onShowDetails={handleShowDetails}
             />

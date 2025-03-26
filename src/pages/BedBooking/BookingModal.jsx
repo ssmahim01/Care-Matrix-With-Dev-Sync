@@ -4,22 +4,17 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"; // Adjust the path based on your project structure
-import { Button } from "@/components/ui/button"; // Adjust the path
-import { Input } from "@/components/ui/input"; // Adjust the path
-import { Label } from "@/components/ui/label"; // Optional: Add Label component for form labels
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useAuthUser } from "@/redux/auth/authActions";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 
-const BookingModal = ({ isOpen, onClose, bedType, refetch}) => {
+const BookingModal = ({ isOpen, onClose, bedType, refetch }) => {
   const user = useAuthUser();
-  const axiosPublic = useAxiosPublic()
 
-  // console.log(bedType);
-
-  // Initialize React Hook Form
   const {
     register,
     handleSubmit,
@@ -34,10 +29,10 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch}) => {
     },
   });
 
-  // Handle form submission
   const onSubmit = async (data) => {
     if (!user) {
-      return toast.error("You're not authorized to do this action");
+      toast.error("You're not authorized to do this action");
+      return;
     }
 
     const bedBookingInfo = {
@@ -52,31 +47,37 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch}) => {
       status: "pending",
     };
 
-    console.log(bedBookingInfo);
-
     try {
-      await axiosPublic.post(
-        `/bed-booking`,
-        bedBookingInfo
+      // Step 1: Post booking info
+      await toast.promise(
+        axios.post(`${import.meta.env.VITE_API_URL}/bed-booking`, bedBookingInfo),
+        {
+          loading: "Sending booking request...",
+          success: "Booking request sent!",
+          error: "Failed to send booking request",
+        }
       );
 
-      axiosPublic.patch(
-        `/beds/status/${bedType?._id}`,
-        { status
-        : "requested" }
+      // Step 2: Update bed status
+      await toast.promise(
+        axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${bedType?._id}`, {
+          status: "requested",
+        }),
+        {
+          loading: "Updating bed status...",
+          success: "Bed status updated!",
+          error: "Failed to update bed status",
+        }
       );
-      toast.success("Booking Request Sent Successfully");
-      reset(); // Reset the form after successful submission
-      onClose(); // Close the modal
-      refetch(); // Refetch the data to display the updated booking
 
-      
-
-
-
+      // Step 3: Refetch data
+      console.log("Triggering refetch...");
+      await refetch(); // Ensure refetch completes
+      reset();
+      onClose();
     } catch (error) {
-      toast.error("Failed to send booking request");
-      console.error(error);
+      console.error("Booking error:", error);
+      toast.error("An error occurred during booking");
     }
   };
 
@@ -88,15 +89,9 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch}) => {
             Booking for {bedType?.title}
           </DialogTitle>
         </DialogHeader>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-3 sm:space-y-4"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
           <div className="space-y-1">
-            <Label
-              htmlFor="patientName"
-              className="block text-xs sm:text-sm font-medium text-gray-700"
-            >
+            <Label htmlFor="patientName" className="block text-xs sm:text-sm font-medium text-gray-700">
               Patient Name
             </Label>
             <Input
@@ -104,24 +99,16 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch}) => {
               id="patientName"
               {...register("patientName", {
                 required: "Patient name is required",
-                minLength: {
-                  value: 2,
-                  message: "Patient name must be at least 2 characters",
-                },
+                minLength: { value: 2, message: "Patient name must be at least 2 characters" },
               })}
               className="text-sm sm:text-base"
             />
             {errors.patientName && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.patientName.message}
-              </p>
+              <p className="text-red-500 text-xs mt-1">{errors.patientName.message}</p>
             )}
           </div>
           <div className="space-y-1">
-            <Label
-              htmlFor="age"
-              className="block text-xs sm:text-sm font-medium text-gray-700"
-            >
+            <Label htmlFor="age" className="block text-xs sm:text-sm font-medium text-gray-700">
               Age
             </Label>
             <Input
@@ -129,26 +116,15 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch}) => {
               id="age"
               {...register("age", {
                 required: "Age is required",
-                min: {
-                  value: 1,
-                  message: "Age must be at least 1",
-                },
-                max: {
-                  value: 150,
-                  message: "Age cannot be more than 150",
-                },
+                min: { value: 1, message: "Age must be at least 1" },
+                max: { value: 150, message: "Age cannot be more than 150" },
               })}
               className="text-sm sm:text-base"
             />
-            {errors.age && (
-              <p className="text-red-500 text-xs mt-1">{errors.age.message}</p>
-            )}
+            {errors.age && <p className="text-red-500 text-xs mt-1">{errors.age.message}</p>}
           </div>
           <div className="space-y-1">
-            <Label
-              htmlFor="contactNumber"
-              className="block text-xs sm:text-sm font-medium text-gray-700"
-            >
+            <Label htmlFor="contactNumber" className="block text-xs sm:text-sm font-medium text-gray-700">
               Contact Number
             </Label>
             <Input
@@ -156,24 +132,16 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch}) => {
               id="contactNumber"
               {...register("contactNumber", {
                 required: "Contact number is required",
-                pattern: {
-                  value: /^[0-9]{11}$/,
-                  message: "Contact number must be a valid 11-digit number",
-                },
+                pattern: { value: /^[0-9]{11}$/, message: "Contact number must be a valid 11-digit number" },
               })}
               className="text-sm sm:text-base"
             />
             {errors.contactNumber && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.contactNumber.message}
-              </p>
+              <p className="text-red-500 text-xs mt-1">{errors.contactNumber.message}</p>
             )}
           </div>
           <div className="space-y-1">
-            <Label
-              htmlFor="admissionDate"
-              className="block text-xs sm:text-sm font-medium text-gray-700"
-            >
+            <Label htmlFor="admissionDate" className="block text-xs sm:text-sm font-medium text-gray-700">
               Preferred Admission Date
             </Label>
             <Input
@@ -184,19 +152,14 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch}) => {
                 validate: (value) => {
                   const selectedDate = new Date(value);
                   const today = new Date();
-                  today.setHours(0, 0, 0, 0); // Reset time for comparison
-                  return (
-                    selectedDate >= today ||
-                    "Admission date must be today or in the future"
-                  );
+                  today.setHours(0, 0, 0, 0);
+                  return selectedDate >= today || "Admission date must be today or in the future";
                 },
               })}
               className="text-sm sm:text-base"
             />
             {errors.admissionDate && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.admissionDate.message}
-              </p>
+              <p className="text-red-500 text-xs mt-1">{errors.admissionDate.message}</p>
             )}
           </div>
           <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2">
