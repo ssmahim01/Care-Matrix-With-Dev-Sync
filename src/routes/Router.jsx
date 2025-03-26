@@ -108,10 +108,6 @@ const Router = () => {
       <Route path="/dashboard" element={<DashboardLayout />}>
         {/* Admin Routes */}
         <Route
-          path="/dashboard/administrator/manage-users"
-          element={<ManageUsers />}
-        />
-        <Route
           path="/dashboard/administrator-overview"
           element={<AdministratorOverview />}
         />
