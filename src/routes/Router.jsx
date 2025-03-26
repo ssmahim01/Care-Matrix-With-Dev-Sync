@@ -33,6 +33,7 @@ import Cart from "@/components/Pharmacy/Cart";
 import Payment from "@/pages/Payment/Payment";
 import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
 import PharmacistOverview from "@/pages/DashboardPages/Pharmacist/PharmacistOverview";
+import RequestForm from "@/pages/RequestForm/RequestForm";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -144,6 +145,7 @@ const Router = () => {
 
         {/* Patient Routes */}
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
+        <Route path="/dashboard/patient/request-form" element={<RequestForm />} />
       </Route>
 
       {/* Catch-all for 404 Error Page */}

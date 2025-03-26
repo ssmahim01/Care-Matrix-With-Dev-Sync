@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/sidebar";
 import { logOut, useAuthUser } from "@/redux/auth/authActions";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 export function NavUser() {
   const dispatch = useDispatch();
@@ -82,8 +82,15 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
+                <NavLink
+                  to="/dashboard/patient/request-form"
+                  className={({ isActive }) => 
+                    `inline-flex gap-2 items-center transition-all duration-300 ease-in-out ${isActive ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500" : ""
+                    }`}
+                >
                 <Sparkles />
-                Upgrade to Pro
+                  Upgrade to Pro
+                </NavLink>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -103,11 +110,16 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <p onClick={() => {
-                dispatch(logOut)
-                navigate("/");
-                }} className="cursor-pointer hover:text-rose-500 flex gap-2 items-center"><LogOut className="hover:text-rose-500" />
-              Log out</p>
+              <p
+                onClick={() => {
+                  dispatch(logOut);
+                  navigate("/");
+                }}
+                className="cursor-pointer hover:text-rose-500 flex gap-2 items-center"
+              >
+                <LogOut className="hover:text-rose-500" />
+                Log out
+              </p>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
