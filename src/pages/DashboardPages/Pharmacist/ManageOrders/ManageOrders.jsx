@@ -3,30 +3,15 @@ import { FaTruck } from "react-icons/fa6";
 
 import {
   Table,
+  TableBody,
   TableCaption,
+  TableCell,
+  TableHead,
   TableHeader,
   TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
 } from "@/components/ui/table";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-
-import { Eye, Pencil, Trash, MoreVertical } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -34,17 +19,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { FaEye } from "react-icons/fa";
 
-const status = "Shipped";
+const status = "Delivered";
 
 const ManageOrders = () => {
   return (
     <div className="p-7">
       <DashboardPagesHeader
         title="Manage Orders"
-        subtitle="Track and process all customer orders efficiently! Manage orders in one place"
+        subtitle="Track and process all customer orders efficiently, Manage orders in one place"
         icon={FaTruck}
       />
 
@@ -84,7 +68,7 @@ const ManageOrders = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Array.from({ length: 6 }).map((order, idx) => (
+            {Array.from({ length: 6 }).map((idx) => (
               <TableRow key={idx}>
                 <TableCell>
                   <div>
@@ -121,20 +105,22 @@ const ManageOrders = () => {
                 </TableCell>
                 <TableCell>2/27/2025</TableCell>
                 <TableCell>
-                  {" "}
-                  <span
-                    className={`px-2 py-1 text-base font-medium rounded ${
-                      status === "Pending"
-                        ? "bg-yellow-100 text-yellow-600"
-                        : status === "Shipped"
-                        ? "bg-blue-100 text-blue-600"
-                        : status === "Delivered"
-                        ? "bg-green-100 text-green-600"
-                        : ""
-                    }`}
-                  >
-                    {status}
-                  </span>
+                  <div className={"flex items-center gap-1"}>
+                    <span
+                      className={`text-base font-medium rounded ${
+                        status === "Pending"
+                          ? " text-yellow-600"
+                          : status === "Shipped"
+                          ? " text-blue-600"
+                          : status === "Delivered"
+                          ? " text-green-600"
+                          : ""
+                      }`}
+                    >
+                      ●
+                    </span>{" "}
+                    <span className="font-medium mt-[1px]">{status}</span>
+                  </div>
                 </TableCell>
                 <TableCell>
                   <div>{"Uttara, Sector-4"}</div>
@@ -149,19 +135,25 @@ const ManageOrders = () => {
                     //   onStatusChange(orderId, newStatus)
                     // }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="cursor-pointer">
                       <SelectValue>{status}</SelectValue>
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Pending">Pending</SelectItem>
-                      <SelectItem value="Delivered">Delivered</SelectItem>
-                      <SelectItem value="Shipped">Shipped</SelectItem>
+                    <SelectContent className="cursor-pointer">
+                      <SelectItem className="cursor-pointer" value="Pending">
+                        Pending
+                      </SelectItem>
+                      <SelectItem className="cursor-pointer" value="Delivered">
+                        Delivered
+                      </SelectItem>
+                      <SelectItem className="cursor-pointer" value="Shipped">
+                        Shipped
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </TableCell>
                 <TableCell>
-                  <Button variant={"outline"}>
-                    <FaEye />
+                  <Button variant={"outline"} className={"cursor-pointer"}>
+                    <FaEye className="text-slate-700" />
                   </Button>
                 </TableCell>
               </TableRow>
