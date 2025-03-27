@@ -214,7 +214,7 @@ const ManageMedicines = () => {
             </Button>
             <Button>Add Category</Button>
             <AddMedicine
-              setOpen={setOpen}
+              isOpen={setOpen}
               setIsOpen={setIsOpen}
               refetch={refetch}
             />
@@ -377,7 +377,7 @@ const ManageMedicines = () => {
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                      <DropdownMenuTrigger asChild className={"cursor-pointer"}>
                         <div
                           className={
                             "bg-base-200 p-2 rounded border border-border w-fit"

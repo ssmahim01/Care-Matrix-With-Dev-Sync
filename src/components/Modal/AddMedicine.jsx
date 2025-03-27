@@ -190,7 +190,7 @@ const AddMedicine = ({ isOpen, setIsOpen, refetch }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Add Medicines</Button>
+        <Button className={"cursor-pointer"}>Add Medicines</Button>
       </DialogTrigger>
       <DialogContent className="w-[100%] max-w-none max-h-[80vh] overflow-y-auto p-6">
         <DashboardPagesHeader
