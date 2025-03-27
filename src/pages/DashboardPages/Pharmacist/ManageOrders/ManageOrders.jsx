@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { FaEye } from "react-icons/fa";
 
-const status = "Delivered";
+const status = "Pending";
 
 const ManageOrders = () => {
   return (
@@ -107,7 +107,7 @@ const ManageOrders = () => {
                 <TableCell>
                   <div className={"flex items-center gap-1"}>
                     <span
-                      className={`text-base font-medium rounded ${
+                      className={`text-xl font-medium rounded ${
                         status === "Pending"
                           ? " text-yellow-600"
                           : status === "Shipped"
@@ -119,7 +119,7 @@ const ManageOrders = () => {
                     >
                       ●
                     </span>{" "}
-                    <span className="font-medium mt-[1px]">{status}</span>
+                    <span className="font-medium mt-[3.2px]">{status}</span>
                   </div>
                 </TableCell>
                 <TableCell>
