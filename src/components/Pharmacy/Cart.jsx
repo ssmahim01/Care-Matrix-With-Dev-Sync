@@ -13,6 +13,8 @@ import { motion } from "framer-motion";
 import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import CartCheckoutForm from "../CheckoutForm/CartCheckoutForm";
 import { loadStripe } from '@stripe/stripe-js';
+import { Input } from "../ui/input";
+import emptyCart from '../../assets/Images/empty-cart.jpg'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -30,6 +32,25 @@ const Cart = () => {
     const shippingCost = cart.length ? 60 : 0
     const [loadingClientSecret, setLoadingClientSecret] = useState(false);
     const [clientSecret, setClientSecret] = useState('');
+
+
+    // form values 
+    const [name, setName] = useState(user?.displayName || "")
+    const [email, setEmail] = useState(user?.email || "")
+    const [phone, setPhone] = useState("")
+    const [district, setDistrict] = useState("")
+    const [division, setDivision] = useState("")
+    const [address, setAddress] = useState("")
+
+    const customerInfo = {
+        name: name || user?.displayName, email: email || user?.email, phone, district, division, address
+    }
+
+
+    // const handleCheck = () => {
+    //     console.log(customerInfo);
+    // }
+
 
     // console.log(user);
 
@@ -139,7 +160,7 @@ const Cart = () => {
 
     const districts = [
         'Dhaka', 'Chittagong', 'Rajshahi', 'Khulna', 'Barisal', 'Sylhet', 'Rangpur', 'Mymensingh',
-        'Comilla', 'Narayanganj', 'Gazipur', 'Narsingdi', 'Tangail', 'Jessore', 'Dinajpur', "Lakshmipur", "Noakhalu"
+        'Comilla', 'Narayanganj', 'Gazipur', 'Narsingdi', 'Tangail', 'Jessore', 'Dinajpur', "Lakshmipur", "Noakhali"
     ];
 
     const cities = [
@@ -148,10 +169,7 @@ const Cart = () => {
 
     ];
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
 
-    };
     const parcel = {
         price: subtotal + shippingCost,
         parcelType: "Medicine Purchase",
@@ -170,51 +188,56 @@ const Cart = () => {
                 <div>
                     <h2 className="text-[1.2rem] text-gray-700 font-semibold mb-6">Your order</h2>
                     <div className="border border-gray-200 rounded-md">
-                        {cart?.map((item, idx) => (
-                            <motion.div
-                                initial={{ y: 20, opacity: 0 }}
-                                whileInView={{ y: 0, opacity: 1 }}
-                                transition={{ duration: 0.6, ease: 'easeInOut', delay: idx * 0.1 }}
-                                viewport={{ once: true }}
-                                key={item._id}
-                                className="flex flex-col md:flex-row md:items-center gap-4 border-t p-4 border-gray-200"
-                            >
-                                <div className="border relative border-gray-200 w-max rounded-md bg-white">
-                                    <img
-                                        src={item.image}
-                                        alt={item.medicineName}
-                                        className="w-20 h-20 object-cover rounded"
-                                    />
-                                    <span className="px-[0.45rem] rounded-full absolute bg-white -top-2 -right-2 z-30 text-[0.9rem] text-gray-800 border border-gray-200 shadow-sm">
-                                        {item.quantity}
-                                    </span>
-                                </div>
-                                <div className="flex-1">
-                                    <h3 className="font-medium">{item.medicineName}</h3>
-                                    <div className="flex items-center gap-[30px] mt-2">
-                                        <p className="text-sm text-gray-500">
-                                            <b className="text-gray-800">{item.strength}</b>
-                                        </p>
-                                        <div className="flex items-center gap-2">
-                                            <button
-                                                onClick={() => handleDecrease(item._id)}
-                                                className="p-1 border rounded hover:bg-gray-200"
-                                            >
-                                                <AiOutlineMinus />
-                                            </button>
-                                            <span>{item.quantity}</span>
-                                            <button
-                                                onClick={() => handleIncrease(item._id)}
-                                                className="p-1 border rounded hover:bg-gray-200"
-                                            >
-                                                <AiOutlinePlus />
-                                            </button>
+                        {
+                            cart.length ?
+                                cart?.map((item, idx) => (
+                                    <motion.div
+                                        initial={{ y: 20, opacity: 0 }}
+                                        whileInView={{ y: 0, opacity: 1 }}
+                                        transition={{ duration: 0.6, ease: 'easeInOut', delay: idx * 0.1 }}
+                                        viewport={{ once: true }}
+                                        key={item._id}
+                                        className="flex flex-col md:flex-row md:items-center gap-4 border-t p-4 border-gray-200"
+                                    >
+                                        <div className="border relative border-gray-200 w-max rounded-md bg-white">
+                                            <img
+                                                src={item.image}
+                                                alt={item.medicineName}
+                                                className="w-20 h-20 object-cover rounded"
+                                            />
+                                            <span className="px-[0.45rem] rounded-full absolute bg-white -top-2 -right-2 z-30 text-[0.9rem] text-gray-800 border border-gray-200 shadow-sm">
+                                                {item.quantity}
+                                            </span>
                                         </div>
-                                    </div>
-                                </div>
-                                <span className="font-medium">৳ {item.price * item.quantity}</span>
-                            </motion.div>
-                        ))}
+                                        <div className="flex-1">
+                                            <h3 className="font-medium">{item.medicineName}</h3>
+                                            <div className="flex items-center gap-[30px] mt-2">
+                                                <p className="text-sm text-gray-500">
+                                                    <b className="text-gray-800">{item.strength}</b>
+                                                </p>
+                                                <div className="flex items-center gap-2">
+                                                    <button
+                                                        onClick={() => handleDecrease(item._id)}
+                                                        className="p-1 border rounded hover:bg-gray-200"
+                                                    >
+                                                        <AiOutlineMinus />
+                                                    </button>
+                                                    <span>{item.quantity}</span>
+                                                    <button
+                                                        onClick={() => handleIncrease(item._id)}
+                                                        className="p-1 border rounded hover:bg-gray-200"
+                                                    >
+                                                        <AiOutlinePlus />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span className="font-medium">৳ {item.price * item.quantity}</span>
+                                    </motion.div>
+                                ))
+                                :
+                                <img src={emptyCart} alt="empty cart" className="border rounded-md" />
+                        }
                     </div>
 
                     {/* Pricing Summary */}
@@ -264,6 +287,19 @@ const Cart = () => {
                 <div className="space-y-6" >
                     <div>
                         <label htmlFor="email" className="text-[1rem] font-medium text-gray-800 mb-1">
+                            Name
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter Your Name"
+                            defaultValue={name || user?.displayName}
+                            onChange={(e) => setName(e.target.value)}
+                            className={globalStyles.inputStyles}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="email" className="text-[1rem] font-medium text-gray-800 mb-1">
                             Email
                         </label>
                         <input
@@ -271,6 +307,7 @@ const Cart = () => {
                             id="email"
                             placeholder="user@gmail.com"
                             defaultValue={user?.email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className={globalStyles.inputStyles}
                         />
                     </div>
@@ -287,36 +324,14 @@ const Cart = () => {
                                 id="phone"
                                 placeholder="Enter Your Phone no."
                                 defaultValue={user?.mobile}
+                                onChange={(e) => setPhone(e.target.value)}
                                 className={globalStyles.inputStyles}
                             />
                         </div>
                     </div>
-                    <div>
-                        <label htmlFor="billingAddress" className="text-[1rem] font-medium text-gray-800 mb-1">
-                            Billing address
-                        </label>
-                        <select
-                            id="billingAddress"
-                            className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
-                        >
-                            <option>Bangladesh</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="district" className="text-[1rem] font-medium text-gray-800 mb-1">
-                            District
-                        </label>
-                        <select
-                            id="district"
-                            className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
-                        >
-                            {districts.map((district) => (
-                                <option key={district} value={district}>{district}</option>
-                            ))}
-                        </select>
-                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
+                        {/* <div>
                             <label htmlFor="zipCode" className="text-[1rem] font-medium text-gray-800 mb-1">
                                 Zip code
                             </label>
@@ -326,21 +341,47 @@ const Cart = () => {
                                 placeholder="Ex. 73923"
                                 className={globalStyles.inputStyles}
                             />
-                        </div>
+                        </div> */}
                         <div>
                             <label htmlFor="city" className="text-[1rem] font-medium text-gray-800 mb-1">
-                                City
+                                Division
                             </label>
                             <select
                                 id="city"
                                 className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
+                                onChange={(e) => setDivision(e.target.value)}
+                                value={division}
                             >
                                 {cities.map((city) => (
                                     <option key={city} value={city}>{city}</option>
                                 ))}
                             </select>
                         </div>
+                        <div>
+                            <label htmlFor="district" className="text-[1rem] font-medium text-gray-800 mb-1">
+                                District
+                            </label>
+                            <select
+                                id="district"
+                                className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
+                                onChange={(e) => setDistrict(e.target.value)}
+                                value={district}
+                            >
+                                {districts.map((district) => (
+                                    <option key={district} value={district}>{district}</option>
+                                ))}
+                            </select>
+                        </div>
+
                     </div>
+                    <div>
+                        <label htmlFor="billingAddress" className="text-[1rem] font-medium text-gray-800 mb-1">
+                            Billing address
+                        </label>
+                        <Input onChange={(e) => setAddress(e.target.value)} placeholder="Enter Your Location" className={"px-3 py-5"}>
+                        </Input>
+                    </div>
+
                     <div>
                         <label className="text-[1rem] font-medium text-gray-800 mb-1">
                             Payment method
@@ -354,7 +395,8 @@ const Cart = () => {
                         ) : (
                             <Elements stripe={stripePromise} options={options}>
                                 <CartCheckoutForm
-                                refetch={refetch}
+                                    customerInfo={customerInfo}
+                                    refetch={refetch}
                                     parcel={parcel}
                                     cartItems={cart}
                                     clientSecret={clientSecret}
