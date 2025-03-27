@@ -25,7 +25,6 @@ import OurPharmacy from "@/pages/OurPharmacy/OurPharmacy";
 import StuffManagement from "@/pages/Stuff-Management/StuffManagement";
 import ManageBanners from "@/pages/DashboardPages/Pharmacist/ManageBanners";
 import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManagement";
-import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
 import ManageMedicines from "@/pages/DashboardPages/Pharmacist/ManageMedicines";
 import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
 import MedicineDetails from "@/pages/OurPharmacy/MedicineDetails";
@@ -33,6 +32,7 @@ import Cart from "@/components/Pharmacy/Cart";
 import Payment from "@/pages/Payment/Payment";
 import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
 import PharmacistOverview from "@/pages/DashboardPages/Pharmacist/PharmacistOverview";
+import RoleRequest from "@/pages/Patient/RequestForRole/RoleRequest";
 import ManageOrders from "@/pages/DashboardPages/Pharmacist/ManageOrders/ManageOrders";
 import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/ReceptionistOverview";
 import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
@@ -158,6 +158,7 @@ const Router = () => {
 
         {/* Patient Routes */}
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
+        <Route path="/dashboard/patient/request-form" element={<RoleRequest />} />
       </Route>
 
       {/* Catch-all for 404 Error Page */}
