@@ -32,7 +32,7 @@ export default function ClinicAndSpecialties() {
   const [, setActiveTab] = useState("specialties");
 
   return (
-    <section className="max-w-screen-2xl">
+    <section className="w-full">
       {/* Hero Section */}
       <div className="-mt-8" />
       <div className="mb-12">
