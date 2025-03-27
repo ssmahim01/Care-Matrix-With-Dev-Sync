@@ -33,6 +33,7 @@ import Cart from "@/components/Pharmacy/Cart";
 import Payment from "@/pages/Payment/Payment";
 import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
 import PharmacistOverview from "@/pages/DashboardPages/Pharmacist/PharmacistOverview";
+import ManageOrders from "@/pages/DashboardPages/Pharmacist/ManageOrders/ManageOrders";
 import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/ReceptionistOverview";
 import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
@@ -127,6 +128,10 @@ const Router = () => {
         <Route
           path="/dashboard/pharmacist-overview"
           element={<PharmacistOverview />}
+        />
+        <Route
+          path="/dashboard/pharmacist/manage-orders"
+          element={<ManageOrders />}
         />
         <Route
           path="/dashboard/pharmacist/manage-medicines"

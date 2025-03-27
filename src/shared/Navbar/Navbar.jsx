@@ -239,13 +239,13 @@ const Navbar = () => {
                             </NavLink>
                           </ul>
                         </div>
-                        <div className="w-full rounded p-2 mt-4">
+                        {/* <div className="w-full rounded p-2 mt-4">
                           <img
                             alt="Sayman Shakil Kader"
                             src={kader}
                             className="rounded-lg"
                           ></img>
-                        </div>
+                        </div> */}
                       </article>
                     )}
                   </li>

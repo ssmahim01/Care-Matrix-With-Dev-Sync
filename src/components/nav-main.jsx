@@ -30,6 +30,7 @@ import { NavLink } from "react-router";
 import { FaUserDoctor } from "react-icons/fa6";
 import { ShoppingBag } from "lucide-react";
 import useRole from "@/hooks/useRole";
+import { FaTruck } from "react-icons/fa";
 
 // export function NavMain() {
 //   const administrator = true;
@@ -160,13 +161,16 @@ export function NavMain() {
                 <LayoutDashboard className="text-base" /> Overview
               </h3>
             </NavLink>
+            <NavLink to="/dashboard/pharmacist/manage-orders">
+              <h3 className="flex gap-2 items-center">
+                <FaTruck className="text-2xl" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}> Manage Orders </span>
+              </h3>
+            </NavLink>
             <NavLink to="/dashboard/pharmacist/manage-medicines">
               <h3 className="flex gap-2 items-center">
                 <GiMedicines className="text-2xl" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}>
-                  {" "}
-                  Manage Medicines{" "}
-                </span>
+                <span className={`${state === "collapsed" && "md:hidden"}`}> Manage Medicines </span>
               </h3>
             </NavLink>
             <NavLink to="/dashboard/pharmacist/manage-banner">
