@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthUser } from '@/redux/auth/authActions';
 
 
-const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, refetch }) => {
+const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, refetch, customerInfo }) => {
     const stripe = useStripe();
     const elements = useElements();
     const user = useAuthUser();
@@ -28,6 +28,24 @@ const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, r
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!customerInfo.name) {
+            return toast.error("Please Enter Your Name")
+        }
+        if (!customerInfo.email) {
+            return toast.error("Please Enter Your Email")
+        }
+        if (!customerInfo.phone) {
+            return toast.error("Please Enter Your Phone")
+        }
+        if (!customerInfo.district) {
+            return toast.error("Please Enter Your District")
+        }
+        if (!customerInfo.division) {
+            return toast.error("Please Enter Your Division")
+        }
+        if (!customerInfo.address) {
+            return toast.error("Please Enter Your Address")
+        }
 
         if (!stripe || !elements) {
             setError('Payment system not ready');
@@ -56,10 +74,11 @@ const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, r
                 setShowConfetti(true);
 
                 const orderData = {
-                    email: user.email,
+                    customerInfo,
                     totalPrice: parcel.price,
                     transactionId: paymentIntent.id,
-                    status: 'Paid',
+                    paymentStatus: 'Paid',
+                    orderStatus: 'Pending',
                     date: new Date().toISOString(),
                     medicines: cartItems.map(item => ({
                         medicineId: item._id,

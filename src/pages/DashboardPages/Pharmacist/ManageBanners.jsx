@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
 
 import { RiAdvertisementFill } from "react-icons/ri";
@@ -102,7 +102,7 @@ function ManageBanners() {
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       >
-        <div className="mx-auto">
+        <div className=" mx-auto">
           <div className="flex justify-end mb-4">
             <Button className="cursor-pointer" onClick={() => setIsOpen(true)}>
               Add New Banner
