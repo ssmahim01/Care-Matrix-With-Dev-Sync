@@ -3,142 +3,8 @@ import { useState } from "react";
 import BedCard from "./BedCard";
 import BookingModal from "./BookingModal";
 import BedDetailsModal from "./BedDetails";
-
-
-// Placeholder images (replace with actual image URLs)
-const bedData = [
-  {
-    title: "GENERAL",
-    price: "$25",
-    image: "https://i.ibb.co/7dMRk97c/General.webp",
-    details: [
-      "Multiple beds in a shared ward",
-      "Basic medical facilities",
-      "Shared toilet and bathroom",
-      "Nurse call system",
-      "Ventilation with fans",
-    ],
-  },
-  {
-    title: "TWIN SHARING",
-    price: "$45",
-    image: "https://i.ibb.co/DdJ9gy2/Twin-Sharing.webp",
-    details: [
-      "2 beds in a room",
-      "Air-conditioned",
-      "Common Toilet",
-      "Dedicated bed head panels with medical gases",
-      "Dedicated Television sets",
-      "Couch for each patient",
-      "Nurse call systems",
-    ],
-  },
-  {
-    title: "SINGLE CLASSIC",
-    price: "$35",
-    image: "https://i.ibb.co/7xGjRbkG/Single-Classic.webp",
-    details: [
-      "Private room with 1 bed",
-      "Air-conditioned",
-      "Attached bathroom",
-      "Dedicated bed head panels with medical gases",
-      "Flat-screen TV",
-      "Comfortable sofa for visitors",
-      "Nurse call system",
-      "Wi-Fi access",
-    ],
-  },
-  {
-    title: "DELUXE SINGLE",
-    price: "$40",
-    image: "https://i.ibb.co/9kKKXBfp/King-Suite.webp",
-    details: [
-      "Spacious private room with 1 bed",
-      "Air-conditioned with temperature control",
-      "Luxurious attached bathroom",
-      "Advanced medical equipment",
-      "Large LED TV",
-      "Recliner for visitors",
-      "Nurse call system",
-      "High-speed Wi-Fi",
-    ],
-  },
-  {
-    title: "PRINCE SUITE",
-    price: "$45",
-    image: "https://i.ibb.co/pv4n1cNs/Prince-Suite.jpg",
-    details: [
-      "Premium private suite with 1 bed",
-      "Air-conditioned with smart controls",
-      "Designer bathroom with bathtub",
-      "State-of-the-art medical facilities",
-      "55-inch Smart TV",
-      "Separate visitor lounge area",
-      "Nurse call system",
-      "Complimentary refreshments",
-    ],
-  },
-  {
-    title: "QUEEN SUITE",
-    price: "$50",
-    image: "https://i.ibb.co/2YWrtn3C/Queen-Suite.webp",
-    details: [
-      "Luxury private suite with 1 bed",
-      "Air-conditioned with ambient lighting",
-      "Spa-inspired bathroom with jacuzzi",
-      "Top-tier medical equipment",
-      "65-inch Smart TV with streaming services",
-      "Dedicated visitor room",
-      "24/7 nurse call system",
-      "Personalized meal plans",
-    ],
-  },
-  {
-    title: "EXECUTIVE WARD",
-    price: "$55",
-    image: "https://i.ibb.co/gbKmRYXp/EXECUTIVE-WARD.jpg",
-    details: [
-      "Semi-private ward with 3 beds",
-      "Air-conditioned",
-      "Shared modern bathroom",
-      "Basic medical equipment",
-      "Small TV for entertainment",
-      "Visitor seating area",
-      "Nurse call system",
-      "Daily housekeeping",
-    ],
-  },
-  {
-    title: "PREMIUM TWIN",
-    price: "$60",
-    image: "https://i.ibb.co/pBmmFjvL/PREMIUM-TWIN.jpg",
-    details: [
-      "2 beds in a premium room",
-      "Air-conditioned with UV sanitization",
-      "Shared bathroom with hot water",
-      "Dedicated medical gas panels",
-      "32-inch LED TV",
-      "Comfortable visitor chairs",
-      "Nurse call system",
-      "Filtered drinking water",
-    ],
-  },
-  {
-    title: "ROYAL SUITE",
-    price: "$100",
-    image: "https://i.ibb.co/YFXyN1Zw/ROYAL-SUITE.jpg",
-    details: [
-      "Exclusive private suite with 1 bed",
-      "Air-conditioned with voice control",
-      "Luxury bathroom with steam shower",
-      "Cutting-edge medical technology",
-      "75-inch OLED TV with premium channels",
-      "Private visitor suite with sofa bed",
-      "24/7 nurse and concierge service",
-      "Gourmet meal options",
-    ],
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const BedPage = () => {
   const [selectedBed, setSelectedBed] = useState(null);
@@ -146,21 +12,46 @@ const BedPage = () => {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedBedType, setSelectedBedType] = useState("");
 
+  // Fetch beds using useQuery
+  const {
+    data: beds = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["beds"],
+    queryFn: async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/beds`);
+      console.log("Raw API Response:", data); // Debug: See all beds
+      // Filter only "available" or "requested" beds
+      const filteredBeds = data.filter(
+        (bed) => bed.status === "available" || bed.status === "requested"
+      );
+      console.log("Filtered Beds:", filteredBeds); // Debug: See filtered result
+      return filteredBeds;
+    },
+    // Optional: Add polling or refetch interval if needed
+    // refetchInterval: 30000, // Refetch every 30 seconds
+  });
+
+  // Handle showing bed details
   const handleShowDetails = (bed) => {
     setSelectedBed(bed);
     setIsDetailsModalOpen(true);
   };
 
-  const handleRequestBooking = (bedType) => {
-    setSelectedBedType(bedType);
+  // Handle booking request
+  const handleRequestBooking = (requestedBed) => {
+    setSelectedBedType(requestedBed);
     setIsBookingModalOpen(true);
   };
 
+  // Close booking modal
   const closeBookingModal = () => {
     setIsBookingModalOpen(false);
     setSelectedBedType("");
   };
 
+  // Close details modal
   const closeDetailsModal = () => {
     setIsDetailsModalOpen(false);
     setSelectedBed(null);
@@ -178,24 +69,34 @@ const BedPage = () => {
         }
       />
       <div className="mt-6 sm:mt-8 lg:mt-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {bedData.map((bed, index) => (
-            <BedCard
-              key={index}
-              title={bed.title}
-              price={bed.price}
-              image={bed.image}
-              bed={bed}
-              onRequestBooking={handleRequestBooking}
-              onShowDetails={handleShowDetails}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="text-center">Loading beds...</div>
+        ) : beds.length === 0 ? (
+          <div className="text-center text-gray-500">
+            No available beds at the moment.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            {beds.map((bed) => (
+              <BedCard
+                key={bed._id} // Use _id instead of index for unique key
+                title={bed.title}
+                price={bed.price}
+                image={bed.image}
+                bed={bed}
+                status={bed.status}
+                onRequestBooking={handleRequestBooking}
+                onShowDetails={handleShowDetails}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <BookingModal
         isOpen={isBookingModalOpen}
         onClose={closeBookingModal}
         bedType={selectedBedType}
+        refetch={refetch}
       />
       <BedDetailsModal
         isOpen={isDetailsModalOpen}

@@ -27,7 +27,9 @@ const Medicines = ({ medicines, isLoading }) => {
       },
       medicineId: medicine._id,
       medicineName: medicine.brandName,
-      price: medicine.price.discountedAmount,
+      price: medicine?.price?.discountedAmount
+        ? medicine.price.discountedAmount
+        : medicine?.price?.amount,
       image: medicine.imageURL,
       strength: medicine.strength,
       quantity: 1,
@@ -83,11 +85,11 @@ const Medicines = ({ medicines, isLoading }) => {
                   </h1>
                   <h3 className="text-xl font-semibold">
                     <span className="text-4xl">৳</span>
-                    {medicine?.price?.amount} -{" "}
+                    {medicine?.price?.discountedAmount} -{" "}
                     <span className="opacity-70 text-[16px] font-medium">
                       <span className="text-4xl">৳</span>
                       <span className="line-through">
-                        {medicine?.price?.discountedAmount}
+                        {medicine?.price?.amount}
                       </span>
                     </span>
                   </h3>
