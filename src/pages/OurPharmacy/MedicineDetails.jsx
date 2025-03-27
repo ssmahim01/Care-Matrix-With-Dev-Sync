@@ -179,10 +179,10 @@ const MedicineDetails = () => {
 
           <div className="flex items-center gap-3">
             <span className="text-[1.5rem] text-gray-800 font-medium">
-              ৳ {price.discount.discountedAmount ? price.discount.discountedAmount : price.amount}
+              ৳ {price?.discount?.discountedAmount ? price.discount.discountedAmount : price?.amount}
             </span>
             {
-              price.discount.discountedAmount &&
+              price?.discount?.discountedAmount &&
 
               <span className="text-lg text-gray-500 line-through">৳ {price.amount}</span>
             }
