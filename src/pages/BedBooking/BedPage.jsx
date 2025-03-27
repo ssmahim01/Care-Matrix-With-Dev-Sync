@@ -3,23 +3,16 @@ import { useState } from "react";
 import BedCard from "./BedCard";
 import BookingModal from "./BookingModal";
 import BedDetailsModal from "./BedDetails";
-
 import { useQuery } from "@tanstack/react-query";
-import { useAxiosPublic } from "@/hooks/useAxiosPublic";
-import useBeds from "@/hooks/useBeds";
 import axios from "axios";
 
 const BedPage = () => {
-
-  // const [ beds, isLoading, refetch ] = useBeds([""]);
-
-
-
   const [selectedBed, setSelectedBed] = useState(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedBedType, setSelectedBedType] = useState("");
 
+  // Fetch beds using useQuery
   const {
     data: beds = [],
     isLoading,
@@ -36,40 +29,29 @@ const BedPage = () => {
       console.log("Filtered Beds:", filteredBeds); // Debug: See filtered result
       return filteredBeds;
     },
+    // Optional: Add polling or refetch interval if needed
+    // refetchInterval: 30000, // Refetch every 30 seconds
   });
 
-  // console.log(selectedBedType);
-
-// getting bed data from backend
-  // const axiosPublic = useAxiosPublic()
-  // const {
-  //     data: bedData = [],
-  //     refetch,
-  //     isLoading,
-  // } = useQuery({
-  //     queryKey: ["bedData"],
-  //     queryFn: async () => {
-  //         const { data } = await axiosPublic.get("/beds");
-  //         return data;
-  //     },
-  // });
-
-
+  // Handle showing bed details
   const handleShowDetails = (bed) => {
     setSelectedBed(bed);
     setIsDetailsModalOpen(true);
   };
 
+  // Handle booking request
   const handleRequestBooking = (requestedBed) => {
     setSelectedBedType(requestedBed);
     setIsBookingModalOpen(true);
   };
 
+  // Close booking modal
   const closeBookingModal = () => {
     setIsBookingModalOpen(false);
     setSelectedBedType("");
   };
 
+  // Close details modal
   const closeDetailsModal = () => {
     setIsDetailsModalOpen(false);
     setSelectedBed(null);
@@ -87,20 +69,28 @@ const BedPage = () => {
         }
       />
       <div className="mt-6 sm:mt-8 lg:mt-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {beds.map((bed, index) => (
-            <BedCard
-              key={index}
-              title={bed.title}
-              price={bed.price}
-              image={bed.image}
-              bed={bed}
-              status={bed.status}
-              onRequestBooking={handleRequestBooking}
-              onShowDetails={handleShowDetails}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="text-center">Loading beds...</div>
+        ) : beds.length === 0 ? (
+          <div className="text-center text-gray-500">
+            No available beds at the moment.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            {beds.map((bed) => (
+              <BedCard
+                key={bed._id} // Use _id instead of index for unique key
+                title={bed.title}
+                price={bed.price}
+                image={bed.image}
+                bed={bed}
+                status={bed.status}
+                onRequestBooking={handleRequestBooking}
+                onShowDetails={handleShowDetails}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <BookingModal
         isOpen={isBookingModalOpen}
@@ -108,7 +98,7 @@ const BedPage = () => {
         bedType={selectedBedType}
         refetch={refetch}
       />
-     <BedDetailsModal
+      <BedDetailsModal
         isOpen={isDetailsModalOpen}
         onClose={closeDetailsModal}
         bed={selectedBed}

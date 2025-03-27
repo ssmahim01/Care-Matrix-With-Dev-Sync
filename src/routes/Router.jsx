@@ -33,6 +33,9 @@ import Cart from "@/components/Pharmacy/Cart";
 import Payment from "@/pages/Payment/Payment";
 import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
 import PharmacistOverview from "@/pages/DashboardPages/Pharmacist/PharmacistOverview";
+import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/ReceptionistOverview";
+import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
+import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -137,6 +140,12 @@ const Router = () => {
         {/* Doctors Routes */}
 
         {/* Receptionist Routes */}
+
+      <Route path="/dashboard/receptionist-overview" element={<ReceptionistOverview />} />
+      <Route path="/dashboard/receptionist/manage-beds" element={<ManageBeds />} />
+      <Route path="/dashboard/receptionist/manage-bedBooking" element={<ManageBedBooking />} />
+
+
         <Route
           path="/dashboard/manage-appointments"
           element={<ManageAppointments />}
