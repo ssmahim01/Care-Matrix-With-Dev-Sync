@@ -102,7 +102,7 @@ function ManageBanners() {
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       >
-        <div className="mx-auto">
+        <div className=" mx-auto">
           <div className="flex justify-end mb-4">
             <Button className="cursor-pointer" onClick={() => setIsOpen(true)}>
               Add New Banner
