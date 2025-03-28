@@ -30,7 +30,7 @@ import { NavLink } from "react-router";
 import { FaUserDoctor } from "react-icons/fa6";
 import { ShoppingBag } from "lucide-react";
 import useRole from "@/hooks/useRole";
-import { FaTruck } from "react-icons/fa";
+import { FaHistory, FaTruck } from "react-icons/fa";
 
 // export function NavMain() {
 //   const administrator = true;
@@ -161,27 +161,6 @@ export function NavMain() {
                 <LayoutDashboard className="text-base" /> Overview
               </h3>
             </NavLink>
-            <NavLink to="/dashboard/pharmacist/manage-orders">
-              <h3 className="flex gap-2 items-center">
-                <FaTruck className="text-2xl" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}> Manage Orders </span>
-              </h3>
-            </NavLink>
-            <NavLink to="/dashboard/pharmacist/manage-medicines">
-              <h3 className="flex gap-2 items-center">
-                <GiMedicines className="text-2xl" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}> Manage Medicines </span>
-              </h3>
-            </NavLink>
-            <NavLink to="/dashboard/pharmacist/manage-banner">
-              <h3 className="flex gap-2 items-center">
-                <TicketSlash className="text-base" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}>
-                  {" "}
-                  Manage Banners{" "}
-                </span>
-              </h3>
-            </NavLink>
             <NavLink to="/dashboard/medical-records">
               <h3 className="flex gap-2 items-center">
                 <FileSpreadsheet className="text-base" />
@@ -191,12 +170,39 @@ export function NavMain() {
                 </span>
               </h3>
             </NavLink>
-            <NavLink to="/dashboard/my-prescriptions">
+            <NavLink to="/dashboard/pharmacist/orders-history">
               <h3 className="flex gap-2 items-center">
-                <ClipboardPlus className="text-base" />
+                <FaHistory className="text-2xl" />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
                   {" "}
-                  My Prescriptions{" "}
+                  Orders History{" "}
+                </span>
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/pharmacist/manage-orders">
+              <h3 className="flex gap-2 items-center">
+                <FaTruck className="text-2xl" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  {" "}
+                  Manage Orders{" "}
+                </span>
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/pharmacist/manage-medicines">
+              <h3 className="flex gap-2 items-center">
+                <GiMedicines className="text-2xl" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  {" "}
+                  Manage Medicines{" "}
+                </span>
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/pharmacist/manage-banner">
+              <h3 className="flex gap-2 items-center">
+                <TicketSlash className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  {" "}
+                  Manage Banners{" "}
                 </span>
               </h3>
             </NavLink>

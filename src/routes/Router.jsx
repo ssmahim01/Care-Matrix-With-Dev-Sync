@@ -37,6 +37,7 @@ import ManageOrders from "@/pages/DashboardPages/Pharmacist/ManageOrders/ManageO
 import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/ReceptionistOverview";
 import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
+import EidGreetingSection from "@/pages/Home/EidGreetingSection";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -92,16 +93,22 @@ const Router = () => {
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="medicine/:id" element={<MedicineDetails />} />
-
         <Route path="book-appointment/payment" element={<Payment />} />
         <Route
           path="book-appointment/payment-success"
           element={<SuccessPayment />}
         />
-
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="book-appointment/:name" element={<BookAppointment />} />
         <Route path="doctor-details/:id" element={<DoctorDetails />} />
+        <Route
+          path="eid-greetings"
+          element={
+            <div className="pt-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+              <EidGreetingSection />
+            </div>
+          }
+        />
       </Route>
 
       {/* Authentication Routes */}
@@ -145,12 +152,18 @@ const Router = () => {
         {/* Doctors Routes */}
 
         {/* Receptionist Routes */}
-
-      <Route path="/dashboard/receptionist-overview" element={<ReceptionistOverview />} />
-      <Route path="/dashboard/receptionist/manage-beds" element={<ManageBeds />} />
-      <Route path="/dashboard/receptionist/manage-bedBooking" element={<ManageBedBooking />} />
-
-
+        <Route
+          path="/dashboard/receptionist-overview"
+          element={<ReceptionistOverview />}
+        />
+        <Route
+          path="/dashboard/receptionist/manage-beds"
+          element={<ManageBeds />}
+        />
+        <Route
+          path="/dashboard/receptionist/manage-bedBooking"
+          element={<ManageBedBooking />}
+        />
         <Route
           path="/dashboard/manage-appointments"
           element={<ManageAppointments />}
@@ -158,7 +171,10 @@ const Router = () => {
 
         {/* Patient Routes */}
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
-        <Route path="/dashboard/patient/request-form" element={<RoleRequest />} />
+        <Route
+          path="/dashboard/patient/request-form"
+          element={<RoleRequest />}
+        />
       </Route>
 
       {/* Catch-all for 404 Error Page */}
