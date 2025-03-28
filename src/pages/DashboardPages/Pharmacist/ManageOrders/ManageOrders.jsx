@@ -21,9 +21,28 @@ import {
 } from "@/components/ui/select";
 import { FaEye } from "react-icons/fa";
 import useOrders from "./../../../../hooks/useOrders";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const ManageOrders = () => {
   const [orders, isLoading, refetch] = useOrders();
+
+  const changeOrderStatus = async (id, newStatus) => {
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/purchase/orders/change-status/${id}`,
+        {
+          orderStatus: newStatus,
+        }
+      );
+      if (data.data.modifiedCount) {
+        refetch();
+        toast.success(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div className="p-7">
@@ -120,7 +139,7 @@ const ManageOrders = () => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  {order?.date ? order.date.split("T")[0] : "N/A"}
+                  {order?.date ? order?.date.split("T")[0] : "N/A"}
                 </TableCell>
                 <TableCell>
                   <div>{order?.customerInfo?.address}</div>
@@ -164,25 +183,50 @@ const ManageOrders = () => {
                   <Select
                     value={order?.orderStatus}
                     onValueChange={(newStatus) =>
-                      onStatusChange(order._id, newStatus)
+                      changeOrderStatus(order?._id, newStatus)
                     }
+                    className={"cursor-pointer"}
                   >
                     <SelectTrigger className="cursor-pointer">
                       <SelectValue>{order?.orderStatus}</SelectValue>
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Pending">Pending</SelectItem>
-                      <SelectItem value="Processing">Processing</SelectItem>
-                      <SelectItem value="Ready for Pickup">
+                    <SelectContent className={"cursor-pointer"}>
+                      <SelectItem className={"cursor-pointer"} value="Pending">
+                        Pending
+                      </SelectItem>
+                      <SelectItem
+                        className={"cursor-pointer"}
+                        value="Processing"
+                      >
+                        Processing
+                      </SelectItem>
+                      <SelectItem
+                        className={"cursor-pointer"}
+                        value="Ready for Pickup"
+                      >
                         Ready for Pickup
                       </SelectItem>
-                      <SelectItem value="Shipped">Order Shipped</SelectItem>
-                      <SelectItem value="Out for Delivery">
+                      <SelectItem className={"cursor-pointer"} value="Shipped">
+                        Order Shipped
+                      </SelectItem>
+                      <SelectItem
+                        className={"cursor-pointer"}
+                        value="Out for Delivery"
+                      >
                         Out for Delivery
                       </SelectItem>
-                      <SelectItem value="Delivered">Order Delivered</SelectItem>
-                      <SelectItem value="Canceled">Order Canceled</SelectItem>
-                      <SelectItem value="Refunded">Order Refunded</SelectItem>
+                      <SelectItem
+                        className={"cursor-pointer"}
+                        value="Delivered"
+                      >
+                        Order Delivered
+                      </SelectItem>
+                      <SelectItem className={"cursor-pointer"} value="Canceled">
+                        Order Canceled
+                      </SelectItem>
+                      <SelectItem className={"cursor-pointer"} value="Refunded">
+                        Order Refunded
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </TableCell>
