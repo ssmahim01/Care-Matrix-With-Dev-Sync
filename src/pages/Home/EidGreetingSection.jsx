@@ -51,7 +51,7 @@ const EidGreetingSection = () => {
       setTimeLeft(getTimeRemaining());
     }, 1000);
 
-    return () => clearInterval(timer); 
+    return () => clearInterval(timer);
   }, []);
 
   const templates = {

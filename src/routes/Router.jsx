@@ -37,6 +37,7 @@ import ManageOrders from "@/pages/DashboardPages/Pharmacist/ManageOrders/ManageO
 import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/ReceptionistOverview";
 import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
+import EidGreetingSection from "@/pages/Home/EidGreetingSection";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -100,6 +101,14 @@ const Router = () => {
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="book-appointment/:name" element={<BookAppointment />} />
         <Route path="doctor-details/:id" element={<DoctorDetails />} />
+        <Route
+          path="eid-greetings"
+          element={
+            <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+              <EidGreetingSection />
+            </div>
+          }
+        />
       </Route>
 
       {/* Authentication Routes */}
@@ -162,7 +171,10 @@ const Router = () => {
 
         {/* Patient Routes */}
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
-        <Route path="/dashboard/patient/request-form" element={<RoleRequest />} />
+        <Route
+          path="/dashboard/patient/request-form"
+          element={<RoleRequest />}
+        />
       </Route>
 
       {/* Catch-all for 404 Error Page */}
