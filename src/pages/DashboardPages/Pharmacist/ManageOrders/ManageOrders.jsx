@@ -67,7 +67,7 @@ const ManageOrders = () => {
             >
               {status}
               {status !== "All" ? (
-                <span className="ml-2 text-xs">
+                <span className="ml-1 mt-1 text-xs">
                   (
                   {
                     orders.filter((order) => order.orderStatus === status)
@@ -76,7 +76,7 @@ const ManageOrders = () => {
                   )
                 </span>
               ) : (
-                <span className="ml-2 text-xs">({orders?.length})</span>
+                <span className="ml-1 mt-1 text-xs">({orders?.length})</span>
               )}
             </TabsTrigger>
           ))}

@@ -72,7 +72,7 @@ const OrdersTable = ({
         <TableRow>
           <TableCell
             colSpan={10}
-            className="text-center font-medium text-gray-800 py-4"
+            className="text-center font-medium text-gray-800 py-4 border-y"
           >
             No Orders Data Available In This Order Status
           </TableCell>
