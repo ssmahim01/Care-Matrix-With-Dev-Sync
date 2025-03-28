@@ -1,4 +1,5 @@
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { Button } from "@/components/ui/button";
 import { FaTruck } from "react-icons/fa6";
 
 import {
@@ -11,7 +12,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -20,10 +20,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FaEye } from "react-icons/fa";
-
-const status = "Pending";
+import useOrders from "./../../../../hooks/useOrders";
 
 const ManageOrders = () => {
+  const [orders, isLoading, refetch] = useOrders();
+
   return (
     <div className="p-7">
       <DashboardPagesHeader
@@ -68,75 +69,86 @@ const ManageOrders = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Array.from({ length: 6 }).map((idx) => (
+            {orders.map((order, idx) => (
               <TableRow key={idx}>
                 <TableCell>
                   <div>
                     <h1 className="font-normal">
-                      <span className="font-semibold">Name:</span> Jhon Dohn
+                      <span className="font-semibold">Name:</span>{" "}
+                      {order?.customerInfo?.name}
                     </h1>
                     <h1 className="font-normal">
                       <span className="font-semibold">Email:</span>{" "}
-                      jhondohn@gmail.com
+                      <span className="font-semibold">Name:</span>{" "}
+                      {order?.customerInfo?.email}
                     </h1>
                     <h1 className="font-normal">
                       <span className="font-semibold">Phone:</span>{" "}
-                      +88012342-82348
+                      <span className="font-semibold">Name:</span>{" "}
+                      {order?.customerInfo?.phone}
                     </h1>
                   </div>
                 </TableCell>
                 <TableCell>
-                  {Array.from({ length: 3 }).map(() => (
-                    <div>
-                      <span className="font-medium">Augmentin</span>{" "}
-                      <sub>(3)</sub>
+                  {order?.medicines?.map((medicine, idx) => (
+                    <div key={idx}>
+                      <span className="font-medium ">
+                        {medicine?.medicineName}
+                      </span>{" "}
+                      <sub>({medicine?.quantity})</sub>
                     </div>
                   ))}
                 </TableCell>
-                <TableCell>$234.34</TableCell>
-                <TableCell>Paid</TableCell>
+                <TableCell>${order?.totalPrice.toFixed(2)}</TableCell>
+                <TableCell>{order?.paymentStatus}</TableCell>
                 <TableCell>
                   <div
                     className={"mt-1 text-xs flex flex-col font-medium gap-1.5"}
                   >
-                    <span>67e183cb5d6e235d001caf0a</span>
-                    <span>pi_3R6DZBJHnPc6ZjSU1QATGFVv</span>
+                    <span>{order?._id}</span>
+                    <span>{order?.transactionId}</span>
                   </div>
                 </TableCell>
-                <TableCell>2/27/2025</TableCell>
+                <TableCell>
+                  {order?.date ? order.date.split("T")[0] : "N/A"}
+                </TableCell>
                 <TableCell>
                   <div className={"flex items-center gap-1"}>
                     <span
                       className={`text-xl font-medium rounded ${
-                        status === "Pending"
+                        order?.orderStatus === "Pending"
                           ? " text-yellow-600"
-                          : status === "Shipped"
+                          : order?.orderStatus === "Shipped"
                           ? " text-blue-600"
-                          : status === "Delivered"
+                          : order?.orderStatus === "Delivered"
                           ? " text-green-600"
                           : ""
                       }`}
                     >
                       ●
                     </span>{" "}
-                    <span className="font-medium mt-[3.2px]">{status}</span>
+                    <span className="font-medium mt-[3.2px]">
+                      {order?.orderStatus}
+                    </span>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div>{"Uttara, Sector-4"}</div>
+                  <div>{order?.customerInfo?.address}</div>
                   <div>
-                    {"Dhaka"}, {"Dhaka"} - {1230}
+                    {order?.customerInfo?.district},{" "}
+                    {order?.customerInfo?.division} -{" "}
+                    {order?.customerInfo?.postalCode || "N/A"}
                   </div>
                 </TableCell>
                 <TableCell>
                   <Select
-                    value={status}
+                    value={order?.orderStatus}
                     // onValueChange={(newStatus) =>
                     //   onStatusChange(orderId, newStatus)
                     // }
                   >
                     <SelectTrigger className="cursor-pointer">
-                      <SelectValue>{status}</SelectValue>
+                      <SelectValue>{order?.orderStatus}</SelectValue>
                     </SelectTrigger>
                     <SelectContent className="cursor-pointer">
                       <SelectItem className="cursor-pointer" value="Pending">

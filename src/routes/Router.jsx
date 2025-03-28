@@ -92,13 +92,11 @@ const Router = () => {
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="medicine/:id" element={<MedicineDetails />} />
-
         <Route path="book-appointment/payment" element={<Payment />} />
         <Route
           path="book-appointment/payment-success"
           element={<SuccessPayment />}
         />
-
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="book-appointment/:name" element={<BookAppointment />} />
         <Route path="doctor-details/:id" element={<DoctorDetails />} />
@@ -145,12 +143,18 @@ const Router = () => {
         {/* Doctors Routes */}
 
         {/* Receptionist Routes */}
-
-      <Route path="/dashboard/receptionist-overview" element={<ReceptionistOverview />} />
-      <Route path="/dashboard/receptionist/manage-beds" element={<ManageBeds />} />
-      <Route path="/dashboard/receptionist/manage-bedBooking" element={<ManageBedBooking />} />
-
-
+        <Route
+          path="/dashboard/receptionist-overview"
+          element={<ReceptionistOverview />}
+        />
+        <Route
+          path="/dashboard/receptionist/manage-beds"
+          element={<ManageBeds />}
+        />
+        <Route
+          path="/dashboard/receptionist/manage-bedBooking"
+          element={<ManageBedBooking />}
+        />
         <Route
           path="/dashboard/manage-appointments"
           element={<ManageAppointments />}
