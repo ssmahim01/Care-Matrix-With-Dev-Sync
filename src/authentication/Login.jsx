@@ -12,12 +12,15 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuthUser } from "@/redux/auth/authActions";
 import auth from "@/firebase/firebase.config";
 import axios from "axios";
+import { motion } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
-  
-  
+
+
   // states for email & password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,39 +28,49 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [isEyeOpen, setIsEyeOpen] = useState(false);
   const [isError, setIsError] = useState("");
- 
+
+  // default credentials
+  const handleBadgeClick = (emailValue, passwordValue) => {
+    setEmail(emailValue)
+    setPassword(passwordValue)
+  };
+
+
   // Login User functionality --->
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setIsError("");
-  
+
     try {
-      const response = await axios.post(
+      const response = await toast.promise(axios.post(
         `${import.meta.env.VITE_API_URL}/users/login`,
         { email, password }
-      );
-  
+      ), {
+        loading: "Signing in...",
+        success: <b>Sign in Successful!</b>,
+      })
+
       if (response?.data?.message === "Login successful") {
         signInWithEmailAndPassword(auth, email, password)
-        .then(async(result) => {
-          const user = result.user;
-          if(user){
-            // Optionally update last login time
-            await axios.patch(
-              `${import.meta.env.VITE_API_URL}/users/last-login-at/${email}`,
-              { lastLoginAt: new Date().toISOString()},
-            );
-            setLoading(false);
-          }
-        })
-        }
+          .then(async (result) => {
+            const user = result.user;
+            if (user) {
+              // Optionally update last login time
+              await axios.patch(
+                `${import.meta.env.VITE_API_URL}/users/last-login-at/${email}`,
+                { lastLoginAt: new Date().toISOString() },
+              );
+              setLoading(false);
+            }
+          })
+      }
     } catch (error) {
       let errorMessage = "Login Failed!";
-  
+
       if (error?.response?.data?.message) {
         errorMessage = error.response.data.message;
-  
+
         // Handle lockout or failed attempts from backend response
         if (error.response.data.lockUntil) {
           const minutesLeft = Math.ceil(
@@ -90,8 +103,58 @@ const Login = () => {
         <div className="max-w-lg lg:max-w-md xl:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
           {/* Header & Logo */}
           <AuthHeader />
+
+          {/* Default Credentials */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut", delay: 0.1 }}
+            className="flex gap-3 mt-5  justify-center items-center"
+            viewport={{ once: true }}
+          >
+            <Badge
+              className="cursor-pointer bg-[#540654]"
+              onClick={() => handleBadgeClick("patient@carematrix.com", "Patient123@")}
+            >
+              Patient
+            </Badge>
+            <Badge
+              className="cursor-pointer bg-[#cc0d85]"
+              onClick={() =>
+                handleBadgeClick(
+                  "pharmacist@carematrix.com",
+                  "Pharmacist123@"
+                )
+              }
+            >
+              Pharmacist
+            </Badge>
+            <Badge
+              className="cursor-pointer bg-blue-500"
+              onClick={() =>
+                handleBadgeClick(
+                  "receptionist@carematrix.com",
+                  "Receptionist123@"
+                )
+              }
+            >
+              Receptionist
+            </Badge>
+            <Badge
+              className="cursor-pointer bg-green-400"
+              onClick={() =>
+                handleBadgeClick(
+                  "admin@carematrix.com",
+                  "Admin123@"
+                )
+              }
+            >
+              Admin
+            </Badge>
+          </motion.div>
           {/* Register Form */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-3">
             {/* Email input */}
             <div>
               {/* Label */}
@@ -109,6 +172,7 @@ const Login = () => {
                   name="email"
                   id="email"
                   required
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email address"
                   className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
@@ -132,6 +196,7 @@ const Login = () => {
                   id="password"
                   name="password"
                   placeholder="Password"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="peer border-blue-200 border rounded-md outline-none pl-11 pr-12 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
                 />

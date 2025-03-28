@@ -13,7 +13,9 @@ function Slide({ image, title, subtitle }) {
                 <h2 className="text-black text-3xl md:text-4xl lg:text-5xl font-bold">
                     {title}
                 </h2>
-                <p className="text-black/60 max-w-md">{subtitle}</p>
+                <p className="text-black/60 max-w-md">
+                    {subtitle.length > 150 ? `${subtitle.substring(0, 150)}...` : subtitle}
+                </p>
                 <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
