@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Gift, Send, Calendar, Moon, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,13 +27,32 @@ const EidGreetingSection = () => {
   const [template, setTemplate] = useState("template1");
   const [showPreview, setShowPreview] = useState(false);
 
-  // Calculate EID Day
-  const today = new Date();
-  const eidDate = new Date("2025-04-01");
-  const timeLeft = Math.max(
-    0,
-    Math.ceil((eidDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
-  );
+  const eidDate = new Date("2025-04-01T00:00:00").getTime(); // Set Eid date
+  const [timeLeft, setTimeLeft] = useState(getTimeRemaining());
+
+  function getTimeRemaining() {
+    const now = new Date().getTime();
+    const difference = eidDate - now;
+
+    if (difference <= 0) {
+      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    }
+
+    return {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / (1000 * 60)) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
+    };
+  }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(getTimeRemaining());
+    }, 1000);
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, []);
 
   const templates = {
     template1:
@@ -68,11 +87,14 @@ const EidGreetingSection = () => {
             Celebrate this blessed occasion with your loved ones. Create and
             share personalized Eid greetings with our easy-to-use generator.
           </p>
-          <div className="flex items-center justify-center space-x-2 text-sm">
-            <Calendar className="h-4 w-4 text-[#0E82FD]" />
-            <span className="font-medium text-[#007bff]">
-              {timeLeft} days until Eid al-Fitr
-            </span>
+          <div className="flex flex-col items-center justify-center space-y-2 text-base">
+            <div className="flex items-center space-x-2">
+              <Calendar className="h-4 w-4 text-[#0E82FD]" />
+              <span className="font-medium text-[#007bff]">
+                {timeLeft.days} days, {timeLeft.hours}h : {timeLeft.minutes}m :{" "}
+                {timeLeft.seconds}s Until, <strong>Eid al-Fitr</strong>
+              </span>
+            </div>
           </div>
         </div>
 
