@@ -54,8 +54,8 @@ const ManageOrders = () => {
                 <span>Transition ID</span>
               </TableHead>
               <TableHead>Order Date</TableHead>
-              <TableHead>Order Status</TableHead>
               <TableHead>Shipping Address</TableHead>
+              <TableHead>Order Status</TableHead>
               <TableHead className={"text-xs"}>
                 Change
                 <br />
@@ -123,15 +123,33 @@ const ManageOrders = () => {
                   {order?.date ? order.date.split("T")[0] : "N/A"}
                 </TableCell>
                 <TableCell>
+                  <div>{order?.customerInfo?.address}</div>
+                  <div>
+                    {order?.customerInfo?.district},{" "}
+                    {order?.customerInfo?.division} -{" "}
+                    {order?.customerInfo?.postalCode || "N/A"}
+                  </div>
+                </TableCell>{" "}
+                <TableCell>
                   <div className={"flex items-center gap-1"}>
                     <span
                       className={`text-xl font-medium rounded ${
                         order?.orderStatus === "Pending"
-                          ? " text-yellow-600"
+                          ? "text-yellow-600"
+                          : order?.orderStatus === "Processing"
+                          ? "text-orange-500"
+                          : order?.orderStatus === "Ready for Pickup"
+                          ? "text-blue-500"
                           : order?.orderStatus === "Shipped"
-                          ? " text-blue-600"
+                          ? "text-blue-600"
+                          : order?.orderStatus === "Out for Delivery"
+                          ? "text-indigo-500"
                           : order?.orderStatus === "Delivered"
-                          ? " text-green-600"
+                          ? "text-green-600"
+                          : order?.orderStatus === "Canceled"
+                          ? "text-red-600"
+                          : order?.orderStatus === "Refunded"
+                          ? "text-gray-500"
                           : ""
                       }`}
                     >
@@ -143,33 +161,28 @@ const ManageOrders = () => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div>{order?.customerInfo?.address}</div>
-                  <div>
-                    {order?.customerInfo?.district},{" "}
-                    {order?.customerInfo?.division} -{" "}
-                    {order?.customerInfo?.postalCode || "N/A"}
-                  </div>
-                </TableCell>
-                <TableCell>
                   <Select
                     value={order?.orderStatus}
-                    // onValueChange={(newStatus) =>
-                    //   onStatusChange(orderId, newStatus)
-                    // }
+                    onValueChange={(newStatus) =>
+                      onStatusChange(order._id, newStatus)
+                    }
                   >
                     <SelectTrigger className="cursor-pointer">
                       <SelectValue>{order?.orderStatus}</SelectValue>
                     </SelectTrigger>
-                    <SelectContent className="cursor-pointer">
-                      <SelectItem className="cursor-pointer" value="Pending">
-                        Pending
+                    <SelectContent>
+                      <SelectItem value="Pending">Pending</SelectItem>
+                      <SelectItem value="Processing">Processing</SelectItem>
+                      <SelectItem value="Ready for Pickup">
+                        Ready for Pickup
                       </SelectItem>
-                      <SelectItem className="cursor-pointer" value="Delivered">
-                        Delivered
+                      <SelectItem value="Shipped">Order Shipped</SelectItem>
+                      <SelectItem value="Out for Delivery">
+                        Out for Delivery
                       </SelectItem>
-                      <SelectItem className="cursor-pointer" value="Shipped">
-                        Shipped
-                      </SelectItem>
+                      <SelectItem value="Delivered">Order Delivered</SelectItem>
+                      <SelectItem value="Canceled">Order Canceled</SelectItem>
+                      <SelectItem value="Refunded">Order Refunded</SelectItem>
                     </SelectContent>
                   </Select>
                 </TableCell>
