@@ -150,7 +150,14 @@ const ManageOrders = () => {
                   </div>
                 </TableCell>{" "}
                 <TableCell>
-                  <div className={"flex items-center gap-1"}>
+                  <div
+                    className={`flex ${
+                      order?.orderStatus === "Ready for Pickup" ||
+                      order?.orderStatus === "Out for Delivery"
+                        ? "items-stretch"
+                        : "items-center "
+                    } gap-1`}
+                  >
                     <span
                       className={`text-xl font-medium rounded ${
                         order?.orderStatus === "Pending"
@@ -175,7 +182,17 @@ const ManageOrders = () => {
                       ●
                     </span>{" "}
                     <span className="font-medium mt-[3.2px]">
-                      {order?.orderStatus}
+                      {(order?.orderStatus === "Ready for Pickup" && (
+                        <span>
+                          Ready for <br /> Pickup
+                        </span>
+                      )) ||
+                        (order?.orderStatus === "Out for Delivery" && (
+                          <span>
+                            Out for <br /> Delivery
+                          </span>
+                        )) ||
+                        order?.orderStatus}
                     </span>
                   </div>
                 </TableCell>
@@ -187,10 +204,23 @@ const ManageOrders = () => {
                     }
                     className={"cursor-pointer"}
                   >
-                    <SelectTrigger className="cursor-pointer">
-                      <SelectValue>{order?.orderStatus}</SelectValue>
+                    <SelectTrigger className="cursor-pointer max-w-[150px] truncate">
+                      <SelectValue>
+                        {" "}
+                        {(order?.orderStatus === "Ready for Pickup" && (
+                          <span  className={"py-1"}>
+                            Ready for <br /> Pickup
+                          </span>
+                        )) ||
+                          (order?.orderStatus === "Out for Delivery" && (
+                            <span  className={"py-1"}>
+                              Out for <br /> Delivery
+                            </span>
+                          )) ||
+                          order?.orderStatus}
+                      </SelectValue>
                     </SelectTrigger>
-                    <SelectContent className={"cursor-pointer"}>
+                    <SelectContent className={"cursor-pointer max-w-[170px]"}>
                       <SelectItem className={"cursor-pointer"} value="Pending">
                         Pending
                       </SelectItem>
