@@ -46,7 +46,7 @@ const ManageOrders = () => {
   const filteredOrders =
     activeTab === "All"
       ? orders
-      : orders.filter((order) => order.orderStatus === activeTab);
+      : orders?.filter((order) => order.orderStatus === activeTab);
 
   return (
     <div className="p-7">
@@ -59,7 +59,7 @@ const ManageOrders = () => {
       {/* Tabs Navigation */}
       <Tabs defaultValue="All" className="w-full" onValueChange={setActiveTab}>
         <TabsList className="flex items-center w-full lg:w-9/12 flex-wrap h-full mb-4">
-          {orderStatuses.map((status) => (
+          {orderStatuses?.map((status) => (
             <TabsTrigger
               key={status}
               value={status}
@@ -70,7 +70,7 @@ const ManageOrders = () => {
                 <span className="ml-1 mt-1 text-xs">
                   (
                   {
-                    orders.filter((order) => order.orderStatus === status)
+                    orders.filter((order) => order?.orderStatus === status)
                       .length
                   }
                   )
@@ -83,7 +83,7 @@ const ManageOrders = () => {
         </TabsList>
 
         {/* Tabs Content */}
-        {orderStatuses.map((status) => (
+        {orderStatuses?.map((status) => (
           <TabsContent key={status} value={status}>
             <OrdersTable
               ordersData={filteredOrders}
