@@ -69,7 +69,7 @@ const ManageOrders = () => {
               className={"cursor-pointer"}
             >
               {status}
-              {status !== "All" && (
+              {status !== "All" ? (
                 <span className="ml-2 text-xs">
                   (
                   {
@@ -78,6 +78,8 @@ const ManageOrders = () => {
                   }
                   )
                 </span>
+              ) : (
+                <span className="ml-2 text-xs">({orders?.length})</span>
               )}
             </TabsTrigger>
           ))}
