@@ -27,6 +27,7 @@ import axios from "axios";
 const ManageOrders = () => {
   const [orders, isLoading, refetch] = useOrders();
 
+  // Function for change order status
   const changeOrderStatus = async (id, newStatus) => {
     try {
       const { data } = await axios.patch(
