@@ -204,23 +204,23 @@ const ManageOrders = () => {
                     }
                     className={"cursor-pointer"}
                   >
-                    <SelectTrigger className="cursor-pointer max-w-[150px] truncate">
+                    <SelectTrigger className="cursor-pointer min-w-[115px] truncate">
                       <SelectValue>
                         {" "}
                         {(order?.orderStatus === "Ready for Pickup" && (
-                          <span  className={"py-1"}>
+                          <span className={"py-1"}>
                             Ready for <br /> Pickup
                           </span>
                         )) ||
                           (order?.orderStatus === "Out for Delivery" && (
-                            <span  className={"py-1"}>
+                            <span className={"py-1"}>
                               Out for <br /> Delivery
                             </span>
                           )) ||
                           order?.orderStatus}
                       </SelectValue>
                     </SelectTrigger>
-                    <SelectContent className={"cursor-pointer max-w-[170px]"}>
+                    <SelectContent className={"cursor-pointer min-w-[170px]"}>
                       <SelectItem className={"cursor-pointer"} value="Pending">
                         Pending
                       </SelectItem>
