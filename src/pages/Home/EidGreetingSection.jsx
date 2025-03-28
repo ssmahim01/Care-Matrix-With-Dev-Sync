@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Gift, Send, Calendar, Moon, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link, useLocation } from "react-router";
+import domtoimage from "dom-to-image";
 
 const EidGreetingSection = () => {
   const location = useLocation();
@@ -28,6 +29,7 @@ const EidGreetingSection = () => {
   const [recipient, setRecipient] = useState("");
   const [template, setTemplate] = useState("template1");
   const [showPreview, setShowPreview] = useState(false);
+  const previewRef = useRef(null); // Ref for the preview card
 
   const eidDate = new Date("2025-03-31T00:00:00").getTime();
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining());
@@ -72,6 +74,26 @@ const EidGreetingSection = () => {
 
   const handleCreateGreeting = () => {
     setShowPreview(true);
+    setTimeout(() => downloadGreeting(), 100);
+  };
+
+  const downloadGreeting = () => {
+    if (previewRef.current) {
+      domtoimage
+        .toPng(previewRef.current, {
+          quality: 0.95,
+          bgcolor: "#ffffff",
+        })
+        .then((dataUrl) => {
+          const link = document.createElement("a");
+          link.download = `Eid_Greeting_${recipient || "Card"}.png`;
+          link.href = dataUrl;
+          link.click();
+        })
+        .catch((error) => {
+          console.error("Error generating image:", error);
+        });
+    }
   };
 
   return (
@@ -101,7 +123,7 @@ const EidGreetingSection = () => {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
-          <Card className="pt-4 pb-5 rounded-lg border-blue-100 shadow-md">
+          <Card className="pt-4 pb-5 rounded-lg border-blue-100 shadow-md grid place-content-stretch">
             <CardHeader>
               <CardTitle className="text-[#007bff] text-lg font-medium">
                 Create Your Eid Greeting
@@ -163,7 +185,7 @@ const EidGreetingSection = () => {
                 className="w-full bg-[#0E82FD] cursor-pointer hover:bg-blue-700"
               >
                 <Gift className="mr-2 h-4 w-4" />
-                Create Greeting
+                Create & Download Greeting
               </Button>
             </CardFooter>
           </Card>
@@ -178,9 +200,10 @@ const EidGreetingSection = () => {
                   Share Options
                 </TabsTrigger>
               </TabsList>
-              {/* Eid Greetings */}
               <TabsContent value="preview" className="mt-4 rounded-lg">
+                {/* Eid Greetings */}
                 <Card
+                  ref={previewRef}
                   className={`border-blue-100 shadow-md overflow-hidden rounded-lg ${
                     !showPreview && "opacity-70"
                   }`}
@@ -326,7 +349,7 @@ const EidGreetingSection = () => {
             </Card>
           </div>
         </div>
-
+        {/* Explore More Eid Activities */}
         <div className="mt-12 flex justify-center gap-4">
           <div className="inline-flex rounded-md shadow">
             <Button className="bg-blue-600 hover:bg-blue-700 cursor-pointer">
