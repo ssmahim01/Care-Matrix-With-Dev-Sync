@@ -14,7 +14,7 @@ const MedicinesDialog = ({ isOpen, setIsOpen, medicines, totalPrice }) => {
       </DialogTrigger>
       <DialogContent>
         <div className="space-y-4 pt-0 p-4 max-h-[600px] mt-3 overflow-y-auto">
-          <h2 className="text-xl font-semibold flex items-center gap-2 mt-2">
+          <h2 className="-ml-[2px] text-xl font-semibold flex items-center gap-2 mt-2">
             <GiMedicines /> Ordered Medicines List
           </h2>
           <Separator />

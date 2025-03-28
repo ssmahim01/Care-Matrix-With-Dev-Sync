@@ -153,7 +153,13 @@ const ManageOrders = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {order?.date ? order?.date.split("T")[0] : "N/A"}
+                      {order?.date
+                        ? new Date(order.date).toLocaleString().split(",")[0]
+                        : "N/A"}{" "}
+                      <br />{" "}
+                      {order?.date
+                        ? new Date(order.date).toLocaleString().split(",")[1]
+                        : "N/A"}
                     </TableCell>
                     <TableCell>
                       <div>{order?.customerInfo?.address}</div>
