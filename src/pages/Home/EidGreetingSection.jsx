@@ -20,8 +20,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link, useLocation } from "react-router";
 
 const EidGreetingSection = () => {
+  const location = useLocation();
   const [greeting, setGreeting] = useState("");
   const [recipient, setRecipient] = useState("");
   const [template, setTemplate] = useState("template1");
@@ -325,12 +327,19 @@ const EidGreetingSection = () => {
           </div>
         </div>
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-12 flex justify-center gap-4">
           <div className="inline-flex rounded-md shadow">
             <Button className="bg-blue-600 hover:bg-blue-700 cursor-pointer">
               Explore More Eid Activities
             </Button>
           </div>
+          {location.pathname === "/eid-greetings" && (
+            <Link to={"/"} className="inline-flex rounded-md shadow">
+              <Button className="bg-white hover:bg-gray-50 text-blue-600 font-medium py-2 px-4 rounded-md border border-blue-200 shadow cursor-pointer">
+                Return to Healthcare Services
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </section>
