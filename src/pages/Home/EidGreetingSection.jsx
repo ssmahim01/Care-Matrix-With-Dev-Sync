@@ -27,7 +27,7 @@ const EidGreetingSection = () => {
   const [template, setTemplate] = useState("template1");
   const [showPreview, setShowPreview] = useState(false);
 
-  const eidDate = new Date("2025-04-01T00:00:00").getTime(); // Set Eid date
+  const eidDate = new Date("2025-03-31T00:00:00").getTime();
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining());
 
   function getTimeRemaining() {
@@ -51,7 +51,7 @@ const EidGreetingSection = () => {
       setTimeLeft(getTimeRemaining());
     }, 1000);
 
-    return () => clearInterval(timer); // Cleanup on unmount
+    return () => clearInterval(timer); 
   }, []);
 
   const templates = {
