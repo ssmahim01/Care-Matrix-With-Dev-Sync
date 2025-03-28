@@ -7,7 +7,7 @@ import { Link } from "react-router";
 export default function HeroSection() {
   return (
     <section className="bg-gradient-to-r from-sky-300/10 via-sky-200/50 to-sky-100/75 rounded-xl p-10 md:p-14 lg:p-16">
-      <div className="w-11/12 mx-auto">
+      <div className="md:w-11/12 xl:w-10/12 mx-auto">
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 items-center">
           <motion.div
             className="space-y-6"
