@@ -88,185 +88,211 @@ const ManageOrders = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order, idx) => (
-              <TableRow key={idx}>
-                <TableCell>
-                  <div>
-                    <h1 className="font-normal">
-                      <span className="font-semibold">Name:</span>{" "}
-                      {order?.customerInfo?.name}
-                    </h1>
-                    <h1 className="font-normal">
-                      <span className="font-semibold">Email:</span>{" "}
-                      <span className="font-semibold">Name:</span>{" "}
-                      {order?.customerInfo?.email}
-                    </h1>
-                    <h1 className="font-normal">
-                      <span className="font-semibold">Phone:</span>{" "}
-                      <span className="font-semibold">Name:</span>{" "}
-                      {order?.customerInfo?.phone}
-                    </h1>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div
-                    className={`${
-                      order?.medicines.length > 4
-                        ? "max-h-[100px] overflow-y-auto"
-                        : ""
-                    } space-y-1`}
-                  >
-                    {order?.medicines?.map((medicine, idx) => (
-                      <div key={idx} className="flex items-center gap-1">
-                        <span className="font-medium text-sm">
-                          {medicine?.medicineName}
-                        </span>
-                        <sub className="text-xs text-gray-500">
-                          ({medicine?.quantity})
-                        </sub>
-                      </div>
+            {isLoading
+              ? Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({ length: 10 }).map((_, j) => (
+                      <TableCell key={j}>
+                        <div className="skeleton h-8 rounded w-full"></div>
+                      </TableCell>
                     ))}
-                  </div>
-                </TableCell>
-                <TableCell>${order?.totalPrice.toFixed(2)}</TableCell>
-                <TableCell>{order?.paymentStatus}</TableCell>
-                <TableCell>
-                  <div
-                    className={"mt-1 text-xs flex flex-col font-medium gap-1.5"}
-                  >
-                    <span>{order?._id}</span>
-                    <span>{order?.transactionId}</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {order?.date ? order?.date.split("T")[0] : "N/A"}
-                </TableCell>
-                <TableCell>
-                  <div>{order?.customerInfo?.address}</div>
-                  <div>
-                    {order?.customerInfo?.district},{" "}
-                    {order?.customerInfo?.division} -{" "}
-                    {order?.customerInfo?.postalCode || "N/A"}
-                  </div>
-                </TableCell>{" "}
-                <TableCell>
-                  <div
-                    className={`flex ${
-                      order?.orderStatus === "Ready for Pickup" ||
-                      order?.orderStatus === "Out for Delivery"
-                        ? "items-stretch"
-                        : "items-center "
-                    } gap-1`}
-                  >
-                    <span
-                      className={`text-xl font-medium rounded ${
-                        order?.orderStatus === "Pending"
-                          ? "text-yellow-600"
-                          : order?.orderStatus === "Processing"
-                          ? "text-orange-500"
-                          : order?.orderStatus === "Ready for Pickup"
-                          ? "text-blue-500"
-                          : order?.orderStatus === "Shipped"
-                          ? "text-blue-600"
-                          : order?.orderStatus === "Out for Delivery"
-                          ? "text-indigo-500"
-                          : order?.orderStatus === "Delivered"
-                          ? "text-green-600"
-                          : order?.orderStatus === "Canceled"
-                          ? "text-red-600"
-                          : order?.orderStatus === "Refunded"
-                          ? "text-gray-500"
-                          : ""
-                      }`}
-                    >
-                      ●
-                    </span>{" "}
-                    <span className="font-medium mt-[3.2px]">
-                      {(order?.orderStatus === "Ready for Pickup" && (
-                        <span>
-                          Ready for <br /> Pickup
-                        </span>
-                      )) ||
-                        (order?.orderStatus === "Out for Delivery" && (
-                          <span>
-                            Out for <br /> Delivery
-                          </span>
-                        )) ||
-                        order?.orderStatus}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Select
-                    value={order?.orderStatus}
-                    onValueChange={(newStatus) =>
-                      changeOrderStatus(order?._id, newStatus)
-                    }
-                    className={"cursor-pointer"}
-                  >
-                    <SelectTrigger className="cursor-pointer min-w-[115px] truncate">
-                      <SelectValue>
-                        {" "}
-                        {(order?.orderStatus === "Ready for Pickup" && (
-                          <span className={"py-1"}>
-                            Ready for <br /> Pickup
-                          </span>
-                        )) ||
-                          (order?.orderStatus === "Out for Delivery" && (
-                            <span className={"py-1"}>
-                              Out for <br /> Delivery
+                  </TableRow>
+                ))
+              : orders.map((order, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell>
+                      <div>
+                        <h1 className="font-normal">
+                          <span className="font-semibold">Name:</span>{" "}
+                          {order?.customerInfo?.name}
+                        </h1>
+                        <h1 className="font-normal">
+                          <span className="font-semibold">Email:</span>{" "}
+                          <span className="font-semibold">Name:</span>{" "}
+                          {order?.customerInfo?.email}
+                        </h1>
+                        <h1 className="font-normal">
+                          <span className="font-semibold">Phone:</span>{" "}
+                          <span className="font-semibold">Name:</span>{" "}
+                          {order?.customerInfo?.phone}
+                        </h1>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div
+                        className={`${
+                          order?.medicines.length > 4
+                            ? "max-h-[100px] overflow-y-auto"
+                            : ""
+                        } space-y-1`}
+                      >
+                        {order?.medicines?.map((medicine, idx) => (
+                          <div key={idx} className="flex items-center gap-1">
+                            <span className="font-medium text-sm">
+                              {medicine?.medicineName}
+                            </span>
+                            <sub className="text-xs text-gray-500">
+                              ({medicine?.quantity})
+                            </sub>
+                          </div>
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell>${order?.totalPrice.toFixed(2)}</TableCell>
+                    <TableCell>{order?.paymentStatus}</TableCell>
+                    <TableCell>
+                      <div
+                        className={
+                          "mt-1 text-xs flex flex-col font-medium gap-1.5"
+                        }
+                      >
+                        <span>{order?._id}</span>
+                        <span>{order?.transactionId}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {order?.date ? order?.date.split("T")[0] : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      <div>{order?.customerInfo?.address}</div>
+                      <div>
+                        {order?.customerInfo?.district},{" "}
+                        {order?.customerInfo?.division} -{" "}
+                        {order?.customerInfo?.postalCode || "N/A"}
+                      </div>
+                    </TableCell>{" "}
+                    <TableCell>
+                      <div
+                        className={`flex ${
+                          order?.orderStatus === "Ready for Pickup" ||
+                          order?.orderStatus === "Out for Delivery"
+                            ? "items-stretch"
+                            : "items-center "
+                        } gap-1`}
+                      >
+                        <span
+                          className={`text-xl font-medium rounded ${
+                            order?.orderStatus === "Pending"
+                              ? "text-yellow-600"
+                              : order?.orderStatus === "Processing"
+                              ? "text-orange-500"
+                              : order?.orderStatus === "Ready for Pickup"
+                              ? "text-blue-500"
+                              : order?.orderStatus === "Shipped"
+                              ? "text-blue-600"
+                              : order?.orderStatus === "Out for Delivery"
+                              ? "text-indigo-500"
+                              : order?.orderStatus === "Delivered"
+                              ? "text-green-600"
+                              : order?.orderStatus === "Canceled"
+                              ? "text-red-600"
+                              : order?.orderStatus === "Refunded"
+                              ? "text-gray-500"
+                              : ""
+                          }`}
+                        >
+                          ●
+                        </span>{" "}
+                        <span className="font-medium mt-[3.2px]">
+                          {(order?.orderStatus === "Ready for Pickup" && (
+                            <span>
+                              Ready for <br /> Pickup
                             </span>
                           )) ||
-                          order?.orderStatus}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent className={"cursor-pointer min-w-[170px]"}>
-                      <SelectItem className={"cursor-pointer"} value="Pending">
-                        Pending
-                      </SelectItem>
-                      <SelectItem
+                            (order?.orderStatus === "Out for Delivery" && (
+                              <span>
+                                Out for <br /> Delivery
+                              </span>
+                            )) ||
+                            order?.orderStatus}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={order?.orderStatus}
+                        onValueChange={(newStatus) =>
+                          changeOrderStatus(order?._id, newStatus)
+                        }
                         className={"cursor-pointer"}
-                        value="Processing"
                       >
-                        Processing
-                      </SelectItem>
-                      <SelectItem
-                        className={"cursor-pointer"}
-                        value="Ready for Pickup"
-                      >
-                        Ready for Pickup
-                      </SelectItem>
-                      <SelectItem className={"cursor-pointer"} value="Shipped">
-                        Order Shipped
-                      </SelectItem>
-                      <SelectItem
-                        className={"cursor-pointer"}
-                        value="Out for Delivery"
-                      >
-                        Out for Delivery
-                      </SelectItem>
-                      <SelectItem
-                        className={"cursor-pointer"}
-                        value="Delivered"
-                      >
-                        Order Delivered
-                      </SelectItem>
-                      <SelectItem className={"cursor-pointer"} value="Canceled">
-                        Order Canceled
-                      </SelectItem>
-                      <SelectItem className={"cursor-pointer"} value="Refunded">
-                        Order Refunded
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
-                <TableCell>
-                  <Button variant={"outline"} className={"cursor-pointer"}>
-                    <FaEye className="text-slate-700" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                        <SelectTrigger className="cursor-pointer min-w-[115px] truncate">
+                          <SelectValue>
+                            {" "}
+                            {(order?.orderStatus === "Ready for Pickup" && (
+                              <span className={"py-1"}>
+                                Ready for <br /> Pickup
+                              </span>
+                            )) ||
+                              (order?.orderStatus === "Out for Delivery" && (
+                                <span className={"py-1"}>
+                                  Out for <br /> Delivery
+                                </span>
+                              )) ||
+                              order?.orderStatus}
+                          </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent
+                          className={"cursor-pointer min-w-[170px]"}
+                        >
+                          <SelectItem
+                            className={"cursor-pointer"}
+                            value="Pending"
+                          >
+                            Pending
+                          </SelectItem>
+                          <SelectItem
+                            className={"cursor-pointer"}
+                            value="Processing"
+                          >
+                            Processing
+                          </SelectItem>
+                          <SelectItem
+                            className={"cursor-pointer"}
+                            value="Ready for Pickup"
+                          >
+                            Ready for Pickup
+                          </SelectItem>
+                          <SelectItem
+                            className={"cursor-pointer"}
+                            value="Shipped"
+                          >
+                            Order Shipped
+                          </SelectItem>
+                          <SelectItem
+                            className={"cursor-pointer"}
+                            value="Out for Delivery"
+                          >
+                            Out for Delivery
+                          </SelectItem>
+                          <SelectItem
+                            className={"cursor-pointer"}
+                            value="Delivered"
+                          >
+                            Order Delivered
+                          </SelectItem>
+                          <SelectItem
+                            className={"cursor-pointer"}
+                            value="Canceled"
+                          >
+                            Order Canceled
+                          </SelectItem>
+                          <SelectItem
+                            className={"cursor-pointer"}
+                            value="Refunded"
+                          >
+                            Order Refunded
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Button variant={"outline"} className={"cursor-pointer"}>
+                        <FaEye className="text-slate-700" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </div>
