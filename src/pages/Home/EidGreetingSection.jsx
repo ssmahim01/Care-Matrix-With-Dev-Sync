@@ -22,14 +22,15 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link, useLocation } from "react-router";
 import domtoimage from "dom-to-image";
+import toast from "react-hot-toast";
 
 const EidGreetingSection = () => {
   const location = useLocation();
+  const previewRef = useRef(null);
   const [greeting, setGreeting] = useState("");
   const [recipient, setRecipient] = useState("");
   const [template, setTemplate] = useState("template1");
   const [showPreview, setShowPreview] = useState(false);
-  const previewRef = useRef(null); // Ref for the preview card
 
   const eidDate = new Date("2025-03-31T00:00:00").getTime();
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining());
@@ -77,6 +78,7 @@ const EidGreetingSection = () => {
     setTimeout(() => downloadGreeting(), 100);
   };
 
+  // Download Greetings Function
   const downloadGreeting = () => {
     if (previewRef.current) {
       domtoimage
@@ -89,9 +91,15 @@ const EidGreetingSection = () => {
           link.download = `Eid_Greeting_${recipient || "Card"}.png`;
           link.href = dataUrl;
           link.click();
+          // Clear
+          setGreeting("");
+          setRecipient("");
+          setTemplate("");
+          setShowPreview(false);
+          toast.success("Greetings Downloaded!!!");
         })
         .catch((error) => {
-          console.error("Error generating image:", error);
+          toast.error("Error generating image:", error?.message);
         });
     }
   };
