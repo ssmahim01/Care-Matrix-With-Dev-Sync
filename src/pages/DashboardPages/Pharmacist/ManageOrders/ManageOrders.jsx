@@ -51,8 +51,6 @@ const ManageOrders = () => {
       ? orders
       : orders.filter((order) => order.orderStatus === activeTab);
 
-  // Table component extracted for reusability
-
   return (
     <div className="p-7">
       <DashboardPagesHeader
