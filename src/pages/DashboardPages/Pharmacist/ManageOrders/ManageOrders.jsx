@@ -90,14 +90,24 @@ const ManageOrders = () => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  {order?.medicines?.map((medicine, idx) => (
-                    <div key={idx}>
-                      <span className="font-medium ">
-                        {medicine?.medicineName}
-                      </span>{" "}
-                      <sub>({medicine?.quantity})</sub>
-                    </div>
-                  ))}
+                  <div
+                    className={`${
+                      order?.medicines.length > 4
+                        ? "max-h-[100px] overflow-y-auto"
+                        : ""
+                    } space-y-1`}
+                  >
+                    {order?.medicines?.map((medicine, idx) => (
+                      <div key={idx} className="flex items-center gap-1">
+                        <span className="font-medium text-sm">
+                          {medicine?.medicineName}
+                        </span>
+                        <sub className="text-xs text-gray-500">
+                          ({medicine?.quantity})
+                        </sub>
+                      </div>
+                    ))}
+                  </div>
                 </TableCell>
                 <TableCell>${order?.totalPrice.toFixed(2)}</TableCell>
                 <TableCell>{order?.paymentStatus}</TableCell>
