@@ -1,5 +1,4 @@
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { Button } from "@/components/ui/button";
 import { FaTruck } from "react-icons/fa6";
 
 import {
@@ -19,12 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FaEye } from "react-icons/fa";
-import useOrders from "./../../../../hooks/useOrders";
-import toast from "react-hot-toast";
 import axios from "axios";
+import toast from "react-hot-toast";
+import useOrders from "./../../../../hooks/useOrders";
+import MedicinesDialog from "./MedicinesDialog";
+import { useState } from "react";
 
 const ManageOrders = () => {
+  const [setOpen, setIsOpen] = useState(false);
   const [orders, isLoading, refetch] = useOrders();
 
   // Function for change order status
@@ -288,9 +289,10 @@ const ManageOrders = () => {
                       </Select>
                     </TableCell>
                     <TableCell>
-                      <Button variant={"outline"} className={"cursor-pointer"}>
-                        <FaEye className="text-slate-700" />
-                      </Button>
+                      <MedicinesDialog
+                        medicines={order?.medicines}
+                        totalPrice={order?.totalPrice}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}
