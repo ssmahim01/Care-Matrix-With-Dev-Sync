@@ -11,9 +11,9 @@ import Hero from "@/components/Home/Hero";
 import PatientReviews from "./Patient_Reviews/PatientReviews";
 import WhyChooseUs from "./WhyChooseUs";
 import Chat from "@/components/Home/Chat";
+import EidGreetingSection from "./EidGreetingSection";
 
 const Home = () => {
-
   return (
     <section className="w-full space-y-6">
       {/* Hero Section */}
@@ -27,8 +27,13 @@ const Home = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="pb-8 container lg:w-4/5 max-w-[98rem] w-11/12 mx-auto">
+      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <StatsSection />
+      </div>
+
+      {/* Eid Greeting */}
+      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <EidGreetingSection />
       </div>
 
       {/* Our Services */}
