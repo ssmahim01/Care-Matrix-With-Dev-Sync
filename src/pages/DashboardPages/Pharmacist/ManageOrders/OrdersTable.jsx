@@ -1,4 +1,24 @@
-const OrdersTable = ({ ordersData }) => (
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import MedicinesDialog from "./MedicinesDialog";
+
+const OrdersTable = ({ ordersData, isLoading, changeOrderStatus, orderStatuses }) => (
   <Table>
     <TableCaption>A List Of All Orders</TableCaption>
     <TableHeader>

@@ -1,22 +1,6 @@
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { FaTruck } from "react-icons/fa6";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import axios from "axios";
@@ -24,6 +8,7 @@ import toast from "react-hot-toast";
 import useOrders from "./../../../../hooks/useOrders";
 import MedicinesDialog from "./MedicinesDialog";
 import { useState } from "react";
+import OrdersTable from "./OrdersTable";
 
 const ManageOrders = () => {
   const [orders, isLoading, refetch] = useOrders();
@@ -67,7 +52,6 @@ const ManageOrders = () => {
       : orders.filter((order) => order.orderStatus === activeTab);
 
   // Table component extracted for reusability
- 
 
   return (
     <div className="p-7">
@@ -104,7 +88,12 @@ const ManageOrders = () => {
         {/* Tabs Content */}
         {orderStatuses.map((status) => (
           <TabsContent key={status} value={status}>
-            <OrdersTable ordersData={filteredOrders} />
+            <OrdersTable
+              ordersData={filteredOrders}
+              isLoading={isLoading}
+              changeOrderStatus={changeOrderStatus}
+              orderStatuses={orderStatuses}
+            />
           </TabsContent>
         ))}
       </Tabs>
