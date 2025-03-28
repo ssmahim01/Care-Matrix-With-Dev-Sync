@@ -70,7 +70,10 @@ const OrdersTable = ({
         ))
       ) : ordersData.length === 0 ? (
         <TableRow>
-          <TableCell colSpan={10} className="text-center font-medium text-gray-800 py-4">
+          <TableCell
+            colSpan={10}
+            className="text-center font-medium text-gray-800 py-4"
+          >
             No Orders Data Available In This Order Status
           </TableCell>
         </TableRow>

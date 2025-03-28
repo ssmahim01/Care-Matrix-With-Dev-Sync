@@ -1,14 +1,11 @@
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { FaTruck } from "react-icons/fa6";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import axios from "axios";
-import toast from "react-hot-toast";
 import useOrders from "./../../../../hooks/useOrders";
-import MedicinesDialog from "./MedicinesDialog";
-import { useState } from "react";
+import { FaTruck } from "react-icons/fa6";
 import OrdersTable from "./OrdersTable";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import axios from "axios";
 
 const ManageOrders = () => {
   const [orders, isLoading, refetch] = useOrders();
