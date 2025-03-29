@@ -1,29 +1,53 @@
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useOrders from "./../../../../hooks/useOrders";
 import { FaTruck } from "react-icons/fa6";
-
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { FaEye } from "react-icons/fa";
-
-const status = "Pending";
+import OrdersTable from "./OrdersTable";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import axios from "axios";
 
 const ManageOrders = () => {
+  const [orders, isLoading, refetch] = useOrders();
+  const [activeTab, setActiveTab] = useState("All");
+
+  // Function to change order status
+  const changeOrderStatus = async (id, newStatus) => {
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/purchase/orders/change-status/${id}`,
+        {
+          orderStatus: newStatus,
+        }
+      );
+      if (data.data.modifiedCount) {
+        refetch();
+        toast.success(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  // Order status options
+  const orderStatuses = [
+    "All",
+    "Pending",
+    "Processing",
+    "Ready for Pickup",
+    "Shipped",
+    "Out for Delivery",
+    "Delivered",
+    "Canceled",
+    "Refunded",
+  ];
+
+  // Filter orders based on active tab
+  const filteredOrders =
+    activeTab === "All"
+      ? orders
+      : orders?.filter((order) => order.orderStatus === activeTab);
+
   return (
     <div className="p-7">
       <DashboardPagesHeader
@@ -32,135 +56,44 @@ const ManageOrders = () => {
         icon={FaTruck}
       />
 
-      <div>
-        {/* Orders Table */}
-        <Table>
-          <TableCaption>A List Of All Orders</TableCaption>
-          <TableHeader>
-            <TableRow className={"bg-base-200 hover:bg-base-200"}>
-              <TableHead>Customer</TableHead>
-              <TableHead>
-                Medicines <sub>(qty)</sub>
-              </TableHead>
-              <TableHead className={"text-xs"}>
-                Total <br /> Amount
-              </TableHead>
-              <TableHead className={"text-xs"}>
-                Payment <br /> Status
-              </TableHead>
-              <TableHead className={"mt-1 text-xs flex flex-col gap-1"}>
-                <span>Order ID</span>
-                <span>Transition ID</span>
-              </TableHead>
-              <TableHead>Order Date</TableHead>
-              <TableHead>Order Status</TableHead>
-              <TableHead>Shipping Address</TableHead>
-              <TableHead className={"text-xs"}>
-                Change
-                <br />
-                Order Status
-              </TableHead>
-              <TableHead className={"text-[10px]"}>
-                View <br /> Ordered
-                <br />
-                Medicines
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {Array.from({ length: 6 }).map((idx) => (
-              <TableRow key={idx}>
-                <TableCell>
-                  <div>
-                    <h1 className="font-normal">
-                      <span className="font-semibold">Name:</span> Jhon Dohn
-                    </h1>
-                    <h1 className="font-normal">
-                      <span className="font-semibold">Email:</span>{" "}
-                      jhondohn@gmail.com
-                    </h1>
-                    <h1 className="font-normal">
-                      <span className="font-semibold">Phone:</span>{" "}
-                      +88012342-82348
-                    </h1>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {Array.from({ length: 3 }).map(() => (
-                    <div>
-                      <span className="font-medium">Augmentin</span>{" "}
-                      <sub>(3)</sub>
-                    </div>
-                  ))}
-                </TableCell>
-                <TableCell>$234.34</TableCell>
-                <TableCell>Paid</TableCell>
-                <TableCell>
-                  <div
-                    className={"mt-1 text-xs flex flex-col font-medium gap-1.5"}
-                  >
-                    <span>67e183cb5d6e235d001caf0a</span>
-                    <span>pi_3R6DZBJHnPc6ZjSU1QATGFVv</span>
-                  </div>
-                </TableCell>
-                <TableCell>2/27/2025</TableCell>
-                <TableCell>
-                  <div className={"flex items-center gap-1"}>
-                    <span
-                      className={`text-xl font-medium rounded ${
-                        status === "Pending"
-                          ? " text-yellow-600"
-                          : status === "Shipped"
-                          ? " text-blue-600"
-                          : status === "Delivered"
-                          ? " text-green-600"
-                          : ""
-                      }`}
-                    >
-                      ●
-                    </span>{" "}
-                    <span className="font-medium mt-[3.2px]">{status}</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div>{"Uttara, Sector-4"}</div>
-                  <div>
-                    {"Dhaka"}, {"Dhaka"} - {1230}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Select
-                    value={status}
-                    // onValueChange={(newStatus) =>
-                    //   onStatusChange(orderId, newStatus)
-                    // }
-                  >
-                    <SelectTrigger className="cursor-pointer">
-                      <SelectValue>{status}</SelectValue>
-                    </SelectTrigger>
-                    <SelectContent className="cursor-pointer">
-                      <SelectItem className="cursor-pointer" value="Pending">
-                        Pending
-                      </SelectItem>
-                      <SelectItem className="cursor-pointer" value="Delivered">
-                        Delivered
-                      </SelectItem>
-                      <SelectItem className="cursor-pointer" value="Shipped">
-                        Shipped
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
-                <TableCell>
-                  <Button variant={"outline"} className={"cursor-pointer"}>
-                    <FaEye className="text-slate-700" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      {/* Tabs Navigation */}
+      <Tabs defaultValue="All" className="w-full" onValueChange={setActiveTab}>
+        <TabsList className="flex items-center w-full lg:w-9/12 flex-wrap h-full mb-4">
+          {orderStatuses?.map((status) => (
+            <TabsTrigger
+              key={status}
+              value={status}
+              className={"cursor-pointer"}
+            >
+              {status}
+              {status !== "All" ? (
+                <span className="ml-1 mt-1 text-xs">
+                  (
+                  {
+                    orders.filter((order) => order?.orderStatus === status)
+                      .length
+                  }
+                  )
+                </span>
+              ) : (
+                <span className="ml-1 mt-1 text-xs">({orders?.length})</span>
+              )}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {/* Tabs Content */}
+        {orderStatuses?.map((status) => (
+          <TabsContent key={status} value={status}>
+            <OrdersTable
+              ordersData={filteredOrders}
+              isLoading={isLoading}
+              changeOrderStatus={changeOrderStatus}
+              orderStatuses={orderStatuses}
+            />
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 };

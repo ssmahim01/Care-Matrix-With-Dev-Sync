@@ -31,7 +31,7 @@ import { NavLink } from "react-router";
 import { FaUserDoctor } from "react-icons/fa6";
 import { ShoppingBag } from "lucide-react";
 import useRole from "@/hooks/useRole";
-import { FaTruck } from "react-icons/fa";
+import { FaHistory, FaTruck } from "react-icons/fa";
 
 // export function NavMain() {
 //   const administrator = true;
@@ -162,6 +162,24 @@ export function NavMain() {
                 <LayoutDashboard className="text-base" /> Overview
               </h3>
             </NavLink>
+            <NavLink to="/dashboard/medical-records">
+              <h3 className="flex gap-2 items-center">
+                <FileSpreadsheet className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  {" "}
+                  Sales Report{" "}
+                </span>
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/pharmacist/orders-history">
+              <h3 className="flex gap-2 items-center">
+                <FaHistory className="text-2xl" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  {" "}
+                  Orders History{" "}
+                </span>
+              </h3>
+            </NavLink>
             <NavLink to="/dashboard/pharmacist/manage-orders">
               <h3 className="flex gap-2 items-center">
                 <FaTruck className="text-2xl" />
@@ -186,24 +204,6 @@ export function NavMain() {
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
                   {" "}
                   Manage Banners{" "}
-                </span>
-              </h3>
-            </NavLink>
-            <NavLink to="/dashboard/medical-records">
-              <h3 className="flex gap-2 items-center">
-                <FileSpreadsheet className="text-base" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}>
-                  {" "}
-                  Sales Report{" "}
-                </span>
-              </h3>
-            </NavLink>
-            <NavLink to="/dashboard/my-prescriptions">
-              <h3 className="flex gap-2 items-center">
-                <ClipboardPlus className="text-base" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}>
-                  {" "}
-                  My Prescriptions{" "}
                 </span>
               </h3>
             </NavLink>

@@ -36,11 +36,11 @@ export default function ClinicAndSpecialties() {
       {/* Hero Section */}
       <div className="-mt-8" />
       <div className="mb-12">
-      <HeroSection />
+        <HeroSection />
       </div>
 
       {/* Main Content */}
-      <main className="mx-auto w-11/12 xl:w-10/12 pb-8">
+      <main className="max-w-screen-2xl mx-auto w-11/12 xl:w-10/12 pb-8">
         {/* Search and Quick Actions */}
         <div className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-96">

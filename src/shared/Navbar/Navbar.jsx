@@ -13,7 +13,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
-import { X } from "lucide-react";
+import { Moon, X } from "lucide-react";
 import { FiUser } from "react-icons/fi";
 import useRole from "@/hooks/useRole";
 import { CgIfDesign } from "react-icons/cg";
@@ -77,7 +77,13 @@ const Navbar = () => {
       >
         <FaHome /> <span className="font-bold">Home</span>
       </NavLink>
-
+      <NavLink
+        className="flex gap-1 items-center"
+        to="/eid-greetings"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        <Moon /> <span className="font-bold">Eid Greetings</span>
+      </NavLink>
       <NavLink
         className="flex gap-1 items-center"
         to="/about-us"
