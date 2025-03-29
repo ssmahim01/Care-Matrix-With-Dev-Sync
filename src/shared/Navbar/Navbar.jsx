@@ -61,6 +61,7 @@ const Navbar = () => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
+        setIsOpen(false);
       }
     };
 
@@ -142,8 +143,7 @@ const Navbar = () => {
                     className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
                     onClick={() => setIsOpen(!isOpen)}
                   >
-                    <p className="flex gap-2 items-center">
-                      {/* <MdMedicalServices />{" "} */}
+                    <p className={`flex gap-2 items-center ${isOpen ? "text-[#3B9DF8]" : ""}`}>
                       <FaPager />
                       <span className="font-bold">Pages</span>
                     </p>
@@ -298,7 +298,7 @@ const Navbar = () => {
                             : role === "pharmacist"
                             ? "/dashboard/pharmacist-overview"
                             : role === "patient"
-                            ? "/dashboard/patient-overview"
+                            ? "/dashboard"
                             : role === "receptionist"
                             ? "/dashboard/receptionist-overview"
                             : "/"
