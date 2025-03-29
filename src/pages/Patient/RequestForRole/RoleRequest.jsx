@@ -8,20 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import RequestForm from "@/pages/RequestForm/RequestForm";
 import axios from "axios";
-import { CornerUpRight, Eye, MoreHorizontal, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CornerUpRight } from "lucide-react";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { useRoleRequest } from "@/hooks/useRoleRequest";
 import { useEffect, useState } from "react";
+import RequestTableRow from "@/components/RequestTableRow/RequestTableRow";
 
 const RoleRequest = () => {
   const [requestedData, refetch] = useRoleRequest();
@@ -106,7 +100,7 @@ const RoleRequest = () => {
       {/* Request Form */}
       <RequestForm />
 
-      {/* Requested Data */}
+      {/* Requested Table Data */}
       <div className="py-8 rounded-xl">
         <Table
           className={
@@ -172,85 +166,7 @@ const RoleRequest = () => {
                   </TableRow>
                 ))
               : requestedData.map((request, index) => (
-                  <TableRow
-                    className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    key={request?._id || index}
-                  >
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>
-                      <img
-                        src={request?.userPhoto}
-                        alt={request?.userName}
-                        className="w-full md:h-14 h-12 rounded object-cover"
-                      />
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {request?.userName}
-                    </TableCell>
-                    <TableCell>{request?.userEmail}</TableCell>
-                    <TableCell>{request?.contactNumber}</TableCell>
-                    <TableCell>{request?.shift}</TableCell>
-                    <TableCell>
-                      {new Date(request?.requestDate).toLocaleDateString(
-                        "en-UK"
-                      )}
-                    </TableCell>
-                    <TableCell>{request?.department}</TableCell>
-                    <TableCell>{request?.requestedRole}</TableCell>
-                    <TableCell>
-                      <div
-                        className={`py-[2px] rounded-full text-white/90 font-bold ${
-                          request?.status === "Pending" && "bg-amber-500"
-                        } ${request?.status === "Reject" && "bg-rose-500"} ${
-                          request?.status === "Assign" && "bg-green-600"
-                        } ${request?.status === "Cancel" && "bg-red-500"}`}
-                      >
-                        <p className="text-center w-full px-3">
-                          {request?.status === "Pending" && "Pending"}{" "}
-                          {request?.status === "Reject" && "Rejected"}{" "}
-                          {request?.status === "Assign" && "Assigned"}
-                          {request?.status === "Cancel" && "Cancelled"}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            className="cursor-pointer"
-                            size="icon"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            className="flex gap-2 cursor-pointer items-center"
-                            onClick={() => handleView(request)}
-                          >
-                            <Eye className="h-5 w-5" />
-                            <span>View Details</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            disabled={request?.status === "Cancel"}
-                            className="cursor-pointer disabled:cursor-not-allowed focus:text-destructive flex gap-2 items-center"
-                            onClick={() => handleCancelRequest(request?._id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                            <span>Cancel</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="cursor-pointer focus:text-destructive flex gap-2 items-center"
-                            onClick={() => handleDeleteRequest(request?._id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                            <span>Delete</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
+                 <RequestTableRow key={request?._id || index} request={request} index={index} handleCancelRequest={handleCancelRequest} handleDeleteRequest={handleDeleteRequest} />
                 ))}
           </TableBody>
           <TableFooter>
