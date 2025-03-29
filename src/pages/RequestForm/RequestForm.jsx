@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { format } from "date-fns";
+import { format, max } from "date-fns";
 import { CalendarIcon, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -34,23 +34,24 @@ import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import toast from "react-hot-toast";
 
 const userFormSchema = z.object({
-  name: z.string().min(5, {
-    message: "Name must be at least 5 characters.",
-  }),
+  name: z.string().min(1, { message: "Name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
   role: z.string({
     required_error: "Please select a role",
   }),
   department: z.string({
     required_error: "Please select a department",
   }),
-  contact: z.string().min(5, {
-    message: "Contact information is required",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address",
-  }),
-  joiningDate: z.date({
-    required_error: "Joining date is required",
+  contact: z
+    .string()
+    .min(11, {
+      message: "Contact information must be at least 11 digit",
+    })
+    .max(11, {
+      message: "The limit of Contact information is 11 digit",
+    }),
+  availableDate: z.date({
+    required_error: "Available date is required",
   }),
   shift: z.string({
     required_error: "Please select a shift",
@@ -59,15 +60,24 @@ const userFormSchema = z.object({
     required_error: "Please select a status",
   }),
   address: z.string().optional(),
-  emergencyContact: z.string().optional(),
-  notes: z.string().optional(),
+  emergencyContact: z
+    .string()
+    .min(11, {
+      message: "Emergency contact must be at least 11 digit",
+    })
+    .max(11, {
+      message: "The limit of Emergency contact is 11 digit",
+    }),
+  coverLetter: z.string({
+    message: "Cover letter is required",
+  }),
 });
 
 const RequestForm = () => {
   const { user } = useSelector((state) => state.auth);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(user?.photoURL || "");
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const imageHostingKey = `https://api.imgbb.com/1/upload?key=${
     import.meta.env.VITE_IMGBB_API_URL
@@ -77,18 +87,20 @@ const RequestForm = () => {
   const form = useForm({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
-          name: "",
-          role: "",
-          department: "",
-          contact: "",
-          email: "",
-          joiningDate: new Date(),
-          shift: "",
-          status: "Active",
-          address: "",
-          emergencyContact: "",
-          notes: "",
-        },
+      // Default value of Name
+      name: user?.displayName,
+      // Default value of Email
+      email: user?.email,
+      role: "",
+      department: "",
+      contact: "",
+      availableDate: new Date(),
+      shift: "",
+      status: "Pending",
+      address: "",
+      emergencyContact: "",
+      coverLetter: "",
+    },
   });
 
   const handleImageChange = (e) => {
@@ -140,9 +152,9 @@ const RequestForm = () => {
         status: "Pending",
         adminNotes: "",
         shift: data?.shift,
-        joiningDate: data?.joiningDate,
+        availableDate: data?.availableDate,
         address: data?.address,
-        additionalNotes: data?.notes,
+        coverLetter: data?.coverLetter,
         requestDate: new Date().toISOString(),
       };
 
@@ -153,7 +165,7 @@ const RequestForm = () => {
       if (response?.status === 201) {
         toast.success("Successfully sent the request");
         form.reset();
-        setProfileImage(null);
+        setProfileImage(response?.data?.data?.userPhoto);
         setProfileImagePreview(null);
       }
     } catch (error) {
@@ -169,9 +181,14 @@ const RequestForm = () => {
       setIsLoading(false);
     }, 2000);
 
+    if (user) {
+      form.setValue("name", user.displayName || "");
+      form.setValue("email", user.email || "");
+    }
+
     // Cleanup
     return () => clearTimeout(timer);
-  }, []);
+  }, [user, form]);
 
   return (
     <Form {...form}>
@@ -203,7 +220,7 @@ const RequestForm = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <div className="flex flex-col items-center justify-center space-y-2">
+              <div className="flex flex-col items-center justify-center space-y-2 pr-5">
                 <div className="relative h-32 w-32 rounded-full overflow-hidden border-2 border-muted">
                   {profileImagePreview ? (
                     <img
@@ -213,8 +230,9 @@ const RequestForm = () => {
                     />
                   ) : (
                     <img
-                      src={user?.photoURL}
+                      src={profileImage || user?.photoURL}
                       alt="Profile image"
+                      referrerPolicy="no-referrer"
                       className="h-full w-full object-cover"
                     />
                   )}
@@ -249,7 +267,11 @@ const RequestForm = () => {
                   <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Write your name..." {...field} />
+                      <Input
+                        placeholder="Write your name..."
+                        readOnly
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -266,6 +288,7 @@ const RequestForm = () => {
                       <Input
                         type="email"
                         placeholder="Provide your email address"
+                        readOnly
                         {...field}
                       />
                     </FormControl>
@@ -311,7 +334,7 @@ const RequestForm = () => {
               />
             </div>
 
-            <div className="space-y-5">
+            <div className="space-y-5 border-l pl-5 border-gray-200">
               <div className="flex flex-wrap lg:flex-row flex-col gap-5 lg:items-center">
                 <FormField
                   control={form.control}
@@ -321,7 +344,7 @@ const RequestForm = () => {
                       <FormLabel>Role</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -351,7 +374,7 @@ const RequestForm = () => {
                       <FormLabel>Department</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -389,7 +412,7 @@ const RequestForm = () => {
                       <FormLabel>Shift</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -417,17 +440,17 @@ const RequestForm = () => {
 
               <FormField
                 control={form.control}
-                name="joiningDate"
+                name="availableDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Joining Date</FormLabel>
+                    <FormLabel>Available Date</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-full pl-3 text-left font-normal",
+                              "w-full bg-transparent pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -445,9 +468,7 @@ const RequestForm = () => {
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
+                          disabled={(date) => date < new Date()}
                           initialFocus
                         />
                       </PopoverContent>
@@ -466,6 +487,7 @@ const RequestForm = () => {
                     <FormControl>
                       <Textarea
                         placeholder="123 Main St, City, State, ZIP"
+                        className={"min-h-20"}
                         {...field}
                       />
                     </FormControl>
@@ -476,13 +498,14 @@ const RequestForm = () => {
 
               <FormField
                 control={form.control}
-                name="notes"
+                name="coverLetter"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Additional Notes</FormLabel>
+                    <FormLabel>Cover Letter</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Any additional information..."
+                        className={"min-h-32"}
+                        placeholder="Write a cover letter..."
                         {...field}
                       />
                     </FormControl>
