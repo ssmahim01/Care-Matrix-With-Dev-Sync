@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   LayoutDashboardIcon,
   LucideBedSingle,
+  Sparkles,
   Stethoscope,
   TicketSlash,
   Users,
@@ -219,14 +220,28 @@ export function NavMain() {
                 <LayoutDashboard className="text-base" /> Overview
               </h3>
             </NavLink>
-            <NavLink to="/dashboard/patient/manage-cart">
-              <h3 className="flex gap-2 items-center">
-                <ShoppingBag className="text-xl" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}>
-                  {" "}
-                  Manage Cart{" "}
-                </span>
-              </h3>
+            <NavLink
+              to="/dashboard/patient/request-form"
+              className={
+                "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+              }
+            >
+              <Sparkles className="text-base" />
+              <span className={`${state === "collapsed" && "md:hidden"}`}>
+                Upgrade to Pro
+              </span>
+            </NavLink>
+
+            <NavLink
+              to="/dashboard/patient/appointments"
+              className={
+                "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+              }
+            >
+              <ClipboardPlus className="text-base" />
+              <span className={`${state === "collapsed" && "md:hidden"}`}>
+                My Appointments
+              </span>
             </NavLink>
             {/* <NavLink to="/dashboard/pharmacist/manage-banner">
               <h3 className="flex gap-2 items-center">
