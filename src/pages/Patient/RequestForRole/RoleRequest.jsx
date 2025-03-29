@@ -25,7 +25,11 @@ import toast from "react-hot-toast";
 
 const RoleRequest = () => {
   const { user } = useSelector((state) => state.auth);
-  const { data: requestedData = [], refetch } = useQuery({
+  const {
+    data: requestedData = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["requestedData", user?.uid],
     queryFn: async () => {
       const { data } = await axios.get(
@@ -50,11 +54,11 @@ const RoleRequest = () => {
       confirmButtonText: "Yes, cancel!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-       const response = await axios.patch(
+        const response = await axios.patch(
           `${import.meta.env.VITE_API_URL}/user-requests/status/${id}`
         );
 
-        if(response.status === 200){
+        if (response.status === 200) {
           refetch();
           toast.success("Status has been updated");
         }
@@ -85,7 +89,7 @@ const RoleRequest = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 lg:w-full w-11/12 mx-auto">
       {/* Heading */}
       <div className="mb-5">
         <div>
@@ -103,7 +107,7 @@ const RoleRequest = () => {
       <RequestForm />
 
       {/* Requested Data */}
-      <div className="py-8 overflow-x-auto rounded-xl">
+      <div className="py-8 rounded-xl">
         <Table
           className={
             "*:w-full *:rounded-xl border border-gray-200 dark:border-gray-700"
@@ -126,90 +130,129 @@ const RoleRequest = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {requestedData.map((request, index) => (
-              <TableRow
-                className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                key={request?._id || index}
-              >
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>
-                  <img
-                    src={request?.userPhoto}
-                    alt={request?.userName}
-                    className="w-full md:h-14 h-12 rounded object-cover"
-                  />
-                </TableCell>
-                <TableCell className="font-medium">
-                  {request?.userName}
-                </TableCell>
-                <TableCell>{request?.userEmail}</TableCell>
-                <TableCell>{request?.contactNumber}</TableCell>
-                <TableCell>{request?.shift}</TableCell>
-                <TableCell>
-                  {new Date(request?.requestDate).toLocaleDateString("en-UK")}
-                </TableCell>
-                <TableCell>{request?.department}</TableCell>
-                <TableCell>{request?.requestedRole}</TableCell>
-                <TableCell>
-                  <div
-                    className={`py-[2px] rounded-full text-white/90 font-bold ${
-                      request?.status === "Pending" && "bg-amber-500"
-                    } ${request?.status === "Reject" && "bg-rose-500"} ${
-                      request?.status === "Assign" && "bg-green-600"
-                    } ${request?.status === "Cancel" && "bg-red-500"}`}
+            {isLoading
+              ? Array.from({ length: 5 }).map((_, index) => (
+                  <TableRow
+                    key={index}
+                    className="hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <p className="text-center w-full px-3">
-                      {request?.status === "Pending" && "Pending"}{" "}
-                      {request?.status === "Reject" && "Rejected"}{" "}
-                      {request?.status === "Assign" && "Assigned"}
-                      {request?.status === "Cancel" && "Cancelled"}
-                    </p>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className={"cursor-pointer"}
-                        size="icon"
+                    <TableCell>
+                      <div className="skeleton h-4 w-4" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-12 w-12 rounded-full" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-4 w-32" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-4 w-48" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-4 w-24" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-4 w-28" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-4 w-32" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-4 w-24" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="skeleton h-8 w-8" />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : (
+                requestedData.map((request, index) => (
+                  <TableRow
+                    className="hover:bg-gray-100 dark:hover:bg-gray-700"
+                    key={request?._id || index}
+                  >
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      <img
+                        src={request?.userPhoto}
+                        alt={request?.userName}
+                        className="w-full md:h-14 h-12 rounded object-cover"
+                      />
+                    </TableCell>
+                    <TableCell className="font-medium">{request?.userName}</TableCell>
+                    <TableCell>{request?.userEmail}</TableCell>
+                    <TableCell>{request?.contactNumber}</TableCell>
+                    <TableCell>{request?.shift}</TableCell>
+                    <TableCell>
+                      {new Date(request?.requestDate).toLocaleDateString("en-UK")}
+                    </TableCell>
+                    <TableCell>{request?.department}</TableCell>
+                    <TableCell>{request?.requestedRole}</TableCell>
+                    <TableCell>
+                      <div
+                        className={`py-[2px] rounded-full text-white/90 font-bold ${
+                          request?.status === "Pending" && "bg-amber-500"
+                        } ${request?.status === "Reject" && "bg-rose-500"} ${
+                          request?.status === "Assign" && "bg-green-600"
+                        } ${request?.status === "Cancel" && "bg-red-500"}`}
                       >
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        className={"flex gap-2 cursor-pointer items-center"}
-                        onClick={() => handleView(request)}
-                      >
-                        <Eye className="h-5 w-5" />
-                        <span>View Details</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                      disabled={request?.status === "Cancel"}
-                        className="cursor-pointer disabled:cursor-not-allowed focus:text-destructive flex gap-2 items-center"
-                        onClick={() => handleCancelRequest(request?._id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                        <span>Cancel</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className="cursor-pointer focus:text-destructive flex gap-2 items-center"
-                        onClick={() => handleDeleteRequest(request?._id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                        <span>Delete</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
+                        <p className="text-center w-full px-3">
+                          {request?.status === "Pending" && "Pending"}{" "}
+                          {request?.status === "Reject" && "Rejected"}{" "}
+                          {request?.status === "Assign" && "Assigned"}
+                          {request?.status === "Cancel" && "Cancelled"}
+                        </p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="cursor-pointer" size="icon">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            className="flex gap-2 cursor-pointer items-center"
+                            onClick={() => handleView(request)}
+                          >
+                            <Eye className="h-5 w-5" />
+                            <span>View Details</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            disabled={request?.status === "Cancel"}
+                            className="cursor-pointer disabled:cursor-not-allowed focus:text-destructive flex gap-2 items-center"
+                            onClick={() => handleCancelRequest(request?._id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            <span>Cancel</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="cursor-pointer focus:text-destructive flex gap-2 items-center"
+                            onClick={() => handleDeleteRequest(request?._id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            <span>Delete</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TableCell colSpan={2}>Total Requests:</TableCell>
-              <TableCell>{requestedData.length}</TableCell>
+              <TableCell>
+                {isLoading ? <div className="skeleton w-8 h-4"></div> : requestedData.length}
+              </TableCell>
             </TableRow>
           </TableFooter>
         </Table>
