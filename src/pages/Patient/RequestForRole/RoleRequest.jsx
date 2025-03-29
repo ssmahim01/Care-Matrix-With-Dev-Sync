@@ -15,20 +15,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import RequestForm from "@/pages/RequestForm/RequestForm";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { CornerUpRight, Eye, MoreHorizontal, Trash2 } from "lucide-react";
-import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { useRoleRequest } from "@/hooks/useRoleRequest";
+import { useEffect, useState } from "react";
 
-const RoleRequest = () => { 
-  const [requestedData, refetch, isLoading] = useRoleRequest();
+const RoleRequest = () => {
+  const [requestedData, refetch] = useRoleRequest();
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleCancelRequest = async (id) => {
     // console.log(id);
+    setIsLoading(true);
 
     Swal.fire({
       title: "Are you sure?",
@@ -46,6 +47,7 @@ const RoleRequest = () => {
 
         if (response.status === 200) {
           refetch();
+          setIsLoading(false);
           toast.success("Status has been updated");
         }
       }
@@ -53,6 +55,8 @@ const RoleRequest = () => {
   };
 
   const handleDeleteRequest = async (id) => {
+    setIsLoading(true);
+
     Swal.fire({
       title: "Are you sure?",
       text: "You cannot retrieve this request!",
@@ -68,11 +72,21 @@ const RoleRequest = () => {
         );
         if (response.status === 200) {
           refetch();
+          setIsLoading(false);
           toast.success("Request has been deleted");
         }
       }
     });
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    // Cleanup
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="space-y-4 lg:w-full w-11/12 mx-auto">
@@ -157,8 +171,7 @@ const RoleRequest = () => {
                     </TableCell>
                   </TableRow>
                 ))
-              : (
-                requestedData.map((request, index) => (
+              : requestedData.map((request, index) => (
                   <TableRow
                     className="hover:bg-gray-100 dark:hover:bg-gray-700"
                     key={request?._id || index}
@@ -171,12 +184,16 @@ const RoleRequest = () => {
                         className="w-full md:h-14 h-12 rounded object-cover"
                       />
                     </TableCell>
-                    <TableCell className="font-medium">{request?.userName}</TableCell>
+                    <TableCell className="font-medium">
+                      {request?.userName}
+                    </TableCell>
                     <TableCell>{request?.userEmail}</TableCell>
                     <TableCell>{request?.contactNumber}</TableCell>
                     <TableCell>{request?.shift}</TableCell>
                     <TableCell>
-                      {new Date(request?.requestDate).toLocaleDateString("en-UK")}
+                      {new Date(request?.requestDate).toLocaleDateString(
+                        "en-UK"
+                      )}
                     </TableCell>
                     <TableCell>{request?.department}</TableCell>
                     <TableCell>{request?.requestedRole}</TableCell>
@@ -199,7 +216,11 @@ const RoleRequest = () => {
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="cursor-pointer" size="icon">
+                          <Button
+                            variant="ghost"
+                            className="cursor-pointer"
+                            size="icon"
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -230,14 +251,17 @@ const RoleRequest = () => {
                       </DropdownMenu>
                     </TableCell>
                   </TableRow>
-                ))
-              )}
+                ))}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TableCell colSpan={2}>Total Requests:</TableCell>
               <TableCell>
-                {isLoading ? <div className="skeleton w-8 h-4"></div> : requestedData.length}
+                {isLoading ? (
+                  <div className="skeleton w-8 h-4"></div>
+                ) : (
+                  requestedData.length
+                )}
               </TableCell>
             </TableRow>
           </TableFooter>
