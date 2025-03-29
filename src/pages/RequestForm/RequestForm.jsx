@@ -221,9 +221,9 @@ const RequestForm = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <div className="flex flex-col items-center justify-center space-y-2 lg:pr-5">
+              <div className="flex flex-col items-center justify-center space-y-2 md:pr-5">
                 <div className="relative h-32 w-32 rounded-full overflow-hidden border-2 border-muted">
                   {profileImagePreview ? (
                     <img
@@ -337,8 +337,8 @@ const RequestForm = () => {
               />
             </div>
 
-            <div className="space-y-5 lg:border-l lg:pl-5 border-gray-200">
-              <div className="flex flex-wrap lg:flex-row flex-col gap-5 lg:items-center">
+            <div className="space-y-5 md:border-l md:pl-5 border-gray-200">
+              <div className="flex flex-wrap md:flex-row flex-col gap-5 md:items-center">
                 <FormField
                   control={form.control}
                   name="role"
@@ -520,24 +520,31 @@ const RequestForm = () => {
           </div>
         )}
 
-        <div className="flex justify-start gap-2">
-          <Button
-            type="button"
-            className="cursor-pointer"
-            variant="outline"
-            onClick={() => form.reset()}
-            disabled={isLoading}
-          >
-            Reset
-          </Button>
-          <Button
-            type="submit"
-            className="cursor-pointer"
-            disabled={isSubmitting || isLoading}
-          >
-            {isSubmitting ? "Requesting..." : "Send Request"}
-          </Button>
-        </div>
+        {isLoading ? (
+          <div className="flex justify-start gap-2">
+            <div className="skeleton h-10 w-24"></div>
+            <div className="skeleton h-10 w-32"></div>
+          </div>
+        ) : (
+          <div className="flex justify-start gap-2">
+            <Button
+              type="button"
+              className="cursor-pointer"
+              variant="outline"
+              onClick={() => form.reset()}
+              disabled={isLoading}
+            >
+              Reset
+            </Button>
+            <Button
+              type="submit"
+              className="cursor-pointer"
+              disabled={isSubmitting || isLoading}
+            >
+              {isSubmitting ? "Requesting..." : "Send Request"}
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   );

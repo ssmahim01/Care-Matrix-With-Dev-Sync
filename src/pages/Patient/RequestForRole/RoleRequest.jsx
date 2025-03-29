@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import RequestForm from "@/pages/RequestForm/RequestForm";
 import axios from "axios";
-import { CornerUpRight } from "lucide-react";
+import { CopyX, CornerUpRight } from "lucide-react";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { useRoleRequest } from "@/hooks/useRoleRequest";
@@ -20,6 +20,12 @@ import RequestTableRow from "@/components/RequestTableRow/RequestTableRow";
 const RoleRequest = () => {
   const [requestedData, refetch] = useRoleRequest();
   const [isLoading, setIsLoading] = useState(true);
+  const [requestModal, setRequestModal] = useState({});
+  const handleView = (request) => {
+    // console.log(request);
+    setRequestModal(request);
+    document.getElementById("request_modal").showModal();
+  };
 
   const handleCancelRequest = async (id) => {
     // console.log(id);
@@ -166,7 +172,7 @@ const RoleRequest = () => {
                   </TableRow>
                 ))
               : requestedData.map((request, index) => (
-                 <RequestTableRow key={request?._id || index} request={request} index={index} handleCancelRequest={handleCancelRequest} handleDeleteRequest={handleDeleteRequest} />
+                 <RequestTableRow key={request?._id || index} request={request} index={index} handleCancelRequest={handleCancelRequest} handleDeleteRequest={handleDeleteRequest} handleView={handleView} />
                 ))}
           </TableBody>
           <TableFooter>
@@ -183,6 +189,97 @@ const RoleRequest = () => {
           </TableFooter>
         </Table>
       </div>
+
+      <dialog id="request_modal" className="modal modal-middle">
+        {requestModal && (
+          <div className="w-full flex justify-center items-center">
+            <div className="modal-box">
+              <h2 className="md:text-3xl text-2xl font-bold text-center">Details Of Upgrade Request</h2>
+              <div className="divider md:w-11/12 mx-auto"></div>
+
+              <figure className="w-44 h-44 mx-auto mt-3">
+                <img
+                  className="w-full h-full border-4 border-muted overflow-hidden rounded-full object-cover"
+                  src={requestModal?.userPhoto}
+                  alt={requestModal?.userName}
+                />
+              </figure>
+
+              <div className="divider"></div>
+
+              <div className="w-full space-y-3">
+                <h4 className="text-lg text-gray-900 font-bold">
+                  Name:{" "}
+                  <span className="text-gray-700 font-semibold">
+                    {requestModal?.userName}
+                  </span>
+                </h4>
+
+                <h4 className="text-lg text-gray-900 font-bold">
+                  Email:{" "}
+                  <span className="text-gray-700 font-semibold">
+                    {requestModal?.userEmail}
+                  </span>
+                </h4>
+                
+                <h4 className="text-lg text-gray-900 font-bold">
+                  Request Role:{" "}
+                  <span className="text-gray-700 font-semibold">
+                    {requestModal?.requestedRole}
+                  </span>
+                </h4>
+
+                <h4 className="text-lg text-gray-900 font-bold">
+                  Emergency Contact:{" "}
+                  <span className="text-gray-700 font-semibold">
+                    {requestModal?.emergencyContact}
+                  </span>
+                </h4>
+
+                <h4 className="text-lg text-gray-900 font-bold">
+                  Shift:{" "}
+                  <span className="text-gray-700 font-semibold">
+                    {requestModal?.shift}
+                  </span>
+                </h4>
+
+                <h4 className="text-lg text-gray-900 font-bold">
+                  Available Moment:{" "}
+                  <span className="text-gray-700 font-semibold">
+                    {new Date(requestModal?.availableDate).toLocaleString("en-UK")}
+                  </span>
+                </h4>
+
+                <h4 className="text-lg text-gray-900 font-bold">
+                  Address:{" "}
+                  <span className="text-gray-700 font-semibold">
+                    {requestModal?.address}
+                  </span>
+                </h4>
+
+                <h4 className="text-lg text-gray-900 font-bold">
+                  Cover Letter:{" "}
+                  <span className="text-gray-700 font-semibold">
+                    {requestModal?.coverLetter}
+                  </span>
+                </h4>
+
+                <div className="py-3">
+                  <button
+                    onClick={() =>
+                      document.getElementById("request_modal").close()
+                    }
+                    className="md:px-14 px-10 btn bg-rose-500 text-base text-white font-bold rounded-md flex gap-2 items-center"
+                  >
+                    <CopyX className="w-4 h-4" />
+                    <span>Close</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </dialog>
     </div>
   );
 };
