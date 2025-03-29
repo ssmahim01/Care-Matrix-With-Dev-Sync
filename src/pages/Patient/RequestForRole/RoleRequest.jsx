@@ -22,24 +22,10 @@ import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { useRoleRequest } from "@/hooks/useRoleRequest";
 
-const RoleRequest = () => {
-  const { user } = useSelector((state) => state.auth);
-  const {
-    data: requestedData = [],
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["requestedData", user?.uid],
-    queryFn: async () => {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/user-requests/${user?.uid}`
-      );
-      return data.data;
-    },
-  });
-
-  // console.log(requestedData);
+const RoleRequest = () => { 
+  const [requestedData, refetch, isLoading] = useRoleRequest();
 
   const handleCancelRequest = async (id) => {
     // console.log(id);

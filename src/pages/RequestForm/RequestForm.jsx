@@ -32,6 +32,7 @@ import { cn } from "@/lib/utils";
 import { useSelector } from "react-redux";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import { useRoleRequest } from "@/hooks/useRoleRequest";
 
 const userFormSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -75,6 +76,7 @@ const userFormSchema = z.object({
 
 const RequestForm = () => {
   const { user } = useSelector((state) => state.auth);
+  const [, refetch] = useRoleRequest();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [profileImage, setProfileImage] = useState(user?.photoURL || "");
@@ -164,6 +166,7 @@ const RequestForm = () => {
 
       if (response?.status === 201) {
         toast.success("Successfully sent the request");
+        refetch();
         form.reset();
         setProfileImage(response?.data?.data?.userPhoto);
         setProfileImagePreview(null);
