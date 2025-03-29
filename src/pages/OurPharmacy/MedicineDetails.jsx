@@ -1,14 +1,21 @@
 import { FaStar } from "react-icons/fa6";
 import { useState, useEffect } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import axios from "axios";
 import { Separator } from "@/components/ui/separator";
 import ImageWithMagnifier from "@/shared/Section/ImageWithMagnifier";
+import useCart from "@/hooks/useCart";
+import { useAuthUser } from "@/redux/auth/authActions";
+import toast from "react-hot-toast";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const MedicineDetails = () => {
+  const axiosPublic = useAxiosPublic()
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -20,6 +27,7 @@ const MedicineDetails = () => {
     minutes: 45,
     seconds: 5,
   });
+  const [checkout, SetCheckout] = useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -52,7 +60,7 @@ const MedicineDetails = () => {
   const {
     data: medicine = {},
     isLoading,
-    refetch,
+    refetch: medicineRefetch,
   } = useQuery({
     queryKey: ["medicine-details"],
     queryFn: async () => {
@@ -89,6 +97,44 @@ const MedicineDetails = () => {
   } = medicine || {};
 
   console.log(medicine)
+
+  const user = useAuthUser();
+  const [cart, cartLoading, refetch] = useCart();
+
+  // Function For AddToCart
+  const handleAddToCart = async () => {
+    if (!user) {
+      return toast.error("You must login before add to cart");
+    }
+
+    const cartItem = {
+      customer: {
+        customerName: user.displayName,
+        customerEmail: user.email,
+      },
+      medicineId: _id,
+      medicineName: brandName,
+      price: price?.discount?.discountedAmount
+        ? price.discount.discountedAmount
+        : price?.amount,
+      image: imageURL,
+      strength: strength,
+      quantity: quantity,
+    };
+
+    await toast.promise(axiosPublic.post("/carts", cartItem), {
+      loading: "Adding to cart...",
+      success: <b>Successfully Added To Cart</b>,
+      error: (error) => {
+        const errorMessage =
+          error.response?.data?.error || error.message || "Unable to Add";
+        return <b>{errorMessage}</b>;
+      },
+    });
+    SetCheckout(true)
+    refetch();
+  };
+
 
   return (
     <div className="pt-24 pb-12 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
@@ -133,9 +179,13 @@ const MedicineDetails = () => {
 
           <div className="flex items-center gap-3">
             <span className="text-[1.5rem] text-gray-800 font-medium">
-              $199.00
+              ৳ {price?.discount?.discountedAmount ? price.discount.discountedAmount : price?.amount}
             </span>
-            <span className="text-lg text-gray-500 line-through">$400.00</span>
+            {
+              price?.discount?.discountedAmount &&
+
+              <span className="text-lg text-gray-500 line-through">৳ {price.amount}</span>
+            }
           </div>
 
           <div className="pb-2">
@@ -213,9 +263,25 @@ const MedicineDetails = () => {
             </button>
           </div>
 
-          <button className="w-full px-6 py-3 bg-[#0FABCA] text-white rounded-md hover:bg-[#0FABCA]/90">
-            Add to Cart
-          </button>
+
+          {
+            checkout ?
+              // <Button>Proceed to Checkout <FaShoppingCart></FaShoppingCart> </Button>
+              <div className="flex justify-center items-center gap-6">
+
+                <Link to={"/pharmacy"} className="cursor-pointer w-full px-6 py-3 bg-[#184b5599] text-white rounded-md hover:bg-[#0FABCA]/90 mt-4">
+                  Continue Shopping
+                </Link>
+                <Link to={"/dashboard/patient/manage-cart"} className="cursor-pointer w-full px-6 py-3 bg-green-500/80 text-white rounded-md hover:bg-green-500 mt-4">
+                  Proceed to Checkout <FaShoppingCart className="inline-flex"></FaShoppingCart>
+                </Link>
+
+              </div>
+              :
+              <button onClick={handleAddToCart} className="cursor-pointer w-full px-6 py-3 bg-[#0FABCA] text-white rounded-md hover:bg-[#0FABCA]/90 mt-4">
+                Add to Cart
+              </button>
+          }
         </div>
       </div>
     </div>

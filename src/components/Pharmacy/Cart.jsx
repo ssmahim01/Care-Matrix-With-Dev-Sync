@@ -10,6 +10,13 @@ import Swal from "sweetalert2";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
+import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
+import CartCheckoutForm from "../CheckoutForm/CartCheckoutForm";
+import { loadStripe } from '@stripe/stripe-js';
+import { Input } from "../ui/input";
+import emptyCart from '../../assets/Images/empty-cart.jpg'
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 
 const globalStyles = {
@@ -23,6 +30,27 @@ const Cart = () => {
     const axiosSecure = useAxiosSecure()
     const [subtotal, setSubtotal] = useState(0)
     const shippingCost = cart.length ? 60 : 0
+    const [loadingClientSecret, setLoadingClientSecret] = useState(false);
+    const [clientSecret, setClientSecret] = useState('');
+
+
+    // form values 
+    const [name, setName] = useState(user?.displayName || "")
+    const [email, setEmail] = useState(user?.email || "")
+    const [phone, setPhone] = useState("")
+    const [district, setDistrict] = useState("")
+    const [division, setDivision] = useState("")
+    const [address, setAddress] = useState("")
+
+    const customerInfo = {
+        name: name || user?.displayName, email: email || user?.email, phone, district, division, address
+    }
+
+
+    // const handleCheck = () => {
+    //     console.log(customerInfo);
+    // }
+
 
     // console.log(user);
 
@@ -96,12 +124,43 @@ const Cart = () => {
             console.error("Error clearing cart:", error)
         }
     };
+    const handlePaymentSuccess = () => {
+        e.preventDefault()
+        // Clear cart after successful payment
+        axiosSecure.delete(`/carts/clear/${user?.email}`)
+            .then(() => {
+                refetch();
+            })
+            .catch(err => console.error('Error clearing cart:', err));
+    };
+    useEffect(() => {
+        const initializePaymentIntent = async () => {
+            if (!subtotal || subtotal + shippingCost <= 0) return;
 
+            setLoadingClientSecret(true);
+            try {
+                const response = await axiosSecure.post('/carts/create-payment-intent', {
+                    price: subtotal + shippingCost
+                });
+                if (response.data.clientSecret) {
+                    setClientSecret(response.data.clientSecret);
+                } else {
+                    throw new Error('No client secret received');
+                }
+            } catch (err) {
+                console.error('Error fetching client secret:', err);
+                toast.error('Failed to initialize payment system');
+            } finally {
+                setLoadingClientSecret(false);
+            }
+        };
 
+        initializePaymentIntent();
+    }, [subtotal, shippingCost, axiosSecure]);
 
     const districts = [
         'Dhaka', 'Chittagong', 'Rajshahi', 'Khulna', 'Barisal', 'Sylhet', 'Rangpur', 'Mymensingh',
-        'Comilla', 'Narayanganj', 'Gazipur', 'Narsingdi', 'Tangail', 'Jessore', 'Dinajpur', "Lakshmipur", "Noakhalu"
+        'Comilla', 'Narayanganj', 'Gazipur', 'Narsingdi', 'Tangail', 'Jessore', 'Dinajpur', "Lakshmipur", "Noakhali"
     ];
 
     const cities = [
@@ -110,10 +169,15 @@ const Cart = () => {
 
     ];
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
 
+    const parcel = {
+        price: subtotal + shippingCost,
+        parcelType: "Medicine Purchase",
+        _id: Date.now().toString()
     };
+    const appearance = { theme: 'stripe' };
+    const options = clientSecret ? { clientSecret, appearance } : null;
+
 
     return (
         <div className="w-full flex flex-col gap-8 md:gap-0 md:flex-row">
@@ -124,50 +188,56 @@ const Cart = () => {
                 <div>
                     <h2 className="text-[1.2rem] text-gray-700 font-semibold mb-6">Your order</h2>
                     <div className="border border-gray-200 rounded-md">
-                        {cart?.map((item, idx) => (
-                            <motion.div
-                                initial={{ y: 20, opacity: 0 }}
-                                whileInView={{ y: 0, opacity: 1 }}
-                                transition={{ duration: 0.6, ease: 'easeInOut', delay: idx * 0.1 }}
-                                key={item._id}
-                                className="flex flex-col md:flex-row md:items-center gap-4 border-t p-4 border-gray-200"
-                            >
-                                <div className="border relative border-gray-200 w-max rounded-md bg-white">
-                                    <img
-                                        src={item.image}
-                                        alt={item.medicineName}
-                                        className="w-20 h-20 object-cover rounded"
-                                    />
-                                    <span className="px-[0.45rem] rounded-full absolute bg-white -top-2 -right-2 z-30 text-[0.9rem] text-gray-800 border border-gray-200 shadow-sm">
-                                        {item.quantity}
-                                    </span>
-                                </div>
-                                <div className="flex-1">
-                                    <h3 className="font-medium">{item.medicineName}</h3>
-                                    <div className="flex items-center gap-[30px] mt-2">
-                                        <p className="text-sm text-gray-500">
-                                            <b className="text-gray-800">{item.strength}</b>
-                                        </p>
-                                        <div className="flex items-center gap-2">
-                                            <button
-                                                onClick={() => handleDecrease(item._id)}
-                                                className="p-1 border rounded hover:bg-gray-200"
-                                            >
-                                                <AiOutlineMinus />
-                                            </button>
-                                            <span>{item.quantity}</span>
-                                            <button
-                                                onClick={() => handleIncrease(item._id)}
-                                                className="p-1 border rounded hover:bg-gray-200"
-                                            >
-                                                <AiOutlinePlus />
-                                            </button>
+                        {
+                            cart.length ?
+                                cart?.map((item, idx) => (
+                                    <motion.div
+                                        initial={{ y: 20, opacity: 0 }}
+                                        whileInView={{ y: 0, opacity: 1 }}
+                                        transition={{ duration: 0.6, ease: 'easeInOut', delay: idx * 0.1 }}
+                                        viewport={{ once: true }}
+                                        key={item._id}
+                                        className="flex flex-col md:flex-row md:items-center gap-4 border-t p-4 border-gray-200"
+                                    >
+                                        <div className="border relative border-gray-200 w-max rounded-md bg-white">
+                                            <img
+                                                src={item.image}
+                                                alt={item.medicineName}
+                                                className="w-20 h-20 object-cover rounded"
+                                            />
+                                            <span className="px-[0.45rem] rounded-full absolute bg-white -top-2 -right-2 z-30 text-[0.9rem] text-gray-800 border border-gray-200 shadow-sm">
+                                                {item.quantity}
+                                            </span>
                                         </div>
-                                    </div>
-                                </div>
-                                <span className="font-medium">৳ {item.price * item.quantity}</span>
-                            </motion.div>
-                        ))}
+                                        <div className="flex-1">
+                                            <h3 className="font-medium">{item.medicineName}</h3>
+                                            <div className="flex items-center gap-[30px] mt-2">
+                                                <p className="text-sm text-gray-500">
+                                                    <b className="text-gray-800">{item.strength}</b>
+                                                </p>
+                                                <div className="flex items-center gap-2">
+                                                    <button
+                                                        onClick={() => handleDecrease(item._id)}
+                                                        className="p-1 border rounded hover:bg-gray-200"
+                                                    >
+                                                        <AiOutlineMinus />
+                                                    </button>
+                                                    <span>{item.quantity}</span>
+                                                    <button
+                                                        onClick={() => handleIncrease(item._id)}
+                                                        className="p-1 border rounded hover:bg-gray-200"
+                                                    >
+                                                        <AiOutlinePlus />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span className="font-medium">৳ {item.price * item.quantity}</span>
+                                    </motion.div>
+                                ))
+                                :
+                                <img src={emptyCart} alt="empty cart" className="border rounded-md" />
+                        }
                     </div>
 
                     {/* Pricing Summary */}
@@ -191,9 +261,10 @@ const Cart = () => {
                     {/* Clear Cart Button */}
                     <motion.div
                         initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.8, ease: 'easeInOut', delay: 0.8 }}
-                        className="flex items-center justify-center gap-5">
+                        whileInView={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.8, ease: 'easeInOut', delay: 0.2 }}
+                        viewport={{ once: true }}
+                        className="flex items-center justify-center gap-5 mt-5">
                         <Link to={'/pharmacy'} >
                             <Button className=" cursor-pointer">
                                 Continue Shopping
@@ -213,7 +284,20 @@ const Cart = () => {
 
             {/* Right Column - Checkout Form (Sticky on large devices) */}
             <div className="flex-1 md:px-8 lg:sticky lg:top-16 lg:self-start">
-                <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className="space-y-6" >
+                    <div>
+                        <label htmlFor="email" className="text-[1rem] font-medium text-gray-800 mb-1">
+                            Name
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter Your Name"
+                            defaultValue={name || user?.displayName}
+                            onChange={(e) => setName(e.target.value)}
+                            className={globalStyles.inputStyles}
+                        />
+                    </div>
                     <div>
                         <label htmlFor="email" className="text-[1rem] font-medium text-gray-800 mb-1">
                             Email
@@ -223,6 +307,7 @@ const Cart = () => {
                             id="email"
                             placeholder="user@gmail.com"
                             defaultValue={user?.email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className={globalStyles.inputStyles}
                         />
                     </div>
@@ -239,58 +324,14 @@ const Cart = () => {
                                 id="phone"
                                 placeholder="Enter Your Phone no."
                                 defaultValue={user?.mobile}
+                                onChange={(e) => setPhone(e.target.value)}
                                 className={globalStyles.inputStyles}
                             />
                         </div>
                     </div>
-                    <div>
-                        <div className="flex items-center justify-between mb-2">
-                            <label className="text-[1rem] font-medium text-gray-800">Payment method</label>
-                            {/* <button type="button" className="text-blue-600 text-right flex text-[0.9rem] items-center gap-[5px]">
-                                <AiOutlinePlus />
-                                Add new
-                            </button> */}
-                        </div>
-                        <label className="flex-1 flex items-center justify-between gap-2 border-gray-200 border rounded-lg p-4">
-                            <div>
-                                <div className="dark:text-[#abc2d3]">
-                                    <input type="radio" name="payment" value="stripe" className="form-radio" defaultChecked />
-                                    <span> **** 4242</span>
-                                </div>
-                                <div className="flex items-center gap-[5px] pl-5 mt-0.5">
-                                    <p className="text-[0.9rem] text-gray-500">Stripe •</p>
-                                    <p className="text-[0.9rem] text-gray-500 hover:text-[#0FABCA] cursor-pointer">Edit</p>
-                                </div>
-                            </div>
-                            <img src="https://thelettertwo.com/wp-content/uploads/2024/11/stripe-logo-wall-960x540-1.jpg" alt="Stripe" className="w-[50px] rounded-md" />
-                        </label>
-                    </div>
-                    <div>
-                        <label htmlFor="billingAddress" className="text-[1rem] font-medium text-gray-800 mb-1">
-                            Billing address
-                        </label>
-                        <select
-                            id="billingAddress"
-                            className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
-                        >
-                            <option>Bangladesh</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="district" className="text-[1rem] font-medium text-gray-800 mb-1">
-                            District
-                        </label>
-                        <select
-                            id="district"
-                            className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
-                        >
-                            {districts.map((district) => (
-                                <option key={district} value={district}>{district}</option>
-                            ))}
-                        </select>
-                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
+                        {/* <div>
                             <label htmlFor="zipCode" className="text-[1rem] font-medium text-gray-800 mb-1">
                                 Zip code
                             </label>
@@ -300,34 +341,77 @@ const Cart = () => {
                                 placeholder="Ex. 73923"
                                 className={globalStyles.inputStyles}
                             />
-                        </div>
+                        </div> */}
                         <div>
                             <label htmlFor="city" className="text-[1rem] font-medium text-gray-800 mb-1">
-                                City
+                                Division
                             </label>
                             <select
                                 id="city"
                                 className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
+                                onChange={(e) => setDivision(e.target.value)}
+                                value={division}
                             >
                                 {cities.map((city) => (
                                     <option key={city} value={city}>{city}</option>
                                 ))}
                             </select>
                         </div>
+                        <div>
+                            <label htmlFor="district" className="text-[1rem] font-medium text-gray-800 mb-1">
+                                District
+                            </label>
+                            <select
+                                id="district"
+                                className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
+                                onChange={(e) => setDistrict(e.target.value)}
+                                value={district}
+                            >
+                                {districts.map((district) => (
+                                    <option key={district} value={district}>{district}</option>
+                                ))}
+                            </select>
+                        </div>
+
                     </div>
-                    <div className="flex items-center gap-2">
-                        <input type="checkbox" id="sameAsShipping" className="form-checkbox" />
-                        <label htmlFor="sameAsShipping" className="text-sm text-gray-600">
-                            Billing address is same as shipping
+                    <div>
+                        <label htmlFor="billingAddress" className="text-[1rem] font-medium text-gray-800 mb-1">
+                            Billing address
                         </label>
+                        <Input onChange={(e) => setAddress(e.target.value)} placeholder="Enter Your Location" className={"px-3 py-5"}>
+                        </Input>
                     </div>
-                    <button
+
+                    <div>
+                        <label className="text-[1rem] font-medium text-gray-800 mb-1">
+                            Payment method
+                        </label>
+                        {loadingClientSecret ? (
+                            <p className="text-gray-500">Loading payment options...</p>
+                        ) : clientSecret === null ? (
+                            <p className="text-gray-500">Preparing payment options...</p>
+                        ) : clientSecret === '' ? (
+                            <p className="text-red-500">Failed to load payment options</p>
+                        ) : (
+                            <Elements stripe={stripePromise} options={options}>
+                                <CartCheckoutForm
+                                    customerInfo={customerInfo}
+                                    refetch={refetch}
+                                    parcel={parcel}
+                                    cartItems={cart}
+                                    clientSecret={clientSecret}
+                                    onPaymentSuccess={handlePaymentSuccess}
+                                />
+                            </Elements>
+                        )}
+                    </div>
+                    {/* <button
                         type="submit"
                         className="w-full bg-[#0FABCA] text-white py-3 rounded-lg hover:bg-[#0FABCA]/90"
                     >
                         Pay ৳ {(subtotal + shippingCost).toFixed(2)}
-                    </button>
-                </form>
+                    </button> */}
+                </div>
 
 
             </div>

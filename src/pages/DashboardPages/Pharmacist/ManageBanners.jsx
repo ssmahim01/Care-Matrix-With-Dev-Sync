@@ -1,5 +1,4 @@
 import AddBanners from "@/components/Modal/AddBanner";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -14,13 +13,27 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import useBanners from "@/hooks/useBanners";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { RiAdvertisementFill } from "react-icons/ri";
-import Loader from "@/shared/Loader";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import useBanners from "@/hooks/useBanners";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useState } from "react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { MoreVertical, Pencil, Trash } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 function ManageBanners() {
   const [setOpen, setIsOpen] = useState(false);
@@ -39,7 +52,43 @@ function ManageBanners() {
     refetch();
   };
 
-  if (isLoading) return <Loader text={"Loading Banners"} />;
+  // Medicine Delete Function
+  const handleBannerDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action will permanently delete the banner AD!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "No, cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const { data } = await axios.delete(
+          `${import.meta.env.VITE_API_URL}/banners/delete/${id}`
+        );
+        if (data.data.deletedCount) {
+          refetch();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Banner has been deleted successfully!",
+            icon: "success",
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: error.message || "Failed to delete the banner!",
+          icon: "error",
+          background: "#ffffff",
+          color: "#000000",
+          confirmButtonColor: "#ef4444",
+        });
+      }
+    }
+  };
+
   return (
     <div className="p-7">
       <DashboardPagesHeader
@@ -53,57 +102,105 @@ function ManageBanners() {
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       >
-        <div className="mx-auto">
+        <div className=" mx-auto">
           <div className="flex justify-end mb-4">
             <Button className="cursor-pointer" onClick={() => setIsOpen(true)}>
               Add New Banner
             </Button>
           </div>
-          <Table>
+          <Table className={""}>
             <TableCaption>A List Of All Promotional Banners</TableCaption>
             <TableHeader>
-              <TableRow className={"bg-base-200 hover:bg-base-200"}>
-                <TableHead></TableHead>
-                <TableHead>Image</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Inserted By</TableHead>
-                <TableHead>Banner Added</TableHead>
-                <TableHead className="text-right">Status</TableHead>
+              <TableRow className="bg-base-200 hover:bg-base-200">
+                <TableHead className="w-12 ">#</TableHead>
+                <TableHead className="w-32 ">Image</TableHead>
+                <TableHead className="">Name</TableHead>
+                <TableHead className="max-w-xs ">Description</TableHead>
+                <TableHead className="">Inserted By</TableHead>
+                <TableHead className="">Banner Added</TableHead>
+                <TableHead className="">Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {banners?.map((banner, i) => (
-                <TableRow key={banner?._id}>
-                  <TableCell className="font-medium">{i + 1}</TableCell>
-                  <TableCell>
-                    <img
-                      src={banner?.image}
-                      alt="Medicine Image"
-                      className="min-w-28 h-16 object-cover"
-                    />
-                  </TableCell>
-                  <TableCell>{banner?.medicineName}</TableCell>
-                  <TableCell className={"max-w-[300px] truncate"}>
-                    {banner?.description}...
-                  </TableCell>
-                  <TableCell>{banner?.insertedBy}</TableCell>
-                  <TableCell>{banner?.date}</TableCell>
-                  <TableCell>
-                    <div className="text-right flex justify-end items-center">
-                      <Switch
-                        checked={banner?.status === "active"}
-                        onCheckedChange={(checked) => {
-                          const newStatus = checked ? "active" : "inactive";
-                          handleBannerStatusChange(banner?._id, newStatus);
-                        }}
+              {isLoading
+                ? Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({ length: 8 }).map((_, j) => (
+                      <TableCell key={j}>
+                        <div className="skeleton h-8 rounded w-full"></div>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+                : banners?.map((banner, i) => (
+                  <TableRow key={banner?._id}>
+                    <TableCell className="">{i + 1}</TableCell>
+                    <TableCell className="">
+                      <img
+                        src={banner?.image}
+                        alt="Banner Image"
+                        className="min-w-28 h-16 object-cover mx-auto"
                       />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                    <TableCell>{banner?.medicineName}</TableCell>
+                    <TableCell className="max-w-xs truncate ">
+                      {banner?.description}...
+                    </TableCell>
+                    <TableCell>{banner?.insertedBy}</TableCell>
+                    <TableCell>{banner?.date}</TableCell>
+                    <TableCell>
+                      <Tooltip className="cursor-pointer">
+                        <TooltipTrigger>
+                          <Switch
+                            className="cursor-pointer"
+                            checked={banner?.status === "active"}
+                            onCheckedChange={(checked) => {
+                              const newStatus = checked
+                                ? "active"
+                                : "inactive";
+                              handleBannerStatusChange(
+                                banner?._id,
+                                newStatus
+                              );
+                            }}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <span>
+                            {banner?.status === "active"
+                              ? "Deactivate Banner"
+                              : "Activate Banner"}
+                          </span>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell className="flex justify-end items-center">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
+                            <MoreVertical className="cursor-pointer text-gray-700" />
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Pencil className="w-4 h-4 mr-2" /> Update
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleBannerDelete(banner?._id)}
+                            className="cursor-pointer"
+                          >
+                            <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
+
           {/* modal */}
           <AddBanners
             isOpen={setOpen}

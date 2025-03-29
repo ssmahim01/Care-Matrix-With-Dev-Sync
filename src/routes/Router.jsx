@@ -25,7 +25,6 @@ import OurPharmacy from "@/pages/OurPharmacy/OurPharmacy";
 import StuffManagement from "@/pages/Stuff-Management/StuffManagement";
 import ManageBanners from "@/pages/DashboardPages/Pharmacist/ManageBanners";
 import DoctorsManagement from "@/pages/DashboardPages/Administrator/DoctorsManagement";
-import ManageUsers from "@/pages/DashboardPages/Administrator/ManageUsers";
 import ManageMedicines from "@/pages/DashboardPages/Pharmacist/ManageMedicines";
 import ManageAppointments from "@/pages/DashboardPages/Administrator/ManageAppointments";
 import MedicineDetails from "@/pages/OurPharmacy/MedicineDetails";
@@ -33,11 +32,17 @@ import Cart from "@/components/Pharmacy/Cart";
 import Payment from "@/pages/Payment/Payment";
 import SuccessPayment from "@/pages/SuccessPayment/SuccessPayment";
 import PharmacistOverview from "@/pages/DashboardPages/Pharmacist/PharmacistOverview";
+import RoleRequest from "@/pages/Patient/RequestForRole/RoleRequest";
+import ManageOrders from "@/pages/DashboardPages/Pharmacist/ManageOrders/ManageOrders";
+import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/ReceptionistOverview";
+import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
+import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
+import EidGreetingSection from "@/pages/Home/EidGreetingSection";
 
 const Router = () => {
   const dispatch = useDispatch();
   const user = useAuthUser();
-  // console.log(user);
+  console.log(user);
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -88,16 +93,22 @@ const Router = () => {
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="medicine/:id" element={<MedicineDetails />} />
-
         <Route path="book-appointment/payment" element={<Payment />} />
         <Route
           path="book-appointment/payment-success"
           element={<SuccessPayment />}
         />
-
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="book-appointment/:name" element={<BookAppointment />} />
         <Route path="doctor-details/:id" element={<DoctorDetails />} />
+        <Route
+          path="eid-greetings"
+          element={
+            <div className="pt-24 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+              <EidGreetingSection />
+            </div>
+          }
+        />
       </Route>
 
       {/* Authentication Routes */}
@@ -126,6 +137,10 @@ const Router = () => {
           element={<PharmacistOverview />}
         />
         <Route
+          path="/dashboard/pharmacist/manage-orders"
+          element={<ManageOrders />}
+        />
+        <Route
           path="/dashboard/pharmacist/manage-medicines"
           element={<ManageMedicines />}
         />
@@ -138,12 +153,28 @@ const Router = () => {
 
         {/* Receptionist Routes */}
         <Route
+          path="/dashboard/receptionist-overview"
+          element={<ReceptionistOverview />}
+        />
+        <Route
+          path="/dashboard/receptionist/manage-beds"
+          element={<ManageBeds />}
+        />
+        <Route
+          path="/dashboard/receptionist/manage-bedBooking"
+          element={<ManageBedBooking />}
+        />
+        <Route
           path="/dashboard/manage-appointments"
           element={<ManageAppointments />}
         />
 
         {/* Patient Routes */}
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
+        <Route
+          path="/dashboard/patient/request-form"
+          element={<RoleRequest />}
+        />
       </Route>
 
       {/* Catch-all for 404 Error Page */}
