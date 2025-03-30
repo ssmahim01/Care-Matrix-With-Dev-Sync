@@ -11,6 +11,7 @@ const useMyAppointments = () => {
     queryKey: "appointments",
     queryFn: async()=>{
         const {data} = await axiosSecure.get(`/appointments/patients/${user?.email}`)
+        console.log(data);
         return data;
     }
 
