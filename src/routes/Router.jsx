@@ -38,6 +38,7 @@ import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/Receptioni
 import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
 import EidGreetingSection from "@/pages/Home/EidGreetingSection";
+import MyAppointments from "@/pages/DashboardPages/User/MyAppointments/MyAppointments";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -175,6 +176,7 @@ const Router = () => {
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
         />
+        <Route path="/dashboard/patient/appointments" element={<MyAppointments />} />
       </Route>
 
       {/* Catch-all for 404 Error Page */}

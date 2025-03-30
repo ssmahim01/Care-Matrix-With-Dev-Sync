@@ -46,7 +46,7 @@ const ManageAppointments = () => {
         });
     }
 
-    console.log("doctors from manage appointment ", doctors);
+    // console.log("doctors from manage appointment ", doctors);
     console.log("appointments from manage appointment ", appointments);
 
     // const handleConfirmAppointment = (_id) => {
