@@ -7,6 +7,7 @@ import {
   Contact,
   CreditCard,
   FileSpreadsheet,
+  History,
   Home,
   Hospital,
   LayoutDashboard,
@@ -228,7 +229,7 @@ export function NavMain() {
             >
               <Sparkles className="text-base" />
               <span className={`${state === "collapsed" && "md:hidden"}`}>
-                Upgrade to Pro
+                Upgrade Role
               </span>
             </NavLink>
 
@@ -241,6 +242,18 @@ export function NavMain() {
               <ClipboardPlus className="text-base" />
               <span className={`${state === "collapsed" && "md:hidden"}`}>
                 My Appointments
+              </span>
+            </NavLink>
+
+            <NavLink
+              to="/dashboard/patient/request-history"
+              className={
+                "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+              }
+            >
+              <History className="text-base" />
+              <span className={`${state === "collapsed" && "md:hidden"}`}>
+                Request History
               </span>
             </NavLink>
             {/* <NavLink to="/dashboard/pharmacist/manage-banner">
