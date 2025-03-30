@@ -38,11 +38,12 @@ import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/Receptioni
 import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
 import EidGreetingSection from "@/pages/Home/EidGreetingSection";
+import RequestHistory from "@/pages/Patient/RequestHistory/RequestHistory";
 
 const Router = () => {
   const dispatch = useDispatch();
   const user = useAuthUser();
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -174,6 +175,10 @@ const Router = () => {
         <Route
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
+        />
+        <Route
+          path="/dashboard/patient/request-history"
+          element={<RequestHistory />}
         />
       </Route>
 

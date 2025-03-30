@@ -115,10 +115,124 @@ const Navbar = () => {
                   isMenuOpen
                     ? "translate-x-0 opacity-100 z-20"
                     : "translate-x-[200px] opacity-0 z-[-1]"
-                } lg:hidden bg-[#e2ebee] py-4 text-center absolute top-[68px] md:top-[69px] right-0 w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
+                } lg:hidden bg-[#e2ebee] p-4 absolute top-[61px] md:top-[63px] right-0 w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
               >
                 <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
                   {routes}
+
+                  <li
+                    className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
+                    onClick={() => setIsOpen(!isOpen)}
+                  >
+                    <p
+                      className={`flex gap-2 items-center ${
+                        isOpen ? "text-[#3B9DF8]" : ""
+                      }`}
+                    >
+                      <FaPager />
+                      <span className="font-bold">Pages</span>
+                    </p>
+                    <MdKeyboardArrowDown
+                      className={`text-[1.5rem] text-[#424242] transition-all duration-500 ${
+                        isOpen
+                          ? "rotate-180 text-[#3B9DF8]"
+                          : "group-hover:text-[#3B9DF8]"
+                      }`}
+                    />
+                    {isOpen && (
+                      <article className="p-6 bg-[#e2ebee] rounded-b-lg w-full absolute top-[38px] z-30 transition-all duration-300 overflow-y-scroll">
+                        <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+                          {/* Left Column */}
+                          <ul className="flex flex-col gap-4 text-gray-800">
+                            <NavLink
+                              to="/contact-us"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <FaMapMarkerAlt
+                                  size={20}
+                                  className="text-gray-800"
+                                />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Hospital Location
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Displays hospital address with interactive map
+                                  feature.
+                                </p>
+                              </div>
+                            </NavLink>
+                            <NavLink
+                              to="/doctors"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <FaUserDoctor
+                                  size={20}
+                                  className="text-gray-800"
+                                />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Our Expert Doctors
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Showcases skilled doctors with medical
+                                  expertise details.
+                                </p>
+                              </div>
+                            </NavLink>
+                          </ul>
+
+                          {/* Right Column */}
+                          <ul className="flex flex-col gap-4 text-gray-800">
+                            <NavLink
+                              to="/services"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <MdMedicalServices
+                                  size={20}
+                                  className="text-gray-800"
+                                />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Our Services
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Highlights diverse medical services for our
+                                  patient care.
+                                </p>
+                              </div>
+                            </NavLink>
+                            <NavLink
+                              to="/pharmacy"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <GiMedicines
+                                  size={20}
+                                  className="text-gray-800"
+                                />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Our Pharmacy
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Presents essential pharmacy products for
+                                  medical needs.
+                                </p>
+                              </div>
+                            </NavLink>
+                          </ul>
+                        </div>
+                      </article>
+                    )}
+                  </li>
                 </ul>
               </aside>
               <div className="flex items-center">
@@ -140,10 +254,15 @@ const Navbar = () => {
                 <ul className="items-center gap-4 text-[#1b1b1b] lg:flex hidden mr-3">
                   {routes}
                   <li
+                    ref={menuRef}
                     className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
                     onClick={() => setIsOpen(!isOpen)}
                   >
-                    <p className={`flex gap-2 items-center ${isOpen ? "text-[#3B9DF8]" : ""}`}>
+                    <p
+                      className={`flex gap-2 items-center ${
+                        isOpen ? "text-[#3B9DF8]" : ""
+                      }`}
+                    >
                       <FaPager />
                       <span className="font-bold">Pages</span>
                     </p>
@@ -155,7 +274,7 @@ const Navbar = () => {
                       }`}
                     />
                     {isOpen && (
-                      <article className="p-6 bg-white border-gray-200 rounded-lg shadow-sm w-[550px] absolute top-[40px] right-[-100px] z-30 transition-all duration-300">
+                      <article className="p-6 bg-[#f3f6f9] rounded-b-lg w-[550px] absolute top-[38px] right-[-100px] z-30 transition-all duration-300">
                         <div className="grid grid-cols-2 gap-6">
                           {/* Left Column */}
                           <ul className="flex flex-col gap-4 text-gray-800">
@@ -245,13 +364,6 @@ const Navbar = () => {
                             </NavLink>
                           </ul>
                         </div>
-                        {/* <div className="w-full rounded p-2 mt-4">
-                          <img
-                            alt="Sayman Shakil Kader"
-                            src={kader}
-                            className="rounded-lg"
-                          ></img>
-                        </div> */}
                       </article>
                     )}
                   </li>
