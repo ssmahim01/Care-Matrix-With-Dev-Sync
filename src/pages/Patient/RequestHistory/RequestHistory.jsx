@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 import { IoSearch } from "react-icons/io5";
 
 const RequestHistory = () => {
-  const [requestedData, refetch] = useRoleRequest();
+  const [requestedData, refetch, , search, setSearch] = useRoleRequest();
   const [isLoading, setIsLoading] = useState(true);
   const [requestModal, setRequestModal] = useState({});
 
@@ -105,13 +105,16 @@ const RequestHistory = () => {
         <div className="lg:w-2/6 md:w-2/5 md:mt-0 mt-4 w-11/12 md:mx-0 mx-auto relative">
           <input
             type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by role or shift..."
             className="border bg-transparent border-border py-3 pl-4 pr-[65px] outline-none w-full rounded-md"
           />
 
-          <span className="bg-gray-300 text-gray-500 absolute top-0 right-0 h-full px-5 flex items-center justify-center rounded-r-md hover:bg-gray-400 group">
+          <button className="bg-gray-300 text-gray-500 absolute top-0 right-0 h-full px-5 flex items-center justify-center rounded-r-md hover:bg-gray-400 group"
+          >
             <IoSearch className="text-[1.3rem]  group-hover:text-gray-200" />
-          </span>
+          </button>
         </div>
       </div>
 
