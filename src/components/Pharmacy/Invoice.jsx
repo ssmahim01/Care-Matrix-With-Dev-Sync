@@ -51,6 +51,7 @@ const InvoicePDF = ({ invoice = {}, user = {} }) => (
         <Text style={[styles.textBold, styles.billTo]}>Bill To</Text>
         <Text>{invoice?.customerInfo?.name || user?.displayName || "N/A"}</Text>
         <Text>{invoice?.customerInfo?.address || "N/A"}</Text>
+        <Text style={{color: 'green'}}>{invoice?.paymentStatus}</Text>
         {/* <Text>
           {invoice?.customerInfo?.district || "N/A"},{" "}
           {invoice?.customerInfo?.division || "N/A"}, Bangladesh
