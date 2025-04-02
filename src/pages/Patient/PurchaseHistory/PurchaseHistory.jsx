@@ -203,7 +203,7 @@ const PurchaseHistory = () => {
   console.log(orders);
   return (
     <div className="container mx-auto py-8 p-2">
-      {/* <h1 className="text-2xl font-bold mb-6">My Purchase History</h1> */}
+      <h1 className="text-2xl font-bold mb-6">My Purchase History</h1>
       <PurchaseHistoryTable purchaseHistory={orders} isLoading={false} />
     </div>
   );
