@@ -64,7 +64,7 @@ const Medicines = ({ medicines, isLoading }) => {
             </div>
           ))
         : // Medicines List
-          medicines.map((medicine, index) => (
+          medicines?.map((medicine, index) => (
             <Link key={index} to={`/medicine/${medicine._id}`}>
               <div className="border rounded p-4 hover:shadow-xl duration-300 group">
                 {/* Image */}

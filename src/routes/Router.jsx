@@ -39,6 +39,7 @@ import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
 import EidGreetingSection from "@/pages/Home/EidGreetingSection";
 import RequestHistory from "@/pages/Patient/RequestHistory/RequestHistory";
+import Invoice from '../components/Pharmacy/Invoice.jsx'
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -180,6 +181,7 @@ const Router = () => {
           path="/dashboard/patient/request-history"
           element={<RequestHistory />}
         />
+        <Route path="/dashboard/invoice/:invoiceId" element={<Invoice />} />
       </Route>
 
       {/* Catch-all for 404 Error Page */}

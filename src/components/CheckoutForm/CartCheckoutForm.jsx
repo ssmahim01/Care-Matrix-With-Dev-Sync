@@ -113,6 +113,8 @@ const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, r
                             .then(() => {
                                 setTimeout(() => {
                                     refetch();
+                                    navigate(`/dashboard/invoice/${paymentIntent.id}`);
+
                                 }, 3500);
 
                             })
