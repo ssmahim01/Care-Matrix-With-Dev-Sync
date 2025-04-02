@@ -1,6 +1,7 @@
 import useAppointment from '@/hooks/useAppointment';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useDoctors from '@/hooks/useDoctors';
+import { Check, MoreVertical, Trash } from 'lucide-react';
 import React from 'react';
 import { FaCheck, FaTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
@@ -80,7 +81,7 @@ const ManageAppointments = () => {
                     <tbody>
 
                         {
-                            appointments?.map((appointment, index) => <tr key={appointment._id}>
+                            appointments?.map((appointment, index) => <tr className='hover:bg-base-200' key={appointment._id}>
                                 <th>{index + 1}</th>
                                 <td>
                                     {doctors?.find(doctor => doctor._id === appointment.doctorId)?.name}
@@ -92,11 +93,16 @@ const ManageAppointments = () => {
                                 <td>{appointment.email}</td>
                                 <td>{appointment.reason}</td>
                                 <td>
-                                    <div>
-                                        {/* onClick={() => handleConfirmAppointment(appointment._id)} */}
-                                        <button className='btn btn-sm bg-green-500 text-white'><FaCheck></FaCheck></button>
-                                        <button onClick={() => handleDeleteAppointment(appointment._id)} className='btn btn-sm bg-red-500 text-white'><FaTrashAlt ></FaTrashAlt></button>
+                                    <div className="dropdown">
+                                        <div tabIndex={0} role='button' className="bg-base-200 cursor-pointer p-2 mx-0 rounded border border-border w-fit">
+                                            <MoreVertical className="cursor-pointer text-gray-700" />
+                                        </div>
+                                        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm right-12 top-0 ">
+                                            <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm' onClick={() => handleConfirmAppointment(appointment._id)} > <span><Check size={16} /></span><a>Confirm Appointment</a></div>
+                                            <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm' onClick={() => handleDeleteAppointment(appointment._id)} > <span><Trash size={16} /></span> <a>Remove</a></div>
+                                        </ul>
                                     </div>
+
                                 </td>
                             </tr>)
                         }

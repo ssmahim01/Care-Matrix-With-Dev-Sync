@@ -39,11 +39,12 @@ import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
 import EidGreetingSection from "@/pages/Home/EidGreetingSection";
 import MyAppointments from "@/pages/DashboardPages/User/MyAppointments/MyAppointments";
+import RequestHistory from "@/pages/Patient/RequestHistory/RequestHistory";
 
 const Router = () => {
   const dispatch = useDispatch();
   const user = useAuthUser();
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -166,7 +167,7 @@ const Router = () => {
           element={<ManageBedBooking />}
         />
         <Route
-          path="/dashboard/manage-appointments"
+          path="/dashboard/receptionist/manage-appointments"
           element={<ManageAppointments />}
         />
 
@@ -177,6 +178,10 @@ const Router = () => {
           element={<RoleRequest />}
         />
         <Route path="/dashboard/patient/appointments" element={<MyAppointments />} />
+        <Route
+          path="/dashboard/patient/request-history"
+          element={<RequestHistory />}
+        />
       </Route>
 
       {/* Catch-all for 404 Error Page */}
