@@ -37,12 +37,12 @@ const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, r
         if (!customerInfo.phone) {
             return toast.error("Please Enter Your Phone Number")
         }
-        if (!customerInfo.district) {
-            return toast.error("Please Select Your District")
-        }
-        if (!customerInfo.division) {
-            return toast.error("Please Select Your Division")
-        }
+        // if (!customerInfo.district) {
+        //     return toast.error("Please Select Your District")
+        // }
+        // if (!customerInfo.division) {
+        //     return toast.error("Please Select Your Division")
+        // }
         if (!customerInfo.address) {
             return toast.error("Please Enter Your Address")
         }

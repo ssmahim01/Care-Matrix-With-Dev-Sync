@@ -7,7 +7,7 @@ import {
   PDFViewer,
   Text,
   View,
-  Font
+  Font,
 } from "@react-pdf/renderer";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -15,12 +15,11 @@ import { styles } from "./invoice";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useAuthUser } from "@/redux/auth/authActions";
 
-
 // Register the custom font
 Font.register({
-    family: "NotoSansBengali",
-    src: "/fonts/NotoSansBengali-Regular.ttf", 
-  });
+  family: "NotoSansBengali",
+  src: "/fonts/NotoSansBengali-Regular.ttf",
+});
 
 const InvoicePDF = ({ invoice = {}, user = {} }) => (
   <Document pageLayout="singlePage">
@@ -50,8 +49,9 @@ const InvoicePDF = ({ invoice = {}, user = {} }) => (
       <View style={styles.spaceY}>
         <Text style={[styles.textBold, styles.billTo]}>Bill To</Text>
         <Text>{invoice?.customerInfo?.name || user?.displayName || "N/A"}</Text>
+        <Text>{invoice?.customerInfo?.phone || "N/A"}</Text>
         <Text>{invoice?.customerInfo?.address || "N/A"}</Text>
-        <Text style={{color: 'green'}}>{invoice?.paymentStatus}</Text>
+        <Text style={{ color: "green" }}>{invoice?.paymentStatus}</Text>
         {/* <Text>
           {invoice?.customerInfo?.district || "N/A"},{" "}
           {invoice?.customerInfo?.division || "N/A"}, Bangladesh
@@ -63,18 +63,30 @@ const InvoicePDF = ({ invoice = {}, user = {} }) => (
         {/* Table Header */}
         <View style={[styles.tableHeader, { flexDirection: "row" }]}>
           <Text style={[styles.td, { flex: 3 }]}>Description</Text>
-          <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>Quantity</Text>
-          <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>Unit Price</Text>
-          <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>Total</Text>
+          <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>
+            Quantity
+          </Text>
+          <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>
+            Unit Price
+          </Text>
+          <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>
+            Total
+          </Text>
         </View>
         {/* Table Rows */}
         {invoice?.orderedItems?.length > 0 ? (
           invoice.orderedItems.map((item, i) => (
             <View key={i} style={{ flexDirection: "row" }}>
               <Text style={[styles.td, { flex: 3 }]}>{item.name || "N/A"}</Text>
-              <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>{item.quantity || 0}</Text>
-              <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>Tk {item.unitPrice || 0}</Text>
-              <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>Tk {item.totalPrice || 0}</Text>
+              <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>
+                {item.quantity || 0}
+              </Text>
+              <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>
+                Tk {item.unitPrice || 0}
+              </Text>
+              <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>
+                Tk {item.totalPrice || 0}
+              </Text>
             </View>
           ))
         ) : (
@@ -95,7 +107,18 @@ const InvoicePDF = ({ invoice = {}, user = {} }) => (
               marginBottom: "8px",
             }}
           >
-            <Text>Subtotal</Text>
+            <Text>Shipping Cost</Text>
+            <Text>Tk 60</Text>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: "8px",
+            }}
+          >
+            <Text>Total</Text>
             <Text>Tk {invoice?.totalPrice || 0}</Text>
           </View>
         </View>
@@ -109,7 +132,11 @@ function Invoice() {
   const user = useAuthUser();
   const axiosSecure = useAxiosSecure();
 
-  const { data: invoice = {}, isLoading, error } = useQuery({
+  const {
+    data: invoice = {},
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["invoice", invoiceId],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/purchase/invoice/${invoiceId}`);

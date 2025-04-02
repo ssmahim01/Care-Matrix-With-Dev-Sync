@@ -19,7 +19,7 @@ import {
   Users,
 } from "lucide-react";
 import { GiMedicines } from "react-icons/gi";
-
+import historyIcon from "../assets/file.png";
 import { Collapsible } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
@@ -266,6 +266,17 @@ export function NavMain() {
               <ShoppingCart className="text-base" />
               <span className={`${state === "collapsed" && "md:hidden"}`}>
                 Manage Cart
+              </span>
+            </NavLink>
+            <NavLink
+              to="/dashboard/patient/purchase-history"
+              className={
+                "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+              }
+            >
+              <img src={historyIcon} alt="" className="w-5.5 " />
+              <span className={`${state === "collapsed" && "md:hidden"}`}>
+                Purchase History
               </span>
             </NavLink>
             {/* <NavLink to="/dashboard/pharmacist/manage-banner">
