@@ -4,8 +4,8 @@ import axios from "axios";
 const API_URL = `${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors`;
 
 // Fetch all doctors
-export const fetchDoctors = createAsyncThunk("doctors/fetchAll", async () => {
-  const response = await axios.get(API_URL);
+export const fetchDoctors = createAsyncThunk("doctors/fetchDoctors", async () => {
+  const response = await axios.get(`${import.meta.env.VITE_API_URL}/user-requests/doctors`);
   return response.data;
 });
 
@@ -29,7 +29,7 @@ export const updateDoctor = createAsyncThunk("doctors/update", async ({ id, upda
 
 // Delete doctor
 export const deleteDoctor = createAsyncThunk("doctors/delete", async (id) => {
-  await axios.delete(`${API_URL}/${id}`);
+  await axios.delete(`${import.meta.env.VITE_API_URL}/user-requests/delete-doctor/${id}`);
   return id;
 });
 

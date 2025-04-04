@@ -19,7 +19,7 @@ import {
   Users,
 } from "lucide-react";
 import { GiMedicines } from "react-icons/gi";
-
+import historyIcon from "../assets/file.png";
 import { Collapsible } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
@@ -32,7 +32,8 @@ import { NavLink } from "react-router";
 import { FaUserDoctor } from "react-icons/fa6";
 import { ShoppingBag } from "lucide-react";
 import useRole from "@/hooks/useRole";
-import { FaHistory, FaTruck } from "react-icons/fa";
+import { FaHistory, FaShoppingCart, FaTruck } from "react-icons/fa";
+import { ShoppingCart } from "lucide-react";
 
 // export function NavMain() {
 //   const administrator = true;
@@ -256,6 +257,28 @@ export function NavMain() {
                 Request History
               </span>
             </NavLink>
+            <NavLink
+              to="/dashboard/patient/manage-cart"
+              className={
+                "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+              }
+            >
+              <ShoppingCart className="text-base" />
+              <span className={`${state === "collapsed" && "md:hidden"}`}>
+                Manage Cart
+              </span>
+            </NavLink>
+            <NavLink
+              to="/dashboard/patient/purchase-history"
+              className={
+                "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+              }
+            >
+              <img src={historyIcon} alt="" className="w-5.5 " />
+              <span className={`${state === "collapsed" && "md:hidden"}`}>
+                Purchase History
+              </span>
+            </NavLink>
             {/* <NavLink to="/dashboard/pharmacist/manage-banner">
               <h3 className="flex gap-2 items-center">
                 <TicketSlash className="text-base" />
@@ -295,6 +318,11 @@ export function NavMain() {
             <NavLink to="/dashboard/receptionist/manage-bedBooking">
               <h3 className="flex gap-2 items-center">
                 <LucideBedSingle className="text-base" /> Manage Bed Booking
+              </h3>
+            </NavLink>
+            <NavLink to="/dashboard/receptionist/manage-appointments">
+              <h3 className="flex gap-2 items-center">
+              <ClipboardPlus className="text-base" /> Manage Appointments
               </h3>
             </NavLink>
             <div className="divider"></div>

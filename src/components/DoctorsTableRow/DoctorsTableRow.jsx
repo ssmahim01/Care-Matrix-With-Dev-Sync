@@ -138,31 +138,30 @@ const DoctorsTableRow = ({
       <tr
         className={`${
           index % 2 === 0 ? "bg-white" : "bg-gray-50"
-        } hover:shadow-lg hover:bg-gray-200 transition duration-200 text-gray-700 font-semibold`}
+        } hover:shadow-lg hover:bg-gray-100 transition duration-200 text-gray-700 font-semibold border border-gray-200`}
       >
         <th>{index + 1}</th>
         <td>
           <img
             className="w-14 h-12 rounded-lg object-cover"
-            src={doctor?.image}
-            alt={doctor?.name}
+            src={doctor?.userPhoto}
+            alt={doctor?.userName}
           />
         </td>
-        <td>{doctor?.name}</td>
-        <td>{doctor?.title}</td>
-        <td>{doctor?.experience}</td>
-        <td>{doctor?.consultation_fee}</td>
+        <td>{doctor?.userName}</td>
+        <td>{doctor?.userEmail}</td>
+        <td>{doctor?.contactNumber}</td>
+        <td>{doctor?.requestedRole}</td>
+        <td>{doctor?.shift}</td>
         <td>
           <p
             className={`w-full ${
-              doctor?.available_days && doctor?.available_days.length > 0
-                ? "badge badge-success text-white"
-                : "badge badge-error text-white"
-            }`}
+              doctor?.status === "Pending"
+                && "badge bg-amber-500 text-white"
+            } ${doctor?.status === "Cancel" && "badge badge-error text-white"} ${doctor?.status === "Success" && "badge badge-success text-white"}`}
           >
-            {doctor?.available_days && doctor?.available_days.length > 0
-              ? "Available"
-              : "N/A"}
+            {doctor?.status === "Pending" && "Pending" 
+              || doctor?.status === "Cancel" && "Cancelled" || doctor?.status === "Assign" && "Assigned"}
           </p>
         </td>
         <td className="lg:py-4 py-10">

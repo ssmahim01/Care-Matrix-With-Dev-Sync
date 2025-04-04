@@ -10,8 +10,8 @@ import axios from "axios";
 
 const DoctorsManagement = () => {
   const dispatch = useDispatch();
-  const { doctors, status } = useSelector((state) => state.doctors);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const { doctors, status } = useSelector((state) => state.doctors);
   const axiosPublic = useAxiosPublic();
 
   const [form, setForm] = useState({
@@ -478,14 +478,15 @@ const DoctorsManagement = () => {
       <div className="rounded-sm overflow-x-auto w-full">
         <table className="table border border-gray-200 border-collapse">
           <thead>
-            <tr className="bg-gray-100 *:text-gray-800 *:font-bold">
+            <tr className="bg-gray-50 border border-gray-200 *:text-gray-800 *:font-semibold">
               <th className="p-4">No.</th>
               <th className="p-4">Image</th>
               <th className="p-4">Name</th>
-              <th className="p-4">Specialty</th>
-              <th className="p-4">Experience</th>
-              <th className="p-4">Consultation Fee</th>
-              <th className="p-4">Availability</th>
+              <th className="p-4">Email</th>
+              <th className="p-4">Contact Number</th>
+              <th className="p-4">Role</th>
+              <th className="p-4">Shift</th>
+              <th className="p-4">Status</th>
               <th className="p-4">Actions</th>
             </tr>
           </thead>
