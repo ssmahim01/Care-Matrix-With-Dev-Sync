@@ -156,14 +156,6 @@ const AdministratorOverview = () => {
           <li>🟢 Hospital earnings updated</li>
         </ul>
       </div>
-      <div className="mt-6 aspect-video rounded-xl bg-muted/50">
-        <img
-          src="/kader.jpg"
-          className="w-full lg:min-h-screen md:min-h-[420px] min-h-[320px]"
-          alt="Image of Obaydul Kader"
-          referrerPolicy="no-referrer"
-        />
-      </div>
     </div>
   );
 };
