@@ -38,6 +38,7 @@ import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/Receptioni
 import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
 import EidGreetingSection from "@/pages/Home/EidGreetingSection";
+import MyAppointments from "@/pages/DashboardPages/User/MyAppointments/MyAppointments";
 import RequestHistory from "@/pages/Patient/RequestHistory/RequestHistory";
 import Invoice from "../components/Pharmacy/Invoice.jsx";
 import PurchaseHistory from "@/pages/Patient/PurchaseHistory/PurchaseHistory";
@@ -168,7 +169,7 @@ const Router = () => {
           element={<ManageBedBooking />}
         />
         <Route
-          path="/dashboard/manage-appointments"
+          path="/dashboard/receptionist/manage-appointments"
           element={<ManageAppointments />}
         />
 
@@ -178,6 +179,7 @@ const Router = () => {
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
         />
+        <Route path="/dashboard/patient/appointments" element={<MyAppointments />} />
         <Route
           path="/dashboard/patient/request-history"
           element={<RequestHistory />}

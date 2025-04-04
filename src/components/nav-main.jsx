@@ -320,6 +320,11 @@ export function NavMain() {
                 <LucideBedSingle className="text-base" /> Manage Bed Booking
               </h3>
             </NavLink>
+            <NavLink to="/dashboard/receptionist/manage-appointments">
+              <h3 className="flex gap-2 items-center">
+              <ClipboardPlus className="text-base" /> Manage Appointments
+              </h3>
+            </NavLink>
             <div className="divider"></div>
           </>
         )}
