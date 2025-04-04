@@ -267,7 +267,7 @@ const MedicineDetails = () => {
           {
             checkout ?
               // <Button>Proceed to Checkout <FaShoppingCart></FaShoppingCart> </Button>
-              <div className="flex justify-center items-center gap-6">
+              <div className="flex flex-col-reverse md:flex-row justify-center items-center md:gap-6">
 
                 <Link to={"/pharmacy"} className="cursor-pointer w-full px-6 py-3 bg-[#184b5599] text-white rounded-md hover:bg-[#0FABCA]/90 mt-4">
                   Continue Shopping
