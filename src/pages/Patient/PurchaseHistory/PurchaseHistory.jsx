@@ -19,7 +19,10 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
     <TableCaption>Your Purchase History</TableCaption>
     <TableHeader>
       <TableRow className={"bg-base-200 hover:bg-base-200"}>
-        <TableHead>Order ID</TableHead>
+        <TableHead className={"mt-1 text-xs flex flex-col gap-1"}>
+          <span>Order ID</span>
+          <span>Transition ID</span>
+        </TableHead>
         <TableHead>
           Medicines <sub>(qty)</sub>
         </TableHead>
@@ -54,7 +57,12 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
       ) : (
         purchaseHistory?.map((order, idx) => (
           <TableRow key={idx}>
-            <TableCell className="font-medium">{order?._id}</TableCell>
+            <TableCell>
+              <div className={"mt-1 text-xs flex flex-col font-medium gap-1.5"}>
+                <span>{order?._id}</span>
+                <span>{order?.transactionId}</span>
+              </div>
+            </TableCell>
             <TableCell>
               <div
                 className={`${
@@ -135,8 +143,11 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
               </div> */}
             </TableCell>
             <TableCell>
-              <Link to={`/dashboard/invoice/${order.transactionId}`} className="flex justify-end items-center">
-                <FaFileInvoice className="text-xl hover:text-blue-400"/>
+              <Link
+                to={`/dashboard/invoice/${order.transactionId}`}
+                className="flex justify-end items-center"
+              >
+                <FaFileInvoice className="text-xl hover:text-blue-400" />
               </Link>
             </TableCell>
           </TableRow>

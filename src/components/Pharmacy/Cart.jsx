@@ -282,7 +282,7 @@ const Cart = () => {
                     </div>
                   </div>
                   <span className="font-medium">
-                    ৳ {item.price * item.quantity}
+                    ৳ {(item.price * item.quantity).toFixed(2)}
                   </span>
                 </motion.div>
               ))
