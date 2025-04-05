@@ -7,8 +7,9 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ImageWithMagnifier from "@/shared/Section/ImageWithMagnifier";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import ProductDetails from "./MedicineDetails/ProductDetails";
 
 export default function MedicineDetails() {
   const { id } = useParams();
@@ -93,7 +94,7 @@ export default function MedicineDetails() {
   return (
     <div className="pt-24 pb-12 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-        {/* Left Column - Image */}
+        {/* Left Column - Image & Product Details */}
         <div className="space-y-6">
           <div className="relative rounded-lg overflow-hidden bg-white">
             <div className="absolute top-4 left-4 z-10 space-y-2">
@@ -111,46 +112,43 @@ export default function MedicineDetails() {
             <ImageWithMagnifier imageURL={medicine?.imageURL || ""} />
           </div>
           {/* Product Details */}
-          <Card className={"border shadow-none border-[#e5e7eb]"}>
-            <CardContent className="p-4">
-              <h3 className="font-medium text-lg mb-2">Product Details</h3>
-              <div className="grid grid-cols-2 gap-y-2 text-sm">
-                <div className="text-muted-foreground">Category</div>
-                <div>{medicine?.category || "N/A"}</div>
-
-                <div className="text-muted-foreground">Dosage Form</div>
-                <div>{medicine?.dosageForm || "N/A"}</div>
-
-                <div className="text-muted-foreground">Batch Number</div>
-                <div>{medicine?.batchNumber || "N/A"}</div>
-
-                <div className="text-muted-foreground">Manufacture Date</div>
-                <div>{formatDate(medicine?.manufactureDate)}</div>
-
-                <div className="text-muted-foreground">Expiry Date</div>
-                <div>{formatDate(medicine?.expiryDate)}</div>
-
-                <div className="text-muted-foreground">Storage</div>
-                <div>{medicine?.storageConditions || "N/A"}</div>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="hidden lg:flex">
+            <ProductDetails
+              dosageForm={medicine?.dosageForm}
+              category={medicine?.category}
+              batchNumber={medicine?.batchNumber}
+              manufactureDate={formatDate(medicine?.manufactureDate)}
+              expiryDate={formatDate(medicine?.expiryDate)}
+              storageConditions={medicine?.storageConditions}
+            />
+          </div>
         </div>
 
-        {/* Right Column - Details */}
+        {/* Right Column - Main Details */}
         <div className="space-y-6">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">
               {medicine?.brandName || "N/A"}
             </h1>
-            <p className="text-lg text-muted-foreground mt-1">
+            <p className="text-lg text-[#7F7F88] mt-1">
               {medicine?.genericName || ""} • {medicine?.strength || ""}
             </p>
 
             <div className="flex items-center gap-2 mt-2">
               <Badge
                 variant="outline"
-                className="bg-emerald-50 text-emerald-700 border-emerald-200"
+                className={`
+                  border
+                  ${
+                    medicine?.availabilityStatus === "In Stock"
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                      : medicine?.availabilityStatus === "Limited Stock"
+                      ? "bg-yellow-50 text-yellow-700 border-yellow-200"
+                      : medicine?.availabilityStatus === "Out Of Stock"
+                      ? "bg-rose-50 text-rose-700 border-rose-200"
+                      : "bg-gray-50 text-gray-700 border-gray-200"
+                  }
+                `}
               >
                 {medicine?.availabilityStatus || "N/A"}
               </Badge>
@@ -168,16 +166,16 @@ export default function MedicineDetails() {
                   : medicine?.price?.amount || "0"}
               </span>
               {medicine?.price?.discount && (
-                <span className="text-lg text-muted-foreground line-through">
+                <span className="text-lg text-[#7F7F88] line-through">
                   {medicine?.price?.currency} {medicine?.price?.amount}
                 </span>
               )}
             </div>
 
             {medicine?.price?.discount && (
-              <div className="bg-muted p-4 rounded-lg">
+              <div className="bg-[#F4F4F5] p-4 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
+                  <Clock className="h-4 w-4 text-[#7F7F88]" />
                   <span className="text-sm font-medium">Offer ends in:</span>
                 </div>
                 <div className="grid grid-cols-4 gap-2">
@@ -185,25 +183,25 @@ export default function MedicineDetails() {
                     <div className="text-2xl font-bold">
                       {formatNumber(timeLeft.days)}
                     </div>
-                    <div className="text-xs text-muted-foreground">Days</div>
+                    <div className="text-xs text-[#7F7F88]">Days</div>
                   </div>
                   <div className="bg-background rounded p-2 text-center">
                     <div className="text-2xl font-bold">
                       {formatNumber(timeLeft.hours)}
                     </div>
-                    <div className="text-xs text-muted-foreground">Hours</div>
+                    <div className="text-xs text-[#7F7F88]">Hours</div>
                   </div>
                   <div className="bg-background rounded p-2 text-center">
                     <div className="text-2xl font-bold">
                       {formatNumber(timeLeft.minutes)}
                     </div>
-                    <div className="text-xs text-muted-foreground">Minutes</div>
+                    <div className="text-xs text-[#7F7F88]">Minutes</div>
                   </div>
                   <div className="bg-background rounded p-2 text-center">
                     <div className="text-2xl font-bold">
                       {formatNumber(timeLeft.seconds)}
                     </div>
-                    <div className="text-xs text-muted-foreground">Seconds</div>
+                    <div className="text-xs text-[#7F7F88]">Seconds</div>
                   </div>
                 </div>
               </div>
@@ -212,14 +210,20 @@ export default function MedicineDetails() {
 
           <div className="space-y-2">
             <h3 className="font-medium">Description</h3>
-            <p className="text-muted-foreground">
-              {medicine?.description || "No description available"}
+            <p className="text-[#7F7F88] whitespace-pre-line">
+              {medicine?.description
+                ? medicine?.description
+                : "No description available for this medicine \n \n \n"}
             </p>
           </div>
 
           <Separator />
 
-          <div className="space-y-4">
+          <div
+            className={`${
+              !isAddedToCart ? "flex items-center gap-4" : "space-y-4"
+            }`}
+          >
             <div className="flex items-center gap-4">
               <div className="flex items-center border rounded-md">
                 <Button
@@ -253,22 +257,50 @@ export default function MedicineDetails() {
               </Button>
             </div>
 
-            {!isAddedToCart ? (
-              <Button className="w-full" size="lg" onClick={handleAddToCart}>
-                <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-              </Button>
-            ) : (
-              <div className="grid grid-cols-2 gap-4">
-                <Button variant="outline" size="lg">
-                  Continue Shopping
+            <div className="w-full">
+              {!isAddedToCart ? (
+                <Button
+                  size="lg"
+                  className="w-full cursor-pointer"
+                  disabled={medicine?.availabilityStatus === "Out Of Stock"}
+                  onClick={handleAddToCart}
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4" />{" "}
+                  {medicine?.availabilityStatus === "Out Of Stock"
+                    ? "Medicine Out Of Stock"
+                    : "Add to Cart"}
                 </Button>
-                <Button size="lg">
-                  <ShoppingCart className="mr-2 h-4 w-4" /> Checkout
-                </Button>
-              </div>
-            )}
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  <Link to={"/pharmacy"} className="w-full">
+                    <Button
+                      className={"cursor-pointer w-full"}
+                      variant="outline"
+                      size="lg"
+                    >
+                      Continue Shopping
+                    </Button>
+                  </Link>
+                  <Link to={"/patient/manage-cart"} className="w-full">
+                    <Button className={"cursor-pointer w-full"} size="lg">
+                      <ShoppingCart className="mr-2 h-4 w-4" /> Checkout
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
-
+          {/* Product Details For Mobile & Tablet */}
+          <div className="lg:hidden flex">
+            <ProductDetails
+              dosageForm={medicine?.dosageForm}
+              category={medicine?.category}
+              batchNumber={medicine?.batchNumber}
+              manufactureDate={formatDate(medicine?.manufactureDate)}
+              expiryDate={formatDate(medicine?.expiryDate)}
+              storageConditions={medicine?.storageConditions}
+            />
+          </div>
           <Tabs defaultValue="manufacturer">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="manufacturer">Manufacturer</TabsTrigger>
@@ -282,7 +314,7 @@ export default function MedicineDetails() {
                 <h3 className="font-medium">
                   {medicine?.manufacturer?.name || "N/A"}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[#7F7F88]">
                   {medicine?.manufacturer?.location || "N/A"}
                 </p>
                 <p className="text-sm">
@@ -298,7 +330,7 @@ export default function MedicineDetails() {
                 <h3 className="font-medium">
                   {medicine?.supplier?.name || "N/A"}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[#7F7F88]">
                   {medicine?.supplier?.location || "N/A"}
                 </p>
                 <p className="text-sm">
