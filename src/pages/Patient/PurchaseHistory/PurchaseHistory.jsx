@@ -147,7 +147,7 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
                   : "N/A"}
               </span>
             </TableCell>
-            <TableCell>
+            <TableCell className="max-w-40 overflow-x-auto">
               <div>{order?.customerInfo?.address}</div>
               <div>
                 {order?.customerInfo?.district && order?.customerInfo?.division
