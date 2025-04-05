@@ -89,6 +89,10 @@ const RequestHistory = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const pendingNote = <>
+  <p className="text-warning font-semibold text-base">Waiting for the administrator note...</p>
+  </>
+
   return (
     <div className="lg:w-full md:w-[95%] w-11/12 mx-auto">
       <div className="flex md:flex-row flex-col flex-wrap justify-between items-center">
@@ -279,6 +283,13 @@ const RequestHistory = () => {
                   <span className="text-gray-700 font-semibold">
                     {requestModal?.address}
                   </span>
+                </h4>
+
+                <h4 className="text-lg text-gray-900 font-bold">
+                  Administrator Note:{" "}
+                  <p className="text-gray-700 font-semibold">
+                    {requestModal?.adminNotes === "" ? pendingNote : requestModal?.adminNotes}
+                  </p>
                 </h4>
 
                 <h4 className="text-lg text-gray-900 font-bold">
