@@ -29,7 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { districts, divisions } from "@/lib/address";
+import { districts, divisionDistricts, divisions } from "@/lib/address";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -56,6 +56,9 @@ const Cart = () => {
   const [division, setDivision] = useState("");
   const [address, setAddress] = useState("");
 
+  // Get filtered districts based on selected division
+  const filteredDistricts = division ? divisionDistricts[division] : districts;
+
   const customerInfo = {
     name: name || user?.displayName,
     email: email || user?.email,
@@ -64,12 +67,6 @@ const Cart = () => {
     division,
     address,
   };
-
-  // const handleCheck = () => {
-  //     console.log(customerInfo);
-  // }
-
-  // console.log(user);
 
   useEffect(() => {
     const calculatedSubtotal = cart.reduce(
@@ -358,7 +355,13 @@ const Cart = () => {
             {/* Division */}
             <div className="space-y-2">
               <Label htmlFor="division">Division</Label>
-              <Select onValueChange={setDivision} defaultValue={division}>
+              <Select
+                onValueChange={(value) => {
+                  setDivision(value);
+                  setDistrict(""); // Reset district when division changes
+                }}
+                value={division}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Division" />
                 </SelectTrigger>
@@ -374,12 +377,20 @@ const Cart = () => {
             {/* District */}
             <div className="space-y-2">
               <Label htmlFor="district">District</Label>
-              <Select onValueChange={setDistrict} defaultValue={district}>
+              <Select
+                onValueChange={setDistrict}
+                value={district}
+                disabled={!division} // Disable until division is selected
+              >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select District" />
+                  <SelectValue
+                    placeholder={
+                      division ? "Select District" : "Select Division First"
+                    }
+                  />
                 </SelectTrigger>
-                <SelectContent className={"max-h-80 overflow-y-auto"}>
-                  {districts.map((district) => (
+                <SelectContent className="max-h-80 overflow-y-auto">
+                  {filteredDistricts.map((district) => (
                     <SelectItem key={district} value={district}>
                       {district}
                     </SelectItem>
