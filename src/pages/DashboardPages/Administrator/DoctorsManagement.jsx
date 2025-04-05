@@ -1,6 +1,10 @@
 import DoctorsTableRow from "@/components/DoctorsTableRow/DoctorsTableRow";
 import FileInput from "@/components/FileInput/FileInput";
-import { addDoctor, fetchDoctors } from "@/redux/doctors/doctorSlice";
+import {
+  addDoctor,
+  fetchDoctors,
+  updateDoctor,
+} from "@/redux/doctors/doctorSlice";
 import {
   BadgePlus,
   BriefcaseMedical,
@@ -52,16 +56,27 @@ const DoctorsManagement = () => {
     resolver: zodResolver(FormSchema),
   });
 
-  function onSubmit(data) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
+  const onSubmit = async (data) => {
+    const id = noteModal?._id;
+    if (!id) {
+      toast.error("Doctor ID is missing");
+      return;
+    }
+
+    try {
+      const result = await dispatch(
+        updateDoctor({ id, noteOfAdministrator: data.note })
+      ).unwrap();
+     if(result){
+      toast.success("Note added successfully");
+      form2.reset();
+      document.getElementById("note_modal_01").close();
+      dispatch(fetchDoctors());
+     }
+    } catch (error) {
+      toast.error(error.message || "Failed to add note");
+    }
+  };
 
   const [form, setForm] = useState({
     name: "",

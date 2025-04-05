@@ -22,8 +22,8 @@ export const addDoctor = createAsyncThunk("doctors/add", async (doctorData) => {
 });
 
 // Update doctor
-export const updateDoctor = createAsyncThunk("doctors/update", async ({ id, updatedData }) => {
-  const response = await axios.put(`${API_URL}/${id}`, updatedData);
+export const updateDoctor = createAsyncThunk("doctors/update", async ({ id, noteOfAdministrator }) => {
+  const response = await axios.patch(`${import.meta.env.VITE_API_URL}/user-requests/update-note/${id}`, {noteOfAdministrator});
   return response.data;
 });
 

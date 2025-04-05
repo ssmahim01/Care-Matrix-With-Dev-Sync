@@ -164,7 +164,8 @@ const DoctorsTableRow = ({
             </DropdownMenuItem>
 
             <DropdownMenuItem
-            className="cursor-pointer flex gap-2 items-center"
+            className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
+            disabled={doctor?.adminNotes.length > 0}
             onClick={() => handleAddNote(doctor)}
             >
               <NotebookPen className="w-4 h-4" />
