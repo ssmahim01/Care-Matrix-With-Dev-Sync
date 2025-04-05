@@ -42,6 +42,7 @@ import MyAppointments from "@/pages/DashboardPages/User/MyAppointments/MyAppoint
 import RequestHistory from "@/pages/Patient/RequestHistory/RequestHistory";
 import Invoice from "../components/Pharmacy/Invoice.jsx";
 import PurchaseHistory from "@/pages/Patient/PurchaseHistory/PurchaseHistory";
+import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyFavoriteDoctors";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -180,6 +181,7 @@ const Router = () => {
           element={<RoleRequest />}
         />
         <Route path="/dashboard/patient/appointments" element={<MyAppointments />} />
+        <Route path="/dashboard/patient/favorite-doctors" element={<MyFavoriteDoctors />} />
         <Route
           path="/dashboard/patient/request-history"
           element={<RequestHistory />}

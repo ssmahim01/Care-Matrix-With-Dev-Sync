@@ -247,6 +247,18 @@ export function NavMain() {
             </NavLink>
 
             <NavLink
+              to="/dashboard/patient/favorite-doctors"
+              className={
+                "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+              }
+            >
+              <ClipboardPlus className="text-base" />
+              <span className={`${state === "collapsed" && "md:hidden"}`}>
+                My Favorite Doctors
+              </span>
+            </NavLink>
+
+            <NavLink
               to="/dashboard/patient/request-history"
               className={
                 "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"

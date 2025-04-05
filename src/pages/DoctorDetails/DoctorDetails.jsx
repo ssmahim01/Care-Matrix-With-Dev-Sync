@@ -4,21 +4,46 @@ import { Key, LucideCalendar, LucideMessageCircle, LucideUserRoundCog } from 'lu
 import React, { useEffect, useState } from 'react';
 import { BiLike } from 'react-icons/bi';
 import { FaRegHeart, FaUser } from 'react-icons/fa';
-import { IoLocation, IoLocationOutline } from 'react-icons/io5';
 import { MdOutlinePriceChange } from 'react-icons/md';
 import { Link, useLocation } from 'react-router';
 import { Rating } from '@smastrom/react-rating'
 
 import '@smastrom/react-rating/style.css'
+import { useSelector } from 'react-redux';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
 
 const DoctorDetails = () => {
-
-   const [doctors] = useDoctors();
+    const { user } = useSelector((state) => state.auth);
+    const [doctors] = useDoctors();
+    const axiosSecure = useAxiosSecure()
 
     const location = useLocation();
 
     const doctorInfo = doctors.find(doctor => doctor._id === location.state)
 
+    const handleAddToFavorite = () => {
+        console.log("Add to favorite doctor ", doctorInfo.name, user?.email);
+        const info = {
+            email: user?.email,
+            doctorInfo: doctorInfo
+        }
+
+        axiosSecure.post('/favorite-doctors', info)
+        .then(res => {
+            console.log(res);
+            if(res?.data?.insertedId){
+                toast.success(`${doctorInfo?.name} is added to your favorite list!`)
+                console.log(res?.data);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            toast.error("Something went wrong! Please try again.")
+        })
+        
+        
+    }
 
     return (
         <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-24'>
@@ -31,15 +56,15 @@ const DoctorDetails = () => {
                         <h3 className='font-semibold text-xl'>{doctorInfo.name}</h3>
                         <h3 className='text-[#0E82FD]'>{doctorInfo.title}</h3>
                         <div>
-                       
-                        <Rating className='text-center mx-auto'
-                            style={{ maxWidth: 90, margin: 0, marginLeft:0,  marginRight: '4px' }}
-                            value={doctorInfo.rating}
-                            readOnly
-                        />
+
+                            <Rating className='text-center mx-auto'
+                                style={{ maxWidth: 90, margin: 0, marginLeft: 0, marginRight: '4px' }}
+                                value={doctorInfo.rating}
+                                readOnly
+                            />
                         </div>
                         <div className='flex items-center gap-2 mt-1'>
-                            <button className='p-1 border-2 cursor-pointer hover:text-[#0E82FD] hover:border-[#0E82FD] text-lg rounded-md text-gray-400 bg-white border-gray-400'><FaRegHeart></FaRegHeart></button>
+                            <button onClick={handleAddToFavorite} title='Add to favorite' className='p-1 border-2 cursor-pointer hover:text-[#0E82FD] hover:border-[#0E82FD] text-lg rounded-md text-gray-400 bg-white border-gray-400'><FaRegHeart></FaRegHeart></button>
                             {/* <span>Add to favorites</span> */}
                         </div>
                     </div>
@@ -73,36 +98,36 @@ const DoctorDetails = () => {
 
                             <span>{doctorInfo.available_days.map((day, index) => <span key={index}>{day} </span>)}</span>
                         </div>
-                    <div className='flex items-center gap-2'>
-                        <LucideMessageCircle size={16}></LucideMessageCircle>
-                        <span>{doctorInfo.number_of_feedback} Feedback</span>
-                    </div>
+                        <div className='flex items-center gap-2'>
+                            <LucideMessageCircle size={16}></LucideMessageCircle>
+                            <span>{doctorInfo.number_of_feedback} Feedback</span>
+                        </div>
 
-                    <div className='flex items-center gap-2'>
-                        <MdOutlinePriceChange size={16}></MdOutlinePriceChange>
-                        <span>{doctorInfo.consultation_fee}</span>
-                    </div>
+                        <div className='flex items-center gap-2'>
+                            <MdOutlinePriceChange size={16}></MdOutlinePriceChange>
+                            <span>{doctorInfo.consultation_fee}</span>
+                        </div>
 
-                    <div className='flex gap-2 mt-4'>
-                        <Link ><button className="btn hover:bg-[#0E82FD] hover:text-white">Add Feedback</button></Link>
-                        <Link to={`/book-appointment/${doctorInfo.name}`} state={doctorInfo._id} ><button className="btn hover:bg-[#0E82FD] hover:text-white">Book Appointment</button></Link>
-                    </div>
+                        <div className='flex gap-2 mt-4'>
+                            {/* <Link ><button className="btn hover:bg-[#0E82FD] hover:text-white">Add Feedback</button></Link> */}
+                            <Link to={`/book-appointment/${doctorInfo.name}`} state={doctorInfo._id} ><button className="btn hover:bg-[#0E82FD] hover:text-white">Book Appointment</button></Link>
+                        </div>
 
+                    </div>
+                </div>
+                {/* About  */}
+                <div className='border p-4 rounded-md'>
+                    <h3 className='text-lg font-semibold'>About "{doctorInfo.name}"</h3>
+                    <p>{doctorInfo.bio}</p>
+
+                    <h3 className='text-base font-semibold mt-4'>{doctorInfo.name}'s services</h3>
+                    <ul>
+                        {
+                            doctorInfo.services.map((service, index) => <li key={index}>{service}</li>)
+                        }
+                    </ul>
                 </div>
             </div>
-            {/* About  */}
-            <div className='border p-4 rounded-md'>
-                <h3 className='text-lg font-semibold'>About "{doctorInfo.name}"</h3>
-                <p>{doctorInfo.bio}</p>
-
-                <h3 className='text-base font-semibold mt-4'>{doctorInfo.name}'s services</h3>
-                <ul>
-                    {
-                        doctorInfo.services.map((service, index) => <li key={index}>{service}</li>)
-                    }
-                </ul>
-            </div>
-        </div>
         </div >
     );
 };
