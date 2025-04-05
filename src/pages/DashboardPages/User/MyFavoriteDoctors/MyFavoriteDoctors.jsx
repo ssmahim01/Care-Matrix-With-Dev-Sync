@@ -1,11 +1,30 @@
+import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useFavoriteDoctors from '@/hooks/useFavoriteDoctors';
 import React from 'react';
+import toast from 'react-hot-toast';
 import { BiTrashAlt } from 'react-icons/bi';
 import { FaTrashAlt } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 const MyFavoriteDoctors = () => {
     const [favoriteDoctors, refetch, isLoading] = useFavoriteDoctors()
-    console.log(favoriteDoctors);
+    const axiosSecure = useAxiosSecure();
+    const { user } = useSelector((state) => state.auth);
+
+    const handleRemove = (_id) => {
+        console.log("REmove ", _id);
+
+        axiosSecure.delete(`/favorite-doctors/${_id}`)
+            .then(res => {
+                if (res?.data?.deletedCount > 0) {
+                    toast.success("Removed successfully!")
+                    refetch();
+                }
+            })
+            .catch(err => {
+                toast.error("Something went wrong! Please try again.")
+            })
+    }
     return (
         <div>
             <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
@@ -34,7 +53,7 @@ const MyFavoriteDoctors = () => {
                                 </td>
                                 <td>{doctor.doctorInfo.rating}</td>
                                 <td>{doctor.doctorInfo.experience}</td>
-                                <td className=""  ><button className='btn tooltip text-red-700 ' data-tip="Remove from favorite list"><FaTrashAlt size={16}></FaTrashAlt></button> </td>
+                                <td><button onClick={() => handleRemove(doctor?._id)} className='btn tooltip text-red-700 ' data-tip="Remove from favorite list"><FaTrashAlt size={16}></FaTrashAlt></button> </td>
                             </tr>)
                         }
                     </tbody>
