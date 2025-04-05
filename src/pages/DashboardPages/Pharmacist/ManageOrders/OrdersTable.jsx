@@ -16,8 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import MedicinesDialog from "./MedicinesDialog";
 import { Link } from "react-router";
+import MedicinesDialog from "./MedicinesDialog";
 import { FaFileInvoice } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 
@@ -206,12 +206,12 @@ const OrdersTable = ({
                 <SelectTrigger className="cursor-pointer min-w-[115px] truncate">
                   <SelectValue>
                     {(order?.orderStatus === "Ready for Pickup" && (
-                      <span className={"py-1"}>
+                      <span className={"py-1 text-xs"}>
                         Ready for <br /> Pickup
                       </span>
                     )) ||
                       (order?.orderStatus === "Out for Delivery" && (
-                        <span className={"py-1"}>
+                        <span className={"py-1 text-xs"}>
                           Out for <br /> Delivery
                         </span>
                       )) ||
