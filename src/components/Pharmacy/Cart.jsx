@@ -1,31 +1,35 @@
-import useAxiosSecure from "@/hooks/useAxiosSecure";
-import useCart from "@/hooks/useCart";
-import React, { useState, useEffect } from "react";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-import { Button } from "../ui/button";
-import { Link } from "react-router";
-import { FaCartShopping } from "react-icons/fa6";
-import toast from "react-hot-toast";
-import Swal from "sweetalert2";
-import { useAuthUser } from "@/redux/auth/authActions";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { motion } from "framer-motion";
-import {
-  CardElement,
-  Elements,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
-import CartCheckoutForm from "../CheckoutForm/CartCheckoutForm";
+import { Label } from "@/components/ui/label";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import useCart from "@/hooks/useCart";
+import { useAuthUser } from "@/redux/auth/authActions";
+import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Input } from "../ui/input";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { FaCartShopping } from "react-icons/fa6";
+import { Link } from "react-router";
+import Swal from "sweetalert2";
 import emptyCart from "../../assets/Images/empty-cart.jpg";
+import CartCheckoutForm from "../CheckoutForm/CartCheckoutForm";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { districts, divisions } from "@/lib/address";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -182,46 +186,12 @@ const Cart = () => {
     initializePaymentIntent();
   }, [subtotal, shippingCost, axiosSecure]);
 
-  const districts = [
-    "Dhaka",
-    "Chittagong",
-    "Rajshahi",
-    "Khulna",
-    "Barisal",
-    "Sylhet",
-    "Rangpur",
-    "Mymensingh",
-    "Comilla",
-    "Narayanganj",
-    "Gazipur",
-    "Narsingdi",
-    "Tangail",
-    "Jessore",
-    "Dinajpur",
-    "Lakshmipur",
-    "Noakhali",
-  ];
-
-  const cities = [
-    "Dhaka",
-    "Chittagong",
-    "Khulna",
-    "Rajshahi",
-    "Sylhet",
-    "Barisal",
-    "Rangpur",
-    "Narayanganj",
-    "Mymensingh",
-    "Jessore",
-    "Bogra",
-    "Dinajpur",
-  ];
-
   const parcel = {
     price: subtotal + shippingCost,
     parcelType: "Medicine Purchase",
     _id: Date.now().toString(),
   };
+
   const appearance = { theme: "stripe" };
   const options = clientSecret ? { clientSecret, appearance } : null;
 
@@ -343,120 +313,95 @@ const Cart = () => {
       {/* Right Column - Checkout Form (Sticky on large devices) */}
       <div className="flex-1 md:px-8 lg:sticky lg:top-16 lg:self-start">
         <div className="space-y-6">
-          <div>
-            <label
-              htmlFor="email"
-              className="text-[1rem] font-medium text-gray-800 mb-1"
-            >
-              Name
-            </label>
-            <input
+          {/* Name */}
+          <div className="space-y-2">
+            <Label htmlFor="email">Name</Label>
+            <Input
               type="text"
               id="name"
+              readOnly
               placeholder="Enter Your Name"
               defaultValue={name || user?.displayName}
               onChange={(e) => setName(e.target.value)}
-              className={globalStyles.inputStyles}
             />
           </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="text-[1rem] font-medium text-gray-800 mb-1"
-            >
-              Email
-            </label>
-            <input
+          {/* Email */}
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
               type="email"
               id="email"
+              readOnly
               placeholder="user@gmail.com"
               defaultValue={user?.email}
               onChange={(e) => setEmail(e.target.value)}
-              className={globalStyles.inputStyles}
             />
           </div>
-          <div>
-            <label
-              htmlFor="phone"
-              className="text-[1rem] font-medium text-gray-800 mb-1"
-            >
-              Phone number
-            </label>
-            <div className="flex gap-2">
-              <select className="border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5 w-[100px]">
-                <option value="bd">🇧🇩 +880</option>
-              </select>
-              <input
+          {/* Phone Number */}
+          <div className="space-y-2">
+            <Label htmlFor="phone">Phone number</Label>
+            <div className="flex gap-2 items-center">
+              <div className="border rounded px-3 py-[5px] border-gray-200 w-[130px]">
+                <h1 value="bd">🇧🇩 +880</h1>
+              </div>
+              <Input
                 type="tel"
                 id="phone"
-                placeholder="Enter Your Phone no."
+                placeholder="Enter Your Phone Number!"
                 defaultValue={user?.mobile}
                 onChange={(e) => setPhone(e.target.value)}
-                className={globalStyles.inputStyles}
               />
             </div>
           </div>
-
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="city"
-                className="text-[1rem] font-medium text-gray-800 mb-1"
-              >
-                Division
-              </label>
-              <select
-                id="city"
-                className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
-                onChange={(e) => setDivision(e.target.value)}
-                value={division}
-              >
-                {cities.map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
+          {/* Division & District */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Division */}
+            <div className="space-y-2">
+              <Label htmlFor="division">Division</Label>
+              <Select onValueChange={setDivision} defaultValue={division}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Division" />
+                </SelectTrigger>
+                <SelectContent>
+                  {divisions.map((value) => (
+                    <SelectItem key={value} value={value}>
+                      {value}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label
-                htmlFor="district"
-                className="text-[1rem] font-medium text-gray-800 mb-1"
-              >
-                District
-              </label>
-              <select
-                id="district"
-                className="w-full border rounded px-3 py-2 border-gray-200 outline-none focus:border-[#0FABCA] mt-0.5"
-                onChange={(e) => setDistrict(e.target.value)}
-                value={district}
-              >
-                {districts.map((district) => (
-                  <option key={district} value={district}>
-                    {district}
-                  </option>
-                ))}
-              </select>
+            {/* District */}
+            <div className="space-y-2">
+              <Label htmlFor="district">District</Label>
+              <Select onValueChange={setDistrict} defaultValue={district}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select District" />
+                </SelectTrigger>
+                <SelectContent className={"max-h-80 overflow-y-auto"}>
+                  {districts.map((district) => (
+                    <SelectItem key={district} value={district}>
+                      {district}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-          </div> */}
-          <div>
-            <label
-              htmlFor="billingAddress"
-              className="text-[1rem] font-medium text-gray-800 mb-1"
-            >
-              Address
-            </label>
-            <Input
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter Your Location"
-              className={"px-3 py-5"}
-            ></Input>
           </div>
-
-          <div>
-            <label className="text-[1rem] font-medium text-gray-800 mb-1">
-              Payment method
-            </label>
+          {/* Address Input */}
+          <div className="space-y-2 mt-4">
+            <Label htmlFor="billingAddress">Address</Label>
+            <Input
+              id="billingAddress"
+              type="text"
+              onChange={(e) => setAddress(e.target.value)}
+              value={address}
+              placeholder="Enter Your Location"
+            />
+          </div>
+          {/* Payment Method */}
+          <div className="space-y-2">
+            <Label>Payment method</Label>
             {loadingClientSecret ? (
               <p className="text-gray-500">Loading payment options...</p>
             ) : clientSecret === null ? (
@@ -476,12 +421,6 @@ const Cart = () => {
               </Elements>
             )}
           </div>
-          {/* <button
-                        type="submit"
-                        className="w-full bg-[#0FABCA] text-white py-3 rounded-lg hover:bg-[#0FABCA]/90"
-                    >
-                        Pay ৳ {(subtotal + shippingCost).toFixed(2)}
-                    </button> */}
         </div>
       </div>
 
