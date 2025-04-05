@@ -47,6 +47,7 @@ const OrdersTable = ({
         </TableHead>
         <TableHead>Order Date</TableHead>
         <TableHead>Shipping Address</TableHead>
+        <TableHead />
         <TableHead>Order Status</TableHead>
         <TableHead className={"text-xs"}>
           Change
@@ -67,7 +68,7 @@ const OrdersTable = ({
       {isLoading ? (
         Array.from({ length: 8 }).map((_, i) => (
           <TableRow key={i}>
-            {Array.from({ length: 11 }).map((_, j) => (
+            {Array.from({ length: 12 }).map((_, j) => (
               <TableCell key={j}>
                 <div className="skeleton h-8 rounded w-full"></div>
               </TableCell>
@@ -77,7 +78,7 @@ const OrdersTable = ({
       ) : ordersData.length === 0 ? (
         <TableRow>
           <TableCell
-            colSpan={11}
+            colSpan={12}
             className="text-center font-medium text-gray-800 py-4 border-y"
           >
             No Orders Data Available In This Order Status
@@ -148,6 +149,7 @@ const OrdersTable = ({
                 - {order?.customerInfo?.postalCode || "N/A"}
               </div>
             </TableCell>
+            <TableCell />
             <TableCell>
               <div
                 className={`flex ${

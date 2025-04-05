@@ -30,6 +30,7 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
         <TableHead>Order Status</TableHead>
         <TableHead>Purchase Date</TableHead>
         <TableHead>Shipping Address</TableHead>
+        <TableHead />
         <TableHead>Invoice</TableHead>
       </TableRow>
     </TableHeader>
@@ -37,7 +38,7 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
       {isLoading ? (
         Array.from({ length: 5 }).map((_, i) => (
           <TableRow key={i}>
-            {Array.from({ length: 8 }).map((_, j) => (
+            {Array.from({ length: 9 }).map((_, j) => (
               <TableCell key={j}>
                 <div className="skeleton h-8 rounded w-full"></div>
               </TableCell>
@@ -47,7 +48,7 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
       ) : purchaseHistory.length === 0 ? (
         <TableRow>
           <TableCell
-            colSpan={8}
+            colSpan={9}
             className="text-center font-medium text-gray-800 py-4 border-y"
           >
             No Purchase History Available
@@ -155,6 +156,7 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
                   : "N/A"}
               </div>
             </TableCell>
+            <TableCell />
             <TableCell>
               <Link to={`/dashboard/invoice/${order.transactionId}`}>
                 <Button variant={"outline"} className={"cursor-pointer"}>
