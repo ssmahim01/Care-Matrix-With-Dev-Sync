@@ -254,7 +254,6 @@ const Navbar = () => {
                 <ul className="items-center gap-4 text-[#1b1b1b] lg:flex hidden mr-3">
                   {routes}
                   <li
-                    ref={menuRef}
                     className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
                     onClick={() => setIsOpen(!isOpen)}
                   >

@@ -3,9 +3,12 @@ import {
   // fetchSpecificDoctor,
   // updateDoctor,
 } from "@/redux/doctors/doctorSlice";
-import { Edit2, Trash2, X } from "lucide-react";
+import { BookmarkX, EllipsisVertical, NotebookPen } from "lucide-react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import { TableCell } from "../ui/table";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 // import { MdDelete } from "react-icons/md";
 // import { IoMdCloudUpload } from "react-icons/io";
 // import { useState } from "react";
@@ -15,36 +18,13 @@ const DoctorsTableRow = ({
   doctor,
   index,
   dispatch,
-  // image,
-  // setImage,
-  // previewImage,
-  // setPreviewImage,
-  // handleKeyDown,
-  // handleServiceKeyDown,
-  // removeAvailability,
-  // removeServices,
-  // availability,
-  // services,
-  // handleInputChange,
-  // handleServiceChange,
+  handleAddNote
 }) => {
   // const [doctorData, setDoctorData] = useState({});
   // const axiosPublic = useAxiosPublic();
 
   // const handleImageUpload = () => {
   //   document.getElementById("image_input").click();
-  // };
-
-  // const handleEditModal = async (doctor) => {
-  //   try {
-  //     const response = await dispatch(fetchSpecificDoctor(doctor._id));
-  //     if (response?.payload) {
-  //       setDoctorData(response?.payload);
-  //       document.getElementById("update_modal_01").showModal();
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to fetch doctor data:", error);
-  //   }
   // };
 
   // const handleFileChange = (event) => {
@@ -127,7 +107,7 @@ const DoctorsTableRow = ({
       if (result.isConfirmed) {
         const response = await dispatch(deleteDoctor(id));
         if (response) {
-          toast.success("Doctor has been deleted");
+          toast.success("Doctor has been removed");
         }
       }
     });
@@ -138,41 +118,61 @@ const DoctorsTableRow = ({
       <tr
         className={`${
           index % 2 === 0 ? "bg-white" : "bg-gray-50"
-        } hover:shadow-lg hover:bg-gray-200 transition duration-200 text-gray-700 font-semibold`}
+        } hover:shadow-lg hover:bg-gray-100 transition duration-200 text-gray-700 font-semibold border border-gray-200`}
       >
         <th>{index + 1}</th>
         <td>
           <img
-            className="w-14 h-12 rounded-lg object-cover"
-            src={doctor?.image}
-            alt={doctor?.name}
+            className="w-14 h-14 rounded-md object-cover"
+            src={doctor?.userPhoto}
+            alt={doctor?.userName}
           />
         </td>
-        <td>{doctor?.name}</td>
-        <td>{doctor?.title}</td>
-        <td>{doctor?.experience}</td>
-        <td>{doctor?.consultation_fee}</td>
+        <td>{doctor?.userName}</td>
+        <td>{doctor?.userEmail}</td>
+        <td>{doctor?.contactNumber}</td>
+        <td>{doctor?.requestedRole}</td>
+        <td>{doctor?.department}</td>
+        <td>{new Date(doctor?.requestDate).toLocaleDateString("en-UK")}</td>
+        <td>{doctor?.shift}</td>
         <td>
           <p
             className={`w-full ${
-              doctor?.available_days && doctor?.available_days.length > 0
-                ? "badge badge-success text-white"
-                : "badge badge-error text-white"
-            }`}
+              doctor?.status === "Pending"
+                && "badge bg-amber-500 text-white"
+            } ${doctor?.status === "Cancel" && "badge badge-error text-white"} ${doctor?.status === "Success" && "badge badge-success text-white"}`}
           >
-            {doctor?.available_days && doctor?.available_days.length > 0
-              ? "Available"
-              : "N/A"}
+            {doctor?.status === "Pending" && "Pending" 
+              || doctor?.status === "Cancel" && "Cancelled" || doctor?.status === "Assign" && "Assigned"}
           </p>
         </td>
         <td className="lg:py-4 py-10">
-          <button
-            onClick={() => handleDeleteDoctor(doctor?._id)}
-            className="btn btn-md inline-flex items-center gap-1 bg-rose-600 text-white rounded-none font-semibold px-4"
-          >
-            <Trash2 />
-            <span className="text-base">Remove</span>
-          </button>
+        <TableCell>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="cursor-pointer border p-2" size="icon">
+            <EllipsisVertical className="w-5 h-10" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              className="cursor-pointer disabled:cursor-not-allowed focus:text-destructive flex gap-2 items-center"
+              onClick={() => handleDeleteDoctor(doctor?._id)}
+            >
+              <BookmarkX className="w-4 h-4" />
+              <span>Remove</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+            className="cursor-pointer flex gap-2 items-center"
+            onClick={() => handleAddNote(doctor)}
+            >
+              <NotebookPen className="w-4 h-4" />
+              <span>Add Note</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </TableCell>
           {/* <button
             onClick={() => handleEditModal(doctor)}
             className="btn btn-md inline-flex items-center gap-1 bg-teal-600 text-white rounded-none font-semibold px-4"

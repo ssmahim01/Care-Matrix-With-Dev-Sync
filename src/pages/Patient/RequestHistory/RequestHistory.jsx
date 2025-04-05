@@ -15,6 +15,7 @@ import { CopyX, History } from "lucide-react";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { IoSearch } from "react-icons/io5";
+import axios from "axios";
 
 const RequestHistory = () => {
   const [requestedData, refetch, , search, setSearch] = useRoleRequest();
