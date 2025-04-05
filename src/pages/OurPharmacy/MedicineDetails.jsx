@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import { Clock, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ImageWithMagnifier from "@/shared/Section/ImageWithMagnifier";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { Clock, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import ProductDetails from "./MedicineDetails/ProductDetails";
+import ManufacturerSupplier from "./MedicineDetails/ManufacturerSupplier";
 
 export default function MedicineDetails() {
   const { id } = useParams();
@@ -44,7 +44,7 @@ export default function MedicineDetails() {
     if (!medicine?.price?.discount?.validUntil) return;
 
     const calculateTimeLeft = () => {
-      const discountDate = new Date(medicine.price.discount.validUntil);
+      const discountDate = new Date(medicine?.price?.discount?.validUntil);
       const now = new Date();
       const difference = discountDate.getTime() - now.getTime();
 
@@ -96,6 +96,7 @@ export default function MedicineDetails() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* Left Column - Image & Product Details */}
         <div className="space-y-6">
+          {/* Image */}
           <div className="relative rounded-lg overflow-hidden bg-white">
             <div className="absolute top-4 left-4 z-10 space-y-2">
               {medicine?.price?.discount && (
@@ -111,7 +112,7 @@ export default function MedicineDetails() {
             </div>
             <ImageWithMagnifier imageURL={medicine?.imageURL || ""} />
           </div>
-          {/* Product Details */}
+          {/* Product Details For lg Devices */}
           <div className="hidden lg:flex">
             <ProductDetails
               dosageForm={medicine?.dosageForm}
@@ -126,6 +127,7 @@ export default function MedicineDetails() {
 
         {/* Right Column - Main Details */}
         <div className="space-y-6">
+          {/* Medicine Name & Strength */}
           <div>
             <h1 className="text-3xl font-bold tracking-tight">
               {medicine?.brandName || "N/A"}
@@ -157,7 +159,9 @@ export default function MedicineDetails() {
 
           <Separator />
 
+          {/* Medicine Prices & Countdown */}
           <div className="space-y-4">
+            {/* Medicine Price & Discount Price */}
             <div className="flex items-baseline gap-2">
               <span className="text-3xl font-bold">
                 {medicine?.price?.currency || "N/A"}{" "}
@@ -172,6 +176,7 @@ export default function MedicineDetails() {
               )}
             </div>
 
+            {/* Discount Valid Until Countdown */}
             {medicine?.price?.discount && (
               <div className="bg-[#F4F4F5] p-4 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
@@ -208,6 +213,7 @@ export default function MedicineDetails() {
             )}
           </div>
 
+          {/* Medicine Description */}
           <div className="space-y-2">
             <h3 className="font-medium">Description</h3>
             <p className="text-[#7F7F88] whitespace-pre-line">
@@ -219,11 +225,13 @@ export default function MedicineDetails() {
 
           <Separator />
 
+          {/* Add To Cart section */}
           <div
             className={`${
               !isAddedToCart ? "flex items-center gap-4" : "space-y-4"
             }`}
           >
+            {/* Quantity Increase & Favorite */}
             <div className="flex items-center gap-4">
               <div className="flex items-center border rounded-md">
                 <Button
@@ -257,8 +265,10 @@ export default function MedicineDetails() {
               </Button>
             </div>
 
+            {/* Add To Cart */}
             <div className="w-full">
               {!isAddedToCart ? (
+                // Add To Cart Button
                 <Button
                   size="lg"
                   className="w-full cursor-pointer"
@@ -268,9 +278,10 @@ export default function MedicineDetails() {
                   <ShoppingCart className="mr-2 h-4 w-4" />{" "}
                   {medicine?.availabilityStatus === "Out Of Stock"
                     ? "Medicine Out Of Stock"
-                    : "Add to Cart"}
+                    : "Add To Cart"}
                 </Button>
               ) : (
+                // Shopping & Checkout Button
                 <div className="grid grid-cols-2 gap-4">
                   <Link to={"/pharmacy"} className="w-full">
                     <Button
@@ -290,6 +301,7 @@ export default function MedicineDetails() {
               )}
             </div>
           </div>
+
           {/* Product Details For Mobile & Tablet */}
           <div className="lg:hidden flex">
             <ProductDetails
@@ -301,44 +313,12 @@ export default function MedicineDetails() {
               storageConditions={medicine?.storageConditions}
             />
           </div>
-          <Tabs defaultValue="manufacturer">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="manufacturer">Manufacturer</TabsTrigger>
-              <TabsTrigger value="supplier">Supplier</TabsTrigger>
-            </TabsList>
-            <TabsContent
-              value="manufacturer"
-              className="p-4 border rounded-md mt-2"
-            >
-              <div className="space-y-2">
-                <h3 className="font-medium">
-                  {medicine?.manufacturer?.name || "N/A"}
-                </h3>
-                <p className="text-sm text-[#7F7F88]">
-                  {medicine?.manufacturer?.location || "N/A"}
-                </p>
-                <p className="text-sm">
-                  {medicine?.manufacturer?.contact || "N/A"}
-                </p>
-              </div>
-            </TabsContent>
-            <TabsContent
-              value="supplier"
-              className="p-4 border rounded-md mt-2"
-            >
-              <div className="space-y-2">
-                <h3 className="font-medium">
-                  {medicine?.supplier?.name || "N/A"}
-                </h3>
-                <p className="text-sm text-[#7F7F88]">
-                  {medicine?.supplier?.location || "N/A"}
-                </p>
-                <p className="text-sm">
-                  {medicine?.supplier?.contact || "N/A"}
-                </p>
-              </div>
-            </TabsContent>
-          </Tabs>
+
+          {/* Manufacturer & Supplier Tab */}
+          <ManufacturerSupplier
+            manufacturer={medicine?.manufacturer}
+            supplier={medicine?.supplier}
+          />
         </div>
       </div>
     </div>
