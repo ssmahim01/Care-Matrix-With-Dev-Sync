@@ -2,30 +2,34 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import usePhone from "@/hooks/usePhone";
 import useRole from "@/hooks/useRole";
 import { useAuthUser } from "@/redux/auth/authActions";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import {
-    Calendar,
-    CheckCircle2,
-    Clock,
-    Lock,
-    Mail,
-    Phone,
-    Shield,
-    User
+  Calendar,
+  CheckCircle2,
+  Clock,
+  Info,
+  Lock,
+  Mail,
+  Phone,
+  Shield,
+  User,
 } from "lucide-react";
 
 const Profile = () => {
   const user = useAuthUser();
+                  const phoneNumber = usePhone();
   const role = useRole();
   return (
     <div className="px-7 pb-12">
@@ -53,7 +57,7 @@ const Profile = () => {
                   <Avatar className="w-28 h-28 border-4 border-background shadow-lg">
                     <AvatarImage src={user?.photoURL} alt={user?.displayName} />
                     <AvatarFallback className="text-3xl bg-gradient-to-br from-blue-400 to-sky-600 text-white">
-                      {user?.displayName.charAt(0)}
+                      {user?.displayName.charAt(0) || "Username"}
                     </AvatarFallback>
                   </Avatar>
                 </div>
@@ -72,7 +76,10 @@ const Profile = () => {
               </div>
               <div className="flex items-center gap-3 w-full">
                 <Phone className="h-4 w-4 text-blue-600" />
-                <span className="text-sm">{"8801534567887"}</span>
+                <span className="text-sm">
+                  {phoneNumber ||
+                    "No Phone Number Available, Please Update Your Phone Number"}
+                </span>
               </div>
             </CardFooter>
           </Card>
@@ -144,6 +151,33 @@ const Profile = () => {
                 </DialogTrigger>
               </Dialog>
             </CardFooter>
+          </Card>
+        </div>
+        {/* Right Column - Progress, & Profile Details & Edit Profile */}
+        <div className="lg:col-span-2">
+          {/* Profile Complete Progress */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                <div className="flex items-center gap-3">
+                  <Info className="h-5 w-5 text-blue-500" />
+                                      <div>
+                    <h3 className="font-medium">Complete your profile</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {69}% of your profile is complete
+                    </p>
+                  </div>
+                </div>
+                <Progress value={69} className="h-2 flex-1" />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="whitespace-nowrap"
+                >
+                  Complete Profile
+                </Button>
+              </div>
+            </CardContent>
           </Card>
         </div>
       </div>
