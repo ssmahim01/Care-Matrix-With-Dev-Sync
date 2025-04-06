@@ -7,6 +7,7 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  User,
 } from "lucide-react";
 
 import {
@@ -80,18 +81,33 @@ export function NavUser() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <NavLink
-                  to="/dashboard/patient/request-form"
-                  className={({ isActive }) => 
-                    `inline-flex gap-2 items-center transition-all duration-300 ease-in-out ${isActive ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500" : ""
-                    }`}
-                >
-                <Sparkles />
-                  Upgrade to Pro
-                </NavLink>
-              </DropdownMenuItem>
+            <DropdownMenuGroup className="flex flex-col gap-2 py-2">
+              <NavLink
+                to="/dashboard/profile"
+                className={({ isActive }) =>
+                  `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
+                    isActive
+                      ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
+                      : "hover:bg-base-300/80 transition-all duration-300 ease-in-out py-[6px] rounded-md"
+                  }`
+                }
+              >
+                <User size={20} />
+                View Profile
+              </NavLink>
+              <NavLink
+                to="/dashboard/patient/request-form"
+                className={({ isActive }) =>
+                  `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
+                    isActive
+                      ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
+                      : "hover:bg-base-300/80 transition-all duration-300 ease-in-out py-[6px] rounded-md"
+                  }`
+                }
+              >
+                <Sparkles size={20} />
+                Upgrade to Pro
+              </NavLink>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>

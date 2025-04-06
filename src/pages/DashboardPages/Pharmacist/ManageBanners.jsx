@@ -90,7 +90,7 @@ function ManageBanners() {
   };
 
   return (
-    <div className="p-7">
+    <div className="px-7">
       <DashboardPagesHeader
         title={"Manage Banners"}
         subtitle={"Create, edit, and showcase promotional banners"}
@@ -125,79 +125,79 @@ function ManageBanners() {
             <TableBody>
               {isLoading
                 ? Array.from({ length: 8 }).map((_, i) => (
-                  <TableRow key={i}>
-                    {Array.from({ length: 8 }).map((_, j) => (
-                      <TableCell key={j}>
-                        <div className="skeleton h-8 rounded w-full"></div>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
+                    <TableRow key={i}>
+                      {Array.from({ length: 8 }).map((_, j) => (
+                        <TableCell key={j}>
+                          <div className="skeleton h-8 rounded w-full"></div>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
                 : banners?.map((banner, i) => (
-                  <TableRow key={banner?._id}>
-                    <TableCell className="">{i + 1}</TableCell>
-                    <TableCell className="">
-                      <img
-                        src={banner?.image}
-                        alt="Banner Image"
-                        className="min-w-28 h-16 object-cover mx-auto"
-                      />
-                    </TableCell>
-                    <TableCell>{banner?.medicineName}</TableCell>
-                    <TableCell className="max-w-xs truncate ">
-                      {banner?.description}...
-                    </TableCell>
-                    <TableCell>{banner?.insertedBy}</TableCell>
-                    <TableCell>{banner?.date}</TableCell>
-                    <TableCell>
-                      <Tooltip className="cursor-pointer">
-                        <TooltipTrigger>
-                          <Switch
-                            className="cursor-pointer"
-                            checked={banner?.status === "active"}
-                            onCheckedChange={(checked) => {
-                              const newStatus = checked
-                                ? "active"
-                                : "inactive";
-                              handleBannerStatusChange(
-                                banner?._id,
-                                newStatus
-                              );
-                            }}
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <span>
-                            {banner?.status === "active"
-                              ? "Deactivate Banner"
-                              : "Activate Banner"}
-                          </span>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell className="flex justify-end items-center">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
-                            <MoreVertical className="cursor-pointer text-gray-700" />
-                          </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Pencil className="w-4 h-4 mr-2" /> Update
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleBannerDelete(banner?._id)}
-                            className="cursor-pointer"
-                          >
-                            <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                    <TableRow key={banner?._id}>
+                      <TableCell className="">{i + 1}</TableCell>
+                      <TableCell className="">
+                        <img
+                          src={banner?.image}
+                          alt="Banner Image"
+                          className="min-w-28 h-16 object-cover mx-auto"
+                        />
+                      </TableCell>
+                      <TableCell>{banner?.medicineName}</TableCell>
+                      <TableCell className="max-w-xs truncate ">
+                        {banner?.description}...
+                      </TableCell>
+                      <TableCell>{banner?.insertedBy}</TableCell>
+                      <TableCell>{banner?.date}</TableCell>
+                      <TableCell>
+                        <Tooltip className="cursor-pointer">
+                          <TooltipTrigger>
+                            <Switch
+                              className="cursor-pointer"
+                              checked={banner?.status === "active"}
+                              onCheckedChange={(checked) => {
+                                const newStatus = checked
+                                  ? "active"
+                                  : "inactive";
+                                handleBannerStatusChange(
+                                  banner?._id,
+                                  newStatus
+                                );
+                              }}
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <span>
+                              {banner?.status === "active"
+                                ? "Deactivate Banner"
+                                : "Activate Banner"}
+                            </span>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableCell>
+                      <TableCell className="flex justify-end items-center">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
+                              <MoreVertical className="cursor-pointer text-gray-700" />
+                            </div>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Pencil className="w-4 h-4 mr-2" /> Update
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleBannerDelete(banner?._id)}
+                              className="cursor-pointer"
+                            >
+                              <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
 

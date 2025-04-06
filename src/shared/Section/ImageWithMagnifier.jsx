@@ -47,7 +47,7 @@ const ImageWithMagnifier = ({ imageURL }) => {
       <img
         ref={imgRef}
         src={imageURL}
-        className="w-full max-h-[550px] min-h-[550px] object-cover border border-border"
+        className="w-full max-h-[550px] min-h-[550px] object-cover border shadow-none border-[#e5e7eb] rounded-lg"
         alt="Product"
       />
       <div
@@ -59,7 +59,7 @@ const ImageWithMagnifier = ({ imageURL }) => {
           width: "150px",
           height: "150px",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
       />
     </div>

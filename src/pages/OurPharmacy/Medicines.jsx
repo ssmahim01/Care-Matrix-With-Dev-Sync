@@ -1,6 +1,7 @@
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import useCart from "@/hooks/useCart";
 import { useAuthUser } from "@/redux/auth/authActions";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router";
@@ -10,6 +11,13 @@ const Medicines = ({ medicines, isLoading }) => {
 
   const user = useAuthUser();
   const [cart, cartLoading, refetch] = useCart();
+
+  useEffect(() => {
+    window.scroll({
+      top: 580,
+      behavior: "smooth",
+    });
+  });
 
   // Function For AddToCart
   const handleAddToCart = async (e, medicine) => {
