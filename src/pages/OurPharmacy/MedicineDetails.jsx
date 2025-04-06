@@ -267,7 +267,7 @@ export default function MedicineDetails() {
 
           <Separator />
 
-          {/* Add To Cart section */}
+          {/* Add To Cart Full Section */}
           <div
             className={`${
               !isAddedToCart ? "flex items-center gap-4" : "space-y-4"

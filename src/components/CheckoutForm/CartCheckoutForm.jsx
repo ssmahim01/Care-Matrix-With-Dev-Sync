@@ -152,6 +152,7 @@ const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, r
                 </div>
 
                 <Button
+                    size={"lg"}
                     type="submit"
                     disabled={!stripe || isProcessing}
                     className="cursor-pointer w-full text-lg font-semibold"
