@@ -13,6 +13,7 @@ import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useAuthUser } from "@/redux/auth/authActions";
 import useCart from "@/hooks/useCart";
 import toast from "react-hot-toast";
+import MedicineSkeleton from "./MedicineDetails/MedicineSkeleton";
 
 export default function MedicineDetails() {
   const { id } = useParams();
@@ -127,11 +128,8 @@ export default function MedicineDetails() {
     });
   };
 
-  if (isLoading) {
-    return (
-      <div className="mt-24 mb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl skeleton h-[600px]"></div>
-    );
-  }
+  // Show skeleton when isLoading is true
+  if (isLoading) return <MedicineSkeleton />;
 
   return (
     <div className="pt-24 pb-12 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
