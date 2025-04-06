@@ -6,6 +6,7 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { MdPendingActions } from 'react-icons/md';
 import Swal from 'sweetalert2';
+import { motion } from "framer-motion";
 
 const ManageAppointments = () => {
     const [doctors] = useDoctors()
@@ -71,6 +72,11 @@ const ManageAppointments = () => {
 
     return (
         <div>
+             <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      >
             <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
                 <table className="table">
                     {/* head */}
@@ -122,6 +128,7 @@ const ManageAppointments = () => {
                     </tbody>
                 </table>
             </div>
+            </motion.div>
         </div>
     );
 };

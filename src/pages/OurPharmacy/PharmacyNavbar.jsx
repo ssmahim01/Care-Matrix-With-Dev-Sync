@@ -4,7 +4,7 @@ import { IoIosSearch } from "react-icons/io";
 import { Link } from "react-router";
 
 const PharmacyNavbar = ({ search, setSearch }) => {
-  const [cart, cartLoading, refetch] = useCart()
+  const [cart, cartLoading, refetch] = useCart();
   return (
     <div className="flex justify-between gap-4 items-center flex-wrap">
       {/* Searchbar */}
@@ -27,7 +27,10 @@ const PharmacyNavbar = ({ search, setSearch }) => {
         {/* Buttons Container */}
         <div className="flex gap-4">
           {/* My Cart Button */}
-          <Link to={'/dashboard/patient/manage-cart'} className="relative flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors cursor-pointer">
+          <Link
+            to={"/dashboard/patient/manage-cart"}
+            className="relative flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
+          >
             <FaShoppingCart className="text-lg" />
             <span>My Cart</span>
             {/* Floating Cart Count Badge */}
@@ -38,10 +41,12 @@ const PharmacyNavbar = ({ search, setSearch }) => {
           </Link>
 
           {/* Track My Order Button */}
-          <button className="flex items-center gap-2 px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors">
-            <FaTruck className="text-lg" />
-            Track My Order
-          </button>
+          <Link to={"/dashboard/patient/purchase-history"}>
+            <button className="cursor-pointer flex items-center gap-2 px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors">
+              <FaTruck className="text-lg" />
+              Track My Order
+            </button>
+          </Link>
         </div>
       </div>
     </div>
