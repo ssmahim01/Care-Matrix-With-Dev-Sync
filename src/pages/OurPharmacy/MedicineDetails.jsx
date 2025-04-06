@@ -1,18 +1,24 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ImageWithMagnifier from "@/shared/Section/ImageWithMagnifier";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { Clock, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import ProductDetails from "./MedicineDetails/ProductDetails";
+import { Separator } from "@/components/ui/separator";
+import ImageWithMagnifier from "@/shared/Section/ImageWithMagnifier";
+import { Clock, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
 import ManufacturerSupplier from "./MedicineDetails/ManufacturerSupplier";
+import ProductDetails from "./MedicineDetails/ProductDetails";
+import { useAuthUser } from "@/redux/auth/authActions";
+import useCart from "@/hooks/useCart";
+import toast from "react-hot-toast";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 
 export default function MedicineDetails() {
   const { id } = useParams();
+  const user = useAuthUser();
+  const [, , refetch] = useCart();
+  const axiosPublic = useAxiosPublic();
 
   const {
     data: medicine = {},
@@ -39,7 +45,7 @@ export default function MedicineDetails() {
     seconds: 0,
   });
 
-  // C.c.to.d.expr.date
+  // C.C.TO.D.EXPR.DATE
   useEffect(() => {
     if (!medicine?.price?.discount?.validUntil) return;
 
@@ -69,8 +75,42 @@ export default function MedicineDetails() {
     setQuantity(Math.max(1, value));
   };
 
-  const handleAddToCart = () => {
-    setIsAddedToCart(true);
+  const handleAddToCart = async () => {
+    try {
+      if (!user) {
+        return toast.error("You Must Login Before Add To Cart");
+      }
+
+      // Set To true
+      setIsAddedToCart(true);
+
+      const cartItem = {
+        customer: {
+          customerName: user.displayName,
+          customerEmail: user.email,
+        },
+        medicineId: medicine?._id,
+        medicineName: medicine?.brandName,
+        price: medicine?.price?.discount?.discountedAmount
+          ? medicine?.price.discount.discountedAmount
+          : medicine?.price?.amount,
+        image: medicine?.imageURL,
+        strength: medicine?.strength,
+        quantity: quantity,
+      };
+
+      await toast.promise(axiosPublic.post("/carts", cartItem), {
+        loading: "Adding to cart...",
+        success: <b>Medicine Successfully Added To Cart</b>,
+        error: (error) => {
+          const errorMessage =
+            error.response?.data?.error || error.message || "Unable To Add";
+          return <b>{errorMessage}</b>;
+        },
+      });
+    } finally {
+      refetch();
+    }
   };
 
   const formatNumber = (num) => {
@@ -88,7 +128,9 @@ export default function MedicineDetails() {
   };
 
   if (isLoading) {
-    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+    return (
+      <div className="mt-24 mb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl skeleton h-[600px]"></div>
+    );
   }
 
   return (
@@ -292,7 +334,7 @@ export default function MedicineDetails() {
                       Continue Shopping
                     </Button>
                   </Link>
-                  <Link to={"/patient/manage-cart"} className="w-full">
+                  <Link to={"/dashboard/patient/manage-cart"} className="w-full">
                     <Button className={"cursor-pointer w-full"} size="lg">
                       <ShoppingCart className="mr-2 h-4 w-4" /> Checkout
                     </Button>
