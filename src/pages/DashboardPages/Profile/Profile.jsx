@@ -14,11 +14,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import auth from "@/firebase/firebase.config";
 import usePhone from "@/hooks/usePhone";
 import useRole from "@/hooks/useRole";
 import { useAuthUser } from "@/redux/auth/authActions";
+import { updateUsername } from "@/redux/auth/authSlice";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import axios from "axios";
 import { format } from "date-fns";
+import { updateProfile } from "firebase/auth";
 import {
   Calendar,
   CheckCheck,
@@ -35,15 +39,43 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 const Profile = () => {
   const user = useAuthUser();
   const phoneNumber = usePhone();
+  const dispatch = useDispatch();
   const role = useRole();
 
   const [newName, setNewName] = useState(user?.displayName);
   const [isNameEditing, setIsNameEditing] = useState(false);
 
+  // Function for update username
+  const handleNameChange = () => {
+    try {
+      // change name in firebase displayName
+      updateProfile(auth.currentUser, { displayName: newName }).then(
+        async () => {
+          // change name in db name
+          const { data } = await axios.patch(
+            `${import.meta.env.VITE_API_URL}/users/update-name/${user?.email}`,
+            { name: newName }
+          );
+          // show success tost
+          if (data.data.modifiedCount) {
+            setIsNameEditing(false);
+            dispatch(updateUsername(newName));
+            toast.success("Username Updated Successfully");
+          }
+        }
+      );
+    } catch (error) {
+      toast.error(
+        error.message || "Something wen't wrong white updating the username"
+      );
+    }
+  };
   return (
     <div className="px-7 pb-12">
       <DashboardPagesHeader
@@ -58,7 +90,7 @@ const Profile = () => {
         <div className="lg:col-span-1 space-y-6">
           {/* Profile Card */}
           <Card className="border shadow-none border-[#e5e7eb]">
-            <div className="h-28 bg-gradient-to-r from-blue-500 to-sky-500 rounded-t-[12.8px]" />
+            <div className="h-28 bg-gradient-to-r skeleton rounded-b-none rounded-t-[12.8px]" />
             <CardContent className="pt-0 relative">
               <div className="flex flex-col items-center -mt-20">
                 <div
@@ -204,20 +236,9 @@ const Profile = () => {
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-teal-600" />
+                  <User className="h-6 w-6 text-blue-600" />
                   <CardTitle>Profile Details</CardTitle>
                 </div>
-                {!isNameEditing && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsNameEditing(true)}
-                    className="h-8 gap-1"
-                  >
-                    <Edit className="h-3.5 w-3.5" />
-                    Edit
-                  </Button>
-                )}
               </div>
               <CardDescription>
                 Update your personal information
@@ -239,21 +260,19 @@ const Profile = () => {
                       autoFocus
                     />
                     <Button
-                      size="sm"
-                      // onClick={handleNameChange}
-                      className="gap-1"
+                      onClick={handleNameChange}
+                      className="gap-1 cursor-pointer"
                     >
                       <CheckCheck className="h-4 w-4" />
                       Save
                     </Button>
                     <Button
-                      size="sm"
                       variant="outline"
                       onClick={() => {
                         setNewName(user?.displayName);
                         setIsNameEditing(false);
                       }}
-                      className="gap-1"
+                      className="gap-1 cursor-pointer"
                     >
                       <X className="h-4 w-4" />
                       Cancel
@@ -261,7 +280,7 @@ const Profile = () => {
                   </div>
                 ) : (
                   <div className="flex items-center h-10 px-3 rounded-md border bg-background">
-                    {user.displayName}
+                    {user?.displayName}
                   </div>
                 )}
               </div>
@@ -290,9 +309,16 @@ const Profile = () => {
               <p className="text-sm text-muted-foreground">
                 Last updated: {format(new Date(), "MMM d, yyyy")}
               </p>
-              <Button variant="outline" size="sm">
-                View Activity Log
-              </Button>
+              {!isNameEditing && (
+                <Button
+                  variant="outline"
+                  onClick={() => setIsNameEditing(true)}
+                  className="gap-1 cursor-pointer"
+                >
+                  <Edit className="h-3.5 w-3.5" />
+                  Edit Profile
+                </Button>
+              )}
             </CardFooter>
           </Card>
         </div>
