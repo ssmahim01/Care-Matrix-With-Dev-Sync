@@ -47,7 +47,7 @@ import Profile from "@/pages/DashboardPages/Profile/Profile";
 const Router = () => {
   const dispatch = useDispatch();
   const user = useAuthUser();
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     dispatch(setLoading(true));

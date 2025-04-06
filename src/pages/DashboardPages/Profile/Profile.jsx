@@ -52,30 +52,36 @@ const Profile = () => {
   const [isNameEditing, setIsNameEditing] = useState(false);
 
   // Function for update username
-  const handleNameChange = () => {
+  const handleNameChange = async () => {
     try {
-      // change name in firebase displayName
-      updateProfile(auth.currentUser, { displayName: newName }).then(
-        async () => {
-          // change name in db name
-          const { data } = await axios.patch(
-            `${import.meta.env.VITE_API_URL}/users/update-name/${user?.email}`,
-            { name: newName }
-          );
-          // show success tost
-          if (data.data.modifiedCount) {
+      // update Firebase display name
+      await updateProfile(auth.currentUser, { displayName: newName });
+      // update username in db name
+      const updateUsernamePromise = axios.patch(
+        `${import.meta.env.VITE_API_URL}/users/update-name/${user?.email}`,
+        { name: newName }
+      );
+      // show success toast and update states
+      await toast.promise(updateUsernamePromise, {
+        loading: "Updating Username...",
+        success: (res) => {
+          if (res.data.data.modifiedCount) {
             setIsNameEditing(false);
             dispatch(updateUsername(newName));
-            toast.success("Username Updated Successfully");
+            return "Username Updated Successfully";
+          } else {
+            return "No changes were made";
           }
-        }
-      );
+        },
+        error: (err) => err.message || "Failed to update username",
+      });
     } catch (error) {
       toast.error(
-        error.message || "Something wen't wrong white updating the username"
+        error.message || "Something went wrong while updating the username"
       );
     }
   };
+
   return (
     <div className="px-7 pb-12">
       <DashboardPagesHeader
