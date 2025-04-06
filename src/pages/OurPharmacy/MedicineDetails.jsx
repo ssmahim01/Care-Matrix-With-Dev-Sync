@@ -9,10 +9,10 @@ import ImageWithMagnifier from "@/shared/Section/ImageWithMagnifier";
 import { Clock, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
 import ManufacturerSupplier from "./MedicineDetails/ManufacturerSupplier";
 import ProductDetails from "./MedicineDetails/ProductDetails";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useAuthUser } from "@/redux/auth/authActions";
 import useCart from "@/hooks/useCart";
 import toast from "react-hot-toast";
-import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 
 export default function MedicineDetails() {
   const { id } = useParams();
@@ -334,7 +334,10 @@ export default function MedicineDetails() {
                       Continue Shopping
                     </Button>
                   </Link>
-                  <Link to={"/dashboard/patient/manage-cart"} className="w-full">
+                  <Link
+                    to={"/dashboard/patient/manage-cart"}
+                    className="w-full"
+                  >
                     <Button className={"cursor-pointer w-full"} size="lg">
                       <ShoppingCart className="mr-2 h-4 w-4" /> Checkout
                     </Button>
