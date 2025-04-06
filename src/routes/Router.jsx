@@ -42,6 +42,7 @@ import MyAppointments from "@/pages/DashboardPages/User/MyAppointments/MyAppoint
 import RequestHistory from "@/pages/Patient/RequestHistory/RequestHistory";
 import Invoice from "../components/Pharmacy/Invoice.jsx";
 import PurchaseHistory from "@/pages/Patient/PurchaseHistory/PurchaseHistory";
+import Profile from "@/pages/DashboardPages/Profile/Profile";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -179,7 +180,10 @@ const Router = () => {
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
         />
-        <Route path="/dashboard/patient/appointments" element={<MyAppointments />} />
+        <Route
+          path="/dashboard/patient/appointments"
+          element={<MyAppointments />}
+        />
         <Route
           path="/dashboard/patient/request-history"
           element={<RequestHistory />}
@@ -189,6 +193,9 @@ const Router = () => {
           element={<PurchaseHistory />}
         />
         <Route path="/dashboard/invoice/:invoiceId" element={<Invoice />} />
+
+        {/* Common Routes */}
+        <Route path="/dashboard/profile" element={<Profile />} />
       </Route>
 
       {/* Catch-all for 404 Error Page */}
