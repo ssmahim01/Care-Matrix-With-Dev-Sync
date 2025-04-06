@@ -81,7 +81,7 @@ export function NavUser() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup className="flex flex-col gap-3 py-2">
+            <DropdownMenuGroup className="flex flex-col gap-2 py-2">
               <NavLink
                 to="/dashboard/profile"
                 className={({ isActive }) =>
