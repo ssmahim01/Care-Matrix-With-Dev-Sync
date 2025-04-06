@@ -1,7 +1,7 @@
 import React from "react";
 
 const SkeletonBox = ({ className = "" }) => (
-  <div className={`bg-gray-200 rounded-md animate-pulse ${className}`} />
+  <div className={`bg-gray-200 rounded animate-pulse ${className}`} />
 );
 
 const CircleSkeleton = ({ size = "w-10 h-10" }) => (
@@ -17,10 +17,10 @@ const MedicineSkeleton = () => {
           {/* Image */}
           <div className="relative rounded-lg overflow-hidden bg-white">
             <div className="absolute top-4 left-4 z-10 space-y-2">
-              <SkeletonBox className="w-20 h-6" />
-              <SkeletonBox className="w-32 h-6" />
+              <SkeletonBox className="w-20 h-6 bg-gray-300" />
+              <SkeletonBox className="w-32 h-6 bg-gray-300" />
             </div>
-            <SkeletonBox className="w-full h-100 lg:h-120" />
+            <SkeletonBox className="w-full h-100 lg:h-110" />
           </div>
 
           {/* Product Details (Desktop only) */}
@@ -41,8 +41,8 @@ const MedicineSkeleton = () => {
         <div className="space-y-6">
           {/* Medicine Name */}
           <div>
-            <SkeletonBox className="w-3/5 h-9 mb-2" />
-            <SkeletonBox className="w-2/5 h-5 mb-2" />
+            <SkeletonBox className="w-1/5 h-9 mb-2" />
+            <SkeletonBox className="w-2/6 h-5 mb-2" />
             <SkeletonBox className="w-24 h-6" />
           </div>
 
@@ -76,20 +76,19 @@ const MedicineSkeleton = () => {
             <SkeletonBox className="w-24 h-4" />
             <SkeletonBox className="h-4" />
             <SkeletonBox className="h-4" />
-            <SkeletonBox className="h-4" />
           </div>
 
           <SkeletonBox className="h-px my-4 bg-gray-300" />
 
           {/* Add to Cart */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center border rounded-md overflow-hidden">
+            <div className="flex items-center gap-1 rounded-md overflow-hidden">
               <SkeletonBox className="w-10 h-10" />
               <SkeletonBox className="w-12 h-10" />
               <SkeletonBox className="w-10 h-10" />
             </div>
             <CircleSkeleton />
-            <SkeletonBox className="flex-1 h-12 rounded-md" />
+            <SkeletonBox className="flex-1 h-11 rounded-md" />
           </div>
 
           {/* Product Details (Mobile only) */}
@@ -112,9 +111,9 @@ const MedicineSkeleton = () => {
               <SkeletonBox className="h-10" />
             </div>
             <div className="p-4 border rounded-md mt-2">
-              <SkeletonBox className="w-32 h-4 mb-2" />
-              <SkeletonBox className="w-4/5 h-3.5 mb-2" />
-              <SkeletonBox className="w-3/5 h-3.5" />
+              <SkeletonBox className="w-44 h-4 mb-2" />
+              <SkeletonBox className="w-32 h-3.5 mb-2" />
+              <SkeletonBox className="w-26 h-3.5" />
             </div>
           </div>
         </div>
