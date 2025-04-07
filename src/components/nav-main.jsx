@@ -164,7 +164,7 @@ export function NavMain() {
                 <LayoutDashboard className="text-base" /> Overview
               </h3>
             </NavLink>
-            <NavLink to="/dashboard/medical-records">
+            <NavLink to="/dashboard/pharmacist/sales-report">
               <h3 className="flex gap-2 items-center">
                 <FileSpreadsheet className="text-base" />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>

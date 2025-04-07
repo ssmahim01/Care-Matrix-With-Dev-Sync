@@ -9,7 +9,7 @@ import {
 } from "react-icons/md";
 import { CiMenuFries } from "react-icons/ci";
 import { FaCubesStacked, FaUserDoctor } from "react-icons/fa6";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
@@ -27,6 +27,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
@@ -121,19 +122,21 @@ const Navbar = () => {
   return (
     <>
       <div className="fixed z-20 w-full bg-[#f3f6f9] shadow-sm border-b border-[#f3f6f9]">
-        <div
-          className={`top-0 left-1/2 z-50 transition-all duration-300 w-full ${
-            showImage
-              ? "opacity-100 translate-y-0 pointer-events-auto h-auto"
-              : "opacity-0 -translate-y-full pointer-events-none h-0 overflow-hidden"
-          }`}
-        >
-          <img
-            src="https://zenui.net/palestine-banner.svg"
-            alt="Free Palestine"
-            className="w-full"
-          />
-        </div>
+        {location.pathname === "/" && (
+          <div
+            className={`top-0 left-1/2 z-50 transition-all duration-300 w-full ${
+              showImage
+                ? "opacity-100 translate-y-0 pointer-events-auto h-auto"
+                : "opacity-0 -translate-y-full pointer-events-none h-0 overflow-hidden"
+            }`}
+          >
+            <img
+              src="https://zenui.net/palestine-banner.svg"
+              alt="Free Palestine"
+              className="w-full"
+            />
+          </div>
+        )}
         <div className="max-w-[1700px] mx-auto w-11/12">
           <div className="navbar p-0">
             <div className="navbar-start w-full">
