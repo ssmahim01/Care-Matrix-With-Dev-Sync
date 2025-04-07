@@ -7,7 +7,7 @@ import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
 import { logOutUser, setLoading, setUser } from "@/redux/auth/authSlice";
-import { useAuthUser } from "@/redux/auth/authActions";
+// import { useAuthUser } from "@/redux/auth/authActions";
 import { onAuthStateChanged } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
 import PrivateRoute from "./PrivateRoute";
@@ -47,7 +47,7 @@ import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyF
 
 const Router = () => {
   const dispatch = useDispatch();
-  const user = useAuthUser();
+  // const user = useAuthUser();
   // console.log(user);
 
   useEffect(() => {
