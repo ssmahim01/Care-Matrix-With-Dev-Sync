@@ -32,6 +32,22 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.auth);
   const [role] = useRole();
 
+  const [showImage, setShowImage] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY === 0) {
+        setShowImage(true);
+      } else {
+        setShowImage(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // console.log(user);
   // const dispatch = useDispatch();
   // const menuOpen = useSelector((state) => state.menu.menuOpen);
@@ -105,7 +121,13 @@ const Navbar = () => {
   return (
     <>
       <div className="fixed z-20 w-full bg-[#f3f6f9] shadow-sm border-b border-[#f3f6f9]">
-        <div>
+        <div
+          className={`top-0 left-1/2 z-50 transition-all duration-300 w-full ${
+            showImage
+              ? "opacity-100 translate-y-0 pointer-events-auto h-auto"
+              : "opacity-0 -translate-y-full pointer-events-none h-0 overflow-hidden"
+          }`}
+        >
           <img
             src="https://zenui.net/palestine-banner.svg"
             alt="Free Palestine"
