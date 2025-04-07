@@ -105,6 +105,13 @@ const Navbar = () => {
   return (
     <>
       <div className="fixed z-20 w-full bg-[#f3f6f9] shadow-sm border-b border-[#f3f6f9]">
+        <div>
+          <img
+            src="https://zenui.net/palestine-banner.svg"
+            alt="Free Palestine"
+            className="w-full"
+          />
+        </div>
         <div className="max-w-[1700px] mx-auto w-11/12">
           <div className="navbar p-0">
             <div className="navbar-start w-full">
@@ -251,7 +258,10 @@ const Navbar = () => {
 
             <div className="navbar-end w-full">
               <>
-                <ul ref={menuRef} className="items-center gap-4 text-[#1b1b1b] lg:flex hidden mr-3">
+                <ul
+                  ref={menuRef}
+                  className="items-center gap-4 text-[#1b1b1b] lg:flex hidden mr-3"
+                >
                   {routes}
                   <li
                     className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"

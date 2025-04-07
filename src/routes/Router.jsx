@@ -44,6 +44,7 @@ import Invoice from "../components/Pharmacy/Invoice.jsx";
 import PurchaseHistory from "@/pages/Patient/PurchaseHistory/PurchaseHistory";
 import Profile from "@/pages/DashboardPages/Profile/Profile";
 import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyFavoriteDoctors";
+import SalesReport from "@/pages/DashboardPages/Pharmacist/SalesReport/SalesReport";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -143,6 +144,10 @@ const Router = () => {
           element={<PharmacistOverview />}
         />
         <Route
+          path="/dashboard/pharmacist/sales-report"
+          element={<SalesReport />}
+        />
+        <Route
           path="/dashboard/pharmacist/manage-orders"
           element={<ManageOrders />}
         />
@@ -181,8 +186,14 @@ const Router = () => {
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
         />
-        <Route path="/dashboard/patient/appointments" element={<MyAppointments />} />
-        <Route path="/dashboard/patient/favorite-doctors" element={<MyFavoriteDoctors />} />
+        <Route
+          path="/dashboard/patient/appointments"
+          element={<MyAppointments />}
+        />
+        <Route
+          path="/dashboard/patient/favorite-doctors"
+          element={<MyFavoriteDoctors />}
+        />
         <Route
           path="/dashboard/patient/request-history"
           element={<RequestHistory />}
