@@ -77,11 +77,11 @@ const ManageAppointments = () => {
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       >
-            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+            <div className="overflow-x-auto border border-base-content/5 bg-base-100">
                 <table className="table">
                     {/* head */}
                     <thead>
-                        <tr>
+                        <tr className='bg-base-300 text-gray-950'>
                             <th>Sl.</th>
                             <th>Doctor</th>
                             <th>Patient</th>

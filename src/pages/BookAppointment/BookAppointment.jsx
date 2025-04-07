@@ -94,7 +94,6 @@ const BookAppointment = () => {
                                     required: "Patient name is required",
                                     minLength: { value: 2, message: "Patient name must be at least 2 characters" },
                                 })}
-
                             />
                             {errors.name && (
                                 <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
