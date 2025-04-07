@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -6,15 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CheckCircle, TrendingUp } from "lucide-react";
 import { format, parseISO } from "date-fns";
-import {
-  CheckCircle,
-  Clock,
-  DollarSign,
-  ShoppingCart,
-  TrendingUp,
-} from "lucide-react";
+
 import {
   Area,
   AreaChart,
@@ -31,115 +26,18 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import SalesReportHeader from "./SalesReportHeader";
+
 import OverviewCards from "./OverviewCards";
+import SalesReportHeader from "./SalesReportHeader";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import RevenueChart from "./RevenueChart";
 
-// Data from the provided JSON
-const dashboardData = {
-  totalOrders: 21,
-  totalPendingOrders: 12,
-  totalDeliveredOrders: 4,
-  totalRevenue: 9223.95,
-  revenuePerDay: [
-    {
-      totalQty: 25,
-      totalRevenue: 6550.110000000001,
-      date: "2025-04-05",
-    },
-    {
-      totalQty: 41,
-      totalRevenue: 4049.9399999999996,
-      date: "2025-04-02",
-    },
-    {
-      totalQty: 9,
-      totalRevenue: 9529.66,
-      date: "2025-03-29",
-    },
-    {
-      totalQty: 3,
-      totalRevenue: 1036.5,
-      date: "2025-04-07",
-    },
-    {
-      totalQty: 36,
-      totalRevenue: 27830.48,
-      date: "2025-03-27",
-    },
-    {
-      totalQty: 11,
-      totalRevenue: 1075.98,
-      date: "2025-04-06",
-    },
-  ],
-  topSellingMedicines: [
-    {
-      totalQty: 25,
-      medicine: "Ciproxin",
-    },
-    {
-      totalQty: 24,
-      medicine: "Dalacin C",
-    },
-    {
-      totalQty: 24,
-      medicine: "Zithromax",
-    },
-    {
-      totalQty: 19,
-      medicine: "Flagyl",
-    },
-    {
-      totalQty: 12,
-      medicine: "Lipitor",
-    },
-  ],
+// Fetch All Sales Report Data
+const fetchSalesReport = async () => {
+  const { data } = await axios(`${import.meta.env.VITE_API_URL}/sales-report`);
+  return data || [];
 };
-
-// Sort revenue data by date for the chart
-const sortedRevenueData = [...dashboardData.revenuePerDay].sort(
-  (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-);
-
-// Calculate additional metrics
-const totalItems = dashboardData.revenuePerDay.reduce(
-  (acc, day) => acc + day.totalQty,
-  0
-);
-const avgOrderValue = dashboardData.totalRevenue / dashboardData.totalOrders;
-const avgItemValue = dashboardData.totalRevenue / totalItems;
-const avgDailyRevenue =
-  dashboardData.revenuePerDay.reduce((acc, day) => acc + day.totalRevenue, 0) /
-  dashboardData.revenuePerDay.length;
-
-// Order status data for pie chart
-const orderStatusData = [
-  {
-    name: "Delivered",
-    value: dashboardData.totalDeliveredOrders,
-    color: "#10b981",
-  },
-  {
-    name: "Pending",
-    value: dashboardData.totalPendingOrders,
-    color: "#f59e0b",
-  },
-  {
-    name: "Other",
-    value:
-      dashboardData.totalOrders -
-      dashboardData.totalPendingOrders -
-      dashboardData.totalDeliveredOrders,
-    color: "#6b7280",
-  },
-];
-
-// Enhanced data for charts
-const enhancedRevenueData = sortedRevenueData.map((item) => ({
-  ...item,
-  formattedDate: format(parseISO(item.date), "MMM dd"),
-  avgItemValue: item.totalRevenue / item.totalQty,
-}));
 
 // Color schemes for charts
 const COLORS = {
@@ -172,19 +70,19 @@ const CustomTooltip = ({
     return (
       <div className="bg-background border rounded-lg shadow-lg p-3 text-sm">
         <p className="font-medium mb-1">{label}</p>
-        {payload.map((entry, index) => (
+        {payload?.map((entry, index) => (
           <p
             key={`item-${index}`}
-            style={{ color: entry.color }}
+            style={{ color: entry?.color }}
             className="flex items-center gap-2"
           >
             <span
               className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: entry.color }}
+              style={{ backgroundColor: entry?.color }}
             ></span>
             <span>
-              {entry.name}: {valuePrefix}
-              {Number(entry.value).toLocaleString()}
+              {entry?.name}: {valuePrefix}
+              {Number(entry?.value).toLocaleString()}
               {valueSuffix}
             </span>
           </p>
@@ -196,6 +94,61 @@ const CustomTooltip = ({
 };
 
 export default function SalesReport() {
+  // Use Sales Report Data
+  const { data: report = [], isLoading } = useQuery({
+    queryKey: ["sales-report"],
+    queryFn: fetchSalesReport,
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  // Sort revenue data by date for the chart
+  const sortedRevenueData = [...(report?.revenuePerDay || [])].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+
+  // Calculate additional metrics
+  const totalItems = report?.revenuePerDay.reduce(
+    (acc, day) => acc + day?.totalQty,
+    0
+  );
+  const avgOrderValue = report?.totalRevenue / report?.totalOrders;
+  const avgItemValue = report?.totalRevenue / totalItems;
+  const avgDailyRevenue =
+    report?.revenuePerDay.reduce((acc, day) => acc + day?.totalRevenue, 0) /
+    report?.revenuePerDay.length;
+
+  // Order status data for pie chart
+  const orderStatusData = [
+    {
+      name: "Delivered",
+      value: report?.totalDeliveredOrders,
+      color: "#10b981",
+    },
+    {
+      name: "Pending",
+      value: report?.totalPendingOrders,
+      color: "#f59e0b",
+    },
+    {
+      name: "Other",
+      value:
+        report?.totalOrders -
+        report?.totalPendingOrders -
+        report?.totalDeliveredOrders,
+      color: "#6b7280",
+    },
+  ];
+
+  // Enhanced data for charts
+  const enhancedRevenueData = report?.revenuePerDay.map((item) => ({
+    ...item,
+    formattedDate: format(parseISO(item?.date), "MMM dd"),
+    avgItemValue: item?.totalRevenue / item?.totalQty,
+  }));
+
   return (
     <div>
       <main className="flex flex-1 flex-col gap-4 px-7 md:gap-8">
@@ -227,107 +180,16 @@ export default function SalesReport() {
           {/* 1st Tab Content */}
           <TabsContent value="overview" className="space-y-6">
             <OverviewCards
-              totalOrders={dashboardData?.totalOrders}
-              totalPendingOrders={dashboardData?.totalPendingOrders}
-              totalDeliveredOrders={dashboardData?.totalDeliveredOrders}
-              totalRevenue={dashboardData?.totalRevenue}
+              totalOrders={report?.totalOrders}
+              totalPendingOrders={report?.totalPendingOrders}
+              totalDeliveredOrders={report?.totalDeliveredOrders}
+              totalRevenue={report?.totalRevenue}
             />
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-              <Card className="col-span-4 border-none shadow-md">
-                <CardHeader>
-                  <CardTitle>Revenue Trends</CardTitle>
-                  <CardDescription>
-                    Daily revenue with average per item
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pl-2">
-                  <ResponsiveContainer width="100%" height={350}>
-                    <AreaChart data={enhancedRevenueData}>
-                      <defs>
-                        <linearGradient
-                          id="colorRevenue"
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
-                        >
-                          <stop
-                            offset="5%"
-                            stopColor={COLORS.revenue.primary}
-                            stopOpacity={0.8}
-                          />
-                          <stop
-                            offset="95%"
-                            stopColor={COLORS.revenue.primary}
-                            stopOpacity={0.1}
-                          />
-                        </linearGradient>
-                        <linearGradient
-                          id="colorAvg"
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
-                        >
-                          <stop
-                            offset="5%"
-                            stopColor={COLORS.items.primary}
-                            stopOpacity={0.8}
-                          />
-                          <stop
-                            offset="95%"
-                            stopColor={COLORS.items.primary}
-                            stopOpacity={0.1}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis
-                        dataKey="formattedDate"
-                        tick={{ fontSize: 12 }}
-                        stroke="#9ca3af"
-                      />
-                      <YAxis
-                        yAxisId="left"
-                        tickFormatter={(value) => `$${value.toLocaleString()}`}
-                        tick={{ fontSize: 12 }}
-                        stroke="#9ca3af"
-                      />
-                      <YAxis
-                        yAxisId="right"
-                        orientation="right"
-                        tickFormatter={(value) => `$${value.toLocaleString()}`}
-                        tick={{ fontSize: 12 }}
-                        stroke="#9ca3af"
-                      />
-                      <Tooltip content={<CustomTooltip valuePrefix="$" />} />
-                      <Legend />
-                      <Area
-                        yAxisId="left"
-                        type="monotone"
-                        dataKey="totalRevenue"
-                        name="Total Revenue"
-                        stroke={COLORS.revenue.primary}
-                        fillOpacity={1}
-                        fill="url(#colorRevenue)"
-                        activeDot={{ r: 8 }}
-                      />
-                      <Line
-                        yAxisId="right"
-                        type="monotone"
-                        dataKey="avgItemValue"
-                        name="Avg Value Per Item"
-                        stroke={COLORS.items.primary}
-                        strokeWidth={2}
-                        dot={{ r: 4 }}
-                        activeDot={{ r: 6 }}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-
+              {/* Revenue Chart */}
+              <RevenueChart enhancedRevenueData={enhancedRevenueData} />
+              {/* OrderStatus Chart */}
               <Card className="col-span-3 border-none shadow-md">
                 <CardHeader>
                   <CardTitle>Order Status</CardTitle>
@@ -376,7 +238,7 @@ export default function SalesReport() {
                         Delivered
                       </p>
                       <p className="text-2xl font-bold text-green-700">
-                        {dashboardData.totalDeliveredOrders}
+                        {report.totalDeliveredOrders}
                       </p>
                     </div>
                     <div className="bg-amber-50 p-3 rounded-lg">
@@ -384,15 +246,15 @@ export default function SalesReport() {
                         Pending
                       </p>
                       <p className="text-2xl font-bold text-amber-700">
-                        {dashboardData.totalPendingOrders}
+                        {report.totalPendingOrders}
                       </p>
                     </div>
                     <div className="bg-gray-50 p-3 rounded-lg">
                       <p className="text-xs text-gray-800 font-medium">Other</p>
                       <p className="text-2xl font-bold text-gray-700">
-                        {dashboardData.totalOrders -
-                          dashboardData.totalPendingOrders -
-                          dashboardData.totalDeliveredOrders}
+                        {report.totalOrders -
+                          report.totalPendingOrders -
+                          report.totalDeliveredOrders}
                       </p>
                     </div>
                   </div>
@@ -411,7 +273,7 @@ export default function SalesReport() {
                 <CardContent>
                   <ResponsiveContainer width="100%" height={350}>
                     <BarChart
-                      data={dashboardData.topSellingMedicines}
+                      data={report.topSellingMedicines}
                       layout="vertical"
                       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                     >
@@ -651,7 +513,7 @@ export default function SalesReport() {
                 <div className="mb-6">
                   <ResponsiveContainer width="100%" height={400}>
                     <BarChart
-                      data={dashboardData.topSellingMedicines}
+                      data={report.topSellingMedicines}
                       margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                     >
                       <defs>
@@ -708,24 +570,22 @@ export default function SalesReport() {
                       </tr>
                     </thead>
                     <tbody>
-                      {dashboardData.topSellingMedicines.map(
-                        (medicine, index) => (
-                          <tr
-                            key={medicine.medicine}
-                            className={index % 2 === 0 ? "bg-muted/20" : ""}
-                          >
-                            <td className="p-3 font-medium">{index + 1}</td>
-                            <td className="p-3">{medicine.medicine}</td>
-                            <td className="p-3">{medicine.totalQty}</td>
-                            <td className="p-3">
-                              {((medicine.totalQty / totalItems) * 100).toFixed(
-                                1
-                              )}
-                              %
-                            </td>
-                          </tr>
-                        )
-                      )}
+                      {report.topSellingMedicines.map((medicine, index) => (
+                        <tr
+                          key={medicine.medicine}
+                          className={index % 2 === 0 ? "bg-muted/20" : ""}
+                        >
+                          <td className="p-3 font-medium">{index + 1}</td>
+                          <td className="p-3">{medicine.medicine}</td>
+                          <td className="p-3">{medicine.totalQty}</td>
+                          <td className="p-3">
+                            {((medicine.totalQty / totalItems) * 100).toFixed(
+                              1
+                            )}
+                            %
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -764,7 +624,7 @@ export default function SalesReport() {
                           <span>
                             Top 5 products account for{" "}
                             {(
-                              (dashboardData.topSellingMedicines.reduce(
+                              (report.topSellingMedicines.reduce(
                                 (acc, med) => acc + med.totalQty,
                                 0
                               ) /
