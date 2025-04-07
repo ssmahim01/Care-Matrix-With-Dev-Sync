@@ -24,6 +24,7 @@ const BookAppointment = () => {
     const location = useLocation();
 
     const doctorInfo = doctors.find(doctor => doctor._id === location.state)
+    console.log(doctorInfo);
 
     const onSubmit = (data) => {
         const name = data.name;

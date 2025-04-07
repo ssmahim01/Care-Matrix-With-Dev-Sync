@@ -7,12 +7,15 @@ import { BiDetail, BiTrashAlt } from 'react-icons/bi';
 import { FaStar, FaTrashAlt } from 'react-icons/fa';
 import { MdPendingActions } from 'react-icons/md';
 import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router';
 
 const MyFavoriteDoctors = () => {
     const [favoriteDoctors, refetch, isLoading] = useFavoriteDoctors()
     const axiosSecure = useAxiosSecure();
     const { user } = useSelector((state) => state.auth);
+    const navigate = useNavigate()
 
+    // console.log(favoriteDoctors);
     const handleRemove = (_id) => {
         // console.log("REmove ", _id);
 
@@ -27,6 +30,7 @@ const MyFavoriteDoctors = () => {
                 toast.error("Something went wrong! Please try again.")
             })
     }
+
     return (
         <div>
             <div className="overflow-x-auto border border-base-content/5 bg-base-100">
@@ -44,10 +48,10 @@ const MyFavoriteDoctors = () => {
                     <tbody className='font-medium'>
 
                         {
-                            favoriteDoctors?.map((doctor, index) => <tr className='hover:bg-base-200' key={doctor._id}>
+                            favoriteDoctors?.map((doctor, index) => <tr className='hover:bg-gray-50 border border-gray-300' key={doctor._id}>
                                 <th>{index + 1}</th>
                                 <td className='flex gap-2'>
-                                    <img className='w-14 h-14 object-cover rounded-lg' src={doctor.doctorInfo.image} alt="" />
+                                    <img className='w-10 h-10 object-cover rounded-lg' src={doctor.doctorInfo.image} alt="" />
                                     <div>
                                         <span className='font-bold'>{doctor.doctorInfo.name}</span> <br />
                                         <span>{doctor.doctorInfo.title}</span>
@@ -63,9 +67,9 @@ const MyFavoriteDoctors = () => {
                                             <MoreVertical className="cursor-pointer text-gray-700" />
                                         </div>
                                         <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm right-12 top-0 ">
-                                            <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm'> <span><BiDetail size={16} /></span><a>View Details</a></div>
+                                            <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm'> <span><BiDetail size={16} /></span><a>View Details</a></div>                                   
 
-                                            <div onClick={()=>handleBookAppointment(doctor._id)} className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm'> <span><ClipboardPlus size={16} /></span> <a>Book Appointment</a></div>
+                                            <Link  to={`/book-appointment/${doctor.doctorInfo.name}`} state={doctor.doctorInfo._id} className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm'> <span><ClipboardPlus size={16} /></span> <a>Book Appointment</a></Link>
 
                                             <div onClick={()=>handleRemove(doctor._id)} className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm'> <span><Trash size={16} /></span> <a>Remove From Favorite</a></div>
                                         </ul>
