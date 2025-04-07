@@ -7,12 +7,17 @@ import {
 } from "@/redux/doctors/doctorSlice";
 import {
   BadgePlus,
+  Ban,
   BriefcaseMedical,
   CalendarDays,
+  CircleCheckBig,
   CircleUser,
+  CircleUserRound,
   CopyX,
+  HeartPulse,
   Mail,
   NotebookPen,
+  PhoneCall,
   X,
 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,6 +43,7 @@ const DoctorsManagement = () => {
   const dispatch = useDispatch();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [noteModal, setNoteModal] = useState({});
+  const [detailsModal, setDetailsModal] = useState({});
   const { doctors, status } = useSelector((state) => state.doctors);
   const axiosPublic = useAxiosPublic();
 
@@ -67,12 +73,12 @@ const DoctorsManagement = () => {
       const result = await dispatch(
         updateDoctor({ id, noteOfAdministrator: data.note })
       ).unwrap();
-     if(result){
-      toast.success("Note added successfully");
-      form2.reset();
-      document.getElementById("note_modal_01").close();
-      dispatch(fetchDoctors());
-     }
+      if (result) {
+        toast.success("Note added successfully");
+        form2.reset();
+        document.getElementById("note_modal_01").close();
+        dispatch(fetchDoctors());
+      }
     } catch (error) {
       toast.error(error.message || "Failed to add note");
     }
@@ -111,9 +117,22 @@ const DoctorsManagement = () => {
     }
   };
 
+  const handleReject = (status = "Reject") => {
+    console.log(status);
+  }
+
+  const handleAssign = (status = "Assign") => {
+    console.log(status);
+  }
+
   const handleAddNote = (doctor) => {
     setNoteModal(doctor);
     document.getElementById("note_modal_01").showModal();
+  };
+
+  const handleDoctorDetails = (doctor) => {
+    setDetailsModal(doctor);
+    document.getElementById("doctor_modal_02").showModal();
   };
 
   const handleInputChange = (e) => setInputValue(e.target.value);
@@ -605,6 +624,7 @@ const DoctorsManagement = () => {
                     dispatch={dispatch}
                     index={index}
                     handleAddNote={handleAddNote}
+                    handleDoctorDetails={handleDoctorDetails}
                   />
                 ))}
           </tbody>
@@ -712,6 +732,97 @@ const DoctorsManagement = () => {
                   </div>
                 </form>
               </Form>
+            </div>
+          </div>
+        )}
+      </dialog>
+
+      <dialog id="doctor_modal_02" className="modal modal-middle">
+        {detailsModal && (
+          <div className="w-full flex justify-center items-center">
+            <div className="modal-box">
+              <form method="dialog">
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-6">
+                <X className="w-5 h-5" />
+                </button>
+              </form>
+              <div className="flex flex-col">
+                {/* Heading Of The Modal */}
+                <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
+                  <BriefcaseMedical className="text-3xl text-gray-800" />
+                  <span>Details of Doctor</span>
+                </h2>
+                <p className="text-gray-600 text-base ml-8 font-medium whitespace-pre-line">
+                  The full details of doctor is show here
+                </p>
+              </div>
+              <div className="divider"></div>
+
+              <div className="flex gap-y-2 flex-col">
+                <figure className="w-48 h-48 mx-auto">
+                  <img
+                    className="w-full h-full border-4 border-sky-500 overflow-hidden rounded-full object-cover"
+                    src={detailsModal?.userPhoto}
+                    alt={detailsModal?.userName}
+                  />
+                </figure>
+
+                <div className="divider"></div>
+
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-3">
+                  <h4 className="flex gap-2 items-center font-semibold">
+                    <CircleUserRound className="w-4 h-4" />
+                    <span className="text-base text-gray-800">
+                      {detailsModal?.userName}
+                    </span>
+                  </h4>
+
+                  <p className="flex gap-2 items-center font-semibold">
+                    <Mail className="w-4 h-4" />
+                    <span className="text-sm text-gray-800">
+                      {detailsModal?.userEmail}
+                    </span>
+                  </p>
+
+                  <p className="flex gap-2 items-center font-semibold">
+                    <PhoneCall className="w-4 h-4" />
+                    <span className="text-base text-gray-800">
+                      {detailsModal?.emergencyContact}
+                    </span>
+                  </p>
+
+                  <p className="flex gap-2 items-center font-semibold">
+                  <HeartPulse className="w-4 h-4" />
+                    <span className="text-base text-gray-800">
+                      {detailsModal?.requestedRole}
+                    </span>
+                  </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="py-3 flex md:flex-row flex-col flex-wrap justify-between items-center">
+                <Button
+                  type="button"
+                  onClick={() =>
+                   handleReject(detailsModal?.status)
+                  }
+                  className="btn bg-rose-500 hover:bg-rose-700 text-base text-white font-bold rounded-md flex gap-2 items-center"
+                >
+                  <Ban className="w-4 h-4" />
+                  <span>Reject</span>
+                </Button>
+
+                <Button
+                  type="submit"
+                  onClick={() => handleAssign(detailsModal?.status)}
+                  className="btn bg-sky-600 hover:bg-sky-700 text-base text-white font-bold rounded-md flex gap-2 items-center"
+                >
+                 <CircleCheckBig className="w-4 h-4" />
+                  <span>Assign Doctor</span>
+                </Button>
+              </div>
             </div>
           </div>
         )}

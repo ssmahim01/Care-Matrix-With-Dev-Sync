@@ -1,5 +1,10 @@
 import { deleteDoctor } from "@/redux/doctors/doctorSlice";
-import { BookmarkX, EllipsisVertical, NotebookPen } from "lucide-react";
+import {
+  BookmarkX,
+  EllipsisVertical,
+  NotebookPen,
+  NotebookTabs,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { TableCell } from "../ui/table";
@@ -11,7 +16,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 
-const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote }) => {
+const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleDoctorDetails }) => {
   const handleDeleteDoctor = async (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -99,11 +104,17 @@ const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote }) => {
 
               <DropdownMenuItem
                 className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
-                disabled={doctor?.adminNotes.length > 0}
                 onClick={() => handleAddNote(doctor)}
               >
                 <NotebookPen className="w-4 h-4" />
                 <span>Add Note</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
+                onClick={() => handleDoctorDetails(doctor)}
+              >
+                <NotebookTabs className="w-4 h-4" />
+                <span>View Details</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
