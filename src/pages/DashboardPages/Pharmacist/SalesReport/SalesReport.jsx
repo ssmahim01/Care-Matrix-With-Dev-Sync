@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -6,38 +7,32 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { format, parseISO } from "date-fns";
 import {
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
-import {
-  CalendarIcon,
   CheckCircle,
   Clock,
   DollarSign,
-  Download,
-  FileText,
   ShoppingCart,
   TrendingUp,
 } from "lucide-react";
-import { format, parseISO } from "date-fns";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { MdReport } from "react-icons/md";
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import SalesReportHeader from "./SalesReportHeader";
+import OverviewCards from "./OverviewCards";
 
 // Data from the provided JSON
 const dashboardData = {
@@ -201,123 +196,42 @@ const CustomTooltip = ({
 };
 
 export default function SalesReport() {
-  const currentDate = format(new Date(), "MMMM d, yyyy");
-
   return (
     <div>
       <main className="flex flex-1 flex-col gap-4 px-7 md:gap-8">
         {/* Sales Report Header */}
         <SalesReportHeader />
-
+        {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList className="bg-white border">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics">Detailed Analytics</TabsTrigger>
-            <TabsTrigger value="products">Product Performance</TabsTrigger>
+          {/* All Tablist */}
+          <TabsList className="border py-6 px-1">
+            <TabsTrigger
+              value="overview"
+              className={"cursor-pointer py-2 px-4"}
+            >
+              Overview
+            </TabsTrigger>
+            <TabsTrigger
+              value="analytics"
+              className={"cursor-pointer py-2 px-4"}
+            >
+              Detailed Analytics
+            </TabsTrigger>
+            <TabsTrigger
+              value="products"
+              className={"cursor-pointer py-2 px-4"}
+            >
+              Product Performance
+            </TabsTrigger>
           </TabsList>
-
+          {/* 1st Tab Content */}
           <TabsContent value="overview" className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Card className="overflow-hidden border-none shadow-md">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative">
-                  <CardTitle className="text-sm font-medium">
-                    Total Orders
-                  </CardTitle>
-                  <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
-                    <ShoppingCart className="h-4 w-4 text-primary" />
-                  </div>
-                </CardHeader>
-                <CardContent className="relative">
-                  <div className="text-3xl font-bold">
-                    {dashboardData.totalOrders}
-                  </div>
-                  <div className="flex items-center mt-1">
-                    <Badge
-                      variant="secondary"
-                      className="text-xs bg-green-100 text-green-800 hover:bg-green-100"
-                    >
-                      +12% from last month
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="overflow-hidden border-none shadow-md">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative">
-                  <CardTitle className="text-sm font-medium">
-                    Pending Orders
-                  </CardTitle>
-                  <div className="h-8 w-8 rounded-full bg-amber-500/20 flex items-center justify-center">
-                    <Clock className="h-4 w-4 text-amber-500" />
-                  </div>
-                </CardHeader>
-                <CardContent className="relative">
-                  <div className="text-3xl font-bold">
-                    {dashboardData.totalPendingOrders}
-                  </div>
-                  <div className="flex items-center mt-1">
-                    <p className="text-xs text-muted-foreground">
-                      {(
-                        (dashboardData.totalPendingOrders /
-                          dashboardData.totalOrders) *
-                        100
-                      ).toFixed(1)}
-                      % of total orders
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="overflow-hidden border-none shadow-md">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative">
-                  <CardTitle className="text-sm font-medium">
-                    Delivered Orders
-                  </CardTitle>
-                  <div className="h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                  </div>
-                </CardHeader>
-                <CardContent className="relative">
-                  <div className="text-3xl font-bold">
-                    {dashboardData.totalDeliveredOrders}
-                  </div>
-                  <div className="flex items-center mt-1">
-                    <p className="text-xs text-muted-foreground">
-                      {(
-                        (dashboardData.totalDeliveredOrders /
-                          dashboardData.totalOrders) *
-                        100
-                      ).toFixed(1)}
-                      % of total orders
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="overflow-hidden border-none shadow-md">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative">
-                  <CardTitle className="text-sm font-medium">
-                    Total Revenue
-                  </CardTitle>
-                  <div className="h-8 w-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                    <DollarSign className="h-4 w-4 text-emerald-500" />
-                  </div>
-                </CardHeader>
-                <CardContent className="relative">
-                  <div className="text-3xl font-bold">
-                    ${dashboardData.totalRevenue.toLocaleString()}
-                  </div>
-                  <div className="flex items-center mt-1">
-                    <Badge
-                      variant="secondary"
-                      className="text-xs bg-green-100 text-green-800 hover:bg-green-100"
-                    >
-                      +8.2% from last month
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <OverviewCards
+              totalOrders={dashboardData?.totalOrders}
+              totalPendingOrders={dashboardData?.totalPendingOrders}
+              totalDeliveredOrders={dashboardData?.totalDeliveredOrders}
+              totalRevenue={dashboardData?.totalRevenue}
+            />
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
               <Card className="col-span-4 border-none shadow-md">
@@ -601,7 +515,7 @@ export default function SalesReport() {
               </Card>
             </div>
           </TabsContent>
-
+          {/* 2nd Tab Content */}
           <TabsContent value="analytics" className="space-y-6">
             <Card className="border-none shadow-md">
               <CardHeader>
@@ -724,7 +638,7 @@ export default function SalesReport() {
               </CardContent>
             </Card>
           </TabsContent>
-
+          {/* 3rd Tab Content */}
           <TabsContent value="products" className="space-y-6">
             <Card className="border-none shadow-md">
               <CardHeader>
