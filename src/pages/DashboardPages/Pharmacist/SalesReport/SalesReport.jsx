@@ -32,6 +32,7 @@ import SalesReportHeader from "./SalesReportHeader";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import RevenueChart from "./RevenueChart";
+import OrderStatusChart from "./OrderStatusChart";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -190,76 +191,7 @@ export default function SalesReport() {
               {/* Revenue Chart */}
               <RevenueChart enhancedRevenueData={enhancedRevenueData} />
               {/* OrderStatus Chart */}
-              <Card className="col-span-3 border-none shadow-md">
-                <CardHeader>
-                  <CardTitle>Order Status</CardTitle>
-                  <CardDescription>
-                    Current distribution of order statuses
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-center">
-                    <ResponsiveContainer width="100%" height={250}>
-                      <PieChart>
-                        <Pie
-                          data={orderStatusData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={90}
-                          paddingAngle={5}
-                          dataKey="value"
-                          nameKey="name"
-                          label={({ name, percent }) =>
-                            `${name}: ${(percent * 100).toFixed(0)}%`
-                          }
-                          labelLine={false}
-                        >
-                          {orderStatusData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Tooltip
-                          formatter={(value, name) => [`${value} orders`, name]}
-                        />
-                        <Legend
-                          layout="horizontal"
-                          verticalAlign="bottom"
-                          align="center"
-                          iconType="circle"
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-
-                  <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                    <div className="bg-green-50 p-3 rounded-lg">
-                      <p className="text-xs text-green-800 font-medium">
-                        Delivered
-                      </p>
-                      <p className="text-2xl font-bold text-green-700">
-                        {report.totalDeliveredOrders}
-                      </p>
-                    </div>
-                    <div className="bg-amber-50 p-3 rounded-lg">
-                      <p className="text-xs text-amber-800 font-medium">
-                        Pending
-                      </p>
-                      <p className="text-2xl font-bold text-amber-700">
-                        {report.totalPendingOrders}
-                      </p>
-                    </div>
-                    <div className="bg-gray-50 p-3 rounded-lg">
-                      <p className="text-xs text-gray-800 font-medium">Other</p>
-                      <p className="text-2xl font-bold text-gray-700">
-                        {report.totalOrders -
-                          report.totalPendingOrders -
-                          report.totalDeliveredOrders}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <OrderStatusChart orderStatusData={orderStatusData} />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
