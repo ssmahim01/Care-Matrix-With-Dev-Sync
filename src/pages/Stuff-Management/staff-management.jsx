@@ -3,155 +3,142 @@ import { useState, useEffect } from "react"
 import { Search, Filter, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { toast } from "sonner"
-import { fetchStaff } from "@/lib/stuff"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { StaffTable } from "./staff-table"
-import { StaffForm } from "./staff-form"
+import { useQuery } from "@tanstack/react-query"
+import axios from "axios"
 import { StaffFilters } from "./staff-filters"
+import { delay } from "@/lib/stuff"
 
+// Move the main component content here
 export function StaffManagement() {
-  const [staff, setStaff] = useState([])
-  const [filteredStaff, setFilteredStaff] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState("")
   const [showFilters, setShowFilters] = useState(false)
-  const [activeFilters, setActiveFilters] = useState({
-    department: [],
-    role: [],
-    status: [],
-    shift: [],
+  const [activeFilters, setActiveFilters] = useState({role: []})
+
+  const { data = [],isLoading,refetch} = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/users`)
+        setStaff(data)
+        return data
+    },
   })
 
- 
+  const [staff, setStaff] = useState(data)
+  const [filteredStaff, setFilteredStaff] = useState(staff)
 
-
-  const [activeTab, setActiveTab] = useState("all-staff")
+  // Update staff when data changes
   useEffect(() => {
-    const loadStaff = async () => {
-      try {
-        setIsLoading(true)
-        const data = await fetchStaff()
-        setStaff(data)
-        setFilteredStaff(data)
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to load staff data. Please try again.",
-          variant: "destructive",
-        })
-        console.error("Failed to fetch staff:", error)
-      } finally {
-        setIsLoading(false)
-      }
+    if (data && data.length > 0) {
+      setStaff(data)
+    }
+  }, [data])
+
+  // Update filtered staff when data or filters change
+  useEffect(() => {
+    if (!staff) {
+      setFilteredStaff(null)
+      return
     }
 
-    loadStaff()
-  }, [toast])
-
-  useEffect(() => {
-    // Apply filters and search
     let result = [...staff]
 
-    // Apply search
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      result = result.filter(
-        (s) =>
-          s.name.toLowerCase().includes(query) ||
-          s.staffId.toLowerCase().includes(query) ||
-          s.department.toLowerCase().includes(query) ||
-          s.role.toLowerCase().includes(query),
-      )
-    }
-
-    // Apply filters
-    if (activeFilters.department.length > 0) {
-      result = result.filter((s) => activeFilters.department.includes(s.department))
-    }
-
+    // Apply role filters
     if (activeFilters.role.length > 0) {
-      result = result.filter((s) => activeFilters.role.includes(s.role))
-    }
-
-    if (activeFilters.status.length > 0) {
-      result = result.filter((s) => activeFilters.status.includes(s.status))
-    }
-
-    if (activeFilters.shift.length > 0) {
-      result = result.filter((s) => activeFilters.shift.includes(s.shift))
+      result = result.filter((member) => activeFilters.role.includes(member.role))
     }
 
     setFilteredStaff(result)
-  }, [staff, searchQuery, activeFilters])
+  }, [staff, activeFilters])
 
-  const handleRefresh = async () => {
-    try {
-      setIsLoading(true)
-      const data = await fetchStaff()
-      setStaff(data)
-      toast({
-        title: "Success",
-        description: "Staff data refreshed successfully",
-      })
-    } catch (error) {
-      console.log(error)
-      toast({
-        title: "Error",
-        description: "Failed to refresh staff data",
-        variant: "destructive",
-      })
-    } finally {
-      setIsLoading(false)
+  const handleSearch = async (e) => {
+    const search = e.target.value.toLowerCase()
+
+    if (search.trim() === "") {
+      refetch()
+      return
     }
-  }
 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value)
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users/search-users?name=${search}`,
+      )
+      setStaff(response.data)
+    } catch (error) {
+      console.error("Error searching staff, falling back to client-side search:", error)
+      // Fallback to client-side filtering if the search endpoint fails
+      const filtered = (staff).filter(
+        (member) =>
+          member.name.toLowerCase().includes(search) ||
+          member.email.toLowerCase().includes(search) ||
+          member.role.toLowerCase().includes(search),
+      )
+      setStaff(filtered)
+    }
   }
 
   const handleFilterChange = (filters) => {
     setActiveFilters(filters)
   }
 
-  const handleStaffUpdated = () => {
-    handleRefresh()
-    setActiveTab("all-staff")
-  }
-
   return (
     <div className="space-y-6">
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <Tabs>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
-          <TabsList>
-            <TabsTrigger className={`px-2`} value="all-staff">All Staff</TabsTrigger>
-            <TabsTrigger className={`px-2`} value="add-staff">Add New Staff</TabsTrigger>
-          </TabsList>
+          <section className="shadow-2xl border px-4 py-2 rounded-2xl">
+            <div className="flex gap-2 items-center">
+              <span className="font-medium">All Staff:</span>
+              <span className="text-sm">{staff?.length || 0}</span>
+            </div>
+          </section>
 
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <div className="relative w-full sm:w-[300px]">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search staff..." className="pl-8" value={searchQuery} onChange={handleSearch} />
+              <Input placeholder="Search staff..." className="pl-8" onChange={handleSearch} />
             </div>
-            <Button variant="outline" size="icon" onClick={() => setShowFilters(!showFilters)}>
-              <Filter className="h-4 w-4" />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setShowFilters(!showFilters)}
+              className={activeFilters.role.length > 0 ? "bg-primary/10" : ""}
+              aria-expanded={showFilters}
+            >
+              <Filter className={`h-4 w-4 ${activeFilters.role.length > 0 ? "text-primary" : ""}`} />
+              <span className="sr-only">Toggle filters</span>
             </Button>
-            <Button variant="outline" size="icon" onClick={handleRefresh} disabled={isLoading}>
-              <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={async () => {
+                setStaff(null)
+                await delay(500)
+                refetch()
+              }}
+              disabled={isLoading}
+            >
+              <RefreshCw className={`h-4 w-4 ${staff ? "" : "animate-spin"}`} />
+              <span className="sr-only">Refresh</span>
             </Button>
           </div>
         </div>
 
-        {showFilters && (
-          <StaffFilters staff={staff} activeFilters={activeFilters} onFilterChange={handleFilterChange} />
-        )}
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            showFilters ? "max-h-96 opacity-100 mb-6" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="transform transition-transform duration-300 ease-in-out">
+            <StaffFilters
+              staff={staff}
+              activeFilters={activeFilters}
+              onFilterChange={handleFilterChange}
+            />
+          </div>
+        </div>
 
-        <TabsContent value="all-staff" className="mt-6">
-          <StaffTable staff={filteredStaff} isLoading={isLoading} onStaffUpdated={handleStaffUpdated} />
-        </TabsContent>
-
-        <TabsContent value="add-staff" className="mt-6">
-          <StaffForm onSuccess={handleStaffUpdated} />
+        <TabsContent className="mt-6">
+          <StaffTable staff={filteredStaff} isLoading={isLoading && !staff} refetch={refetch} />
         </TabsContent>
       </Tabs>
     </div>

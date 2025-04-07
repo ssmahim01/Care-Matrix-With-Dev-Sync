@@ -73,12 +73,12 @@ const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleDoctorD
           <p
             className={`w-full border p-2 ${
               doctor?.status === "Pending" && "badge text-amber-500"
-            } ${doctor?.status === "Cancel" && "badge text-error"} ${
+            } ${doctor?.status === "Reject" && "badge text-error"} ${
               doctor?.status === "Assign" && "badge text-success"
             }`}
           >
             {(doctor?.status === "Pending" && "Pending") ||
-              (doctor?.status === "Cancel" && "Cancelled") ||
+              (doctor?.status === "Reject" && "Rejected") ||
               (doctor?.status === "Assign" && "Assigned")}
           </p>
         </td>

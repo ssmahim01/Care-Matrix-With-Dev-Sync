@@ -2,18 +2,24 @@ import DoctorsTableRow from "@/components/DoctorsTableRow/DoctorsTableRow";
 import FileInput from "@/components/FileInput/FileInput";
 import {
   addDoctor,
+  assignDoctor,
+  convertRole,
   fetchDoctors,
+  rejectDoctor,
   updateDoctor,
 } from "@/redux/doctors/doctorSlice";
 import {
   BadgePlus,
   Ban,
   BriefcaseMedical,
+  CalendarCheck,
   CalendarDays,
+  CalendarSearch,
   CircleCheckBig,
   CircleUser,
   CircleUserRound,
   CopyX,
+  Cross,
   HeartPulse,
   Mail,
   NotebookPen,
@@ -38,6 +44,7 @@ import toast from "react-hot-toast";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import Swal from "sweetalert2";
 
 const DoctorsManagement = () => {
   const dispatch = useDispatch();
@@ -117,13 +124,50 @@ const DoctorsManagement = () => {
     }
   };
 
-  const handleReject = (status = "Reject") => {
-    console.log(status);
-  }
+  const handleReject = async () => {
+    const id = detailsModal?._id;
+    if (!id) {
+      toast.error("User ID is missing");
+      return;
+    }
 
-  const handleAssign = (status = "Assign") => {
-    console.log(status);
-  }
+    try {
+      const result = await dispatch(rejectDoctor(id)).unwrap();
+      if (result) {
+        toast.success("Rejected the request");
+        document.getElementById("doctor_modal_02").close();
+        dispatch(fetchDoctors());
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to reject the user");
+    }
+  };
+
+  const handleAssign = async () => {
+    const id = detailsModal?._id;
+    if (!id) {
+      toast.error("User ID is missing");
+      return;
+    }
+
+    const email = detailsModal?.userEmail;
+    if (!email) {
+      toast.error("User email is missing");
+      return;
+    }
+
+    try {
+      const response = await dispatch(assignDoctor(id)).unwrap();
+      const update_role = await dispatch(convertRole(email)).unwrap();
+      if (response && update_role) {
+        toast.success("Assigned the doctor");
+        document.getElementById("doctor_modal_02").close();
+        dispatch(fetchDoctors());
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to assign the user");
+    }
+  };
 
   const handleAddNote = (doctor) => {
     setNoteModal(doctor);
@@ -743,7 +787,7 @@ const DoctorsManagement = () => {
             <div className="modal-box">
               <form method="dialog">
                 <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-6">
-                <X className="w-5 h-5" />
+                  <X className="w-5 h-5" />
                 </button>
               </form>
               <div className="flex flex-col">
@@ -771,43 +815,72 @@ const DoctorsManagement = () => {
 
                 <div className="space-y-2">
                   <div className="grid grid-cols-2 gap-3">
-                  <h4 className="flex gap-2 items-center font-semibold">
-                    <CircleUserRound className="w-4 h-4" />
-                    <span className="text-base text-gray-800">
-                      {detailsModal?.userName}
-                    </span>
-                  </h4>
+                    <h4 className="flex gap-2 items-center font-semibold">
+                      <CircleUserRound className="w-4 h-4" />
+                      <span className="text-base text-gray-800">
+                        {detailsModal?.userName}
+                      </span>
+                    </h4>
 
-                  <p className="flex gap-2 items-center font-semibold">
-                    <Mail className="w-4 h-4" />
-                    <span className="text-sm text-gray-800">
-                      {detailsModal?.userEmail}
-                    </span>
-                  </p>
+                    <p className="flex gap-2 items-center font-semibold">
+                      <Mail className="w-4 h-4" />
+                      <span className="text-sm text-gray-800">
+                        {detailsModal?.userEmail}
+                      </span>
+                    </p>
 
-                  <p className="flex gap-2 items-center font-semibold">
-                    <PhoneCall className="w-4 h-4" />
-                    <span className="text-base text-gray-800">
-                      {detailsModal?.emergencyContact}
-                    </span>
-                  </p>
+                    <p className="flex gap-2 items-center font-semibold">
+                      <PhoneCall className="w-4 h-4" />
+                      <span className="text-base text-gray-800">
+                        {detailsModal?.emergencyContact}
+                      </span>
+                    </p>
 
-                  <p className="flex gap-2 items-center font-semibold">
-                  <HeartPulse className="w-4 h-4" />
-                    <span className="text-base text-gray-800">
-                      {detailsModal?.requestedRole}
-                    </span>
-                  </p>
+                    <p className="flex gap-2 items-center font-semibold">
+                      <HeartPulse className="w-4 h-4" />
+                      <span className="text-base text-gray-800">
+                        {detailsModal?.requestedRole}
+                      </span>
+                    </p>
                   </div>
+
+                  <p className="flex gap-2 items-center font-semibold">
+                    <Cross className="w-4 h-4" />
+                    <span className="text-gray-900 font-bold">
+                      Department:{" "}
+                    </span>
+                    <span className="text-base text-gray-800">
+                      {detailsModal?.department}
+                    </span>
+                  </p>
+
+                  <p className="flex gap-2 items-center font-semibold">
+                    <CalendarSearch className="w-4 h-4" />
+                    <span className="text-gray-900 font-bold">
+                      Available Date:{" "}
+                    </span>
+                    <span className="text-base text-gray-800">
+                      {new Date(detailsModal?.availableDate).toLocaleDateString(
+                        "en-UK"
+                      )}
+                    </span>
+                  </p>
+                  <p className="flex gap-2 items-center font-semibold">
+                    <CalendarCheck className="w-4 h-4" />
+                    <span className="text-gray-900 font-bold">
+                      Selected Shift:{" "}
+                    </span>
+                    <span className="text-base text-gray-800">
+                      {detailsModal?.shift}
+                    </span>
+                  </p>
                 </div>
               </div>
 
-              <div className="py-3 flex md:flex-row flex-col flex-wrap justify-between items-center">
+              <div className="pt-5 flex md:flex-row flex-col flex-wrap justify-between items-center">
                 <Button
                   type="button"
-                  onClick={() =>
-                   handleReject(detailsModal?.status)
-                  }
+                  onClick={handleReject}
                   className="btn bg-rose-500 hover:bg-rose-700 text-base text-white font-bold rounded-md flex gap-2 items-center"
                 >
                   <Ban className="w-4 h-4" />
@@ -816,10 +889,10 @@ const DoctorsManagement = () => {
 
                 <Button
                   type="submit"
-                  onClick={() => handleAssign(detailsModal?.status)}
+                  onClick={handleAssign}
                   className="btn bg-sky-600 hover:bg-sky-700 text-base text-white font-bold rounded-md flex gap-2 items-center"
                 >
-                 <CircleCheckBig className="w-4 h-4" />
+                  <CircleCheckBig className="w-4 h-4" />
                   <span>Assign Doctor</span>
                 </Button>
               </div>

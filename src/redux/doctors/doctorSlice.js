@@ -27,6 +27,24 @@ export const updateDoctor = createAsyncThunk("doctors/update", async ({ id, note
   return response.data;
 });
 
+// Reject a doctor
+export const rejectDoctor = createAsyncThunk("doctors/reject", async (id) => {
+  const response = await axios.patch(`${import.meta.env.VITE_API_URL}/user-requests/reject-status/${id}`);
+  return response.data;
+});
+
+// Assign a doctor
+export const assignDoctor = createAsyncThunk("doctors/assign", async (id) => {
+  const response = await axios.patch(`${import.meta.env.VITE_API_URL}/user-requests/assign-status/${id}`);
+  return response.data;
+});
+
+// Convert role
+export const convertRole = createAsyncThunk("doctors/role", async (email) => {
+  const response = await axios.patch(`${import.meta.env.VITE_API_URL}/users/convert-role/${email}`);
+  return response.data;
+});
+
 // Delete doctor
 export const deleteDoctor = createAsyncThunk("doctors/delete", async (id) => {
   await axios.delete(`${import.meta.env.VITE_API_URL}/user-requests/delete-doctor/${id}`);
@@ -50,6 +68,24 @@ const doctorSlice = createSlice({
         state.doctors.push(action.payload);
       })
       .addCase(updateDoctor.fulfilled, (state, action) => {
+        const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
+        if (index !== -1) {
+          state.doctors[index] = action.payload;
+        }
+      })
+      .addCase(rejectDoctor.fulfilled, (state, action) => {
+        const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
+        if (index !== -1) {
+          state.doctors[index] = action.payload;
+        }
+      })
+      .addCase(assignDoctor.fulfilled, (state, action) => {
+        const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
+        if (index !== -1) {
+          state.doctors[index] = action.payload;
+        }
+      })
+      .addCase(convertRole.fulfilled, (state, action) => {
         const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
         if (index !== -1) {
           state.doctors[index] = action.payload;
