@@ -18,7 +18,7 @@ const useMyAppointments = () => {
 
   })
 
-    return [appointments, isLoading, refetch]
+    return [appointments, refetch, isLoading]
 };
 
 export default useMyAppointments;
