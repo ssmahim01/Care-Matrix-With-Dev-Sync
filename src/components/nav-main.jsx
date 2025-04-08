@@ -58,6 +58,7 @@ export function NavMain() {
   const dashboardRoutes = (
     <>
       <ul className="menu *:font-semibold *:text-gray-700 flex flex-col gap-6">
+        {/* Administrator Dashboard Menu*/}
         {role === "administrator" && (
           <>
             <NavLink to="/dashboard/administrator-overview">
@@ -111,6 +112,7 @@ export function NavMain() {
             <div className="divider mt-2"></div>
           </>
         )}
+        {/* Doctor Dashboard Menu */}
         {role === "doctor" && (
           <>
             <NavLink to="/dashboard/administrator-overview">
@@ -157,6 +159,7 @@ export function NavMain() {
             <div className="divider"></div>
           </>
         )}
+        {/* Pharmacist Dashboard Menu */}
         {role === "pharmacist" && (
           <>
             <NavLink to="/dashboard/pharmacist-overview">
@@ -212,9 +215,7 @@ export function NavMain() {
             <div className="divider"></div>
           </>
         )}
-
         {/* Patient Dashboard Menu */}
-        {/* {!isPharmacist && !isDoctor && !administrator &&( */}
         {role === "patient" && (
           <>
             <NavLink to="/dashboard/patient-overview">
@@ -291,30 +292,10 @@ export function NavMain() {
                 Purchase History
               </span>
             </NavLink>
-            {/* <NavLink to="/dashboard/pharmacist/manage-banner">
-              <h3 className="flex gap-2 items-center">
-                <TicketSlash className="text-base" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}> Manage Banners </span>
-              </h3>
-            </NavLink>
-            <NavLink to="/dashboard/medical-records">
-              <h3 className="flex gap-2 items-center">
-                <FileSpreadsheet className="text-base" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}> Sales Report </span>
-
-              </h3>
-            </NavLink>
-            <NavLink to="/dashboard/my-prescriptions">
-              <h3 className="flex gap-2 items-center">
-                <ClipboardPlus className="text-base" />
-                <span className={`${state === "collapsed" && "md:hidden"}`}> My Prescriptions </span>
-
-              </h3>
-            </NavLink> */}
             <div className="divider"></div>
           </>
         )}
-
+        {/* Receptionist Dashboard Menu */}
         {role === "receptionist" && (
           <>
             <NavLink to="/dashboard/receptionist-overview">
@@ -334,7 +315,7 @@ export function NavMain() {
             </NavLink>
             <NavLink to="/dashboard/receptionist/manage-appointments">
               <h3 className="flex gap-2 items-center">
-              <ClipboardPlus className="text-base" /> Manage Appointments
+                <ClipboardPlus className="text-base" /> Manage Appointments
               </h3>
             </NavLink>
             <div className="divider"></div>
@@ -351,24 +332,24 @@ export function NavMain() {
           <Home /> Home
         </h3>
       </NavLink>
-      <NavLink to="/doctors">
+      <NavLink to="/pharmacy">
         <h3 className="flex gap-2 items-center">
-          <BriefcaseMedical className="text-lg" /> Specialties
+          <BriefcaseMedical className="text-lg" /> Pharmacy
         </h3>
       </NavLink>
       <NavLink to="/services">
         <h3 className="flex gap-2 items-center">
-          <Stethoscope className="text-lg" /> Services
-        </h3>
-      </NavLink>
-      <NavLink to="/about-us">
-        <h3 className="flex gap-2 items-center">
-          <BadgeInfo className="text-lg" /> About Us
+          <Stethoscope className="text-lg" /> Our Services
         </h3>
       </NavLink>
       <NavLink to="/contact-us">
         <h3 className="flex gap-2 items-center">
           <Contact className="text-lg" /> Contact Us
+        </h3>
+      </NavLink>
+      <NavLink to="/about-us">
+        <h3 className="flex gap-2 items-center">
+          <BadgeInfo className="text-lg" /> About Us
         </h3>
       </NavLink>
     </ul>
