@@ -15,7 +15,7 @@ const useRoleRequest = () => {
       queryKey: ["requestedData", user?.uid],
       queryFn: async () => {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/user-requests/${user?.uid}?search=${search}`
+          `${import.meta.env.VITE_API_URL}/user-requests/${user?.uid}?search=${encodeURIComponent(search)}`
         );
         return data.data;
       },
