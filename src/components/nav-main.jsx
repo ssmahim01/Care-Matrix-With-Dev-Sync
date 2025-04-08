@@ -1,3 +1,13 @@
+import { Collapsible } from "@/components/ui/collapsible";
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import useRole from "@/hooks/useRole";
+import { useAuthLoading } from "@/redux/auth/authActions";
 import {
   BadgeInfo,
   BriefcaseMedical,
@@ -13,29 +23,17 @@ import {
   LayoutDashboard,
   LayoutDashboardIcon,
   LucideBedSingle,
+  ShoppingCart,
   Sparkles,
   Stethoscope,
   TicketSlash,
   Users,
 } from "lucide-react";
+import { FaHistory, FaTruck } from "react-icons/fa";
+import { FaUserDoctor } from "react-icons/fa6";
 import { GiMedicines } from "react-icons/gi";
 import historyIcon from "../assets/file.png";
-import { Collapsible } from "@/components/ui/collapsible";
-import {
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
 import { NavLink } from "react-router";
-import { FaUserDoctor } from "react-icons/fa6";
-import { ShoppingBag } from "lucide-react";
-import useRole from "@/hooks/useRole";
-import { FaHistory, FaShoppingCart, FaTruck } from "react-icons/fa";
-import { ShoppingCart } from "lucide-react";
-import { SkeletonBox } from "@/pages/DashboardPages/Pharmacist/SalesReport/SalesReportSkeleton";
-import { useAuthLoading } from "@/redux/auth/authActions";
 
 export function NavMain() {
   const { state } = useSidebar();
@@ -44,6 +42,7 @@ export function NavMain() {
 
   const dashboardRoutes = (
     <>
+      {/* Loading Skeleton */}
       {loading || isLoading ? (
         <div className="flex flex-col gap-4 pb-4">
           <div className="flex items-center gap-3 mt-1 pl-2">
