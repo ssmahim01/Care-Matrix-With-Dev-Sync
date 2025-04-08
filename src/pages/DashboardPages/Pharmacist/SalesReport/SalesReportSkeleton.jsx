@@ -1,5 +1,6 @@
 import OverviewCardsSkeleton from "./Skeleton/OverviewCardsSkeleton";
 import SalesHeaderSkeleton from "./Skeleton/SalesHeaderSkeleton";
+import TabContentSkeleton from "./Skeleton/TabContentSkeleton";
 
 export const SkeletonBox = ({ className = "" }) => (
   <div className={`bg-gray-200 rounded animate-pulse ${className}`} />
@@ -15,14 +16,18 @@ const SalesReportSkeleton = () => {
       {/* Header */}
       <SalesHeaderSkeleton />
       {/* Tablist's */}
-      <div className="mt-6 border-2 bg-[#fefefe] border-border  p-2 rounded-lg w-fit flex items-center gap-3">
-        <SkeletonBox className="w-20 h-8" />
+      <div className="mt-6 border bg-[#fefefe] border-border  p-2 rounded-lg w-fit flex items-center gap-3">
+        <SkeletonBox className="w-22 h-8" />
         <SkeletonBox className="w-26 h-8" />
         <SkeletonBox className="w-32 h-8" />
       </div>
       {/* Overview Cards */}
       <div className="mt-6">
         <OverviewCardsSkeleton />
+      </div>
+      {/* Contents */}
+      <div className="mt-6">
+        <TabContentSkeleton />
       </div>
     </div>
   );
