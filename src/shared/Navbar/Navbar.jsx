@@ -178,7 +178,7 @@ const Navbar = () => {
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/contact-us"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <FaMapMarkerAlt
@@ -198,7 +198,7 @@ const Navbar = () => {
                             </NavLink>
                             <NavLink
                               to="/doctors"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <FaUserDoctor
@@ -222,7 +222,7 @@ const Navbar = () => {
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/services"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <MdMedicalServices
@@ -242,7 +242,7 @@ const Navbar = () => {
                             </NavLink>
                             <NavLink
                               to="/pharmacy"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <GiMedicines
@@ -314,7 +314,7 @@ const Navbar = () => {
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/contact-us"
-                              className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <FaMapMarkerAlt
@@ -334,7 +334,7 @@ const Navbar = () => {
                             </NavLink>
                             <NavLink
                               to="/doctors"
-                              className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <FaUserDoctor
@@ -358,7 +358,7 @@ const Navbar = () => {
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/services"
-                              className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <MdMedicalServices
@@ -378,7 +378,7 @@ const Navbar = () => {
                             </NavLink>
                             <NavLink
                               to="/pharmacy"
-                              className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <GiMedicines

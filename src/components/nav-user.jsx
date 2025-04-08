@@ -25,38 +25,53 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { logOut, useAuthUser } from "@/redux/auth/authActions";
+import { logOut, useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 
 export function NavUser() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useAuthUser();
+  const loading = useAuthLoading();
   const { isMobile } = useSidebar();
+  const user = useAuthUser();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
-            >
-              <img
-                src={user?.photoURL}
-                alt={user?.displayName}
-                referrerPolicy="no-referrer"
-                className="h-10 w-10 rounded-lg object-cover"
-              />
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">
-                  {user?.displayName}
-                </span>
-                <span className="truncate text-xs">{user?.email}</span>
-              </div>
-              <ChevronsRight className="ml-auto size-4" />
-            </SidebarMenuButton>
+            {loading ? (
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
+              >
+                <div className="h-10 w-10 bg-gray-200 rounded-lg animate-shimmer skeleton" />
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <div className="h-4 w-24 bg-gray-200 rounded animate-shimmer skeleton" />
+                  <div className="h-3 w-32 bg-gray-200 rounded mt-1 animate-shimmer skeleton" />
+                </div>
+                <div className="ml-auto h-4 w-4 bg-gray-200 rounded animate-shimmer skeleton" />
+              </SidebarMenuButton>
+            ) : (
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
+              >
+                <img
+                  src={user?.photoURL}
+                  alt={user?.displayName}
+                  referrerPolicy="no-referrer"
+                  className="h-10 w-10 rounded-lg object-cover"
+                />
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">
+                    {user?.displayName}
+                  </span>
+                  <span className="truncate text-xs">{user?.email}</span>
+                </div>
+                <ChevronsRight className="ml-auto size-4" />
+              </SidebarMenuButton>
+            )}
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
@@ -81,14 +96,14 @@ export function NavUser() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup className="flex flex-col gap-2 py-2">
+            <DropdownMenuGroup className="flex flex-col gap-1">
               <NavLink
                 to="/dashboard/profile"
                 className={({ isActive }) =>
                   `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
                     isActive
                       ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
-                      : "hover:bg-base-300/80 transition-all duration-300 ease-in-out py-[6px] rounded-md"
+                      : "hover:bg-[#f1f5f9] transition-all duration-300 ease-in-out py-[6px] rounded-md"
                   }`
                 }
               >
@@ -101,7 +116,7 @@ export function NavUser() {
                   `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
                     isActive
                       ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
-                      : "hover:bg-base-300/80 transition-all duration-300 ease-in-out py-[6px] rounded-md"
+                      : "hover:bg-[#f1f5f9] transition-all duration-300 ease-in-out py-[6px] rounded-md"
                   }`
                 }
               >
@@ -116,27 +131,29 @@ export function NavUser() {
                 Account
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
                 <Bell />
                 Notifications
               </DropdownMenuItem>
+              <DropdownMenuItem>
+                <CreditCard />
+                Billing Options
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <p
+            <div>
+              <button
+                className={
+                  "hover:bg-[#f1f5f9] transition-all duration-500 ease-in-out py-[6px] rounded-md cursor-pointer hover:text-red-500 flex items-center gap-2 w-full px-2 text-xs font-medium "
+                }
                 onClick={() => {
                   dispatch(logOut);
                   navigate("/");
                 }}
-                className="cursor-pointer hover:text-rose-500 flex gap-2 items-center"
               >
-                <LogOut className="hover:text-rose-500" />
-                Log out
-              </p>
-            </DropdownMenuItem>
+                <LogOut className="hover:text-red-500" size={20} />
+                Logout
+              </button>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
