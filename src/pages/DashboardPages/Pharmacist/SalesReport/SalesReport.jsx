@@ -44,6 +44,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import RevenueByDayTable from "./RevenueByDayTable";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -294,49 +295,7 @@ export default function SalesReport() {
                 <div>
                   <h3 className="text-base font-bold mb-4">Revenue by Day</h3>
                   <div>
-                    <Table className={"p-4"}>
-                      <TableCaption>A List Of Revenue By Day</TableCaption>
-                      <TableHeader>
-                        <TableRow className={"bg-base-200 hover:bg-base-200"}>
-                          <TableHead className={"px-4"}>Date</TableHead>
-                          <TableHead className={"px-4"}>Items Sold</TableHead>
-                          <TableHead className={"px-4"}>Revenue</TableHead>
-                          <TableHead className={"px-4"}>
-                            Avg. Item Value
-                          </TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {sortedRevenueData.map((day, index) => (
-                          <TableRow key={day.date}>
-                            <TableCell className={"px-4"}>
-                              {" "}
-                              {format(new Date(day.date), "MMM dd, yyyy")}
-                            </TableCell>
-                            <TableCell className={"px-4"}>
-                              {day.totalQty} items
-                            </TableCell>
-                            <TableCell className={"px-4"}>
-                              {" "}
-                              $
-                              {day.totalRevenue.toLocaleString(undefined, {
-                                maximumFractionDigits: 2,
-                              })}
-                            </TableCell>
-                            <TableCell className={"px-4"}>
-                              {" "}
-                              $
-                              {(day.totalRevenue / day.totalQty).toLocaleString(
-                                undefined,
-                                {
-                                  maximumFractionDigits: 2,
-                                }
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                    <RevenueByDayTable sortedRevenueData={sortedRevenueData} />
                   </div>
                 </div>
               </CardContent>
