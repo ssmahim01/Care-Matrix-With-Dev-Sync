@@ -33,6 +33,7 @@ import RevenueChart from "./RevenueChart";
 import axios from "axios";
 import PerformanceChart from "./PerformanceChart";
 import PerformanceTable from "./PerformanceTable";
+import ProductInsightsCard from "./ProductInsightsCard";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -193,76 +194,37 @@ export default function SalesReport() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid lg:grid-cols-7">
-                  <div className="mb-6 lg:col-span-4 w-full">
+                {/* Performance Chart & Table */}
+                <div className="grid lg:grid-cols-7 xl:grid-cols-8">
+                  <div className="mb-6 lg:col-span-4 xl:col-span-5 w-full">
                     {/* Medicine Performance Chart */}
                     <PerformanceChart
                       topSellingMedicines={report?.topSellingMedicines}
                     />
                   </div>
                   {/* Medicine Performance Table */}
-                  <div className="lg:col-span-3 w-full">
+                  <div className="lg:col-span-3 xl:col-span-3 w-full">
                     <PerformanceTable
                       topSellingMedicines={report?.topSellingMedicines}
                       totalItems={totalItems}
                     />
                   </div>
                 </div>
+                {/* Product Insights & Recommendations */}
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card className="bg-muted/20 border-none">
-                    <CardHeader>
-                      <CardTitle className="text-base">
-                        Product Insights
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center mt-0.5">
-                            <CheckCircle className="h-3 w-3 text-green-500" />
-                          </div>
-                          <span>
-                            Ciproxin is the top selling medicine with 25 units
-                            sold
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center mt-0.5">
-                            <CheckCircle className="h-3 w-3 text-green-500" />
-                          </div>
-                          <span>
-                            Antibiotics (Ciproxin, Dalacin C, Zithromax) are the
-                            most popular category
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center mt-0.5">
-                            <CheckCircle className="h-3 w-3 text-green-500" />
-                          </div>
-                          <span>
-                            Top 5 products account for{" "}
-                            {(
-                              (report.topSellingMedicines.reduce(
-                                (acc, med) => acc + med.totalQty,
-                                0
-                              ) /
-                                totalItems) *
-                              100
-                            ).toFixed(1)}
-                            % of total sales
-                          </span>
-                        </li>
-                      </ul>
-                    </CardContent>
-                  </Card>
+                  {/* Product Insights */}
+                  <ProductInsightsCard
+                    topSellingMedicines={report?.topSellingMedicines}
+                    totalItems={totalItems}
+                  />
 
-                  <Card className="bg-muted/20 border-none">
+                  <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
                     <CardHeader>
                       <CardTitle className="text-base">
                         Recommendations
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className={"-mt-5"}>
                       <ul className="space-y-2">
                         <li className="flex items-start gap-2">
                           <div className="h-5 w-5 rounded-full bg-amber-500/20 flex items-center justify-center mt-0.5">
