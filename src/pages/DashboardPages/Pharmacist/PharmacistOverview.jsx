@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ManufacturersTable from "./PharmacistOverview/ManufacturersTable";
+import SupplierTable from "./PharmacistOverview/SupplierTable";
 
 const PharmacistOverview = () => {
   const axiosPublic = useAxiosPublic();
@@ -110,13 +111,13 @@ const PharmacistOverview = () => {
             <Tabs defaultValue="manufacturers">
               <TabsList className="mb-4 border py-6 px-1">
                 <TabsTrigger
-                  className={"cursor-pointer py-2 px-4"}
+                  className={"cursor-pointer py-2 px-8"}
                   value="manufacturers"
                 >
                   Manufacturers
                 </TabsTrigger>
                 <TabsTrigger
-                  className={"cursor-pointer py-2 px-4"}
+                  className={"cursor-pointer py-2 px-8"}
                   value="suppliers"
                 >
                   Suppliers
@@ -128,7 +129,9 @@ const PharmacistOverview = () => {
                 />
               </TabsContent>
               <TabsContent value="suppliers">
-                {/* <TopSuppliersTable /> */}
+                <SupplierTable
+                  medicinesPerSupplier={stats?.medicinesPerSupplier}
+                />
               </TabsContent>
             </Tabs>
           </CardContent>
