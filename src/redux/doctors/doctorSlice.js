@@ -4,8 +4,8 @@ import axios from "axios";
 const API_URL = `${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors`;
 
 // Fetch all doctors
-export const fetchDoctors = createAsyncThunk("doctors/fetchDoctors", async () => {
-  const response = await axios.get(`${import.meta.env.VITE_API_URL}/user-requests/doctors`);
+export const fetchDoctors = createAsyncThunk("doctors/fetchDoctors", async ({search = "", sort = ""} = {}) => {
+  const response = await axios.get(`${import.meta.env.VITE_API_URL}/user-requests/doctors?search=${search}&sort=${sort}`);
   return response.data;
 });
 
@@ -53,8 +53,15 @@ export const deleteDoctor = createAsyncThunk("doctors/delete", async (id) => {
 
 const doctorSlice = createSlice({
   name: "doctors",
-  initialState: { doctors: [], status: "idle", error: null },
-  reducers: {},
+  initialState: { doctors: [], status: "idle", search: "", sort: "", error: null },
+  reducers: {
+    setSearch(state, action){
+      state.search = action.payload
+    },
+    setSort(state, action){
+      state.sort = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDoctors.pending, (state) => {
@@ -94,7 +101,8 @@ const doctorSlice = createSlice({
       .addCase(deleteDoctor.fulfilled, (state, action) => {
         state.doctors = state.doctors.filter((doc) => doc._id !== action.payload);
       });
-  },
+    },
 });
 
+export const { setSearch, setSort } = doctorSlice.actions;
 export default doctorSlice.reducer;

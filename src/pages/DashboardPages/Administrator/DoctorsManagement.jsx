@@ -1,9 +1,20 @@
 import DoctorsTableRow from "@/components/DoctorsTableRow/DoctorsTableRow";
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   assignDoctor,
   convertRole,
   fetchDoctors,
   rejectDoctor,
+  setSearch,
+  setSort,
   updateDoctor,
 } from "@/redux/doctors/doctorSlice";
 import {
@@ -48,6 +59,8 @@ const DoctorsManagement = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [detailsModal, setDetailsModal] = useState({});
   const { doctors, status } = useSelector((state) => state.doctors);
+  const search = useSelector((state) => state.doctors.search);
+  const sort = useSelector((state) => state.doctors.sort);
 
   const FormSchema = z.object({
     note: z
@@ -141,9 +154,21 @@ const DoctorsManagement = () => {
     document.getElementById("doctor_modal_02").showModal();
   };
 
+  // Change search value
+  const handleSearchChange = (e) => {
+    dispatch(setSearch(e.target.value));
+    dispatch(fetchDoctors({ search: e.target.value, sort }));
+  };
+
+  // Handle sort of department
+  const handleSortChange = (value) => {
+    dispatch(setSort(value));
+    dispatch(fetchDoctors({ search, sort: value }));
+  };
+
   useEffect(() => {
-    dispatch(fetchDoctors());
-  }, [dispatch]);
+    dispatch(fetchDoctors({ search, sort }));
+  }, [dispatch, search, sort]);
 
   return (
     <>
@@ -160,26 +185,51 @@ const DoctorsManagement = () => {
                 View requests for doctor and modify
               </p>
             </div>
+            <div className="flex gap-4 md:flex-row flex-col items-center">
+              <Select onValueChange={handleSortChange}>
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Sort By Department" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Department</SelectLabel>
+                    {[...new Set(doctors?.map((d) => d.department))]?.map(
+                      (dept) => (
+                        <SelectItem key={dept} value={dept}>
+                          {dept}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
 
-            <label className="input border">
-              <svg
-                className="h-[1em] opacity-50"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <g
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  strokeWidth="2.5"
-                  fill="none"
-                  stroke="currentColor"
+              <label className="input border">
+                <svg
+                  className="h-[1em] opacity-50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
                 >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="m21 21-4.3-4.3"></path>
-                </g>
-              </svg>
-              <input type="search" required placeholder="Search" />
-            </label>
+                  <g
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                  </g>
+                </svg>
+                <input
+                  value={search}
+                  onChange={handleSearchChange}
+                  type="search"
+                  required
+                  placeholder="Search by email..."
+                />
+              </label>
+            </div>
           </div>
         ) : (
           <h2 className="md:text-4xl text-2xl font-bold text-base-content mb-2">
@@ -233,30 +283,39 @@ const DoctorsManagement = () => {
           <tbody>
             {status === "loading"
               ? [...Array(5)].map((_, index) => (
-                  <tr key={index}>
+                  <tr key={index} className="border-t border-gray-200">
                     <td className="p-4">
-                      <div className="skeleton h-4 w-4" />
+                      <div className="skeleton h-6 w-4" />
                     </td>
                     <td className="p-4">
-                      <div className="skeleton h-10 w-10 rounded-full" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-24" />
+                      <div className="skeleton h-10 w-10 rounded-md" />
                     </td>
                     <td className="p-4">
                       <div className="skeleton h-4 w-24" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-16" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-16" />
                     </td>
                     <td className="p-4">
                       <div className="skeleton h-4 w-32" />
                     </td>
                     <td className="p-4">
-                      <div className="skeleton h-8 w-8" />
+                      <div className="skeleton h-4 w-24" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-20" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-28" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-20" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-16" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-20" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-8 w-8 rounded-md" />
                     </td>
                   </tr>
                 ))
