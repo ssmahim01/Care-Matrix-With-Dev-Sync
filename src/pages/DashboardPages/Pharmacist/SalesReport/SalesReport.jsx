@@ -35,6 +35,15 @@ import RevenueChart from "./RevenueChart";
 import OrderStatusChart from "./OrderStatusChart";
 import TopSellingChart from "./TopSellingChart";
 import OrderVolumeChart from "./OrderVolumeChart";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -200,7 +209,7 @@ export default function SalesReport() {
             <div className="grid gap-6 lg:grid-cols-7">
               {/* Top Selling Chart */}
               <TopSellingChart
-                topSellingMedicines={report?.topSellingMedicines}
+                topSellingMedicines={report?.topSellingMedicines.slice(0, 5)}
               />
               {/* Order Volume Chart */}
               <OrderVolumeChart enhancedRevenueData={enhancedRevenueData} />
@@ -208,22 +217,25 @@ export default function SalesReport() {
           </TabsContent>
           {/* 2nd Tab Content */}
           <TabsContent value="analytics" className="space-y-6">
-            <Card className="border-none shadow-md">
+            <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
               <CardHeader>
-                <CardTitle>Revenue Analysis</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-base font-bold">
+                  Revenue Analysis
+                </CardTitle>
+                <CardDescription className="py-0 font-medium -mt-1">
                   Detailed breakdown of revenue metrics
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                {/* Revenue Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                  <Card className="bg-primary/5 border-none">
+                  <Card className="border shadow border-[#e5e7eb] w-full pb-6">
                     <CardContent className="pt-6">
                       <div className="text-center">
-                        <div className="text-sm font-medium text-muted-foreground">
+                        <div className="text-base font-semibold text-gray-700">
                           Average Daily Revenue
                         </div>
-                        <div className="text-3xl font-bold mt-2 text-primary">
+                        <div className="text-3xl font-extrabold mt-1 text-primary">
                           $
                           {avgDailyRevenue.toLocaleString(undefined, {
                             maximumFractionDigits: 2,
@@ -233,13 +245,13 @@ export default function SalesReport() {
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-primary/5 border-none">
+                  <Card className="border shadow border-[#e5e7eb] w-full pb-6">
                     <CardContent className="pt-6">
                       <div className="text-center">
-                        <div className="text-sm font-medium text-muted-foreground">
+                        <div className="text-base font-semibold text-gray-700">
                           Average Order Value
                         </div>
-                        <div className="text-3xl font-bold mt-2 text-primary">
+                        <div className="text-3xl font-extrabold mt-1 text-primary">
                           $
                           {avgOrderValue.toLocaleString(undefined, {
                             maximumFractionDigits: 2,
@@ -249,13 +261,13 @@ export default function SalesReport() {
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-primary/5 border-none">
+                  <Card className="border shadow border-[#e5e7eb] w-full pb-6">
                     <CardContent className="pt-6">
                       <div className="text-center">
-                        <div className="text-sm font-medium text-muted-foreground">
+                        <div className="text-base font-semibold text-gray-700">
                           Average Item Value
                         </div>
-                        <div className="text-3xl font-bold mt-2 text-primary">
+                        <div className="text-3xl font-extrabold mt-1 text-primary">
                           $
                           {avgItemValue.toLocaleString(undefined, {
                             maximumFractionDigits: 2,
@@ -265,53 +277,54 @@ export default function SalesReport() {
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-primary/5 border-none">
+                  <Card className="border shadow border-[#e5e7eb] w-full pb-6">
                     <CardContent className="pt-6">
                       <div className="text-center">
-                        <div className="text-sm font-medium text-muted-foreground">
+                        <div className="text-base font-semibold text-gray-700">
                           Total Items Sold
                         </div>
-                        <div className="text-3xl font-bold mt-2 text-primary">
+                        <div className="text-3xl font-extrabold mt-1 text-primary">
                           {totalItems.toLocaleString()}
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 </div>
-
+                {/* Revenue by Day */}
                 <div>
-                  <h3 className="text-lg font-medium mb-4">Revenue by Day</h3>
-                  <div className="overflow-hidden rounded-lg border bg-background">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="bg-muted/50">
-                          <th className="p-3 text-left font-medium">Date</th>
-                          <th className="p-3 text-left font-medium">
-                            Items Sold
-                          </th>
-                          <th className="p-3 text-left font-medium">Revenue</th>
-                          <th className="p-3 text-left font-medium">
+                  <h3 className="text-base font-bold mb-4">Revenue by Day</h3>
+                  <div>
+                    <Table className={"p-4"}>
+                      <TableCaption>A List Of Revenue By Day</TableCaption>
+                      <TableHeader>
+                        <TableRow className={"bg-base-200 hover:bg-base-200"}>
+                          <TableHead className={"px-4"}>Date</TableHead>
+                          <TableHead className={"px-4"}>Items Sold</TableHead>
+                          <TableHead className={"px-4"}>Revenue</TableHead>
+                          <TableHead className={"px-4"}>
                             Avg. Item Value
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
                         {sortedRevenueData.map((day, index) => (
-                          <tr
-                            key={day.date}
-                            className={index % 2 === 0 ? "bg-muted/20" : ""}
-                          >
-                            <td className="p-3 font-medium">
+                          <TableRow key={day.date}>
+                            <TableCell className={"px-4"}>
+                              {" "}
                               {format(new Date(day.date), "MMM dd, yyyy")}
-                            </td>
-                            <td className="p-3">{day.totalQty} items</td>
-                            <td className="p-3 font-medium">
+                            </TableCell>
+                            <TableCell className={"px-4"}>
+                              {day.totalQty} items
+                            </TableCell>
+                            <TableCell className={"px-4"}>
+                              {" "}
                               $
                               {day.totalRevenue.toLocaleString(undefined, {
                                 maximumFractionDigits: 2,
                               })}
-                            </td>
-                            <td className="p-3">
+                            </TableCell>
+                            <TableCell className={"px-4"}>
+                              {" "}
                               $
                               {(day.totalRevenue / day.totalQty).toLocaleString(
                                 undefined,
@@ -319,11 +332,11 @@ export default function SalesReport() {
                                   maximumFractionDigits: 2,
                                 }
                               )}
-                            </td>
-                          </tr>
+                            </TableCell>
+                          </TableRow>
                         ))}
-                      </tbody>
-                    </table>
+                      </TableBody>
+                    </Table>
                   </div>
                 </div>
               </CardContent>
