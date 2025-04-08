@@ -55,9 +55,11 @@ const PharmacistOverview = () => {
         expiredCount={stats?.expiredCount}
         nearExpiryCount={stats?.nearExpiryCount}
       />
-
-      {/* Medicines Per Category Chart */}
-      <CategoryChart chartData={chartData} isLoading={isLoading} />
+      {/* Category & Prescription Chart */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+        {/* Medicines Per Category Chart */}
+        <CategoryChart chartData={chartData} isLoading={isLoading} />
+      </div>
       <div className="flex gap-6 items-center flex-col lg:flex-row w-full">
         {/* Medicines Per Manufacturer Chart */}
         <ManufacturerChart

@@ -166,15 +166,21 @@ export default function SectionCards({
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-3">
                   <CheckCircle className="h-8 w-8 text-green-500" />
-                  <span className="text-3xl font-extrabold">{expiredCount}</span>
+                  <span className="text-3xl font-extrabold">
+                    {expiredCount}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <XCircle className="h-8 w-8 text-red-500" />
-                  <span className="text-3xl font-extrabold">{nearExpiryCount}</span>
+                  <span className="text-3xl font-extrabold">
+                    {nearExpiryCount}
+                  </span>
                 </div>
               </div>
             </div>
-            <div className="text-xl text-gray-500 font-medium">Expired / Near Expiry</div>
+            <div className="text-xl text-gray-500 font-medium">
+              Expired / Near Expiry
+            </div>
           </>
         )}
       </div>
