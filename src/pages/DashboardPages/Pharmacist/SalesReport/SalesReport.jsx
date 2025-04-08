@@ -33,6 +33,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import RevenueChart from "./RevenueChart";
 import OrderStatusChart from "./OrderStatusChart";
+import TopSellingChart from "./TopSellingChart";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -187,80 +188,26 @@ export default function SalesReport() {
               totalDeliveredOrders={report?.totalDeliveredOrders}
               totalRevenue={report?.totalRevenue}
             />
-            {/* Charts */}
+            {/* Revenue & OrderStatus  Charts */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
               {/* Revenue Chart */}
               <RevenueChart enhancedRevenueData={enhancedRevenueData} />
               {/* OrderStatus Chart */}
               <OrderStatusChart orderStatusData={orderStatusData} />
             </div>
-
+            {/* Top Selling & Order Volume Charts */}
             <div className="grid gap-6 lg:grid-cols-7">
-              <Card className="col-span-3 border-none shadow-md">
-                <CardHeader>
-                  <CardTitle>Top Selling Medicines</CardTitle>
-                  <CardDescription>
-                    Top 5 medicines by quantity sold
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ResponsiveContainer width="100%" height={350}>
-                    <BarChart
-                      data={report.topSellingMedicines}
-                      layout="vertical"
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                    >
-                      <defs>
-                        <linearGradient
-                          id="colorQty"
-                          x1="0"
-                          y1="0"
-                          x2="1"
-                          y2="0"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor={COLORS.orders.primary}
-                            stopOpacity={0.8}
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor={COLORS.orders.secondary}
-                            stopOpacity={0.8}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis
-                        type="number"
-                        tick={{ fontSize: 12 }}
-                        stroke="#9ca3af"
-                      />
-                      <YAxis
-                        dataKey="medicine"
-                        type="category"
-                        width={100}
-                        tick={{ fontSize: 12 }}
-                        stroke="#9ca3af"
-                      />
-                      <Tooltip
-                        formatter={(value) => [value, "Quantity Sold"]}
-                      />
-                      <Bar
-                        dataKey="totalQty"
-                        name="Quantity Sold"
-                        fill="url(#colorQty)"
-                        radius={[0, 4, 4, 0]}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
+              {/* Top Selling Chart */}
+              <TopSellingChart
+                topSellingMedicines={report?.topSellingMedicines}
+              />
 
-              <Card className="col-span-4 border-none shadow-md">
+              <Card className="col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
                 <CardHeader>
-                  <CardTitle>Daily Order Volume</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-base font-bold">
+                    Daily Order Volume
+                  </CardTitle>
+                  <CardDescription className="py-0 font-medium -mt-1">
                     Number of items sold per day
                   </CardDescription>
                 </CardHeader>
