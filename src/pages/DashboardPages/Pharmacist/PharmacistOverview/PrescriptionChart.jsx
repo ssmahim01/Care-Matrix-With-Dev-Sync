@@ -59,6 +59,7 @@ export function PrescriptionRequirementChart({ data, isLoading }) {
             onMouseEnter={onPieEnter}
             onMouseLeave={onPieLeave}
             animationDuration={300}
+            label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
           >
             {chartData.map((entry, index) => (
               <Cell
