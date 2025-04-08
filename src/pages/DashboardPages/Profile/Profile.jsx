@@ -17,7 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import auth from "@/firebase/firebase.config";
 import usePhone from "@/hooks/usePhone";
 import useRole from "@/hooks/useRole";
-import { useAuthUser } from "@/redux/auth/authActions";
+import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { updateUsername } from "@/redux/auth/authSlice";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import axios from "axios";
@@ -41,10 +41,14 @@ import {
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import ProfileSkeleton from "./ProfileSkeleton";
 
 const Profile = () => {
   const user = useAuthUser();
   const phoneNumber = usePhone();
+  const loading = useAuthLoading();
+  const [, roleLoading] = useRole();
+  const [, phoneLoading] = usePhone();
   const dispatch = useDispatch();
   const role = useRole();
 
@@ -82,6 +86,10 @@ const Profile = () => {
     }
   };
 
+  if (loading || roleLoading || phoneLoading) {
+    return <ProfileSkeleton />;
+  }
+
   return (
     <div className="px-7 pb-12">
       <DashboardPagesHeader
@@ -91,9 +99,9 @@ const Profile = () => {
       />
 
       {/* Main Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 xl:grid-cols-4 gap-8">
         {/* Left Column - Profile Image & Quick Info */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="lg:col-span-2 xl:col-span-1 space-y-6">
           {/* Profile Card */}
           <Card className="border shadow-none border-[#e5e7eb]">
             <div className="h-28 bg-gradient-to-r skeleton rounded-b-none rounded-t-[12.8px]" />
@@ -212,7 +220,7 @@ const Profile = () => {
           </Card>
         </div>
         {/* Right Column - Progress, & Profile Details & Edit Profile */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-3 xl:col-span-2">
           {/* Profile Complete Progress */}
           <Card className="border shadow-none border-[#e5e7eb]">
             <CardContent className="p-6">
