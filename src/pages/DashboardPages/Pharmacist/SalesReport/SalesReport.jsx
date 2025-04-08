@@ -32,6 +32,7 @@ import RevenueCards from "./RevenueCards";
 import RevenueChart from "./RevenueChart";
 import axios from "axios";
 import PerformanceChart from "./PerformanceChart";
+import PerformanceTable from "./PerformanceTable";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -192,48 +193,21 @@ export default function SalesReport() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="mb-6">
-                  {/* Medicine Performance Chart */}
-                  <PerformanceChart
-                    topSellingMedicines={report?.topSellingMedicines}
-                  />
+                <div className="grid lg:grid-cols-7">
+                  <div className="mb-6 lg:col-span-4 w-full">
+                    {/* Medicine Performance Chart */}
+                    <PerformanceChart
+                      topSellingMedicines={report?.topSellingMedicines}
+                    />
+                  </div>
+                  {/* Medicine Performance Table */}
+                  <div className="lg:col-span-3 w-full">
+                    <PerformanceTable
+                      topSellingMedicines={report?.topSellingMedicines}
+                      totalItems={totalItems}
+                    />
+                  </div>
                 </div>
-
-                <div className="overflow-hidden rounded-lg border bg-background">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="bg-muted/50">
-                        <th className="p-3 text-left font-medium">Rank</th>
-                        <th className="p-3 text-left font-medium">Medicine</th>
-                        <th className="p-3 text-left font-medium">
-                          Quantity Sold
-                        </th>
-                        <th className="p-3 text-left font-medium">
-                          % of Total
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {report.topSellingMedicines.map((medicine, index) => (
-                        <tr
-                          key={medicine.medicine}
-                          className={index % 2 === 0 ? "bg-muted/20" : ""}
-                        >
-                          <td className="p-3 font-medium">{index + 1}</td>
-                          <td className="p-3">{medicine.medicine}</td>
-                          <td className="p-3">{medicine.totalQty}</td>
-                          <td className="p-3">
-                            {((medicine.totalQty / totalItems) * 100).toFixed(
-                              1
-                            )}
-                            %
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card className="bg-muted/20 border-none">
                     <CardHeader>

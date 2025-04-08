@@ -11,10 +11,10 @@ import {
 
 const PerformanceChart = ({ topSellingMedicines }) => {
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%">
       <BarChart
         data={topSellingMedicines}
-        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        margin={{ top: 20, right: 30, left: -20, bottom: 5 }}
       >
         <defs>
           <linearGradient id="colorBar" x1="0" y1="0" x2="0" y2="1">
