@@ -252,7 +252,7 @@ export function NavMain() {
                 "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
               }
             >
-              <ClipboardPlus className="text-base" />
+              <FaUserDoctor size={20} className="text-base" />
               <span className={`${state === "collapsed" && "md:hidden"}`}>
                 My Favorite Doctors
               </span>
@@ -334,7 +334,7 @@ export function NavMain() {
             </NavLink>
             <NavLink to="/dashboard/receptionist/manage-appointments">
               <h3 className="flex gap-2 items-center">
-              <ClipboardPlus className="text-base" /> Manage Appointments
+                <ClipboardPlus className="text-base" /> Manage Appointments
               </h3>
             </NavLink>
             <div className="divider"></div>
