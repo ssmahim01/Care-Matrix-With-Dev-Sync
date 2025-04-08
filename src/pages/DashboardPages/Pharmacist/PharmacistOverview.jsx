@@ -12,6 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ManufacturersTable from "./PharmacistOverview/ManufacturersTable";
 
 const PharmacistOverview = () => {
   const axiosPublic = useAxiosPublic();
@@ -67,6 +69,7 @@ const PharmacistOverview = () => {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
         {/* Medicines Per Category Chart */}
         <CategoryChart chartData={chartData} isLoading={isLoading} />
+        {/* Prescription Chart */}
         <div className="lg:col-span-3 xl:col-span-2">
           <Card className="bg-white border border-gray-200 rounded-lg px-4 py-8 shadow-sm col-span-4">
             <CardHeader>
@@ -91,6 +94,56 @@ const PharmacistOverview = () => {
             </CardContent>
           </Card>
         </div>
+      </div>
+      {/* Manufacturer & Supplier Table & Storage Condition Table */}
+      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="lg:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
+              Top Manufacturers & Suppliers
+            </CardTitle>
+            <CardDescription className={"-mt-3 text-sm font-medium"}>
+              Distribution of medicines by manufacturer and supplier
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="manufacturers">
+              <TabsList className="mb-4 border py-6 px-1">
+                <TabsTrigger
+                  className={"cursor-pointer py-2 px-4"}
+                  value="manufacturers"
+                >
+                  Manufacturers
+                </TabsTrigger>
+                <TabsTrigger
+                  className={"cursor-pointer py-2 px-4"}
+                  value="suppliers"
+                >
+                  Suppliers
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="manufacturers">
+                <ManufacturersTable
+                  medicinesPerManufacturer={stats?.medicinesPerManufacturer}
+                />
+              </TabsContent>
+              <TabsContent value="suppliers">
+                {/* <TopSuppliersTable /> */}
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+        <Card className="lg:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
+              Storage Conditions
+            </CardTitle>
+            <CardDescription className={"-mt-3 text-sm font-medium"}>
+              Distribution of medicines by storage requirements
+            </CardDescription>
+          </CardHeader>
+          <CardContent>{/* <StorageConditionsTable /> */}</CardContent>
+        </Card>
       </div>
       <div className="flex gap-6 items-center flex-col lg:flex-row w-full">
         {/* Medicines Per Manufacturer Chart */}

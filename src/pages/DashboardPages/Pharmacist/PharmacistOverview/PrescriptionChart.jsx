@@ -75,14 +75,14 @@ export function PrescriptionRequirementChart({ data, isLoading }) {
                 return (
                   <Card className="p-3 border shadow-md bg-white">
                     <div className="text-sm font-medium">{payload[0].name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      Count: {payload[0].payload.count}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm  -mt-6 text-muted-foreground">
                       {total > 0
                         ? Math.round((payload[0].payload.count / total) * 100)
                         : 0}
                       % of total
+                    </div>{" "}
+                    <div className="text-sm -mt-6  text-muted-foreground">
+                      Count: {payload[0].payload.count}
                     </div>
                   </Card>
                 );
