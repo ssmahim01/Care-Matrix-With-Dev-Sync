@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
+
 const SupplierTable = ({ medicinesPerSupplier }) => {
   const maxCount = Math.max(...medicinesPerSupplier?.map((s) => s?.count));
   return (
