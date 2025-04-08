@@ -191,7 +191,7 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/pharmacist/orders-history">
+              {/* <NavLink to="/dashboard/pharmacist/orders-history">
                 <h3 className="flex gap-2 items-center">
                   <FaHistory className="text-2xl" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
@@ -199,7 +199,7 @@ export function NavMain() {
                     Orders History{" "}
                   </span>
                 </h3>
-              </NavLink>
+              </NavLink> */}
               <NavLink to="/dashboard/pharmacist/manage-orders">
                 <h3 className="flex gap-2 items-center">
                   <FaTruck className="text-2xl" />

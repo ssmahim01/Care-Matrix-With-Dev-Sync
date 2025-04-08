@@ -4,8 +4,10 @@ import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { CalendarIcon, Download, FileText, TrendingUp } from "lucide-react";
 import { MdReport } from "react-icons/md";
 import { format } from "date-fns";
+import RevenueByDayPDF from "./RavenueByDayPdf";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
-const SalesReportHeader = () => {
+const SalesReportHeader = ({ handleDownload, sortedRevenueData, fileName }) => {
   const currentDate = format(new Date(), "MMMM d, yyyy");
 
   return (
@@ -28,17 +30,30 @@ const SalesReportHeader = () => {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" className="gap-1">
-          <FileText className="h-4 w-4" />
-          PDF
-        </Button>
-        <Button variant="outline" size="sm" className="gap-1">
+        <PDFDownloadLink
+          document={<RevenueByDayPDF sortedRevenueData={sortedRevenueData} />}
+          fileName={fileName}
+          className="inline-flex items-center justify-center rounded-md border border-input bg-background px-3 py-1 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground gap-1"
+        >
+          {({ loading }) => (
+            <>
+              <FileText className="h-4 w-4" />
+              {loading ? "Generating PDF..." : "PDF"}
+            </>
+          )}
+        </PDFDownloadLink>
+
+        {/* <Button variant="outline" size="sm" className="gap-1">
           <Download className="h-4 w-4" />
           CSV
-        </Button>
-        <Button size="sm" className="gap-1">
-          <TrendingUp className="h-4 w-4" />
-          Generate Report
+        </Button> */}
+        <Button
+          onClick={handleDownload}
+          size="sm"
+          className="gap-1 hover:cursor-pointer"
+        >
+          <Download className="h-4 w-4" />
+          Download CSV
         </Button>
       </div>
     </div>
