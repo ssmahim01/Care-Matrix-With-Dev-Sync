@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
-import ManufacturerChart from "./PharmacistOverview/ManufacturerChart";
 import SectionCards from "./PharmacistOverview/SectionCards";
 import SupplierChart from "./PharmacistOverview/SupplierChart";
+import ManufacturerChart from "./PharmacistOverview/ManufacturerChart";
 
 import {
   Card,
@@ -14,10 +14,10 @@ import {
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PrescriptionRequirementChart } from "./PharmacistOverview/PrescriptionChart";
+import StorageConditionsTable from "./PharmacistOverview/StorageConditionsTable";
 import ManufacturersTable from "./PharmacistOverview/ManufacturersTable";
 import SupplierTable from "./PharmacistOverview/SupplierTable";
 import CategoryChart from "./PharmacistOverview/CategoryChart";
-import StorageConditionsTable from "./PharmacistOverview/StorageConditionsTable";
 
 const PharmacistOverview = () => {
   const axiosPublic = useAxiosPublic();
