@@ -5,7 +5,13 @@ import ManufacturerChart from "./PharmacistOverview/ManufacturerChart";
 import SectionCards from "./PharmacistOverview/SectionCards";
 import SupplierChart from "./PharmacistOverview/SupplierChart";
 import { PrescriptionRequirementChart } from "./PharmacistOverview/PrescriptionChart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const PharmacistOverview = () => {
   const axiosPublic = useAxiosPublic();
@@ -67,13 +73,21 @@ const PharmacistOverview = () => {
               {isLoading ? (
                 <div className="skeleton h-8 w-48 mb-3"></div>
               ) : (
-                <CardTitle className="text-2xl font-bold text-gray-700 mb-3">
-                  Medicines Per Category
-                </CardTitle>
+                <>
+                  <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
+                    Prescription Requirements
+                  </CardTitle>
+                  <CardDescription className={"-mt-3 text-sm font-medium"}>
+                    Medicines requiring prescription vs over-the-counter
+                  </CardDescription>
+                </>
               )}
             </CardHeader>
             <CardContent>
-              <PrescriptionRequirementChart />
+              <PrescriptionRequirementChart
+                data={stats?.prescriptionStats}
+                isLoading={isLoading}
+              />
             </CardContent>
           </Card>
         </div>

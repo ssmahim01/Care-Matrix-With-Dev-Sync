@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Bar,
   BarChart,
@@ -16,9 +22,14 @@ const CategoryChart = ({ chartData, isLoading }) => {
         {isLoading ? (
           <div className="skeleton h-8 w-48 mb-3"></div>
         ) : (
-          <CardTitle className="text-2xl font-bold text-gray-700 mb-3">
-            Medicines Per Category
-          </CardTitle>
+          <CardHeader>
+            <CardTitle className="text-3xl font-bold text-gray-900 mb-3">
+              Medicines by Category
+            </CardTitle>
+            <CardDescription className={"-mt-3 text-lg tracking-wider font-medium"}>
+              Distribution of medicines across different categories
+            </CardDescription>
+          </CardHeader>
         )}
       </CardHeader>
       <CardContent>
