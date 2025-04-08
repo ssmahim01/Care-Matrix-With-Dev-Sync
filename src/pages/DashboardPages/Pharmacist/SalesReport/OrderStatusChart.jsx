@@ -19,7 +19,7 @@ const OrderStatusChart = ({ orderStatusData }) => {
       </CardHeader>
       <CardContent>
         <div className="flex justify-center items-center h-full">
-          <ResponsiveContainer width="200%" height={300}>
+          <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
                 data={orderStatusData}
@@ -27,12 +27,10 @@ const OrderStatusChart = ({ orderStatusData }) => {
                 cy="50%"
                 innerRadius={60}
                 outerRadius={90}
-                paddingAngle={5}
+                paddingAngle={3}
                 dataKey="value"
                 nameKey="name"
-                label={({ name, percent }) =>
-                  `${name}: ${(percent * 100).toFixed(0)}%`
-                }
+                label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
                 labelLine={false}
               >
                 {orderStatusData.map((entry, index) => (
