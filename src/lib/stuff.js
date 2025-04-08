@@ -1,3 +1,4 @@
+import axios from "axios"
 
 // dummy data
 export const mockStaff = [
@@ -101,13 +102,13 @@ export const mockStaff = [
 
 
 // Simulate API delay
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 // Fetch all staff
 export async function fetchStaff() {
   // Simulate API call
-  await delay(1000)
-  return [...mockStaff]
+  return await axios.get(`${import.meta.env.VITE_API_URL}/users`)
+  // return [...mockStaff]
 }
 
 // Create new staff
@@ -238,4 +239,3 @@ export async function sendStaffMessage(staffId, messageData) {
   // For now, we'll just log it
   console.log(`Message sent to ${mockStaff[staffIndex].name}: ${messageData.subject}`)
 }
-

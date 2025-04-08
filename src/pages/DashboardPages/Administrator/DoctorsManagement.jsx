@@ -1,18 +1,38 @@
 import DoctorsTableRow from "@/components/DoctorsTableRow/DoctorsTableRow";
-import FileInput from "@/components/FileInput/FileInput";
 import {
-  addDoctor,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  assignDoctor,
+  convertRole,
   fetchDoctors,
+  rejectDoctor,
+  setSearch,
+  setSort,
   updateDoctor,
 } from "@/redux/doctors/doctorSlice";
 import {
   BadgePlus,
+  Ban,
   BriefcaseMedical,
+  CalendarCheck,
   CalendarDays,
+  CalendarSearch,
+  CircleCheckBig,
   CircleUser,
+  CircleUserRound,
   CopyX,
+  Cross,
+  HeartPulse,
   Mail,
   NotebookPen,
+  PhoneCall,
   X,
 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,16 +50,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 
 const DoctorsManagement = () => {
   const dispatch = useDispatch();
-  const [isFormOpen, setIsFormOpen] = useState(false);
   const [noteModal, setNoteModal] = useState({});
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [detailsModal, setDetailsModal] = useState({});
   const { doctors, status } = useSelector((state) => state.doctors);
-  const axiosPublic = useAxiosPublic();
+  const search = useSelector((state) => state.doctors.search);
+  const sort = useSelector((state) => state.doctors.sort);
 
   const FormSchema = z.object({
     note: z
@@ -67,47 +88,59 @@ const DoctorsManagement = () => {
       const result = await dispatch(
         updateDoctor({ id, noteOfAdministrator: data.note })
       ).unwrap();
-     if(result){
-      toast.success("Note added successfully");
-      form2.reset();
-      document.getElementById("note_modal_01").close();
-      dispatch(fetchDoctors());
-     }
+      if (result) {
+        toast.success("Note added successfully");
+        form2.reset();
+        document.getElementById("note_modal_01").close();
+        dispatch(fetchDoctors());
+      }
     } catch (error) {
       toast.error(error.message || "Failed to add note");
     }
   };
 
-  const [form, setForm] = useState({
-    name: "",
-    title: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-    schedule: "",
-    available_days: "",
-    experience: "",
-    consultation_fee: "",
-  });
-  const [image, setImage] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [serviceValue, setServiceValue] = useState("");
-  const [services, setServices] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [availability, setAvailability] = useState([]);
-  const imageHostingKey = `https://api.imgbb.com/1/upload?key=${
-    import.meta.env.VITE_IMGBB_API_URL
-  }`;
+  const handleReject = async () => {
+    const id = detailsModal?._id;
+    if (!id) {
+      toast.error("User ID is missing");
+      return;
+    }
 
-  // Event handlers remain unchanged for brevity
-  const handleFileChange = (event) => {
-    event.preventDefault();
-    const file = event.target.files[0];
-    if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setPreviewImage(file);
-      setImage(imageURL);
+    try {
+      const result = await dispatch(rejectDoctor(id)).unwrap();
+      if (result) {
+        toast.success("Rejected the request");
+        document.getElementById("doctor_modal_02").close();
+        dispatch(fetchDoctors());
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to reject the user");
+    }
+  };
+
+  const handleAssign = async () => {
+    const id = detailsModal?._id;
+    if (!id) {
+      toast.error("User ID is missing");
+      return;
+    }
+
+    const email = detailsModal?.userEmail;
+    if (!email) {
+      toast.error("User email is missing");
+      return;
+    }
+
+    try {
+      const response = await dispatch(assignDoctor(id)).unwrap();
+      const update_role = await dispatch(convertRole(email)).unwrap();
+      if (response && update_role) {
+        toast.success("Assigned the doctor");
+        document.getElementById("doctor_modal_02").close();
+        dispatch(fetchDoctors());
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to assign the user");
     }
   };
 
@@ -116,117 +149,94 @@ const DoctorsManagement = () => {
     document.getElementById("note_modal_01").showModal();
   };
 
-  const handleInputChange = (e) => setInputValue(e.target.value);
-  const handleServiceChange = (e) => setServiceValue(e.target.value);
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      const trimmedValue = inputValue.trim();
-      if (trimmedValue && !availability.includes(trimmedValue)) {
-        setAvailability([...availability, trimmedValue]);
-        setInputValue("");
-      }
-    }
+  const handleDoctorDetails = (doctor) => {
+    setDetailsModal(doctor);
+    document.getElementById("doctor_modal_02").showModal();
   };
 
-  const handleServiceKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      const trimmedValue = serviceValue.trim();
-      if (trimmedValue && !services.includes(trimmedValue)) {
-        setServices([...services, trimmedValue]);
-        setServiceValue("");
-      }
-    }
+  // Change search value
+  const handleSearchChange = (e) => {
+    dispatch(setSearch(e.target.value));
+    dispatch(fetchDoctors({ search: e.target.value, sort }));
   };
 
-  const removeAvailability = (availabilityToRemove) =>
-    setAvailability(availability.filter((a) => a !== availabilityToRemove));
-  const removeServices = (serviceToRemove) =>
-    setServices(services.filter((s) => s !== serviceToRemove));
+  // Handle sort of department
+  const handleSortChange = (value) => {
+    dispatch(setSort(value));
+    dispatch(fetchDoctors({ search, sort: value }));
+  };
 
   useEffect(() => {
-    dispatch(fetchDoctors());
-  }, [dispatch]);
-
-  const handleAddDoctor = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // Submission logic remains unchanged for brevity
-    if (!image) {
-      setIsSubmitting(false);
-      return toast.error("Please provide an image!");
-    }
-    const formData = new FormData();
-    formData.append("image", previewImage);
-    try {
-      const imgResponse = await axiosPublic.post(imageHostingKey, formData, {
-        headers: { "content-type": "multipart/form-data" },
-      });
-      if (!imgResponse.data.success) {
-        setIsSubmitting(false);
-        return toast.error("Failed to upload the image!");
-      }
-      const imageURL = imgResponse.data.data.display_url;
-      const doctorInfo = {
-        ...form,
-        role: "doctor",
-        available_days: availability,
-        services,
-        image: imageURL,
-        createdAt: new Date().toISOString(),
-      };
-      const response = await dispatch(addDoctor(doctorInfo)).unwrap();
-      if (response) {
-        toast.success("Doctor added & registered successfully");
-        dispatch(fetchDoctors());
-      }
-      setForm({
-        name: "",
-        title: "",
-        email: "",
-        password: "",
-        phoneNumber: "",
-        schedule: "",
-        available_days: "",
-        experience: "",
-        consultation_fee: "",
-      });
-      setInputValue("");
-      setServiceValue("");
-      setServices([]);
-      setAvailability([]);
-      setImage("");
-      setPreviewImage("");
-    } catch (error) {
-      console.error("Error registering doctor:", error);
-      toast.error(error.message || "Something went wrong!");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    dispatch(fetchDoctors({ search, sort }));
+  }, [dispatch, search, sort]);
 
   return (
     <>
       <div className="flex justify-between items-center">
         {!isFormOpen ? (
-          <div className="flex flex-col">
-            {/* Heading */}
-            <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
-              <BriefcaseMedical className="text-3xl text-gray-800" />
-              <span>Manage Doctors</span>
-            </h2>
-            <p className="text-gray-600 text-base ml-8 font-medium whitespace-pre-line">
-              View requests for doctor and modify
-            </p>
+          <div className="w-full flex justify-between items-center md:flex-row flex-col flex-wrap">
+            <div className="flex flex-col">
+              {/* Heading */}
+              <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
+                <BriefcaseMedical className="text-3xl text-gray-800" />
+                <span>Manage Doctors</span>
+              </h2>
+              <p className="text-gray-600 text-base ml-8 font-medium whitespace-pre-line">
+                View requests for doctor and modify
+              </p>
+            </div>
+            <div className="flex gap-4 md:flex-row flex-col items-center">
+              <Select onValueChange={handleSortChange}>
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Sort By Department" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Department</SelectLabel>
+                    {[...new Set(doctors?.map((d) => d.department))]?.map(
+                      (dept) => (
+                        <SelectItem key={dept} value={dept}>
+                          {dept}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+
+              <label className="input border">
+                <svg
+                  className="h-[1em] opacity-50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <g
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                  </g>
+                </svg>
+                <input
+                  value={search}
+                  onChange={handleSearchChange}
+                  type="search"
+                  required
+                  placeholder="Search by email..."
+                />
+              </label>
+            </div>
           </div>
         ) : (
           <h2 className="md:text-4xl text-2xl font-bold text-base-content mb-2">
             Add Doctor
           </h2>
         )}
-        <button
+        {/* <button
           onClick={() => setIsFormOpen(!isFormOpen)}
           className="lg:w-1/6 md:w-2/5 relative inline-flex items-center justify-center px-6 btn font-bold tracking-tighter text-white bg-[#469ade] rounded-md group mt-2"
         >
@@ -244,306 +254,8 @@ const DoctorsManagement = () => {
           <span className="relative text-white transition-colors duration-200 ease-in-out delay-100 group-hover:text-white/80">
             {isFormOpen ? "Close Form" : "Add Doctor"}
           </span>
-        </button>
+        </button> */}
       </div>
-
-      {isFormOpen && (
-        <div className="border border-[#effdf5] shadow-md rounded-box bg-base-200 hover:shadow-xl p-4 w-full mb-7">
-          {isSubmitting ? (
-            <div className="space-y-4">
-              {[...Array(8)].map((_, index) => (
-                <div key={index} className="skeleton h-12 w-full" />
-              ))}
-            </div>
-          ) : (
-            <form onSubmit={handleAddDoctor} className="w-full space-y-4">
-              {/* Doctor Form */}
-              <div className="flex gap-4 lg:flex-row flex-col justify-between items-center">
-                <div className="w-full">
-                  <label
-                    htmlFor="name"
-                    className="text-[15px] text-text font-[400]"
-                  >
-                    Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    value={form.name}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        name: e.target.value,
-                      })
-                    }
-                    placeholder="Write the doctor name"
-                    className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
-                    required
-                  />
-                </div>
-
-                <div className="w-full">
-                  <label
-                    htmlFor="specialty"
-                    className="text-[15px] text-text font-[400]"
-                  >
-                    Specialty <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="specialty"
-                    id="specialty"
-                    value={form.title}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        title: e.target.value,
-                      })
-                    }
-                    placeholder="Type the doctor Specialty"
-                    className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between lg:flex-row flex-col gap-4 items-center">
-                <div className="w-full">
-                  <label
-                    htmlFor="email"
-                    className="text-[15px] text-text font-[400]"
-                  >
-                    Email <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    value={form.email}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        email: e.target.value,
-                      })
-                    }
-                    placeholder="Provide an email"
-                    className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
-                    required
-                  />
-                </div>
-
-                <div className="w-full">
-                  <label
-                    htmlFor="schedule"
-                    className="text-[15px] text-text font-[400]"
-                  >
-                    Schedule <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="datetime-local"
-                    name="schedule"
-                    id="schedule"
-                    value={form.schedule}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        schedule: e.target.value,
-                      })
-                    }
-                    placeholder="Select a schedule"
-                    className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-4 lg:flex-row flex-col justify-between items-center">
-                <div className="w-full">
-                  <label
-                    htmlFor="password"
-                    className="text-[15px] text-text font-[400]"
-                  >
-                    Password <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    value={form.password}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        password: e.target.value,
-                      })
-                    }
-                    placeholder="********"
-                    className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
-                    required
-                  />
-                </div>
-
-                <div className="w-full">
-                  <label
-                    htmlFor="phoneNumber"
-                    className="text-[15px] text-text font-[400]"
-                  >
-                    Phone Number <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    name="phoneNumber"
-                    id="phoneNumber"
-                    value={form.phoneNumber}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        phoneNumber: e.target.value,
-                      })
-                    }
-                    placeholder="Provide a valid phone number"
-                    className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="lg:w-1/2 md:w-4/5 w-full">
-                <div className="p-4 border rounded w-full">
-                  <label className="block mb-2">
-                    Enter Availability Days (Press Enter or , to add){" "}
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <div className="flex flex-wrap gap-2 border p-2 rounded">
-                    {availability.map((available, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-[#3794da] text-white rounded flex items-center gap-1"
-                      >
-                        {available}
-                        <button
-                          className="ml-2 text-gray-600 font-bold hover:cursor-pointer hover:text-rose-500"
-                          onClick={() => removeAvailability(available)}
-                        >
-                          <X />
-                        </button>
-                      </span>
-                    ))}
-                    <input
-                      type="text"
-                      className="outline-none flex-1"
-                      value={inputValue}
-                      onChange={handleInputChange}
-                      onKeyDown={handleKeyDown}
-                      placeholder="Add availability days..."
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-4 lg:flex-row flex-col justify-between items-center">
-                <div className="w-full">
-                  <label
-                    htmlFor="experience"
-                    className="text-[15px] text-text font-[400]"
-                  >
-                    Experience <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="experience"
-                    id="experience"
-                    value={form.experience}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        experience: e.target.value,
-                      })
-                    }
-                    placeholder="Provide experience"
-                    className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
-                    required
-                  />
-                </div>
-
-                <div className="w-full">
-                  <label
-                    htmlFor="consultation_fee"
-                    className="text-[15px] text-text font-[400]"
-                  >
-                    Consultation Fee <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    name="consultation_fee"
-                    id="consultation_fee"
-                    value={form.consultation_fee}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        consultation_fee: e.target.value,
-                      })
-                    }
-                    placeholder="Provide consultation fee"
-                    className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="lg:w-1/2 md:w-4/5 w-full">
-                <div className="p-4 border rounded w-full">
-                  <label className="block mb-2">
-                    Enter Services (Press Enter or , to add){" "}
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <div className="flex flex-wrap gap-2 border p-2 rounded">
-                    {services.map((service, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-[#3794da] text-white rounded flex items-center gap-1"
-                      >
-                        {service}
-                        <button
-                          className="ml-2 text-gray-600 font-bold hover:cursor-pointer hover:text-rose-500"
-                          onClick={() => removeServices(service)}
-                        >
-                          <X />
-                        </button>
-                      </span>
-                    ))}
-                    <input
-                      type="text"
-                      className="outline-none flex-1"
-                      value={serviceValue}
-                      onChange={handleServiceChange}
-                      onKeyDown={handleServiceKeyDown}
-                      placeholder="Add Services..."
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <FileInput
-                image={image}
-                setImage={setImage}
-                handleFileChange={handleFileChange}
-              />
-
-              <button
-                type="submit"
-                className="lg:w-1/6 md:w-2/5 relative inline-flex items-center justify-center px-6 btn font-bold tracking-tighter text-white bg-[#469ade] rounded-md group mt-2"
-              >
-                <span className="absolute inset-0 w-full h-full mt-1 ml-1 transition-all duration-300 ease-in-out bg-primary rounded-md group-hover:mt-0 group-hover:ml-0"></span>
-                <span className="absolute inset-0 w-full h-full bg-teal-500 rounded-md "></span>
-                <span className="absolute inset-0 w-full h-full transition-all duration-200 ease-in-out delay-100 bg-primary rounded-md opacity-0 group-hover:opacity-100 "></span>
-                <span className="relative text-white transition-colors duration-200 ease-in-out delay-100 group-hover:text-white/80">
-                  Add Doctor
-                </span>
-              </button>
-            </form>
-          )}
-        </div>
-      )}
 
       {!isFormOpen ? null : (
         <h2 className="md:text-4xl text-3xl font-bold text-base-content mb-2">
@@ -571,30 +283,39 @@ const DoctorsManagement = () => {
           <tbody>
             {status === "loading"
               ? [...Array(5)].map((_, index) => (
-                  <tr key={index}>
+                  <tr key={index} className="border-t border-gray-200">
                     <td className="p-4">
-                      <div className="skeleton h-4 w-4" />
+                      <div className="skeleton h-6 w-4" />
                     </td>
                     <td className="p-4">
-                      <div className="skeleton h-10 w-10 rounded-full" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-24" />
+                      <div className="skeleton h-10 w-10 rounded-md" />
                     </td>
                     <td className="p-4">
                       <div className="skeleton h-4 w-24" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-16" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-16" />
                     </td>
                     <td className="p-4">
                       <div className="skeleton h-4 w-32" />
                     </td>
                     <td className="p-4">
-                      <div className="skeleton h-8 w-8" />
+                      <div className="skeleton h-4 w-24" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-20" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-28" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-20" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-16" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-4 w-20" />
+                    </td>
+                    <td className="p-4">
+                      <div className="skeleton h-8 w-8 rounded-md" />
                     </td>
                   </tr>
                 ))
@@ -605,6 +326,7 @@ const DoctorsManagement = () => {
                     dispatch={dispatch}
                     index={index}
                     handleAddNote={handleAddNote}
+                    handleDoctorDetails={handleDoctorDetails}
                   />
                 ))}
           </tbody>
@@ -712,6 +434,126 @@ const DoctorsManagement = () => {
                   </div>
                 </form>
               </Form>
+            </div>
+          </div>
+        )}
+      </dialog>
+
+      <dialog id="doctor_modal_02" className="modal modal-middle">
+        {detailsModal && (
+          <div className="w-full flex justify-center items-center">
+            <div className="modal-box">
+              <form method="dialog">
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-6">
+                  <X className="w-5 h-5" />
+                </button>
+              </form>
+              <div className="flex flex-col">
+                {/* Heading Of The Modal */}
+                <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
+                  <BriefcaseMedical className="text-3xl text-gray-800" />
+                  <span>Details of Doctor</span>
+                </h2>
+                <p className="text-gray-600 text-base ml-8 font-medium whitespace-pre-line">
+                  The full details of doctor is show here
+                </p>
+              </div>
+              <div className="divider"></div>
+
+              <div className="flex gap-y-2 flex-col">
+                <figure className="w-48 h-48 mx-auto">
+                  <img
+                    className="w-full h-full border-4 border-sky-500 overflow-hidden rounded-full object-cover"
+                    src={detailsModal?.userPhoto}
+                    alt={detailsModal?.userName}
+                  />
+                </figure>
+
+                <div className="divider"></div>
+
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-3">
+                    <h4 className="flex gap-2 items-center font-semibold">
+                      <CircleUserRound className="w-4 h-4" />
+                      <span className="text-base text-gray-800">
+                        {detailsModal?.userName}
+                      </span>
+                    </h4>
+
+                    <p className="flex gap-2 items-center font-semibold">
+                      <Mail className="w-4 h-4" />
+                      <span className="text-sm text-gray-800">
+                        {detailsModal?.userEmail}
+                      </span>
+                    </p>
+
+                    <p className="flex gap-2 items-center font-semibold">
+                      <PhoneCall className="w-4 h-4" />
+                      <span className="text-base text-gray-800">
+                        {detailsModal?.emergencyContact}
+                      </span>
+                    </p>
+
+                    <p className="flex gap-2 items-center font-semibold">
+                      <HeartPulse className="w-4 h-4" />
+                      <span className="text-base text-gray-800">
+                        {detailsModal?.requestedRole}
+                      </span>
+                    </p>
+                  </div>
+
+                  <p className="flex gap-2 items-center font-semibold">
+                    <Cross className="w-4 h-4" />
+                    <span className="text-gray-900 font-bold">
+                      Department:{" "}
+                    </span>
+                    <span className="text-base text-gray-800">
+                      {detailsModal?.department}
+                    </span>
+                  </p>
+
+                  <p className="flex gap-2 items-center font-semibold">
+                    <CalendarSearch className="w-4 h-4" />
+                    <span className="text-gray-900 font-bold">
+                      Available Date:{" "}
+                    </span>
+                    <span className="text-base text-gray-800">
+                      {new Date(detailsModal?.availableDate).toLocaleDateString(
+                        "en-UK"
+                      )}
+                    </span>
+                  </p>
+                  <p className="flex gap-2 items-center font-semibold">
+                    <CalendarCheck className="w-4 h-4" />
+                    <span className="text-gray-900 font-bold">
+                      Selected Shift:{" "}
+                    </span>
+                    <span className="text-base text-gray-800">
+                      {detailsModal?.shift}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-5 flex md:flex-row flex-col flex-wrap justify-between items-center">
+                <Button
+                  type="button"
+                  onClick={handleReject}
+                  className="btn bg-rose-500 hover:bg-rose-700 text-base text-white font-bold rounded-md flex gap-2 items-center"
+                >
+                  <Ban className="w-4 h-4" />
+                  <span>Reject</span>
+                </Button>
+
+                <Button
+                  type="submit"
+                  onClick={handleAssign}
+                  className="btn bg-sky-600 hover:bg-sky-700 text-base text-white font-bold rounded-md flex gap-2 items-center"
+                >
+                  <CircleCheckBig className="w-4 h-4" />
+                  <span>Assign Doctor</span>
+                </Button>
+              </div>
             </div>
           </div>
         )}

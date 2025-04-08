@@ -39,6 +39,7 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch }) => {
       bedTitle: bedType?.title,
       bedImg: bedType?.image,
       bedPrice: bedType?.price,
+      bedId: bedType?._id,
       ...data,
       time: new Date(),
       authorName: user?.displayName,

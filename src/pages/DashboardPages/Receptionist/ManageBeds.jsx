@@ -128,7 +128,7 @@ function ManageBeds() {
                 <TableHead>Bed Title</TableHead>
                 <TableHead>Bed Price</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className={"text-right"}>Actions</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -143,7 +143,7 @@ function ManageBeds() {
                   </TableCell>
                   <TableCell>{bed.title}</TableCell>
                   <TableCell>{bed.price}</TableCell>
-                  <TableCell>
+                  <TableCell >
                     <Tooltip className="cursor-pointer">
                       <TooltipTrigger>
                         <Switch
@@ -164,7 +164,7 @@ function ManageBeds() {
                       </TooltipContent>
                     </Tooltip>
                   </TableCell>
-                  <TableCell className={"flex justify-end"}>
+                  <TableCell className="flex justify-end">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">

@@ -9,7 +9,7 @@ import {
 } from "react-icons/md";
 import { CiMenuFries } from "react-icons/ci";
 import { FaCubesStacked, FaUserDoctor } from "react-icons/fa6";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
@@ -27,10 +27,27 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const [role] = useRole();
+
+  const [showImage, setShowImage] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY === 0) {
+        setShowImage(true);
+      } else {
+        setShowImage(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // console.log(user);
   // const dispatch = useDispatch();
@@ -105,6 +122,21 @@ const Navbar = () => {
   return (
     <>
       <div className="fixed z-20 w-full bg-[#f3f6f9] shadow-sm border-b border-[#f3f6f9]">
+        {location.pathname === "/" && (
+          <div
+            className={`top-0 left-1/2 z-50 transition-all duration-300 w-full ${
+              showImage
+                ? "opacity-100 translate-y-0 pointer-events-auto h-auto"
+                : "opacity-0 -translate-y-full pointer-events-none h-0 overflow-hidden"
+            }`}
+          >
+            <img
+              src="https://zenui.net/palestine-banner.svg"
+              alt="Free Palestine"
+              className="w-full"
+            />
+          </div>
+        )}
         <div className="max-w-[1700px] mx-auto w-11/12">
           <div className="navbar p-0">
             <div className="navbar-start w-full">
@@ -146,7 +178,7 @@ const Navbar = () => {
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/contact-us"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <FaMapMarkerAlt
@@ -166,7 +198,7 @@ const Navbar = () => {
                             </NavLink>
                             <NavLink
                               to="/doctors"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <FaUserDoctor
@@ -190,7 +222,7 @@ const Navbar = () => {
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/services"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <MdMedicalServices
@@ -210,7 +242,7 @@ const Navbar = () => {
                             </NavLink>
                             <NavLink
                               to="/pharmacy"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <GiMedicines
@@ -251,7 +283,10 @@ const Navbar = () => {
 
             <div className="navbar-end w-full">
               <>
-                <ul ref={menuRef} className="items-center gap-4 text-[#1b1b1b] lg:flex hidden mr-3">
+                <ul
+                  ref={menuRef}
+                  className="items-center gap-4 text-[#1b1b1b] lg:flex hidden mr-3"
+                >
                   {routes}
                   <li
                     className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
@@ -279,7 +314,7 @@ const Navbar = () => {
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/contact-us"
-                              className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <FaMapMarkerAlt
@@ -299,7 +334,7 @@ const Navbar = () => {
                             </NavLink>
                             <NavLink
                               to="/doctors"
-                              className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <FaUserDoctor
@@ -323,7 +358,7 @@ const Navbar = () => {
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/services"
-                              className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <MdMedicalServices
@@ -343,7 +378,7 @@ const Navbar = () => {
                             </NavLink>
                             <NavLink
                               to="/pharmacy"
-                              className="flex items-start gap-3 transition-all duration-300 hover:bg-[#F4F4F5] rounded-lg p-2"
+                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
                                 <GiMedicines

@@ -66,7 +66,7 @@ const OrdersTable = ({
     </TableHeader>
     <TableBody>
       {isLoading ? (
-        Array.from({ length: 8 }).map((_, i) => (
+        Array.from({ length: 10 }).map((_, i) => (
           <TableRow key={i}>
             {Array.from({ length: 12 }).map((_, j) => (
               <TableCell key={j}>
