@@ -213,7 +213,7 @@ const EidGreetingSection = () => {
                 <Card
                   ref={previewRef}
                   className={`border-blue-100 shadow-md overflow-hidden rounded-lg ${
-                    !showPreview && "opacity-70"
+                    !showPreview && "opacity-85"
                   }`}
                 >
                   <div className="relative">

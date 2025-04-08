@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,9 +9,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
+import { useAuthUser } from "@/redux/auth/authActions";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { useQuery } from "@tanstack/react-query";
-import { User } from "lucide-react";
+import { HistoryIcon } from "lucide-react";
 import { FaFileInvoice } from "react-icons/fa";
 import { Link } from "react-router";
 
@@ -19,7 +21,10 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
     <TableCaption>Your Purchase History</TableCaption>
     <TableHeader>
       <TableRow className={"bg-base-200 hover:bg-base-200"}>
-        <TableHead>Order ID</TableHead>
+        <TableHead className={"mt-1 text-xs flex flex-col gap-1"}>
+          <span>Order ID</span>
+          <span>Transition ID</span>
+        </TableHead>
         <TableHead>
           Medicines <sub>(qty)</sub>
         </TableHead>
@@ -28,14 +33,15 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
         <TableHead>Order Status</TableHead>
         <TableHead>Purchase Date</TableHead>
         <TableHead>Shipping Address</TableHead>
-        <TableHead className={"text-right"}>Invoice</TableHead>
+        <TableHead />
+        <TableHead>Invoice</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
       {isLoading ? (
         Array.from({ length: 5 }).map((_, i) => (
           <TableRow key={i}>
-            {Array.from({ length: 8 }).map((_, j) => (
+            {Array.from({ length: 9 }).map((_, j) => (
               <TableCell key={j}>
                 <div className="skeleton h-8 rounded w-full"></div>
               </TableCell>
@@ -45,7 +51,7 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
       ) : purchaseHistory.length === 0 ? (
         <TableRow>
           <TableCell
-            colSpan={8}
+            colSpan={9}
             className="text-center font-medium text-gray-800 py-4 border-y"
           >
             No Purchase History Available
@@ -54,7 +60,12 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
       ) : (
         purchaseHistory?.map((order, idx) => (
           <TableRow key={idx}>
-            <TableCell className="font-medium">{order?._id}</TableCell>
+            <TableCell>
+              <div className={"mt-1 text-xs flex flex-col font-medium gap-1.5"}>
+                <span>{order?._id}</span>
+                <span>{order?.transactionId}</span>
+              </div>
+            </TableCell>
             <TableCell>
               <div
                 className={`${
@@ -88,7 +99,14 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
               </span>
             </TableCell>
             <TableCell>
-              <div className="flex items-center gap-1">
+              <div
+                className={`flex ${
+                  order?.orderStatus === "Ready for Pickup" ||
+                  order?.orderStatus === "Out for Delivery"
+                    ? "items-stretch"
+                    : "items-center "
+                } gap-1`}
+              >
                 <span
                   className={`text-xl font-medium rounded ${
                     order?.orderStatus === "Pending"
@@ -111,8 +129,20 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
                   }`}
                 >
                   ●
+                </span>{" "}
+                <span className="font-medium mt-[3.2px]">
+                  {(order?.orderStatus === "Ready for Pickup" && (
+                    <span>
+                      Ready for <br /> Pickup
+                    </span>
+                  )) ||
+                    (order?.orderStatus === "Out for Delivery" && (
+                      <span>
+                        Out for <br /> Delivery
+                      </span>
+                    )) ||
+                    order?.orderStatus}
                 </span>
-                <span className="font-medium">{order?.orderStatus}</span>
               </div>
             </TableCell>
             <TableCell>
@@ -126,17 +156,20 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
                   : "N/A"}
               </span>
             </TableCell>
-            <TableCell>
+            <TableCell className="max-w-40 overflow-x-auto">
               <div>{order?.customerInfo?.address}</div>
-              {/* <div>
+              <div>
                 {order?.customerInfo?.district && order?.customerInfo?.division
                   ? `${order?.customerInfo?.district}, ${order?.customerInfo?.division}`
                   : "N/A"}
-              </div> */}
+              </div>
             </TableCell>
+            <TableCell />
             <TableCell>
-              <Link to={`/dashboard/invoice/${order.transactionId}`} className="flex justify-end items-center">
-                <FaFileInvoice className="text-xl hover:text-blue-400"/>
+              <Link to={`/dashboard/invoice/${order.transactionId}`}>
+                <Button variant={"outline"} className={"cursor-pointer"}>
+                  <FaFileInvoice className="text-slate-700" />
+                </Button>
               </Link>
             </TableCell>
           </TableRow>
@@ -146,65 +179,26 @@ const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
   </Table>
 );
 
-// Example usage component
 const PurchaseHistory = () => {
-  // Demo data (replace with your API call later)
-  //   const demoData = [
-  //     {
-  //       _id: "67ed554fa53db1a89d9fef43",
-  //       customerInfo: {
-  //         name: "Demo Patient",
-  //         email: "patient@carematrix.com",
-  //         phone: "+8801624343171",
-  //         district: "",
-  //         division: "",
-  //         address: "Mandari Bazar, Lakshmipur",
-  //       },
-  //       totalPrice: 97.91,
-  //       transactionId: "pi_3R9T3UJHnPc6ZjSU1T59G5nJ",
-  //       paymentStatus: "Paid",
-  //       orderStatus: "Pending",
-  //       date: "2025-04-02T15:18:39.345Z",
-  //       medicines: [
-  //         {
-  //           medicineId: "67ed5453a53db1a89d9fef40",
-  //           medicineName: "Ciproxin",
-  //           quantity: 1,
-  //           price: 9.5,
-  //           subtotal: 9.5,
-  //         },
-  //         {
-  //           medicineId: "67ed545aa53db1a89d9fef41",
-  //           medicineName: "Zithromax",
-  //           quantity: 2,
-  //           price: 7.23,
-  //           subtotal: 14.46,
-  //         },
-  //         {
-  //           medicineId: "67ed545ea53db1a89d9fef42",
-  //           medicineName: "Dalacin C",
-  //           quantity: 1,
-  //           price: 13.95,
-  //           subtotal: 13.95,
-  //         },
-  //       ],
-  //     },
-  //   ];
   const user = useAuthUser();
-  const loading = useAuthLoading();
   const axiosSecure = useAxiosSecure();
-  const { data: orders = [] } = useQuery({
+  const { data: orders = [], isLoading } = useQuery({
     queryKey: ["orders"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/purchase/orders?email=${user.email}`);
       return res.data;
     },
   });
-  console.log(orders);
+
   return (
-    <div className="container mx-auto py-8 p-2">
-      <h1 className="text-2xl font-bold mb-6">My Purchase History</h1>
-      <PurchaseHistoryTable purchaseHistory={orders} isLoading={false} />
+    <div className="px-7">
+      <DashboardPagesHeader
+        title="Purchase History"
+        subtitle="View all your pending, present and past purchases in one place!"
+        icon={HistoryIcon}
+      />
+      {/* Purchase History Table */}
+      <PurchaseHistoryTable purchaseHistory={orders} isLoading={isLoading} />
     </div>
   );
 };

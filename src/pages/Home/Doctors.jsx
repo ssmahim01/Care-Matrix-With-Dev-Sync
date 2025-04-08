@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import useDoctors from "@/hooks/useDoctors";
+import { easeIn, easeInOut, motion } from "framer-motion";
 
 const Doctors = () => {
   const [doctors] = useDoctors()
@@ -46,6 +47,13 @@ const Doctors = () => {
 
   return (
     <div>
+      <motion.div 
+      initial = {{y:20, opacity:0}}
+      whileInView={{y:0, opacity: 1}}
+      transition={{duration: 0.8, ease: easeIn}}
+      >
+
+      
       {/* section inner */}
       <div className="mx-auto px-4 py-10 md:py-14 lg:py-16">
         {/* section-header */}
@@ -75,6 +83,7 @@ const Doctors = () => {
 
 
       </div>
+      </motion.div>
     </div>
   );
 };

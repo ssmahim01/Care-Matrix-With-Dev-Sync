@@ -1,8 +1,16 @@
 import SectionHeader from "@/shared/Section/SectionHeader";
+import {easeIn, easeInOut, easeOut, motion} from "framer-motion"
 
 const WhyChooseUs = () => {
   return (
     <div>
+      <motion.div 
+      initial={{y:20, opacity: 0}}
+      whileInView={{y:0, opacity: 1}}
+      transition={{duration: 0.8, ease: easeIn}}
+      >
+
+     
       {/* Section Heading */}
       <SectionHeader
         title_1st_slice={"WHY"}
@@ -89,6 +97,7 @@ const WhyChooseUs = () => {
           </div>
         </div>
       </div>
+      </motion.div>
     </div>
   );
 };

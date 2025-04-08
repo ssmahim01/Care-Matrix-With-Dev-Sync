@@ -16,7 +16,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Link } from "react-router";
 import MedicinesDialog from "./MedicinesDialog";
+import { FaFileInvoice } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 
 const OrdersTable = ({
   ordersData,
@@ -44,6 +47,7 @@ const OrdersTable = ({
         </TableHead>
         <TableHead>Order Date</TableHead>
         <TableHead>Shipping Address</TableHead>
+        <TableHead />
         <TableHead>Order Status</TableHead>
         <TableHead className={"text-xs"}>
           Change
@@ -55,13 +59,16 @@ const OrdersTable = ({
           <br />
           Medicines
         </TableHead>
+        <TableHead className={"text-[10px]"}>
+          View <br /> Order <br /> Invoice
+        </TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
       {isLoading ? (
         Array.from({ length: 8 }).map((_, i) => (
           <TableRow key={i}>
-            {Array.from({ length: 10 }).map((_, j) => (
+            {Array.from({ length: 12 }).map((_, j) => (
               <TableCell key={j}>
                 <div className="skeleton h-8 rounded w-full"></div>
               </TableCell>
@@ -71,7 +78,7 @@ const OrdersTable = ({
       ) : ordersData.length === 0 ? (
         <TableRow>
           <TableCell
-            colSpan={10}
+            colSpan={12}
             className="text-center font-medium text-gray-800 py-4 border-y"
           >
             No Orders Data Available In This Order Status
@@ -135,13 +142,14 @@ const OrdersTable = ({
                   : "N/A"}
               </span>
             </TableCell>
-            <TableCell>
+            <TableCell className="max-w-40 overflow-x-auto">
               <div>{order?.customerInfo?.address}</div>
               <div>
                 {order?.customerInfo?.district}, {order?.customerInfo?.division}{" "}
                 - {order?.customerInfo?.postalCode || "N/A"}
               </div>
             </TableCell>
+            <TableCell />
             <TableCell>
               <div
                 className={`flex ${
@@ -200,12 +208,12 @@ const OrdersTable = ({
                 <SelectTrigger className="cursor-pointer min-w-[115px] truncate">
                   <SelectValue>
                     {(order?.orderStatus === "Ready for Pickup" && (
-                      <span className={"py-1"}>
+                      <span className={"py-1 text-xs"}>
                         Ready for <br /> Pickup
                       </span>
                     )) ||
                       (order?.orderStatus === "Out for Delivery" && (
-                        <span className={"py-1"}>
+                        <span className={"py-1 text-xs"}>
                           Out for <br /> Delivery
                         </span>
                       )) ||
@@ -230,6 +238,13 @@ const OrdersTable = ({
                 medicines={order?.medicines}
                 totalPrice={order?.totalPrice}
               />
+            </TableCell>
+            <TableCell>
+              <Link to={`/dashboard/invoice/${order?.transactionId}`}>
+                <Button variant={"outline"} className={"cursor-pointer"}>
+                  <FaFileInvoice className="text-slate-700" />
+                </Button>
+              </Link>
             </TableCell>
           </TableRow>
         ))

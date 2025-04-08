@@ -41,7 +41,7 @@ const PharmacistOverview = () => {
     })) || [];
 
   return (
-    <div className="space-y-6 p-7">
+    <div className="space-y-6 px-7">
       {/* Section Cards */}
       <SectionCards
         isLoading={isLoading}
