@@ -103,6 +103,7 @@ const PharmacistOverview = () => {
       </div>
       {/* Manufacturer & Supplier Table & Storage Condition Table */}
       <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        {/* Manufacturer */}
         <Card className="lg:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
@@ -141,6 +142,7 @@ const PharmacistOverview = () => {
             </Tabs>
           </CardContent>
         </Card>
+        {/* Supplier */}
         <Card className="lg:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
