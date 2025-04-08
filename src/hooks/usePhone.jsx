@@ -13,6 +13,7 @@ const usePhone = () => {
       );
       return data.phoneNumber;
     },
+    enabled: !!user?.uid,
   });
 
   return [phoneNumber, isLoading];
