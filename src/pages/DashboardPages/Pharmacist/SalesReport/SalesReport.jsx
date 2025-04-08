@@ -25,6 +25,8 @@ import SalesReportHeader from "./SalesReportHeader";
 import TopSellingChart from "./TopSellingChart";
 import SalesReportSkeleton from "./SalesReportSkeleton";
 import toast from "react-hot-toast";
+import { utils, writeFile } from "xlsx";
+import RevenueByDayPDF from "./RavenueByDayPdf";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -99,11 +101,47 @@ export default function SalesReport() {
     avgItemValue: item?.totalRevenue / item?.totalQty,
   }));
 
+  const handleDownload = () => {
+    const tableData = sortedRevenueData.map((day) => {
+      const avgItemValue = day?.totalRevenue / day?.totalQty;
+      const tax = day?.totalRevenue * 0.1;
+      const netRevenue = day?.totalRevenue - tax;
+      return {
+        Date: format(new Date(day?.date), "MMM dd, yyyy"),
+        "Items Sold": `${day?.totalQty} items`,
+        Revenue: `৳ ${day?.totalRevenue.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}`,
+        "Avg Item Value": `৳ ${avgItemValue?.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}`,
+        "Estimated Tax (10%)": `৳ ${tax?.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}`,
+        "Net Revenue": `৳ ${netRevenue?.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}`,
+      };
+    });
+
+    const worksheet = utils.json_to_sheet(tableData);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, "Revenue By Day");
+    writeFile(
+      workbook,
+      `Sales_Report_${format(new Date(), "yyyy-MM-dd")}.xlsx`
+    );
+  };
+
   return (
     <div>
       <main className="flex flex-1 flex-col gap-4 px-7 md:gap-8">
         {/* Sales Report Header */}
-        <SalesReportHeader />
+        <SalesReportHeader
+          handleDownload={handleDownload}
+          sortedRevenueData={sortedRevenueData}
+          fileName={`Sales_Report_${format(new Date(), "yyyy-MM-dd")}.pdf`}
+        />
         {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-4">
           {/* All Tablist */}

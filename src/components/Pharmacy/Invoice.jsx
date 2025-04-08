@@ -82,10 +82,10 @@ const InvoicePDF = ({ invoice = {}, user = {} }) => (
                 {item.quantity || 0}
               </Text>
               <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>
-                Tk {item.unitPrice || 0}
+                Tk {item.unitPrice.toFixed(2) || 0}
               </Text>
               <Text style={[styles.td, { flex: 1, textAlign: "center" }]}>
-                Tk {item.totalPrice || 0}
+                Tk {item.totalPrice.toFixed(2) || 0}
               </Text>
             </View>
           ))
@@ -119,7 +119,7 @@ const InvoicePDF = ({ invoice = {}, user = {} }) => (
             }}
           >
             <Text>Total</Text>
-            <Text>Tk {invoice?.totalPrice || 0}</Text>
+            <Text>Tk {invoice?.totalPrice.toFixed(2) || 0}</Text>
           </View>
         </View>
       </View>

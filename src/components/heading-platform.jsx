@@ -27,7 +27,7 @@ export function HeadingPlatform() {
                 <figure className={`transition-all duration-300`}>
                   {
                     state === "collapsed" ?
-                      <img src={collapseLogo} alt="" />
+                      <img src={collapseLogo} alt=""className="absolute -top-0.5" />
                       :
                       <img
                         src="https://i.ibb.co.com/NgjF57xt/care-matrix-logo-Copy-removebg-preview.png"

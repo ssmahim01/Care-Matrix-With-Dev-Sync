@@ -114,7 +114,7 @@ const Profile = () => {
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <Avatar className="w-28 h-28 border-4 border-background shadow-lg">
-                    <AvatarImage src={user?.photoURL} alt={user?.displayName} />
+                    <AvatarImage src={user?.photoURL} alt={user?.displayName} className={'object-cover'} />
                     <AvatarFallback className="text-3xl bg-gradient-to-br from-blue-400 to-sky-600 text-white">
                       {user?.displayName.charAt(0) || "Username"}
                     </AvatarFallback>
