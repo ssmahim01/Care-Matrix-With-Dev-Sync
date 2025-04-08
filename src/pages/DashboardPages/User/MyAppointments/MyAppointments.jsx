@@ -17,7 +17,7 @@ const MyAppointments = () => {
                 <table className="table">
                     {/* head */}
                     <thead>
-                        <tr className='bg-base-300 rounded-none text-gray-900'>
+                        <tr className='bg-base-300 rounded-none border border-gray-200 text-gray-900'>
                             <th>Sl.</th>
                             <th>Doctor</th>
                             <th>Patient</th>

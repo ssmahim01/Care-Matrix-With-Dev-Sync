@@ -9,6 +9,7 @@ const useFavoriteDoctors = () => {
 
     const { data: favoriteDoctors = [], refetch, isLoading } = useQuery({
       queryKey: "favorite-doctors",
+      enabled: !!user,
       queryFn: async () => {
         const { data } = await axiosSecure.get(`favorite-doctors/${user?.email}`)
         // console.log("doctors from useDoctors ",data);
