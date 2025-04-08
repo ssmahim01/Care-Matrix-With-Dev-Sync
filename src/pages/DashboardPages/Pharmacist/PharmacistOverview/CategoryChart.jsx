@@ -11,7 +11,7 @@ import {
 
 const CategoryChart = ({ chartData, isLoading }) => {
   return (
-    <Card className="bg-white border border-gray-200 rounded-lg px-4 py-8 shadow-sm col-span-4">
+    <Card className="bg-white border border-gray-200 rounded-lg px-4 py-8 shadow-sm lg:col-span-4 xl:col-span-5">
       <CardHeader>
         {isLoading ? (
           <div className="skeleton h-8 w-48 mb-3"></div>

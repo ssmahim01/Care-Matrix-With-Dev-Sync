@@ -1,5 +1,13 @@
+import { Card } from "@/components/ui/card";
 import { useState } from "react";
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 
 const data = [
   { name: "Prescription Required", value: 12, color: "#2563eb" },
@@ -18,7 +26,7 @@ export function PrescriptionRequirementChart() {
   };
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height={320}>
       <PieChart>
         <Pie
           data={data}
