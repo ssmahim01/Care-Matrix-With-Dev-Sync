@@ -9,6 +9,7 @@ const useMyAppointments = () => {
 
   const {data:appointments=[], isLoading, refetch} = useQuery({
     queryKey: "appointments",
+    enabled: !!user,
     queryFn: async()=>{
         const {data} = await axiosSecure.get(`/appointments/patients/${user?.email}`)
         console.log(data);
@@ -17,7 +18,7 @@ const useMyAppointments = () => {
 
   })
 
-    return [appointments, isLoading, refetch]
+    return [appointments, refetch, isLoading]
 };
 
 export default useMyAppointments;

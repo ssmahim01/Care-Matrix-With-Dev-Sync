@@ -1,80 +1,96 @@
-
-import UsersTable from '@/components/Table/UsersTable';
-import useMyAppointments from '@/hooks/useMyAppointments';
-import { Check, MoreVertical, Trash } from 'lucide-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { MoreVertical, Trash } from 'lucide-react';
 import { BiDetail } from 'react-icons/bi';
-import { FaCheck, FaCircle, FaTrashAlt } from 'react-icons/fa';
-import { MdDetails, MdPendingActions } from 'react-icons/md';
+import { FaCircle } from 'react-icons/fa';
+import useMyAppointments from '@/hooks/useMyAppointments';
 
 const MyAppointments = () => {
-    const [appointments, refetch, isLoading] = useMyAppointments()
-    console.log(appointments);
+    const [appointments, refetch, isLoading] = useMyAppointments();
+
+    const [showSkeleton, setShowSkeleton] = useState(true);
+
+    useEffect(() => {
+        // Minimum 2 seconds skeleton
+        const timer = setTimeout(() => {
+            setShowSkeleton(false);
+        }, 2000);
+
+        return () => clearTimeout(timer); // cleanup
+    }, []);
 
     return (
-        <div>
-            <div className="overflow-x-auto border border-base-content/5 bg-base-100 ">
-                <table className="table">
-                    {/* head */}
-                    <thead>
-                        <tr className='bg-base-300 rounded-none text-gray-900'>
-                            <th>Sl.</th>
-                            <th>Doctor</th>
-                            <th>Patient</th>
-                            <th>Age</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Reason</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody className='font-medium'>
+        <div className="overflow-x-auto border border-base-content/5 bg-base-100 ">
+            <table className="table">
+                <thead>
+                    <tr className={`bg-base-300 border border-gray-200 text-gray-900`}>
+                        <th>Sl.</th>
+                        <th>Doctor</th>
+                        <th>Patient</th>
+                        <th>Age</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-                        {
-                            appointments?.map((appointment, index) => <tr className='hover:bg-gray-50 border border-gray-300' key={appointment._id}>
+                <tbody className="font-medium">
+                    {isLoading || showSkeleton ? (
+                        // Show 5 rows of skeletons as placeholders
+                        [...Array(5)].map((_, idx) => (
+                            <tr key={idx} className="animate-pulse">
+                                <td><div className="skeleton h-4 w-8"></div></td>
+                                <td><div className="skeleton h-4 w-20"></div></td>
+                                <td><div className="skeleton h-4 w-20"></div></td>
+                                <td><div className="skeleton h-4 w-8"></div></td>
+                                <td><div className="skeleton h-4 w-24"></div></td>
+                                <td><div className="skeleton h-4 w-28"></div></td>
+                                <td><div className="skeleton h-4 w-16"></div></td>
+                                <td><div className="skeleton h-4 w-24"></div></td>
+                                <td><div className="skeleton h-4 w-10"></div></td>
+                            </tr>
+                        ))
+                    ) : (
+                        appointments?.map((appointment, index) => (
+                            <tr className="hover:bg-gray-50 border border-gray-300" key={appointment._id}>
                                 <th>{index + 1}</th>
-                                <td>
-                                    {appointment.doctorName}
-                                </td>
-
+                                <td>{appointment.doctorName}</td>
                                 <td>{appointment.name}</td>
                                 <td>{appointment.age}</td>
                                 <td>{appointment.phone}</td>
                                 <td>{appointment.email}</td>
-                                <td >
+                                <td>
                                     <div className="flex items-center gap-2">
-
-                                   
-                                    <span
-                                        className={`text-xs p-1 rounded-full ${appointment.status === "pending" ? 'bg-yellow-500' : 'bg-green-600'
-                                            } text-white`}
-                                    >
-                                        <FaCircle size={7} />
-                                    </span>
-                                    <span className="capitalize text-sm font-medium text-gray-700">
-                                        {appointment.status}
-                                    </span>
+                                        <span className={`text-xs p-1 rounded-full ${appointment.status === "pending" ? 'bg-yellow-500' : 'bg-green-600'} text-white`}>
+                                            <FaCircle size={7} />
+                                        </span>
+                                        <span className="capitalize text-sm font-medium text-gray-700">
+                                            {appointment.status}
+                                        </span>
                                     </div>
                                 </td>
-
                                 <td>{appointment.reason}</td>
                                 <td>
                                     <div className="dropdown">
-                                        <div tabIndex={0} role='button' className="  cursor-pointer p-2 mx-0 rounded  w-fit">
-                                            <MoreVertical className="cursor-pointer text-gray-700" />
+                                        <div tabIndex={0} role="button" className="cursor-pointer p-2 mx-0 rounded w-fit">
+                                            <MoreVertical className="text-gray-700" />
                                         </div>
-                                        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm right-12 top-0 ">
-                                            <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm' onClick={() => handleDetails(appointment._id)} > <span><BiDetail size={16} /></span> <a>View Details</a></div>
-                                            <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm' onClick={() => handleDeleteAppointment(appointment._id)} > <span><Trash size={16} /></span> <a>Cancel Appointment</a></div>
+                                        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm right-12 top-0">
+                                            <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm' onClick={() => handleDetails(appointment._id)} >
+                                                <BiDetail size={16} /><a>View Details</a>
+                                            </div>
+                                            <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm' onClick={() => handleDeleteAppointment(appointment._id)} >
+                                                <Trash size={16} /><a>Cancel Appointment</a>
+                                            </div>
                                         </ul>
                                     </div>
                                 </td>
-                            </tr>)
-                        }
-                    </tbody>
-                </table>
-            </div>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </table>
         </div>
     );
 };
