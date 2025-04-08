@@ -7,50 +7,50 @@ import {
 } from "@/components/ui/card";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, TrendingUp } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { format, parseISO } from "date-fns";
 
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-
+import axios from "axios";
 import OrderStatusChart from "./OrderStatusChart";
 import OrderVolumeChart from "./OrderVolumeChart";
-import RevenueByDayTable from "./RevenueByDayTable";
-import SalesReportHeader from "./SalesReportHeader";
-import TopSellingChart from "./TopSellingChart";
 import OverviewCards from "./OverviewCards";
-import RevenueCards from "./RevenueCards";
-import RevenueChart from "./RevenueChart";
-import axios from "axios";
 import PerformanceChart from "./PerformanceChart";
 import PerformanceTable from "./PerformanceTable";
 import ProductInsightsCard from "./ProductInsightsCard";
 import RecommendationsCard from "./RecommendationsCard";
+import RevenueByDayTable from "./RevenueByDayTable";
+import RevenueCards from "./RevenueCards";
+import RevenueChart from "./RevenueChart";
+import SalesReportHeader from "./SalesReportHeader";
+import TopSellingChart from "./TopSellingChart";
+import SalesReportSkeleton from "./SalesReportSkeleton";
+import toast from "react-hot-toast";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
-  const { data } = await axios(`${import.meta.env.VITE_API_URL}/sales-report`);
-  return data || [];
+  try {
+    const { data } = await axios(
+      `${import.meta.env.VITE_API_URL}/sales-report`
+    );
+    return data || [];
+  } catch (error) {
+    toast.error(error?.message || "Something Wen't Wrong");
+  }
 };
 
 export default function SalesReport() {
   // Use Sales Report Data
-  const { data: report = [], isLoading } = useQuery({
+  const {
+    data: report = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["sales-report"],
     queryFn: fetchSalesReport,
   });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading || isError) {
+    return <SalesReportSkeleton />;
   }
 
   // Sort revenue data by date for the chart
@@ -59,10 +59,11 @@ export default function SalesReport() {
   );
 
   // Calculate additional metrics
-  const totalItems = report?.revenuePerDay.reduce(
-    (acc, day) => acc + day?.totalQty,
+  const totalItems = (report?.revenuePerDay ?? []).reduce(
+    (acc, day) => acc + (day?.totalQty ?? 0),
     0
   );
+
   const avgOrderValue = report?.totalRevenue / report?.totalOrders;
   const avgItemValue = report?.totalRevenue / totalItems;
   const avgDailyRevenue =
