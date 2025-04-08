@@ -11,16 +11,16 @@ import { format } from "date-fns";
 
 const RevenueByDayTable = ({ sortedRevenueData }) => {
   return (
-    <Table className={"p-4"}>
+    <Table className={"p-6"}>
       <TableCaption>A List Of Revenue By Day</TableCaption>
       <TableHeader>
         <TableRow className={"bg-base-200 hover:bg-base-200"}>
-          <TableHead className={"px-4"}>Date</TableHead>
-          <TableHead className={"px-4"}>Items Sold</TableHead>
-          <TableHead className={"px-4"}>Revenue</TableHead>
-          <TableHead className={"px-4"}>Avg, Item Value</TableHead>
-          <TableHead className={"px-4"}>Estimated Tax (10%)</TableHead>
-          <TableHead className={"px-4"}>Net Revenue</TableHead>
+          <TableHead className={"px-6"}>Date</TableHead>
+          <TableHead className={"px-6"}>Items Sold</TableHead>
+          <TableHead className={"px-6"}>Revenue</TableHead>
+          <TableHead className={"px-6"}>Avg, Item Value</TableHead>
+          <TableHead className={"px-6"}>Estimated Tax (10%)</TableHead>
+          <TableHead className={"px-6"}>Net Revenue</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -30,30 +30,30 @@ const RevenueByDayTable = ({ sortedRevenueData }) => {
           const netRevenue = day?.totalRevenue - tax;
           return (
             <TableRow key={day?.date}>
-              <TableCell className={"px-4"}>
+              <TableCell className={"px-6"}>
                 {format(new Date(day?.date), "MMM dd, yyyy")}
               </TableCell>
-              <TableCell className={"px-4"}>{day?.totalQty} items</TableCell>
-              <TableCell className={"px-4"}>
+              <TableCell className={"px-6"}>{day?.totalQty} items</TableCell>
+              <TableCell className={"px-6"}>
                 $
                 {day?.totalRevenue.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
-              <TableCell className={"px-4"}>
+              <TableCell className={"px-6"}>
                 $
                 {avgItemValue?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
 
-              <TableCell className={"px-4"}>
+              <TableCell className={"px-6"}>
                 $
                 {tax?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
-              <TableCell className={"px-4"}>
+              <TableCell className={"px-6"}>
                 $
                 {netRevenue?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
