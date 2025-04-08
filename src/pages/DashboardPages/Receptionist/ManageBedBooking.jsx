@@ -44,15 +44,26 @@ function ManageBedBooking() {
   });
 
   // Handle bed status change
-  const handleBedStatusChange = async (id, newStatus) => {
+  const handleBedStatusChange = async (id, bedId, newStatus , bedStatus) => {
     await toast.promise(
       axiosSecure.patch(`/bed-booking/status/${id}`, { status: newStatus }),
       {
         loading: "Updating status...",
         success: <b>Bed Booking Status Updated Successfully!</b>,
-        error: <b>Could not update status.</b>,
+        error: <b>Could not update booking status.</b>,
       }
     );
+
+    // Update bed status
+    await toast.promise(
+      axiosSecure.patch(`/beds/status/${bedId}`, { status: bedStatus }),
+      {
+        loading: "Updating bed status...",
+        success: <b>Bed Status Updated Successfully!</b>,
+        error: <b>Could not update bed status.</b>,
+      }
+    );
+    // Refetch data
     refetch();
   };
 
@@ -69,7 +80,7 @@ function ManageBedBooking() {
 
     if (result.isConfirmed) {
       try {
-        const { data } = await axiosSecure.delete(`/bed_booking/delete/${id}`);
+        const { data } = await axiosSecure.delete(`/bed-booking/delete/${id}`);
         if (data.deletedCount) {
           refetch();
           Swal.fire({
@@ -170,7 +181,7 @@ function ManageBedBooking() {
                         <DropdownMenuContent>
                           <DropdownMenuItem 
                               onClick={() =>
-                                  handleBedStatusChange(bed._id, "accepted")
+                                  handleBedStatusChange(bed._id,bed.bedId, "accepted", "booked")
                               }
                            className="cursor-pointer">
                             <Check className="w-4 h-4 mr-2" /> Accept Booking
@@ -193,7 +204,7 @@ function ManageBedBooking() {
                        <DropdownMenuContent>
                          <DropdownMenuItem 
                              onClick={() =>
-                                 handleBedStatusChange(bed._id, "pending")
+                                 handleBedStatusChange(bed._id, bed.bedId, "pending" , "requested")
                              }
                           className="cursor-pointer">
                            <MdPendingActions className="w-4 h-4 mr-2" /> Make Pending
