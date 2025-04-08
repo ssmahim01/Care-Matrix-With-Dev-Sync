@@ -45,6 +45,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import RevenueByDayTable from "./RevenueByDayTable";
+import RevenueCards from "./RevenueCards";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -230,66 +231,12 @@ export default function SalesReport() {
               <CardContent>
                 {/* Revenue Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                  <Card className="border shadow border-[#e5e7eb] w-full pb-6">
-                    <CardContent className="pt-6">
-                      <div className="text-center">
-                        <div className="text-base font-semibold text-gray-700">
-                          Average Daily Revenue
-                        </div>
-                        <div className="text-3xl font-extrabold mt-1 text-primary">
-                          $
-                          {avgDailyRevenue.toLocaleString(undefined, {
-                            maximumFractionDigits: 2,
-                          })}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border shadow border-[#e5e7eb] w-full pb-6">
-                    <CardContent className="pt-6">
-                      <div className="text-center">
-                        <div className="text-base font-semibold text-gray-700">
-                          Average Order Value
-                        </div>
-                        <div className="text-3xl font-extrabold mt-1 text-primary">
-                          $
-                          {avgOrderValue.toLocaleString(undefined, {
-                            maximumFractionDigits: 2,
-                          })}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border shadow border-[#e5e7eb] w-full pb-6">
-                    <CardContent className="pt-6">
-                      <div className="text-center">
-                        <div className="text-base font-semibold text-gray-700">
-                          Average Item Value
-                        </div>
-                        <div className="text-3xl font-extrabold mt-1 text-primary">
-                          $
-                          {avgItemValue.toLocaleString(undefined, {
-                            maximumFractionDigits: 2,
-                          })}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border shadow border-[#e5e7eb] w-full pb-6">
-                    <CardContent className="pt-6">
-                      <div className="text-center">
-                        <div className="text-base font-semibold text-gray-700">
-                          Total Items Sold
-                        </div>
-                        <div className="text-3xl font-extrabold mt-1 text-primary">
-                          {totalItems.toLocaleString()}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <RevenueCards
+                    avgDailyRevenue={avgDailyRevenue}
+                    avgOrderValue={avgOrderValue}
+                    avgItemValue={avgItemValue}
+                    totalItems={totalItems}
+                  />
                 </div>
                 {/* Revenue by Day */}
                 <div>

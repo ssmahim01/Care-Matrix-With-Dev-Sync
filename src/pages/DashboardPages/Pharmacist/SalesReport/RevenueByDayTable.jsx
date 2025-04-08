@@ -25,38 +25,37 @@ const RevenueByDayTable = ({ sortedRevenueData }) => {
       </TableHeader>
       <TableBody>
         {sortedRevenueData.map((day) => {
-          const avgItemValue = day.totalRevenue / day.totalQty;
-          const tax = day.totalRevenue * 0.1;
-          const netRevenue = day.totalRevenue - tax;
-
+          const avgItemValue = day?.totalRevenue / day?.totalQty;
+          const tax = day?.totalRevenue * 0.1;
+          const netRevenue = day?.totalRevenue - tax;
           return (
-            <TableRow key={day.date}>
+            <TableRow key={day?.date}>
               <TableCell className={"px-4"}>
-                {format(new Date(day.date), "MMM dd, yyyy")}
+                {format(new Date(day?.date), "MMM dd, yyyy")}
               </TableCell>
-              <TableCell className={"px-4"}>{day.totalQty} items</TableCell>
+              <TableCell className={"px-4"}>{day?.totalQty} items</TableCell>
               <TableCell className={"px-4"}>
                 $
-                {day.totalRevenue.toLocaleString(undefined, {
+                {day?.totalRevenue.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
               <TableCell className={"px-4"}>
                 $
-                {avgItemValue.toLocaleString(undefined, {
+                {avgItemValue?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
 
               <TableCell className={"px-4"}>
                 $
-                {tax.toLocaleString(undefined, {
+                {tax?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
               <TableCell className={"px-4"}>
                 $
-                {netRevenue.toLocaleString(undefined, {
+                {netRevenue?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
