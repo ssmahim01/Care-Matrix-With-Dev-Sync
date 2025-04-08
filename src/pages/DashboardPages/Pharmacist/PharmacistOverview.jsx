@@ -52,6 +52,8 @@ const PharmacistOverview = () => {
         totalInStockMedicines={stats?.totalInStockMedicines}
         totalLimitedStockMedicines={stats?.totalLimitedStockMedicines}
         totalOutOFStockMedicines={stats?.totalOutOFStockMedicines}
+        expiredCount={stats?.expiredCount}
+        nearExpiryCount={stats?.nearExpiryCount}
       />
 
       {/* Medicines Per Category Chart */}
