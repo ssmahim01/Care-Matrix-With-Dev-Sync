@@ -10,10 +10,10 @@ import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 const OrderStatusChart = ({ orderStatusData }) => {
   return (
-    <Card className="col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
+    <Card className="lg:col-span-3 xl:col-span-2 border shadow-none border-[#e5e7eb] w-full py-6">
       <CardHeader>
-        <CardTitle>Order Status</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-base font-bold">Order Status</CardTitle>
+        <CardDescription className="py-0 font-medium -mt-1">
           Current distribution of order statuses
         </CardDescription>
       </CardHeader>

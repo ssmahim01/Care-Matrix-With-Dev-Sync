@@ -180,13 +180,14 @@ export default function SalesReport() {
           </TabsList>
           {/* 1st Tab Content */}
           <TabsContent value="overview" className="space-y-6">
+            {/* Overview Cards */}
             <OverviewCards
               totalOrders={report?.totalOrders}
               totalPendingOrders={report?.totalPendingOrders}
               totalDeliveredOrders={report?.totalDeliveredOrders}
               totalRevenue={report?.totalRevenue}
             />
-
+            {/* Charts */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
               {/* Revenue Chart */}
               <RevenueChart enhancedRevenueData={enhancedRevenueData} />
@@ -194,7 +195,7 @@ export default function SalesReport() {
               <OrderStatusChart orderStatusData={orderStatusData} />
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+            <div className="grid gap-6 lg:grid-cols-7">
               <Card className="col-span-3 border-none shadow-md">
                 <CardHeader>
                   <CardTitle>Top Selling Medicines</CardTitle>

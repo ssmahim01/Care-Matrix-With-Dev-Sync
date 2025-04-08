@@ -20,7 +20,7 @@ import CustomTooltip, { COLORS } from "./CustomTooltip";
 
 const RevenueChart = ({ enhancedRevenueData = [] }) => {
   return (
-    <Card className="col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
+    <Card className="lg:col-span-4 xl:col-span-5 border shadow-none border-[#e5e7eb] w-full py-6">
       <CardHeader>
         <CardTitle className="text-base font-bold">Revenue Trends</CardTitle>
         <CardDescription className="py-0 font-medium -mt-1">
