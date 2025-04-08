@@ -15,7 +15,7 @@ const RevenueCards = ({
               Average Daily Revenue
             </div>
             <div className="text-3xl font-extrabold mt-1 text-primary">
-              $
+              ৳{" "}
               {avgDailyRevenue.toLocaleString(undefined, {
                 maximumFractionDigits: 2,
               })}
@@ -30,7 +30,7 @@ const RevenueCards = ({
               Average Order Value
             </div>
             <div className="text-3xl font-extrabold mt-1 text-primary">
-              $
+              ৳{" "}
               {avgOrderValue.toLocaleString(undefined, {
                 maximumFractionDigits: 2,
               })}
@@ -45,7 +45,7 @@ const RevenueCards = ({
               Average Item Value
             </div>
             <div className="text-3xl font-extrabold mt-1 text-primary">
-              $
+              ৳{" "}
               {avgItemValue.toLocaleString(undefined, {
                 maximumFractionDigits: 2,
               })}

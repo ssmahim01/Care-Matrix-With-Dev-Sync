@@ -35,26 +35,26 @@ const RevenueByDayTable = ({ sortedRevenueData }) => {
               </TableCell>
               <TableCell className={"px-6"}>{day?.totalQty} items</TableCell>
               <TableCell className={"px-6"}>
-                $
+                ৳{" "}
                 {day?.totalRevenue.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
               <TableCell className={"px-6"}>
-                $
+                ৳{" "}
                 {avgItemValue?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
 
               <TableCell className={"px-6"}>
-                $
+                ৳{" "}
                 {tax?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
               </TableCell>
               <TableCell className={"px-6"}>
-                $
+                ৳{" "}
                 {netRevenue?.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}
