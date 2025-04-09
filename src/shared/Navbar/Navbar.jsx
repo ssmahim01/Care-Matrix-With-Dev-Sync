@@ -255,17 +255,19 @@ const Navbar = () => {
                     )}
                   </li>
 
-                  <div className="mr-4 block md:hidden">
-                <NavLink
-                  to="/dashboard/patient/emergency-cases"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
-                    <Siren className="w-4 h-4" />{" "}
-                    <span className="font-bold">Emergency</span>
-                  </button>
-                </NavLink>
-              </div>
+                  {user && role === "patient" && (
+                    <div className="block md:hidden">
+                      <NavLink
+                        to="/dashboard/patient/emergency-cases"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
+                          <Siren className="w-4 h-4" />{" "}
+                          <span className="font-bold">Emergency</span>
+                        </button>
+                      </NavLink>
+                    </div>
+                  )}
                 </ul>
               </aside>
               <div className="flex items-center">
@@ -405,17 +407,19 @@ const Navbar = () => {
                 </ul>
               </>
 
-              <div className="mr-4 md:block hidden">
-                <NavLink
-                  to="/dashboard/patient/emergency-cases"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
-                    <Siren className="w-4 h-4" />{" "}
-                    <span className="font-bold">Emergency</span>
-                  </button>
-                </NavLink>
-              </div>
+              {user && role === "patient" && (
+                <div className="mr-4 md:block hidden">
+                  <NavLink
+                    to="/dashboard/patient/emergency-cases"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
+                      <Siren className="w-4 h-4" />{" "}
+                      <span className="font-bold">Emergency</span>
+                    </button>
+                  </NavLink>
+                </div>
+              )}
 
               {user ? (
                 <div className="dropdown dropdown-end avatar-online">
