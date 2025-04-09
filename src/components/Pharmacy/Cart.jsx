@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { districts, divisionDistricts, divisions } from "@/lib/address";
+import useDiscount from "@/hooks/useDiscount";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -47,8 +48,17 @@ const Cart = () => {
   const shippingCost = cart.length ? 60 : 0;
   const [loadingClientSecret, setLoadingClientSecret] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
+  const [discount, discountLoading] = useDiscount();
 
-  // form values
+  // Use discount directly as a percentage (e.g., 20 means 20%)
+  const discountPercentage = Number(discount) || 0; // Ensure it’s a number, default to 0
+  const discountAmount = subtotal * (discountPercentage / 100); // Calculate discount amount
+  const totalWithDiscount = subtotal - discountAmount + shippingCost; // Apply discount to total
+
+  // Log for debugging
+  console.log("Discount:", discount);
+
+  // Form values
   const [name, setName] = useState(user?.displayName || "");
   const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhone] = useState("");
@@ -145,8 +155,8 @@ const Cart = () => {
       console.error("Error clearing cart:", error);
     }
   };
+
   const handlePaymentSuccess = () => {
-    e.preventDefault();
     // Clear cart after successful payment
     axiosSecure
       .delete(`/carts/clear/${user?.email}`)
@@ -155,16 +165,17 @@ const Cart = () => {
       })
       .catch((err) => console.error("Error clearing cart:", err));
   };
+
   useEffect(() => {
     const initializePaymentIntent = async () => {
-      if (!subtotal || subtotal + shippingCost <= 0) return;
+      if (!subtotal || totalWithDiscount <= 0) return;
 
       setLoadingClientSecret(true);
       try {
         const response = await axiosSecure.post(
           "/carts/create-payment-intent",
           {
-            price: subtotal + shippingCost,
+            price: totalWithDiscount, // Use discounted total for payment
           }
         );
         if (response.data.clientSecret) {
@@ -181,10 +192,10 @@ const Cart = () => {
     };
 
     initializePaymentIntent();
-  }, [subtotal, shippingCost, axiosSecure]);
+  }, [subtotal, shippingCost, discountPercentage, axiosSecure]); // Add discountPercentage to dependencies
 
   const parcel = {
-    price: subtotal + shippingCost,
+    price: totalWithDiscount, // Update parcel price with discount
     parcelType: "Medicine Purchase",
     _id: Date.now().toString(),
   };
@@ -270,6 +281,16 @@ const Cart = () => {
                 ৳ {subtotal.toFixed(2)}
               </span>
             </div>
+            {discountPercentage > 0 && (
+              <div className="flex justify-between text-green-600">
+                <span className="text-[1rem]">
+                  Discount ({discountPercentage}%)
+                </span>
+                <span className="text-[1rem] font-medium">
+                  -৳ {discountAmount.toFixed(2)}
+                </span>
+              </div>
+            )}
             <div className="flex justify-between">
               <span className="text-[1rem] text-gray-500">Shipping Cost</span>
               <span className="text-[1rem] font-medium text-gray-800">
@@ -279,7 +300,7 @@ const Cart = () => {
             <div className="flex justify-between border-t border-gray-200 pt-5 font-medium">
               <span>Total</span>
               <span className="text-[1rem] font-medium text-gray-800">
-                ৳ {(subtotal + shippingCost).toFixed(2)}
+                ৳ {totalWithDiscount.toFixed(2)}
               </span>
             </div>
           </div>
@@ -293,15 +314,13 @@ const Cart = () => {
             className="flex items-center justify-center gap-5 mt-5"
           >
             <Link to={"/pharmacy"}>
-              <Button className=" cursor-pointer">Continue Shopping</Button>
+              <Button className="cursor-pointer">Continue Shopping</Button>
             </Link>
             <Button
               onClick={() => setIsOpen(true)}
-              className={
-                "bg-red-500 hover:bg-red-400 text-white cursor-pointer"
-              }
+              className="bg-red-500 hover:bg-red-400 text-white cursor-pointer"
             >
-              Clear Cart <FaCartShopping></FaCartShopping>
+              Clear Cart <FaCartShopping />
             </Button>
           </motion.div>
         </div>
@@ -312,7 +331,7 @@ const Cart = () => {
         <div className="space-y-6">
           {/* Name */}
           <div className="space-y-2">
-            <Label htmlFor="email">Name</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               type="text"
               id="name"
@@ -413,7 +432,7 @@ const Cart = () => {
           {/* Payment Method */}
           <div className="space-y-2">
             <Label>Payment method</Label>
-            {loadingClientSecret ? (
+            {loadingClientSecret || discountLoading ? (
               <p className="text-gray-500">Loading payment options...</p>
             ) : clientSecret === null ? (
               <p className="text-gray-500">Preparing payment options...</p>
@@ -426,8 +445,10 @@ const Cart = () => {
                   refetch={refetch}
                   parcel={parcel}
                   cartItems={cart}
+                  discountPercentage={discountPercentage}
                   clientSecret={clientSecret}
                   onPaymentSuccess={handlePaymentSuccess}
+                  discountAmount={discountAmount}
                 />
               </Elements>
             )}

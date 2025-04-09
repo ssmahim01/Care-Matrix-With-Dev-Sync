@@ -110,6 +110,21 @@ const InvoicePDF = ({ invoice = {}, user = {} }) => (
             <Text>Shipping Cost</Text>
             <Text>Tk 60</Text>
           </View>
+          {invoice?.discountAmount && (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: "8px",
+                color: "green",
+              }}
+            >
+              <Text>Discount ({invoice?.discountPercentage}%)</Text>
+              <Text> - Tk {invoice?.discountAmount}</Text>
+            </View>
+          )}
+
           <View
             style={{
               display: "flex",
