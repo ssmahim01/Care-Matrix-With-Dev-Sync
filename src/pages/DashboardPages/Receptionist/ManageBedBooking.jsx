@@ -25,6 +25,7 @@ import { LuBedSingle } from "react-icons/lu";
 import Swal from "sweetalert2";
 import { FaCircle } from "react-icons/fa";
 import { MdPendingActions } from "react-icons/md";
+import moment from "moment";
 
 function ManageBedBooking() {
   const axiosSecure = useAxiosSecure();
@@ -44,7 +45,7 @@ function ManageBedBooking() {
   });
 
   // Handle bed status change
-  const handleBedStatusChange = async (id, bedId, newStatus , bedStatus) => {
+  const handleBedStatusChange = async (id, bedId, newStatus, bedStatus) => {
     await toast.promise(
       axiosSecure.patch(`/bed-booking/status/${id}`, { status: newStatus }),
       {
@@ -68,7 +69,7 @@ function ManageBedBooking() {
   };
 
   // Handle bed deletion
-  const handleBedDelete = async (id) => {
+  const handleBedDelete = async (id,bedId) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "This action will permanently delete the bed booking!",
@@ -82,6 +83,20 @@ function ManageBedBooking() {
       try {
         const { data } = await axiosSecure.delete(`/bed-booking/delete/${id}`);
         if (data.deletedCount) {
+        
+        //   change the bed status to available
+        await toast.promise(
+            axiosSecure.patch(`/beds/status/${bedId}`, { status: "available" }),
+            {
+              loading: "Updating bed status...",
+              success: <b>Bed Status Updated Successfully!</b>,
+              error: <b>Could not update bed status.</b>,
+            }
+          ); 
+
+
+
+
           refetch();
           Swal.fire({
             title: "Deleted!",
@@ -127,6 +142,8 @@ function ManageBedBooking() {
                 <TableHead>Bed Title</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Requested Email</TableHead>
+                <TableHead>Requested Time</TableHead>
+
                 <TableHead>Patient Name</TableHead>
                 <TableHead>Patient Age</TableHead>
                 <TableHead>Patient Number</TableHead>
@@ -148,6 +165,9 @@ function ManageBedBooking() {
                   <TableCell>{bed.bedTitle}</TableCell>
                   <TableCell>{bed.bedPrice}</TableCell>
                   <TableCell>{bed.authorEmail}</TableCell>
+                  <TableCell className="text-blue-500 font-semibold">
+                    {bed.time && moment(bed.time).fromNow()}
+                  </TableCell>
                   <TableCell>{bed.patientName}</TableCell>
                   <TableCell>{bed.age}</TableCell>
                   <TableCell>{bed.contactNumber}</TableCell>
@@ -169,56 +189,68 @@ function ManageBedBooking() {
                     </div>
                   </TableCell>
                   <TableCell className="flex justify-end">
-
-                    {
-                        bed.status === "pending" ? 
-                         <DropdownMenu>
+                    {bed.status === "pending" ? (
+                      <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
                             <MoreVertical className="cursor-pointer text-gray-700" />
                           </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                          <DropdownMenuItem 
-                              onClick={() =>
-                                  handleBedStatusChange(bed._id,bed.bedId, "accepted", "booked")
-                              }
-                           className="cursor-pointer">
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleBedStatusChange(
+                                bed._id,
+                                bed.bedId,
+                                "accepted",
+                                "booked"
+                              )
+                            }
+                            className="cursor-pointer"
+                          >
                             <Check className="w-4 h-4 mr-2" /> Accept Booking
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            onClick={() => handleBedDelete(bed._id)}
+                            onClick={() => handleBedDelete(bed._id,bed.bedId)}
                             className="cursor-pointer"
                           >
-                            <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
+                            <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
+                            Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
-                      </DropdownMenu> 
-                      : 
-                       <DropdownMenu>
-                       <DropdownMenuTrigger asChild>
-                         <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
-                           <MoreVertical className="cursor-pointer text-gray-700" />
-                         </div>
-                       </DropdownMenuTrigger>
-                       <DropdownMenuContent>
-                         <DropdownMenuItem 
-                             onClick={() =>
-                                 handleBedStatusChange(bed._id, bed.bedId, "pending" , "requested")
-                             }
-                          className="cursor-pointer">
-                           <MdPendingActions className="w-4 h-4 mr-2" /> Make Pending
-                         </DropdownMenuItem>
-                         <DropdownMenuItem
-                           onClick={() => handleBedDelete(bed._id)}
-                           className="cursor-pointer"
-                         >
-                           <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
-                         </DropdownMenuItem>
-                       </DropdownMenuContent>
-                     </DropdownMenu>
-                    }
-                    
+                      </DropdownMenu>
+                    ) : (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
+                            <MoreVertical className="cursor-pointer text-gray-700" />
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleBedStatusChange(
+                                bed._id,
+                                bed.bedId,
+                                "pending",
+                                "requested"
+                              )
+                            }
+                            className="cursor-pointer"
+                          >
+                            <MdPendingActions className="w-4 h-4 mr-2" /> Make
+                            Pending
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleBedDelete(bed._id,bed.bedId)}
+                            className="cursor-pointer"
+                          >
+                            <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
