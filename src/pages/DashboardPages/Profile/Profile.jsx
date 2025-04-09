@@ -34,7 +34,7 @@ import { updateUsername } from "@/redux/auth/authSlice";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import axios from "axios";
 import { format } from "date-fns";
-import { updatePassword, updateProfile } from "firebase/auth";
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword, updateProfile } from "firebase/auth";
 import {
   Calendar,
   CheckCheck,
@@ -62,7 +62,6 @@ const Profile = () => {
   const user = useAuthUser();
   const [newName, setNewName] = useState(user?.displayName);
   const [isNameEditing, setIsNameEditing] = useState(false);
-  const [verifyPassword, setVerifyPassword] = useState("");
   const [openEye, setOpenEye] = useState(false);
   const [openEye2, setOpenEye2] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -119,8 +118,14 @@ const Profile = () => {
       );
 
       if (res.data.success) {
-        setVerifyPassword(res.data.password);
+        // Reauthenticate with Firebase
+        const credential = EmailAuthProvider.credential(user.email, data.password);
+        await reauthenticateWithCredential(auth.currentUser, credential);
+
+        // Update Firebase password
         await updatePassword(auth.currentUser, data.newPassword);
+
+        // Update MongoDB password
         const response = await axios.patch(
           `${import.meta.env.VITE_API_URL}/users/update-password/${user?.uid}`,
           { newPassword: data.newPassword }
