@@ -45,6 +45,7 @@ import PurchaseHistory from "@/pages/Patient/PurchaseHistory/PurchaseHistory";
 import Profile from "@/pages/DashboardPages/Profile/Profile";
 import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyFavoriteDoctors";
 import SalesReport from "@/pages/DashboardPages/Pharmacist/SalesReport/SalesReport";
+import EmergencyContact from "@/pages/Patient/EmergencyDashboard/EmergencyContact";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -203,6 +204,8 @@ const Router = () => {
           element={<PurchaseHistory />}
         />
         <Route path="/dashboard/invoice/:invoiceId" element={<Invoice />} />
+
+        <Route path="/dashboard/patient/emergency-cases" element={<EmergencyContact />} />
 
         {/* Common Routes */}
         <Route path="/dashboard/profile" element={<Profile />} />
