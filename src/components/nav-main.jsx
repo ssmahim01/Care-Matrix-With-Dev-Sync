@@ -10,6 +10,7 @@ import useRole from "@/hooks/useRole";
 import { useAuthLoading } from "@/redux/auth/authActions";
 import {
   BadgeInfo,
+  BedSingle,
   BriefcaseMedical,
   CalendarDays,
   ChartPie,
@@ -271,6 +272,18 @@ export function NavMain() {
                 <ClipboardPlus className="text-base" />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
                   My Favorite Doctors
+                </span>
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/patient/my-bedRequest"
+                className={
+                  "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+                }
+              >
+                <BedSingle className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  My Bed Requests
                 </span>
               </NavLink>
 

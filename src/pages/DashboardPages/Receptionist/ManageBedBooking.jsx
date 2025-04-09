@@ -69,7 +69,7 @@ function ManageBedBooking() {
   };
 
   // Handle bed deletion
-  const handleBedDelete = async (id,bedId) => {
+  const handleBedDelete = async (id, bedId) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "This action will permanently delete the bed booking!",
@@ -83,19 +83,15 @@ function ManageBedBooking() {
       try {
         const { data } = await axiosSecure.delete(`/bed-booking/delete/${id}`);
         if (data.deletedCount) {
-        
-        //   change the bed status to available
-        await toast.promise(
+          //   change the bed status to available
+          await toast.promise(
             axiosSecure.patch(`/beds/status/${bedId}`, { status: "available" }),
             {
               loading: "Updating bed status...",
               success: <b>Bed Status Updated Successfully!</b>,
               error: <b>Could not update bed status.</b>,
             }
-          ); 
-
-
-
+          );
 
           refetch();
           Swal.fire({
@@ -211,7 +207,7 @@ function ManageBedBooking() {
                             <Check className="w-4 h-4 mr-2" /> Accept Booking
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            onClick={() => handleBedDelete(bed._id,bed.bedId)}
+                            onClick={() => handleBedDelete(bed._id, bed.bedId)}
                             className="cursor-pointer"
                           >
                             <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
@@ -242,7 +238,7 @@ function ManageBedBooking() {
                             Pending
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            onClick={() => handleBedDelete(bed._id,bed.bedId)}
+                            onClick={() => handleBedDelete(bed._id, bed.bedId)}
                             className="cursor-pointer"
                           >
                             <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}

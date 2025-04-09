@@ -45,6 +45,7 @@ import PurchaseHistory from "@/pages/Patient/PurchaseHistory/PurchaseHistory";
 import Profile from "@/pages/DashboardPages/Profile/Profile";
 import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyFavoriteDoctors";
 import SalesReport from "@/pages/DashboardPages/Pharmacist/SalesReport/SalesReport";
+import MyBedRequests from "@/pages/DashboardPages/User/MyBedRequests/MyBedRequests";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -194,6 +195,14 @@ const Router = () => {
           path="/dashboard/patient/favorite-doctors"
           element={<MyFavoriteDoctors />}
         />
+
+        <Route
+          path="/dashboard/patient/my-bedRequest"
+          element={<MyBedRequests />}
+        />
+
+
+
         <Route
           path="/dashboard/patient/request-history"
           element={<RequestHistory />}
