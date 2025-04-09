@@ -27,6 +27,7 @@ import SalesReportSkeleton from "./SalesReportSkeleton";
 import toast from "react-hot-toast";
 import { utils, writeFile } from "xlsx";
 import RevenueByDayPDF from "./RavenueByDayPdf";
+import TopCustomerTable from "./TopCustomerTable";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -164,6 +165,12 @@ export default function SalesReport() {
             >
               Product Performance
             </TabsTrigger>
+            <TabsTrigger
+              value="insights"
+              className={"cursor-pointer py-2 px-4"}
+            >
+              Customer Insights
+            </TabsTrigger>
           </TabsList>
           {/* 1st Tab Content */}
           <TabsContent value="overview" className="space-y-6">
@@ -260,6 +267,22 @@ export default function SalesReport() {
                   {/* Recommendations */}
                   <RecommendationsCard />
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          {/* 4th Tab Content */}
+          <TabsContent value="insights">
+            <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
+              <CardHeader>
+                <CardTitle className="text-base font-bold">
+                  Top Customer
+                </CardTitle>
+                <CardDescription className="py-0 font-medium -mt-1">
+                  Most valuable customers based on total purchases
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TopCustomerTable topCustomers={report?.topCustomers} />
               </CardContent>
             </Card>
           </TabsContent>
