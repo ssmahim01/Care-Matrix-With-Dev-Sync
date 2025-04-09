@@ -58,20 +58,6 @@ import { useQuery } from "@tanstack/react-query";
 
 const Profile = () => {
   const user = useAuthUser();
-  const {
-    data: person = {},
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["person", user?.uid],
-    queryFn: async () => {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/users/individual/${user?.uid}`
-      );
-      return response.data;
-    },
-  });
-
   const [newName, setNewName] = useState(user?.displayName);
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -107,10 +93,6 @@ const Profile = () => {
     },
   });
 
-  // const form2 = useForm({
-  //   resolver: zodResolver(FormSchema),
-  // });
-
   // Handle Form Submit
   const onSubmit = async (data) => {
     try {
@@ -124,16 +106,16 @@ const Profile = () => {
 
       if (res.data.success) {
         await updatePassword(auth.currentUser, data.newPassword);
-          const response = await axios.patch(
-            `${import.meta.env.VITE_API_URL}/users/update-password/${user?.uid}`,
-            { newPassword: data.newPassword }
-          );
-    
-          if (response.data.success) {
-            toast.success("Password updated successfully");
-            setOpenDialog(false);
-            form.reset();
-          }
+        const response = await axios.patch(
+          `${import.meta.env.VITE_API_URL}/users/update-password/${user?.uid}`,
+          { newPassword: data.newPassword }
+        );
+
+        if (response.data.success) {
+          toast.success("Password updated successfully");
+          setOpenDialog(false);
+          form.reset();
+        }
       } else {
         toast.error("Password incorrect");
       }
@@ -430,6 +412,7 @@ const Profile = () => {
             </CardFooter>
           </Card>
 
+          {/* Dialog of change password */}
           <div className="pt-6">
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
               <DialogContent forceMount>
@@ -448,9 +431,12 @@ const Profile = () => {
                         <FormItem>
                           <FormLabel>Current Password</FormLabel>
                           <FormControl>
-                            <Input type="password" {...field} />
+                            <Input
+                              type="password"
+                              placeholder="Provide your current password"
+                              {...field}
+                            />
                           </FormControl>
-                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -461,9 +447,12 @@ const Profile = () => {
                         <FormItem>
                           <FormLabel>New Password</FormLabel>
                           <FormControl>
-                            <Input type="password" {...field} />
+                            <Input
+                              type="password"
+                              placeholder="Type your new password"
+                              {...field}
+                            />
                           </FormControl>
-                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -476,15 +465,6 @@ const Profile = () => {
                     </Button>
                   </form>
                 </Form>
-
-                {/* <Form {...form2}>
-                    <form
-                      onSubmit={form2.handleSubmit(changePassword)}
-                      className="space-y-3"
-                    >
-                      <Button type="submit">Update Password</Button>
-                    </form>
-                  </Form> */}
               </DialogContent>
             </Dialog>
           </div>
