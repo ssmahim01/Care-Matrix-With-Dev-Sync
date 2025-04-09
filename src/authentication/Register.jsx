@@ -7,7 +7,7 @@ import { FaFileUpload } from "react-icons/fa";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
 import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
-import { useAuthUser } from "@/redux/auth/authActions";
+import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { useNavigate } from "react-router";
 import AuthHeader from "./AuthHeader";
 import NavigateTo from "./NavigateTo";
@@ -21,6 +21,7 @@ import Swal from "sweetalert2";
 const Register = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
+  const userLoading = useAuthLoading();
   const dispatch = useDispatch();
 
   // states for name, email
@@ -220,12 +221,14 @@ const Register = () => {
               `${import.meta.env.VITE_API_URL}/users`,
               userData
             );
+            // Show Success Modal
             if (data.data.insertedId) {
               Swal.fire({
                 title: "Registration Successful! 🎉",
                 text: "Welcome To The dashboard!",
                 icon: "success",
                 confirmButtonText: "Go To Profile",
+                confirmButtonColor: "#000",
               }).then(() => {
                 navigate("/dashboard/profile");
               });
@@ -245,11 +248,9 @@ const Register = () => {
             : error?.message || "Registration Failed!"
         )
       );
-
-    // console.table(user);
   };
 
-  // if (user) return navigate("/");
+  if (user && userLoading) return navigate("/");
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
