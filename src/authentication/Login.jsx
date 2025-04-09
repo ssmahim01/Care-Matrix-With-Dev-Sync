@@ -134,7 +134,7 @@ const Login = () => {
               onClick={() =>
                 handleBadgeClick(
                   "receptionist@carematrix.com",
-                  "Receptionist123@"
+                  "Receptionist123@5"
                 )
               }
             >
@@ -145,7 +145,7 @@ const Login = () => {
               onClick={() =>
                 handleBadgeClick(
                   "admin@carematrix.com",
-                  "Admin123@"
+                  "Admin12345@"
                 )
               }
             >

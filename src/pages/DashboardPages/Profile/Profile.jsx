@@ -1,6 +1,18 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -9,7 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
@@ -22,7 +34,7 @@ import { updateUsername } from "@/redux/auth/authSlice";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import axios from "axios";
 import { format } from "date-fns";
-import { updateProfile } from "firebase/auth";
+import { updatePassword, updateProfile } from "firebase/auth";
 import {
   Calendar,
   CheckCheck,
@@ -42,9 +54,13 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import ProfileSkeleton from "./ProfileSkeleton";
+import { useQuery } from "@tanstack/react-query";
 
 const Profile = () => {
   const user = useAuthUser();
+  const [newName, setNewName] = useState(user?.displayName);
+  const [isNameEditing, setIsNameEditing] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const phoneNumber = usePhone();
   const loading = useAuthLoading();
   const [, roleLoading] = useRole();
@@ -52,8 +68,62 @@ const Profile = () => {
   const dispatch = useDispatch();
   const role = useRole();
 
-  const [newName, setNewName] = useState(user?.displayName);
-  const [isNameEditing, setIsNameEditing] = useState(false);
+  // Schema
+  const FormSchema = z
+    .object({
+      password: z
+        .string()
+        .min(6, { message: "Password must be at least 6 characters." })
+        .max(18, { message: "Password limit is 18 characters." }),
+      newPassword: z
+        .string()
+        .min(6, { message: "New password must be at least 6 characters." })
+        .max(18, { message: "New password limit is 18 characters." }),
+    })
+    .refine((data) => data.password !== data.newPassword, {
+      message: "New password must be different from current password",
+      path: ["newPassword"],
+    });
+
+  const form = useForm({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      password: "",
+      newPassword: "",
+    },
+  });
+
+  // Handle Form Submit
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/verify-password`,
+        {
+          uid: user?.uid,
+          password: data.password,
+        }
+      );
+
+      if (res.data.success) {
+        await updatePassword(auth.currentUser, data.newPassword);
+        const response = await axios.patch(
+          `${import.meta.env.VITE_API_URL}/users/update-password/${user?.uid}`,
+          { newPassword: data.newPassword }
+        );
+
+        if (response.data.success) {
+          toast.success("Password updated successfully");
+          setOpenDialog(false);
+          form.reset();
+        }
+      } else {
+        toast.error("Password incorrect");
+      }
+    } catch (error) {
+      // console.error("Password update error:", error);
+      toast.error(error.message || "Failed to update password");
+    }
+  };
 
   // Function for update username
   const handleNameChange = async () => {
@@ -210,7 +280,13 @@ const Profile = () => {
             <CardFooter className="border-t bg-muted/30 px-6 pb-6">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full gap-2">
+                  <Button
+                    variant="outline"
+                    className="w-full gap-2"
+                    onClick={() => {
+                      setOpenDialog(true);
+                    }}
+                  >
                     <Lock className="h-4 w-4" />
                     Change Password
                   </Button>
@@ -335,6 +411,63 @@ const Profile = () => {
               )}
             </CardFooter>
           </Card>
+
+          {/* Dialog of change password */}
+          <div className="pt-6">
+            <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+              <DialogContent forceMount>
+                <Form {...form}>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      form.handleSubmit(onSubmit)(e);
+                    }}
+                    className="space-y-3"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Current Password</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="Provide your current password"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="newPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>New Password</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="Type your new password"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="submit"
+                      variant={"outline"}
+                      className={"bg-sky-600 text-white cursor-pointer mt-2"}
+                    >
+                      Change Password
+                    </Button>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </div>
     </div>
