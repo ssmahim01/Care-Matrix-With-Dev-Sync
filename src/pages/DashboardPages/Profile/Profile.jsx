@@ -10,7 +10,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -67,7 +66,16 @@ const Profile = () => {
   const [, phoneLoading] = usePhone();
   const dispatch = useDispatch();
   const role = useRole();
-
+  const { data: person = {} } = useQuery({
+    queryKey: ["person", user?.uid],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users/individual/${user?.uid}`
+      );
+      return response.data;
+    },
+  });
+  
   // Schema
   const FormSchema = z
     .object({
@@ -184,7 +192,11 @@ const Profile = () => {
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <Avatar className="w-28 h-28 border-4 border-background shadow-lg">
-                    <AvatarImage src={user?.photoURL} alt={user?.displayName} className={'object-cover'} />
+                    <AvatarImage
+                      src={user?.photoURL}
+                      alt={user?.displayName}
+                      className={"object-cover"}
+                    />
                     <AvatarFallback className="text-3xl bg-gradient-to-br from-blue-400 to-sky-600 text-white">
                       {user?.displayName.charAt(0) || "Username"}
                     </AvatarFallback>
@@ -276,23 +288,27 @@ const Profile = () => {
                 </div>
               </div>
             </CardContent>
-            {/* Change Password */}
-            <CardFooter className="border-t bg-muted/30 px-6 pb-6">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-full gap-2"
-                    onClick={() => {
-                      setOpenDialog(true);
-                    }}
-                  >
-                    <Lock className="h-4 w-4" />
-                    Change Password
-                  </Button>
-                </DialogTrigger>
-              </Dialog>
-            </CardFooter>
+            {person?.password && (
+              <>
+                {/* Change Password */}
+                <CardFooter className="border-t bg-muted/30 px-6 pb-6">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full gap-2"
+                        onClick={() => {
+                          setOpenDialog(true);
+                        }}
+                      >
+                        <Lock className="h-4 w-4" />
+                        Change Password
+                      </Button>
+                    </DialogTrigger>
+                  </Dialog>
+                </CardFooter>
+              </>
+            )}
           </Card>
         </div>
         {/* Right Column - Progress, & Profile Details & Edit Profile */}
