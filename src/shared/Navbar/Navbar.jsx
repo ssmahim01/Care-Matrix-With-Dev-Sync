@@ -3,24 +3,20 @@ import { FaHome, FaInfoCircle, FaMapMarkerAlt, FaPager } from "react-icons/fa";
 import {
   MdContacts,
   MdDashboard,
-  MdDashboardCustomize,
   MdKeyboardArrowDown,
   MdMedicalServices,
 } from "react-icons/md";
 import { CiMenuFries } from "react-icons/ci";
-import { FaCubesStacked, FaUserDoctor } from "react-icons/fa6";
+import { FaUserDoctor } from "react-icons/fa6";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
-import { Moon, X } from "lucide-react";
-import { FiUser } from "react-icons/fi";
+import { Moon, Siren, X } from "lucide-react";
 import useRole from "@/hooks/useRole";
-import { CgIfDesign } from "react-icons/cg";
 import { GiMedicines } from "react-icons/gi";
 import "./Navbar.css";
 import toast from "react-hot-toast";
-import kader from "/kader.jpg";
 import { Separator } from "@/components/ui/separator";
 
 const Navbar = () => {
@@ -108,13 +104,6 @@ const Navbar = () => {
         onClick={() => setIsMenuOpen(false)}
       >
         <FaInfoCircle /> <span className="font-bold">About Us</span>
-      </NavLink>
-      <NavLink
-        className="flex gap-1 items-center"
-        to="/contact-us"
-        onClick={() => setIsMenuOpen(false)}
-      >
-        <MdContacts /> <span className="font-bold">Contact Us</span>
       </NavLink>
     </>
   );
@@ -265,6 +254,20 @@ const Navbar = () => {
                       </article>
                     )}
                   </li>
+
+                  {user && role === "patient" && (
+                    <div className="block md:hidden">
+                      <NavLink
+                        to="/dashboard/patient/emergency-cases"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
+                          <Siren className="w-4 h-4" />{" "}
+                          <span className="font-bold">Emergency</span>
+                        </button>
+                      </NavLink>
+                    </div>
+                  )}
                 </ul>
               </aside>
               <div className="flex items-center">
@@ -403,6 +406,20 @@ const Navbar = () => {
                   </li>
                 </ul>
               </>
+
+              {user && role === "patient" && (
+                <div className="mr-4 md:block hidden">
+                  <NavLink
+                    to="/dashboard/patient/emergency-cases"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
+                      <Siren className="w-4 h-4" />{" "}
+                      <span className="font-bold">Emergency</span>
+                    </button>
+                  </NavLink>
+                </div>
+              )}
 
               {user ? (
                 <div className="dropdown dropdown-end avatar-online">
