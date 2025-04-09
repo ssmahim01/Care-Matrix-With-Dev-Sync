@@ -7,6 +7,7 @@ import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 import { useNavigate } from 'react-router-dom';
 import { useAuthUser } from '@/redux/auth/authActions';
+import { Button } from '@/components/ui/button';
 
 
 const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, refetch, customerInfo }) => {
@@ -113,6 +114,8 @@ const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, r
                             .then(() => {
                                 setTimeout(() => {
                                     refetch();
+                                    navigate(`/dashboard/invoice/${paymentIntent.id}`);
+
                                 }, 3500);
 
                             })
@@ -148,13 +151,14 @@ const CartCheckoutForm = ({ parcel, cartItems, onPaymentSuccess, clientSecret, r
                     </label>
                 </div>
 
-                <button
+                <Button
+                    size={"lg"}
                     type="submit"
                     disabled={!stripe || isProcessing}
-                    className="w-full bg-[#0FABCA] text-white py-3 rounded-lg hover:bg-[#0FABCA]/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="cursor-pointer w-full text-lg font-semibold"
                 >
                     {isProcessing ? 'Processing...' : `Pay ৳ ${parcel.price.toFixed(2)}`}
-                </button>
+                </Button>
 
                 {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
                 {transaction && (

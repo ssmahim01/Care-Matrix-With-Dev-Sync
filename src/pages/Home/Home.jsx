@@ -22,7 +22,7 @@ const Home = () => {
       </div>
 
       {/* About us */}
-      <div className="pb-10 mx-auto w-11/12 lg:w-4/5 max-w-screen-2xl">
+      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <AboutUs />
       </div>
 
@@ -52,7 +52,7 @@ const Home = () => {
       </div>
 
       {/* Our Departments */}
-      <div className="lg:-mb-3 mx-auto w-11/12 lg:w-4/5 max-w-screen-2xl">
+      <div className="lg:-mb-3 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <OurDepartments />
       </div>
 

@@ -142,7 +142,7 @@ export default function PatientReviews() {
 
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl my-10">
       {isLoading ? (
         <Loader />
       ) : (
@@ -232,7 +232,7 @@ export default function PatientReviews() {
 
           {/* Call to Action */}
           <motion.div variants={itemVariants} whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
-            <Card className="bg-sky-50 border-sky-100 mt-8">
+            <Card className="bg-sky-50 border-sky-100 mt-8 py-6">
               <CardHeader>
                 <CardTitle className="text-sky-800">Share Your Experience</CardTitle>
                 <CardDescription className="text-sky-600">

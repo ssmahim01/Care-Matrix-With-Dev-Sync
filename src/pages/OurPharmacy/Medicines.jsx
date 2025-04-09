@@ -1,6 +1,7 @@
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import useCart from "@/hooks/useCart";
 import { useAuthUser } from "@/redux/auth/authActions";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router";
@@ -10,6 +11,13 @@ const Medicines = ({ medicines, isLoading }) => {
 
   const user = useAuthUser();
   const [cart, cartLoading, refetch] = useCart();
+
+  useEffect(() => {
+    window.scroll({
+      top: 580,
+      behavior: "smooth",
+    });
+  });
 
   // Function For AddToCart
   const handleAddToCart = async (e, medicine) => {
@@ -64,7 +72,7 @@ const Medicines = ({ medicines, isLoading }) => {
             </div>
           ))
         : // Medicines List
-          medicines.map((medicine, index) => (
+          medicines?.map((medicine, index) => (
             <Link key={index} to={`/medicine/${medicine._id}`}>
               <div className="border rounded p-4 hover:shadow-xl duration-300 group">
                 {/* Image */}

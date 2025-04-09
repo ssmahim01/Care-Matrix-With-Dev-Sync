@@ -7,15 +7,15 @@ const useAppointment = () => {
 
     const axiosSecure = useAxiosSecure();
     const { user } = useSelector((state) => state.auth);
-    
 
-   const {data:appointments=[], isPending, isLoading, refetch} = useQuery({
-    queryKey: "appointments",
-    queryFn: async ()=>{
-        const {data} = await axiosSecure.get(`/appointments/${user?.email}`)
-        return data;
-    }
-   })
+    const { data: appointments = [], isPending, isLoading, refetch } = useQuery({
+        queryKey: "appointments",
+        enabled: !!user,
+        queryFn: async () => {
+            const { data } = await axiosSecure.get(`/appointments/${user?.email}`)
+            return data;
+        }
+    })
 
     return [appointments, refetch, isLoading]
 };

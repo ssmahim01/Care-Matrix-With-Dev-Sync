@@ -1,8 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Bar,
   BarChart,
-  Legend,
+  CartesianGrid,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -11,14 +17,19 @@ import {
 
 const CategoryChart = ({ chartData, isLoading }) => {
   return (
-    <Card className="bg-white border border-gray-200 rounded-lg px-4 py-8 shadow-sm">
+    <Card className="bg-white border border-gray-200 rounded-lg px-4 py-8 shadow-sm lg:col-span-4 xl:col-span-5">
       <CardHeader>
         {isLoading ? (
           <div className="skeleton h-8 w-48 mb-3"></div>
         ) : (
-          <CardTitle className="text-2xl font-bold text-gray-700 mb-3">
-            Medicines Per Category
-          </CardTitle>
+          <CardHeader>
+            <CardTitle className="text-3xl font-bold text-gray-900 mb-3">
+              Medicines by Category
+            </CardTitle>
+            <CardDescription className={"-mt-3 text-lg tracking-wider font-medium"}>
+              Distribution of medicines across different categories
+            </CardDescription>
+          </CardHeader>
         )}
       </CardHeader>
       <CardContent>
@@ -45,45 +56,41 @@ const CategoryChart = ({ chartData, isLoading }) => {
               </div>
             </div>
           ) : (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height={350}>
               <BarChart
                 data={chartData}
-                margin={{
-                  top: 20,
-                  bottom: 50,
-                }}
+                margin={{ top: 10, right: 30, left: -20, bottom: 45 }}
               >
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis
                   dataKey="category"
                   angle={-45}
                   textAnchor="end"
-                  interval={0}
-                  height={60}
-                  tick={{ fill: "#6B7280", fontSize: 12 }}
+                  height={80}
+                  tick={{ fontSize: 12 }}
+                  tickFormatter={(value) =>
+                    value.length > 10 ? `${value.slice(0, 30)}...` : value
+                  }
                 />
-                <YAxis
-                  tick={{ fill: "#6B7280", fontSize: 12 }}
-                  domain={[0, "auto"]}
-                  allowDecimals={false}
-                  tickCount={5}
-                />
+                <YAxis />
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#1E293B",
-                    border: "none",
-                    borderRadius: "4px",
-                    color: "#F3F4F6",
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <Card className="p-2 rounded border shadow-sm bg-background">
+                          <div className="text-sm font-medium">
+                            {payload[0].payload.category}
+                          </div>
+                          <div className="text-sm text-muted-foreground -mt-5">
+                            Count: {payload[0].value}
+                          </div>
+                        </Card>
+                      );
+                    }
+                    return null;
                   }}
                 />
-                {/* <Legend verticalAlign="top" height={36} color="#F3F4F6"/> */}
-                <Bar
-                  dataKey="count"
-                  fill="#F3F4F6"
-                  fillOpacity={0.5}
-                  stroke="#64748B"
-                  strokeWidth={1}
-                  name="Medicine Count"
-                />
+                <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           )}

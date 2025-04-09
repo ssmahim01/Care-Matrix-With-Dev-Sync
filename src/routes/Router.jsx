@@ -7,7 +7,7 @@ import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
 import { logOutUser, setLoading, setUser } from "@/redux/auth/authSlice";
-import { useAuthUser } from "@/redux/auth/authActions";
+// import { useAuthUser } from "@/redux/auth/authActions";
 import { onAuthStateChanged } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
 import PrivateRoute from "./PrivateRoute";
@@ -38,11 +38,17 @@ import ReceptionistOverview from "@/pages/DashboardPages/Receptionist/Receptioni
 import ManageBeds from "@/pages/DashboardPages/Receptionist/ManageBeds";
 import ManageBedBooking from "@/pages/DashboardPages/Receptionist/ManageBedBooking";
 import EidGreetingSection from "@/pages/Home/EidGreetingSection";
+import MyAppointments from "@/pages/DashboardPages/User/MyAppointments/MyAppointments";
 import RequestHistory from "@/pages/Patient/RequestHistory/RequestHistory";
+import Invoice from "../components/Pharmacy/Invoice.jsx";
+import PurchaseHistory from "@/pages/Patient/PurchaseHistory/PurchaseHistory";
+import Profile from "@/pages/DashboardPages/Profile/Profile";
+import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyFavoriteDoctors";
+import SalesReport from "@/pages/DashboardPages/Pharmacist/SalesReport/SalesReport";
 
 const Router = () => {
   const dispatch = useDispatch();
-  const user = useAuthUser();
+  // const user = useAuthUser();
   // console.log(user);
 
   useEffect(() => {
@@ -138,6 +144,10 @@ const Router = () => {
           element={<PharmacistOverview />}
         />
         <Route
+          path="/dashboard/pharmacist/sales-report"
+          element={<SalesReport />}
+        />
+        <Route
           path="/dashboard/pharmacist/manage-orders"
           element={<ManageOrders />}
         />
@@ -166,7 +176,7 @@ const Router = () => {
           element={<ManageBedBooking />}
         />
         <Route
-          path="/dashboard/manage-appointments"
+          path="/dashboard/receptionist/manage-appointments"
           element={<ManageAppointments />}
         />
 
@@ -177,9 +187,25 @@ const Router = () => {
           element={<RoleRequest />}
         />
         <Route
+          path="/dashboard/patient/appointments"
+          element={<MyAppointments />}
+        />
+        <Route
+          path="/dashboard/patient/favorite-doctors"
+          element={<MyFavoriteDoctors />}
+        />
+        <Route
           path="/dashboard/patient/request-history"
           element={<RequestHistory />}
         />
+        <Route
+          path="/dashboard/patient/purchase-history"
+          element={<PurchaseHistory />}
+        />
+        <Route path="/dashboard/invoice/:invoiceId" element={<Invoice />} />
+
+        {/* Common Routes */}
+        <Route path="/dashboard/profile" element={<Profile />} />
       </Route>
 
       {/* Catch-all for 404 Error Page */}
