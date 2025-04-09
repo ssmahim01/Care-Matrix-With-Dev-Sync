@@ -34,7 +34,7 @@ import { updateUsername } from "@/redux/auth/authSlice";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import axios from "axios";
 import { format } from "date-fns";
-import { updateProfile } from "firebase/auth";
+import { updatePassword, updateProfile } from "firebase/auth";
 import {
   Calendar,
   CheckCheck,
@@ -75,7 +75,6 @@ const Profile = () => {
   const [newName, setNewName] = useState(user?.displayName);
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [step, setStep] = useState("verify");
   const phoneNumber = usePhone();
   const loading = useAuthLoading();
   const [, roleLoading] = useRole();
@@ -84,57 +83,64 @@ const Profile = () => {
   const role = useRole();
 
   // Schema
-  const FormSchema = z.object({
-    password: z
-      .string()
-      .min(6, {
-        message: "Password must be at least 6 characters.",
-      })
-      .max(12, {
-        message: "Password limit is 12 characters.",
-      }),
-    newPassword: z
-      .string()
-      .min(6, {
-        message: "New password must be at least 6 characters.",
-      })
-      .max(12, {
-        message: "New password limit is 12 characters.",
-      }),
-  });
+  const FormSchema = z
+    .object({
+      password: z
+        .string()
+        .min(6, { message: "Password must be at least 6 characters." })
+        .max(18, { message: "Password limit is 18 characters." }),
+      newPassword: z
+        .string()
+        .min(6, { message: "New password must be at least 6 characters." })
+        .max(18, { message: "New password limit is 18 characters." }),
+    })
+    .refine((data) => data.password !== data.newPassword, {
+      message: "New password must be different from current password",
+      path: ["newPassword"],
+    });
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      password: "",
+      newPassword: "",
+    },
   });
 
-  const form2 = useForm({
-    resolver: zodResolver(FormSchema),
-  });
+  // const form2 = useForm({
+  //   resolver: zodResolver(FormSchema),
+  // });
 
   // Handle Form Submit
   const onSubmit = async (data) => {
-    if(data.password === person?.password){
-      setStep("change");
-    }
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/users/verify-password`, {
-        uid: user?.uid,
-        password: data.password,
-      });
-  
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/verify-password`,
+        {
+          uid: user?.uid,
+          password: data.password,
+        }
+      );
+
       if (res.data.success) {
-        setStep("change");
+        await updatePassword(auth.currentUser, data.newPassword);
+          const response = await axios.patch(
+            `${import.meta.env.VITE_API_URL}/users/update-password/${user?.uid}`,
+            { newPassword: data.newPassword }
+          );
+    
+          if (response.data.success) {
+            toast.success("Password updated successfully");
+            setOpenDialog(false);
+            form.reset();
+          }
       } else {
         toast.error("Password incorrect");
       }
     } catch (error) {
-      toast.error("Failed to verify password");
+      // console.error("Password update error:", error);
+      toast.error(error.message || "Failed to update password");
     }
-  };  
-
-  // Change password
-  const changePassword = async (data) => {
-    console.log(data.newPassword);
   };
 
   // Function for update username
@@ -296,7 +302,6 @@ const Profile = () => {
                     variant="outline"
                     className="w-full gap-2"
                     onClick={() => {
-                      setStep("verify");
                       setOpenDialog(true);
                     }}
                   >
@@ -427,52 +432,59 @@ const Profile = () => {
 
           <div className="pt-6">
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-              <DialogContent>
-                {step === "verify" ? (
-                  <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className="space-y-3"
+              <DialogContent forceMount>
+                <Form {...form}>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      form.handleSubmit(onSubmit)(e);
+                    }}
+                    className="space-y-3"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Current Password</FormLabel>
+                          <FormControl>
+                            <Input type="password" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="newPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>New Password</FormLabel>
+                          <FormControl>
+                            <Input type="password" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="submit"
+                      variant={"outline"}
+                      className={"bg-sky-600 text-white cursor-pointer mt-2"}
                     >
-                      <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Current Password</FormLabel>
-                            <FormControl>
-                              <Input type="password" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button type="submit">Verify</Button>
-                    </form>
-                  </Form>
-                ) : (
-                  <Form {...form2}>
+                      Change Password
+                    </Button>
+                  </form>
+                </Form>
+
+                {/* <Form {...form2}>
                     <form
                       onSubmit={form2.handleSubmit(changePassword)}
                       className="space-y-3"
                     >
-                      <FormField
-                        control={form2.control}
-                        name="newPassword"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>New Password</FormLabel>
-                            <FormControl>
-                              <Input type="password" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
                       <Button type="submit">Update Password</Button>
                     </form>
-                  </Form>
-                )}
+                  </Form> */}
               </DialogContent>
             </Dialog>
           </div>
