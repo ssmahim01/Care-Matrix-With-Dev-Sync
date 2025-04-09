@@ -16,6 +16,7 @@ import IsError from "./IsError";
 import { RxCross1 } from "react-icons/rx";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/auth/authSlice";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const user = useAuthUser();
@@ -206,15 +207,32 @@ const Register = () => {
             };
             dispatch(
               setUser({
+                email: currentUser?.email,
                 displayName: currentUser?.displayName,
                 photoURL: currentUser?.photoURL,
+                uid: currentUser?.uid,
+                createdAt: currentUser?.metadata?.creationTime,
+                lastLoginAt: currentUser?.metadata?.lastSignInTime,
               })
             );
             // save userData in db --->
-            await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
+            const { data } = await axios.post(
+              `${import.meta.env.VITE_API_URL}/users`,
+              userData
+            );
+            if (data.data.insertedId) {
+              Swal.fire({
+                title: "Registration Successful! 🎉",
+                text: "Welcome To The dashboard!",
+                icon: "success",
+                confirmButtonText: "Go To Profile",
+              }).then(() => {
+                navigate("/dashboard/profile");
+              });
+            }
           })
           .catch((error) => {
-            setIsError(error.message || "Registration Failed!")
+            setIsError(error.message || "Registration Failed!");
           })
           .finally(() => {
             setLoading(false);
@@ -231,7 +249,7 @@ const Register = () => {
     // console.table(user);
   };
 
-  if (user) return navigate("/");
+  // if (user) return navigate("/");
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
