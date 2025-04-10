@@ -64,7 +64,7 @@ const DoctorDetails = () => {
             <div className='shadow-md rounded-lg'>
                 <div className=" rounded-tl-lg rounded-tr-md bg-green-50  p-6 flex flex-col lg:flex-row gap-6">
                     {/* Doctor Image */}
-                    <div className="w-40 h-40 relative">
+                    <div className=" w-full md:w-40 h-60 md:h-40 relative">
                         <img
                             className="w-full h-full object-cover rounded-lg"
                             src={doctorInfo?.image}
@@ -185,7 +185,7 @@ const DoctorDetails = () => {
 
                         <div>
                             <Link to={`/book-appointment/${doctorInfo?.name}`} state={doctorInfo?._id}>
-                                <button className="bg-blue-600 hover:bg-blue-500 cursor-pointer text-white px-6 py-2 rounded-lg flex items-center gap-2">
+                                <button className="bg-blue-600 hover:bg-blue-500 cursor-pointer text-white px-6 py-2 rounded-lg flex items-center w-full md:w-auto justify-center gap-2">
                                     <span><FiCalendar /></span>
                                     Book Appointment
                                 </button>
