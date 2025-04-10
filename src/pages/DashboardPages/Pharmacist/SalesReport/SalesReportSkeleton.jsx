@@ -20,6 +20,7 @@ const SalesReportSkeleton = () => {
         <SkeletonBox className="w-22 h-8" />
         <SkeletonBox className="w-26 h-8" />
         <SkeletonBox className="w-32 h-8" />
+        <SkeletonBox className="w-30 h-8" />
       </div>
       {/* Overview Cards */}
       <div className="mt-6">

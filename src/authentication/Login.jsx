@@ -113,6 +113,18 @@ const Login = () => {
             viewport={{ once: true }}
           >
             <Badge
+              className="cursor-pointer bg-green-400"
+              onClick={() =>
+                handleBadgeClick(
+                  "admin-care-matrix@gmail.com",
+                  "Admin@1234"
+                )
+              }
+            >
+              Administrator
+            </Badge>
+
+            <Badge
               className="cursor-pointer bg-[#540654]"
               onClick={() => handleBadgeClick("patient@carematrix.com", "Patient123@")}
             >
@@ -134,22 +146,11 @@ const Login = () => {
               onClick={() =>
                 handleBadgeClick(
                   "receptionist@carematrix.com",
-                  "Receptionist123@"
+                  "Receptionist123@5"
                 )
               }
             >
               Receptionist
-            </Badge>
-            <Badge
-              className="cursor-pointer bg-green-400"
-              onClick={() =>
-                handleBadgeClick(
-                  "admin@carematrix.com",
-                  "Admin123@"
-                )
-              }
-            >
-              Admin
             </Badge>
           </motion.div>
           {/* Register Form */}

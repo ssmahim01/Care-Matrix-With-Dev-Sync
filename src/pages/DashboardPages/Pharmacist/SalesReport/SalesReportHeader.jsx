@@ -33,7 +33,7 @@ const SalesReportHeader = ({ handleDownload, sortedRevenueData, fileName }) => {
         <PDFDownloadLink
           document={<RevenueByDayPDF sortedRevenueData={sortedRevenueData} />}
           fileName={fileName}
-          className="inline-flex items-center justify-center rounded-md border border-input bg-background px-3 py-1 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground gap-1"
+          className="inline-flex items-center justify-center rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground gap-1"
         >
           {({ loading }) => (
             <>

@@ -14,25 +14,20 @@ import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { useQuery } from "@tanstack/react-query";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { Check, MoreVertical, Pencil, Trash } from "lucide-react";
 import { LuBedSingle } from "react-icons/lu";
 import Swal from "sweetalert2";
 import { FaCircle } from "react-icons/fa";
-import { MdPendingActions } from "react-icons/md";
+
 import moment from "moment";
 import { useAuthUser } from "@/redux/auth/authActions";
 
 function MyBedRequests() {
   const axiosSecure = useAxiosSecure();
-   const user = useAuthUser();
+  const user = useAuthUser();
 
-   console.log(user?.email);
+  //    console.log(user?.email);
 
   // Fetching bed data using useQuery
   const {
@@ -40,37 +35,15 @@ function MyBedRequests() {
     refetch,
     isLoading,
   } = useQuery({
-    queryKey: ["bed_booking"],
+    queryKey: ["my_bed_booking", user?.email],
+
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/bed-booking/${user?.email}`);
-    //   console.log(data);
+      //   console.log(data);
       return data;
     },
+    enabled: !!user?.email,
   });
-
-  // Handle bed status change
-  const handleBedStatusChange = async (id, bedId, newStatus, bedStatus) => {
-    await toast.promise(
-      axiosSecure.patch(`/bed-booking/status/${id}`, { status: newStatus }),
-      {
-        loading: "Updating status...",
-        success: <b>Bed Booking Status Updated Successfully!</b>,
-        error: <b>Could not update booking status.</b>,
-      }
-    );
-
-    // Update bed status
-    await toast.promise(
-      axiosSecure.patch(`/beds/status/${bedId}`, { status: bedStatus }),
-      {
-        loading: "Updating bed status...",
-        success: <b>Bed Status Updated Successfully!</b>,
-        error: <b>Could not update bed status.</b>,
-      }
-    );
-    // Refetch data
-    refetch();
-  };
 
   // Handle bed deletion
   const handleBedDelete = async (id, bedId) => {
@@ -186,38 +159,13 @@ function MyBedRequests() {
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="flex justify-end">
-                   
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
-                            <MoreVertical className="cursor-pointer text-gray-700" />
-                          </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleBedStatusChange(
-                                bed._id,
-                                bed.bedId,
-                                "pending",
-                                "requested"
-                              )
-                            }
-                            className="cursor-pointer"
-                          >
-                            <MdPendingActions className="w-4 h-4 mr-2" /> Update
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleBedDelete(bed._id, bed.bedId)}
-                            className="cursor-pointer"
-                          >
-                            <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    
+                  <TableCell className="">
+                    <div
+                      onClick={() => handleBedDelete(bed._id, bed.bedId)}
+                      className="cursor-pointer flex items-center justify-center"
+                    >
+                      <Trash className="w-5 h-5 text-red-500" />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

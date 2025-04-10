@@ -27,6 +27,7 @@ import SalesReportSkeleton from "./SalesReportSkeleton";
 import toast from "react-hot-toast";
 import { utils, writeFile } from "xlsx";
 import RevenueByDayPDF from "./RavenueByDayPdf";
+import TopCustomerTable from "./TopCustomerTable";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -102,7 +103,7 @@ export default function SalesReport() {
   }));
 
   const handleDownload = () => {
-    const tableData = sortedRevenueData.map((day) => {
+    const tableData = sortedRevenueData?.reverse().map((day) => {
       const avgItemValue = day?.totalRevenue / day?.totalQty;
       const tax = day?.totalRevenue * 0.1;
       const netRevenue = day?.totalRevenue - tax;
@@ -163,6 +164,12 @@ export default function SalesReport() {
               className={"cursor-pointer py-2 px-4"}
             >
               Product Performance
+            </TabsTrigger>
+            <TabsTrigger
+              value="insights"
+              className={"cursor-pointer py-2 px-4"}
+            >
+              Customer Insights
             </TabsTrigger>
           </TabsList>
           {/* 1st Tab Content */}
@@ -260,6 +267,22 @@ export default function SalesReport() {
                   {/* Recommendations */}
                   <RecommendationsCard />
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          {/* 4th Tab Content */}
+          <TabsContent value="insights">
+            <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
+              <CardHeader>
+                <CardTitle className="text-base font-bold">
+                  Top Customer
+                </CardTitle>
+                <CardDescription className="py-0 font-medium -mt-1">
+                  Most valuable customers based on total purchases
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TopCustomerTable topCustomers={report?.topCustomers} />
               </CardContent>
             </Card>
           </TabsContent>
