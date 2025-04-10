@@ -18,6 +18,7 @@ import { GiMedicines } from "react-icons/gi";
 import "./Navbar.css";
 import toast from "react-hot-toast";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -113,11 +114,10 @@ const Navbar = () => {
       <div className="fixed z-20 w-full bg-[#f3f6f9] shadow-sm border-b border-[#f3f6f9]">
         {location.pathname === "/" && (
           <div
-            className={`top-0 left-1/2 z-50 transition-all duration-300 w-full ${
-              showImage
-                ? "opacity-100 translate-y-0 pointer-events-auto h-auto"
-                : "opacity-0 -translate-y-full pointer-events-none h-0 overflow-hidden"
-            }`}
+            className={`top-0 left-1/2 z-50 transition-all duration-300 w-full ${showImage
+              ? "opacity-100 translate-y-0 pointer-events-auto h-auto"
+              : "opacity-0 -translate-y-full pointer-events-none h-0 overflow-hidden"
+              }`}
           >
             <img
               src="https://zenui.net/palestine-banner.svg"
@@ -132,11 +132,10 @@ const Navbar = () => {
               {/* mobile sidebar */}
               <aside
                 ref={menuRef}
-                className={` ${
-                  isMenuOpen
-                    ? "translate-x-0 opacity-100 z-20"
-                    : "translate-x-[200px] opacity-0 z-[-1]"
-                } lg:hidden bg-[#e2ebee] p-4 absolute top-[61px] md:top-[63px] right-0 w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
+                className={` ${isMenuOpen
+                  ? "translate-x-0 opacity-100 z-20"
+                  : "translate-x-[200px] opacity-0 z-[-1]"
+                  } lg:hidden bg-[#e2ebee] p-4 absolute top-[61px] md:top-[63px] right-0 w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
               >
                 <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
                   {routes}
@@ -146,19 +145,17 @@ const Navbar = () => {
                     onClick={() => setIsOpen(!isOpen)}
                   >
                     <p
-                      className={`flex gap-2 items-center ${
-                        isOpen ? "text-[#3B9DF8]" : ""
-                      }`}
+                      className={`flex gap-2 items-center ${isOpen ? "text-[#3B9DF8]" : ""
+                        }`}
                     >
                       <FaPager />
                       <span className="font-bold">Pages</span>
                     </p>
                     <MdKeyboardArrowDown
-                      className={`text-[1.5rem] text-[#424242] transition-all duration-500 ${
-                        isOpen
-                          ? "rotate-180 text-[#3B9DF8]"
-                          : "group-hover:text-[#3B9DF8]"
-                      }`}
+                      className={`text-[1.5rem] text-[#424242] transition-all duration-500 ${isOpen
+                        ? "rotate-180 text-[#3B9DF8]"
+                        : "group-hover:text-[#3B9DF8]"
+                        }`}
                     />
                     {isOpen && (
                       <article className="p-6 bg-[#e2ebee] rounded-b-lg w-full absolute top-[38px] z-30 transition-all duration-300 overflow-y-scroll">
@@ -296,19 +293,17 @@ const Navbar = () => {
                     onClick={() => setIsOpen(!isOpen)}
                   >
                     <p
-                      className={`flex gap-2 items-center ${
-                        isOpen ? "text-[#3B9DF8]" : ""
-                      }`}
+                      className={`flex gap-2 items-center ${isOpen ? "text-[#3B9DF8]" : ""
+                        }`}
                     >
                       <FaPager />
                       <span className="font-bold">Pages</span>
                     </p>
                     <MdKeyboardArrowDown
-                      className={`text-[1.5rem] text-[#424242] transition-all duration-500 ${
-                        isOpen
-                          ? "rotate-180 text-[#3B9DF8]"
-                          : "group-hover:text-[#3B9DF8]"
-                      }`}
+                      className={`text-[1.5rem] text-[#424242] transition-all duration-500 ${isOpen
+                        ? "rotate-180 text-[#3B9DF8]"
+                        : "group-hover:text-[#3B9DF8]"
+                        }`}
                     />
                     {isOpen && (
                       <article className="p-6 bg-[#f3f6f9] rounded-b-lg w-[550px] absolute top-[38px] right-[-100px] z-30 transition-all duration-300">
@@ -421,6 +416,16 @@ const Navbar = () => {
                 </div>
               )}
 
+              {user
+                &&
+                <Link to="/emergency">
+                  <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500">
+                    <span>Emergency</span>
+                    <Siren className="text-base" />
+                  </Button>{" "}
+                </Link>
+              }
+
               {user ? (
                 <div className="dropdown dropdown-end avatar-online">
                   <div
@@ -457,14 +462,14 @@ const Navbar = () => {
                           role === "administrator"
                             ? "/dashboard/administrator-overview"
                             : role === "doctor"
-                            ? "/dashboard/doctor-overview"
-                            : role === "pharmacist"
-                            ? "/dashboard/pharmacist-overview"
-                            : role === "patient"
-                            ? "/dashboard"
-                            : role === "receptionist"
-                            ? "/dashboard/receptionist-overview"
-                            : "/"
+                              ? "/dashboard/doctor-overview"
+                              : role === "pharmacist"
+                                ? "/dashboard/pharmacist-overview"
+                                : role === "patient"
+                                  ? "/dashboard"
+                                  : role === "receptionist"
+                                    ? "/dashboard/receptionist-overview"
+                                    : "/"
                         }
                         onClick={() => setIsMenuOpen(false)}
                       >
@@ -499,8 +504,10 @@ const Navbar = () => {
                       <BiLogInCircle className="text-base" />
                     </button>{" "}
                   </Link>
+
                 </>
               )}
+
               {!isMenuOpen ? (
                 <CiMenuFries
                   className="text-[1.6rem] text-[#363030] cursor-pointer lg:hidden flex ml-4"
