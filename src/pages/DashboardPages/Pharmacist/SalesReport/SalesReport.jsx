@@ -25,6 +25,9 @@ import SalesReportHeader from "./SalesReportHeader";
 import TopSellingChart from "./TopSellingChart";
 import SalesReportSkeleton from "./SalesReportSkeleton";
 import toast from "react-hot-toast";
+import { utils, writeFile } from "xlsx";
+import RevenueByDayPDF from "./RavenueByDayPdf";
+import TopCustomerTable from "./TopCustomerTable";
 
 // Fetch All Sales Report Data
 const fetchSalesReport = async () => {
@@ -99,11 +102,47 @@ export default function SalesReport() {
     avgItemValue: item?.totalRevenue / item?.totalQty,
   }));
 
+  const handleDownload = () => {
+    const tableData = sortedRevenueData?.reverse().map((day) => {
+      const avgItemValue = day?.totalRevenue / day?.totalQty;
+      const tax = day?.totalRevenue * 0.1;
+      const netRevenue = day?.totalRevenue - tax;
+      return {
+        Date: format(new Date(day?.date), "MMM dd, yyyy"),
+        "Items Sold": `${day?.totalQty} items`,
+        Revenue: `৳ ${day?.totalRevenue.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}`,
+        "Avg Item Value": `৳ ${avgItemValue?.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}`,
+        "Estimated Tax (10%)": `৳ ${tax?.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}`,
+        "Net Revenue": `৳ ${netRevenue?.toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}`,
+      };
+    });
+
+    const worksheet = utils.json_to_sheet(tableData);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, "Revenue By Day");
+    writeFile(
+      workbook,
+      `Sales_Report_${format(new Date(), "yyyy-MM-dd")}.xlsx`
+    );
+  };
+
   return (
     <div>
       <main className="flex flex-1 flex-col gap-4 px-7 md:gap-8">
         {/* Sales Report Header */}
-        <SalesReportHeader />
+        <SalesReportHeader
+          handleDownload={handleDownload}
+          sortedRevenueData={sortedRevenueData}
+          fileName={`Sales_Report_${format(new Date(), "yyyy-MM-dd")}.pdf`}
+        />
         {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-4">
           {/* All Tablist */}
@@ -125,6 +164,12 @@ export default function SalesReport() {
               className={"cursor-pointer py-2 px-4"}
             >
               Product Performance
+            </TabsTrigger>
+            <TabsTrigger
+              value="insights"
+              className={"cursor-pointer py-2 px-4"}
+            >
+              Customer Insights
             </TabsTrigger>
           </TabsList>
           {/* 1st Tab Content */}
@@ -222,6 +267,22 @@ export default function SalesReport() {
                   {/* Recommendations */}
                   <RecommendationsCard />
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          {/* 4th Tab Content */}
+          <TabsContent value="insights">
+            <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
+              <CardHeader>
+                <CardTitle className="text-base font-bold">
+                  Top Customer
+                </CardTitle>
+                <CardDescription className="py-0 font-medium -mt-1">
+                  Most valuable customers based on total purchases
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TopCustomerTable topCustomers={report?.topCustomers} />
               </CardContent>
             </Card>
           </TabsContent>

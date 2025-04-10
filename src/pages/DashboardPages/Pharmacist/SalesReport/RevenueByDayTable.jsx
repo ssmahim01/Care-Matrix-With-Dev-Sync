@@ -24,7 +24,7 @@ const RevenueByDayTable = ({ sortedRevenueData }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {sortedRevenueData.map((day) => {
+        {sortedRevenueData?.reverse().map((day) => {
           const avgItemValue = day?.totalRevenue / day?.totalQty;
           const tax = day?.totalRevenue * 0.1;
           const netRevenue = day?.totalRevenue - tax;

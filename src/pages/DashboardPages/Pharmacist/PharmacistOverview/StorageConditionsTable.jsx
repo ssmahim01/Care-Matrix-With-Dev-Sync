@@ -21,7 +21,7 @@ const StorageConditionsTable = ({ storageConditionStats }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {storageConditionStats.map((condition) => {
+          {storageConditionStats?.map((condition) => {
             const icons = [Thermometer, Droplets, Sun];
             const Icon = icons[Math.floor(Math.random() * icons.length)];
             return (

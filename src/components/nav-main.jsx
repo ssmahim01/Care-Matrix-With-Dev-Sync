@@ -10,6 +10,7 @@ import useRole from "@/hooks/useRole";
 import { useAuthLoading } from "@/redux/auth/authActions";
 import {
   BadgeInfo,
+  BedSingle,
   BriefcaseMedical,
   CalendarDays,
   ChartPie,
@@ -191,7 +192,7 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/pharmacist/orders-history">
+              {/* <NavLink to="/dashboard/pharmacist/orders-history">
                 <h3 className="flex gap-2 items-center">
                   <FaHistory className="text-2xl" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
@@ -199,7 +200,7 @@ export function NavMain() {
                     Orders History{" "}
                   </span>
                 </h3>
-              </NavLink>
+              </NavLink> */}
               <NavLink to="/dashboard/pharmacist/manage-orders">
                 <h3 className="flex gap-2 items-center">
                   <FaTruck className="text-2xl" />
@@ -275,6 +276,18 @@ export function NavMain() {
               </NavLink>
 
               <NavLink
+                to="/dashboard/patient/my-bedRequest"
+                className={
+                  "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+                }
+              >
+                <BedSingle className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  My Bed Requests
+                </span>
+              </NavLink>
+
+              <NavLink
                 to="/dashboard/patient/request-history"
                 className={
                   "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
@@ -315,22 +328,34 @@ export function NavMain() {
             <>
               <NavLink to="/dashboard/receptionist-overview">
                 <h3 className="flex gap-2 items-center">
-                  <LayoutDashboardIcon className="text-base" /> Overview
+                  <LayoutDashboardIcon className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Overview
+                  </span>
                 </h3>
               </NavLink>
               <NavLink to="/dashboard/receptionist/manage-beds">
                 <h3 className="flex gap-2 items-center">
-                  <LucideBedSingle className="text-base" /> Manage Beds
+                  <LucideBedSingle className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Manage Beds
+                  </span>
                 </h3>
               </NavLink>
               <NavLink to="/dashboard/receptionist/manage-bedBooking">
                 <h3 className="flex gap-2 items-center">
-                  <LucideBedSingle className="text-base" /> Manage Bed Booking
+                  <LucideBedSingle className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Manage Bed Booking
+                  </span>
                 </h3>
               </NavLink>
               <NavLink to="/dashboard/receptionist/manage-appointments">
                 <h3 className="flex gap-2 items-center">
-                  <ClipboardPlus className="text-base" /> Manage Appointments
+                  <ClipboardPlus className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Manage Appointments
+                  </span>
                 </h3>
               </NavLink>
               <div className="divider"></div>
@@ -355,7 +380,10 @@ export function NavMain() {
       </NavLink>
       <NavLink to="/services">
         <h3 className="flex gap-2 items-center">
-          <Stethoscope className="text-lg" /> Our Services
+          <Stethoscope className="text-lg" />
+          <span className={`${state === "collapsed" && "md:hidden"}`}>
+            Our Services
+          </span>
         </h3>
       </NavLink>
       <NavLink to="/contact-us">

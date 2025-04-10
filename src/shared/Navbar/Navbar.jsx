@@ -3,25 +3,22 @@ import { FaHome, FaInfoCircle, FaMapMarkerAlt, FaPager } from "react-icons/fa";
 import {
   MdContacts,
   MdDashboard,
-  MdDashboardCustomize,
   MdKeyboardArrowDown,
   MdMedicalServices,
 } from "react-icons/md";
 import { CiMenuFries } from "react-icons/ci";
-import { FaCubesStacked, FaUserDoctor } from "react-icons/fa6";
+import { FaUserDoctor } from "react-icons/fa6";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
-import { Moon, X } from "lucide-react";
-import { FiUser } from "react-icons/fi";
+import { Award, Moon, Siren, X } from "lucide-react";
 import useRole from "@/hooks/useRole";
-import { CgIfDesign } from "react-icons/cg";
 import { GiMedicines } from "react-icons/gi";
 import "./Navbar.css";
 import toast from "react-hot-toast";
-import kader from "/kader.jpg";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -108,13 +105,6 @@ const Navbar = () => {
         onClick={() => setIsMenuOpen(false)}
       >
         <FaInfoCircle /> <span className="font-bold">About Us</span>
-      </NavLink>
-      <NavLink
-        className="flex gap-1 items-center"
-        to="/contact-us"
-        onClick={() => setIsMenuOpen(false)}
-      >
-        <MdContacts /> <span className="font-bold">Contact Us</span>
       </NavLink>
     </>
   );
@@ -261,10 +251,44 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                           </ul>
+
+                          <ul className="flex flex-col gap-4 text-gray-800">
+                            <NavLink
+                              to="/patient-rewards"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <Award size={20} className="text-gray-800" />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Rewards
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Motivating patients to adopt healthy habits
+                                  through a rewarding experience.
+                                </p>
+                              </div>
+                            </NavLink>
+                          </ul>
                         </div>
                       </article>
                     )}
                   </li>
+
+                  {user && role === "patient" && (
+                    <div className="block md:hidden">
+                      <NavLink
+                        to="/dashboard/patient/emergency-cases"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
+                          <Siren className="w-4 h-4" />{" "}
+                          <span className="font-bold">Emergency</span>
+                        </button>
+                      </NavLink>
+                    </div>
+                  )}
                 </ul>
               </aside>
               <div className="flex items-center">
@@ -397,12 +421,41 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                           </ul>
+
+                          <ul className="flex flex-col gap-4 text-gray-800">
+                            <NavLink
+                              to="/patient-rewards"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <Award size={20} className="text-gray-800" />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Rewards
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Motivating patients to adopt healthy habits
+                                  through a rewarding experience.
+                                </p>
+                              </div>
+                            </NavLink>
+                          </ul>
                         </div>
                       </article>
                     )}
                   </li>
                 </ul>
               </>
+
+              {user && (
+                <Link to="/emergency">
+                  <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer">
+                    <span>Emergency</span>
+                    <Siren className="text-base" />
+                  </Button>{" "}
+                </Link>
+              )}
 
               {user ? (
                 <div className="dropdown dropdown-end avatar-online">
@@ -484,6 +537,7 @@ const Navbar = () => {
                   </Link>
                 </>
               )}
+
               {!isMenuOpen ? (
                 <CiMenuFries
                   className="text-[1.6rem] text-[#363030] cursor-pointer lg:hidden flex ml-4"

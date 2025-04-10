@@ -14,21 +14,20 @@ import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { useQuery } from "@tanstack/react-query";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { Check, MoreVertical, Pencil, Trash } from "lucide-react";
 import { LuBedSingle } from "react-icons/lu";
 import Swal from "sweetalert2";
 import { FaCircle } from "react-icons/fa";
-import { MdPendingActions } from "react-icons/md";
-import moment from "moment";
 
-function ManageBedBooking() {
+import moment from "moment";
+import { useAuthUser } from "@/redux/auth/authActions";
+
+function MyBedRequests() {
   const axiosSecure = useAxiosSecure();
+  const user = useAuthUser();
+
+  //    console.log(user?.email);
 
   // Fetching bed data using useQuery
   const {
@@ -36,37 +35,15 @@ function ManageBedBooking() {
     refetch,
     isLoading,
   } = useQuery({
-    queryKey: ["bed_booking"],
+    queryKey: ["my_bed_booking", user?.email],
+
     queryFn: async () => {
-      const { data } = await axiosSecure.get("/bed-booking");
+      const { data } = await axiosSecure.get(`/bed-booking/${user?.email}`);
       //   console.log(data);
       return data;
     },
+    enabled: !!user?.email,
   });
-
-  // Handle bed status change
-  const handleBedStatusChange = async (id, bedId, newStatus, bedStatus) => {
-    await toast.promise(
-      axiosSecure.patch(`/bed-booking/status/${id}`, { status: newStatus }),
-      {
-        loading: "Updating status...",
-        success: <b>Bed Booking Status Updated Successfully!</b>,
-        error: <b>Could not update booking status.</b>,
-      }
-    );
-
-    // Update bed status
-    await toast.promise(
-      axiosSecure.patch(`/beds/status/${bedId}`, { status: bedStatus }),
-      {
-        loading: "Updating bed status...",
-        success: <b>Bed Status Updated Successfully!</b>,
-        error: <b>Could not update bed status.</b>,
-      }
-    );
-    // Refetch data
-    refetch();
-  };
 
   // Handle bed deletion
   const handleBedDelete = async (id, bedId) => {
@@ -118,7 +95,7 @@ function ManageBedBooking() {
   return (
     <div className="p-7">
       <DashboardPagesHeader
-        title={"Manage Bed Booking Requests"}
+        title={"Manage My Bed Booking Requests"}
         subtitle={"View and manage all bed booking Requests"}
         icon={LuBedSingle}
       />
@@ -137,7 +114,6 @@ function ManageBedBooking() {
                 <TableHead>Bed Image</TableHead>
                 <TableHead>Bed Title</TableHead>
                 <TableHead>Price</TableHead>
-                <TableHead>Requested Email</TableHead>
                 <TableHead>Requested Time</TableHead>
 
                 <TableHead>Patient Name</TableHead>
@@ -145,14 +121,13 @@ function ManageBedBooking() {
                 <TableHead>Patient Number</TableHead>
                 <TableHead>Admission Date</TableHead>
                 <TableHead>Reason</TableHead>
-
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
 
-             {bed_booking.length === 0 ? (
+            {bed_booking.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={12} className="text-center font-semibold py-10">
                     No Bed Booking Requests Found
@@ -160,8 +135,7 @@ function ManageBedBooking() {
                 </TableRow>
               ) : (
                 bed_booking?.map((bed, i) => (
-
-                
+            
                 <TableRow key={bed._id}>
                   <TableCell className="font-medium">{i + 1}</TableCell>
                   <TableCell>
@@ -172,7 +146,6 @@ function ManageBedBooking() {
                   </TableCell>
                   <TableCell>{bed.bedTitle}</TableCell>
                   <TableCell>{bed.bedPrice}</TableCell>
-                  <TableCell>{bed.authorEmail}</TableCell>
                   <TableCell className="text-blue-500 font-semibold">
                     {bed.time && moment(bed.time).fromNow()}
                   </TableCell>
@@ -181,7 +154,6 @@ function ManageBedBooking() {
                   <TableCell>{bed.contactNumber}</TableCell>
                   <TableCell>{bed.admissionDate}</TableCell>
                   <TableCell>{bed.bookingReason}</TableCell>
-
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <span
@@ -198,71 +170,15 @@ function ManageBedBooking() {
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="flex justify-end">
-                    {bed.status === "pending" ? (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
-                            <MoreVertical className="cursor-pointer text-gray-700" />
-                          </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleBedStatusChange(
-                                bed._id,
-                                bed.bedId,
-                                "accepted",
-                                "booked"
-                              )
-                            }
-                            className="cursor-pointer"
-                          >
-                            <Check className="w-4 h-4 mr-2" /> Accept Booking
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleBedDelete(bed._id, bed.bedId)}
-                            className="cursor-pointer"
-                          >
-                            <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    ) : (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
-                            <MoreVertical className="cursor-pointer text-gray-700" />
-                          </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleBedStatusChange(
-                                bed._id,
-                                bed.bedId,
-                                "pending",
-                                "requested"
-                              )
-                            }
-                            className="cursor-pointer"
-                          >
-                            <MdPendingActions className="w-4 h-4 mr-2" /> Make
-                            Pending
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleBedDelete(bed._id, bed.bedId)}
-                            className="cursor-pointer"
-                          >
-                            <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
+                  <TableCell className="">
+                    <div
+                      onClick={() => handleBedDelete(bed._id, bed.bedId)}
+                      className="cursor-pointer flex items-center justify-center"
+                    >
+                      <Trash className="w-5 h-5 text-red-500" />
+                    </div>
                   </TableCell>
-                </TableRow> )
+                </TableRow>)
               ))}
             </TableBody>
           </Table>
@@ -272,4 +188,4 @@ function ManageBedBooking() {
   );
 }
 
-export default ManageBedBooking;
+export default MyBedRequests;

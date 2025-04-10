@@ -136,11 +136,11 @@ function ManageBanners() {
                 : banners?.map((banner, i) => (
                     <TableRow key={banner?._id}>
                       <TableCell className="">{i + 1}</TableCell>
-                      <TableCell className="">
+                      <TableCell className="h-16">
                         <img
                           src={banner?.image}
                           alt="Banner Image"
-                          className="min-w-28 h-16 object-cover mx-auto"
+                          className="min-w-20 h-full object-top object-cover mx-auto"
                         />
                       </TableCell>
                       <TableCell>{banner?.medicineName}</TableCell>

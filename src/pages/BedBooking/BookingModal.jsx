@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea"; // Import Textarea for the booking reason
 import { useAuthUser } from "@/redux/auth/authActions";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -26,6 +27,7 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch }) => {
       age: "",
       contactNumber: "",
       admissionDate: "",
+      bookingReason: "", // Add default value for the new field
     },
   });
 
@@ -161,6 +163,25 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch }) => {
             />
             {errors.admissionDate && (
               <p className="text-red-500 text-xs mt-1">{errors.admissionDate.message}</p>
+            )}
+          </div>
+          {/* New Booking Reason Field */}
+          <div className="space-y-1">
+            <Label htmlFor="bookingReason" className="block text-xs sm:text-sm font-medium text-gray-700">
+              Booking Reason
+            </Label>
+            <Textarea
+              id="bookingReason"
+              {...register("bookingReason", {
+                required: "Booking reason is required",
+                minLength: { value: 5, message: "Booking reason must be at least 5 characters" },
+                maxLength: { value: 40, message: "Booking reason cannot exceed 40 characters" },
+              })}
+              className="text-sm sm:text-base"
+              placeholder="e.g., Surgery, Emergency Care, Recovery"
+            />
+            {errors.bookingReason && (
+              <p className="text-red-500 text-xs mt-1">{errors.bookingReason.message}</p>
             )}
           </div>
           <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2">

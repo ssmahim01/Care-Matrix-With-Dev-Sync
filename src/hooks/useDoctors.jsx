@@ -6,7 +6,7 @@ const useDoctors = () => {
   const axiosSecure = useAxiosSecure()
 
   const { data: doctors = [], isPending, isLoading } = useQuery({
-    queryKey: "doctors",
+    queryKey: ["doctors"],
     queryFn: async () => {
       const { data } = await axiosSecure.get('/dashboard/administrator/doctors')
       // console.log("doctors from useDoctors ",data);
