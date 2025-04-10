@@ -39,7 +39,7 @@ function ManageBedBooking() {
     queryKey: ["bed_booking"],
     queryFn: async () => {
       const { data } = await axiosSecure.get("/bed-booking");
-    //   console.log(data);
+      //   console.log(data);
       return data;
     },
   });
@@ -144,12 +144,24 @@ function ManageBedBooking() {
                 <TableHead>Patient Age</TableHead>
                 <TableHead>Patient Number</TableHead>
                 <TableHead>Admission Date</TableHead>
+                <TableHead>Reason</TableHead>
+
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {bed_booking?.map((bed, i) => (
+
+             {bed_booking.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={12} className="text-center font-semibold py-10">
+                    No Bed Booking Requests Found
+                  </TableCell>
+                </TableRow>
+              ) : (
+                bed_booking?.map((bed, i) => (
+
+                
                 <TableRow key={bed._id}>
                   <TableCell className="font-medium">{i + 1}</TableCell>
                   <TableCell>
@@ -168,6 +180,8 @@ function ManageBedBooking() {
                   <TableCell>{bed.age}</TableCell>
                   <TableCell>{bed.contactNumber}</TableCell>
                   <TableCell>{bed.admissionDate}</TableCell>
+                  <TableCell>{bed.bookingReason}</TableCell>
+
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <span
@@ -248,7 +262,7 @@ function ManageBedBooking() {
                       </DropdownMenu>
                     )}
                   </TableCell>
-                </TableRow>
+                </TableRow> )
               ))}
             </TableBody>
           </Table>
