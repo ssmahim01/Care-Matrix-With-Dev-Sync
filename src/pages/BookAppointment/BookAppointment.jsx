@@ -32,7 +32,7 @@ const BookAppointment = () => {
     return (
         <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 pt-24'>
             <div className="shadow rounded-lg space-y-4">
-                <div className="bg-gradient-to-r from-[#1664D4] to-[#0F82FE] text-white rounded-t-lg px-6 py-5 flex gap-4">
+                <div className="bg-gradient-to-r from-[#1664D4] to-[#3B9DF8] text-white rounded-t-lg px-6 py-5 flex gap-4">
                     <img src={doctorInfo?.image} alt="Doctor" className="w-20 h-20 rounded-full border-2 border-white object-cover" />
                     <div>
                         <h2 className="text-xl font-semibold">{doctorInfo?.name}</h2>
@@ -120,7 +120,7 @@ const BookAppointment = () => {
                         {errors.reason && <p className="text-xs text-red-500 mt-1">Appointment reason is required</p>}
                     </div>
 
-                    <button type="submit" className="bg-blue-600 hover:bg-blue-700 w-full cursor-pointer text-white font-semibold py-2 px-4 rounded">Submit Now</button>
+                    <button type="submit" className="bg-[#3b6df8] hover:bg-blue-600 w-full cursor-pointer text-white font-semibold py-2 px-4 rounded">Submit Now</button>
                 </form>
             </div>
         </div>
