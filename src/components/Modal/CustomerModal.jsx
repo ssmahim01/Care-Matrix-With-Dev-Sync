@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 const CustomerModal = ({ customer }) => {
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
+
   const { data: discountVoucher = 0, isLoading: discountLoading } = useQuery({
     queryKey: ["discount", customer?.email],
     queryFn: async () => {
@@ -27,7 +28,6 @@ const CustomerModal = ({ customer }) => {
       return res.data.discountVoucher;
     },
   });
-  console.log(discountVoucher);
 
   const {
     data: profile = {},
@@ -77,7 +77,6 @@ const CustomerModal = ({ customer }) => {
       setLoading(false);
     }
   };
-  //   console.log(discount);
 
   return (
     <DialogContent>
