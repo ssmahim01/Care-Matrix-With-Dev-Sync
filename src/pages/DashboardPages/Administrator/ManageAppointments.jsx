@@ -1,13 +1,14 @@
 import useAppointment from '@/hooks/useAppointment';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useDoctors from '@/hooks/useDoctors';
-import { Check, MoreVertical, Trash } from 'lucide-react';
+import { Check, ClipboardPlus, MoreVertical, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { MdPendingActions } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import { motion } from "framer-motion";
 import { FaCircle } from 'react-icons/fa';
+import DashboardPagesHeader from '@/shared/Section/DashboardPagesHeader';
 
 const ManageAppointments = () => {
     const [doctors] = useDoctors();
@@ -15,6 +16,7 @@ const ManageAppointments = () => {
     const axiosSecure = useAxiosSecure();
 
     const [showSkeleton, setShowSkeleton] = useState(true);
+    console.log(appointments);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -67,7 +69,12 @@ const ManageAppointments = () => {
     };
 
     return (
-        <div>
+        <div className='p-7'>
+            <DashboardPagesHeader
+                title={"Manage Appointments"}
+                subtitle={"View and manage all appointments"}
+                icon={ClipboardPlus}
+            />
             <div className="overflow-x-auto border border-base-content/5 bg-base-100">
                 <table className="table">
                     <thead>
@@ -78,6 +85,7 @@ const ManageAppointments = () => {
                             <th>Age</th>
                             <th>Phone</th>
                             <th>Email</th>
+                            {/* <th>Appointment Date</th> */}
                             <th>Status</th>
                             <th>Reason</th>
                             <th>Action</th>
@@ -106,6 +114,7 @@ const ManageAppointments = () => {
                                     <td>{appointment.age}</td>
                                     <td>{appointment.phone}</td>
                                     <td>{appointment.email}</td>
+                                    {/* <td>{appointment.date}</td> */}
                                     <td>
                                         <div className="flex items-center gap-2">
                                             <span className={`text-xs p-1 rounded-full ${appointment.status === "pending" ? 'bg-yellow-500' : 'bg-green-600'} text-white`}>
