@@ -39,7 +39,7 @@ function ManageBedBooking() {
     queryKey: ["bed_booking"],
     queryFn: async () => {
       const { data } = await axiosSecure.get("/bed-booking");
-      console.log(data);
+    //   console.log(data);
       return data;
     },
   });
