@@ -47,14 +47,12 @@ import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyF
 import SalesReport from "@/pages/DashboardPages/Pharmacist/SalesReport/SalesReport";
 import MyBedRequests from "@/pages/DashboardPages/User/MyBedRequests/MyBedRequests";
 import EmergencyContact from "@/pages/Patient/EmergencyDashboard/EmergencyContact";
+import PatientRewards from "@/pages/PatientRewards/PatientRewards";
 import EmergencyLayout from "@/pages/emergency/EmergencyLayout";
 import Emergency from "@/pages/emergency/Emergency";
 import EmergencyContactsList from "@/pages/emergency/emergency-contacts-list";
 import EmergencyAmbulanceBooking from "@/pages/emergency/emergency-ambulance-booking";
 import EmergencyTriage from "@/pages/emergency/emergency-triage";
-
-
-
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -110,6 +108,7 @@ const Router = () => {
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="medicine/:id" element={<MedicineDetails />} />
+        <Route path="patient-rewards" element={<PatientRewards />} />
         <Route path="book-appointment/payment" element={<Payment />} />
         <Route
           path="book-appointment/payment-success"
@@ -217,8 +216,6 @@ const Router = () => {
           path="/dashboard/patient/my-bedRequest"
           element={<MyBedRequests />}
         />
-
-
 
         <Route
           path="/dashboard/patient/request-history"
