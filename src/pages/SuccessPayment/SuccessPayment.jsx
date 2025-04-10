@@ -52,46 +52,46 @@ const SuccessPayment = () => {
         {/* Payment Details */}
         <h2 className="text-lg font-semibold mt-6 mb-4">Payment Details</h2>
         <div className="space-y-2">
-          <div className="flex justify-between border-b py-2">
-            <span className="text-gray-500 w-2/5">Transaction ID:</span>
-            <span className="text-gray-800 w-3/5 text-right">{paymentInfo.transactionId}</span>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Transaction ID:</span>
+            <span className="text-gray-800">{paymentInfo.transactionId}</span>
           </div>
-          <div className="flex justify-between border-b py-2">
-            <span className="text-gray-500 w-2/5">Amount:</span>
-            <span className="text-gray-800 w-3/5 text-right">${paymentInfo.amount}</span>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Amount:</span>
+            <span className="text-gray-800">${paymentInfo.amount}</span>
           </div>
-          <div className="flex justify-between border-b py-2">
-            <span className="text-gray-500 w-2/5">Payment Date:</span>
-            <span className="text-gray-800 w-3/5 text-right">{(paymentInfo.paymentDate.replace("T", ", ").slice(0, -5))}</span>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Payment Date:</span>
+            <span className="text-gray-800 ">{(paymentInfo.paymentDate.replace("T", ", ").slice(0, -5))}</span>
           </div>
-          <div className="flex justify-between border-b py-2">
-            <span className="text-gray-500 w-2/5">Status:</span>
-            <span className="text-gray-800 w-3/5 text-right">Successful</span>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Status:</span>
+            <span className="text-gray-800 ">Successful</span>
           </div>
         </div>
 
         {/* Appointment Info */}
         <h2 className="text-lg font-semibold mt-6 mb-4">Appointment Info</h2>
         <div className="space-y-2">
-          <div className="flex justify-between border-b py-2">
-            <span className="text-gray-500 w-2/5">Doctor:</span>
-            <span className="text-gray-800 w-3/5 text-right">{paymentInfo?.appointmentInfo?.doctorName}</span>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Doctor:</span>
+            <span className="text-gray-800 ">{paymentInfo?.appointmentInfo?.doctorName}</span>
           </div>
-          <div className="flex justify-between border-b py-2">
-            <span className="text-gray-500 w-2/5">Patient Name:</span>
-            <span className="text-gray-800 w-3/5 text-right">{paymentInfo?.appointmentInfo?.name}</span>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Patient Name:</span>
+            <span className="text-gray-800 ">{paymentInfo?.appointmentInfo?.name}</span>
           </div>
-          <div className="flex justify-between border-b py-2">
-            <span className="text-gray-500 w-2/5">Age:</span>
-            <span className="text-gray-800 w-3/5 text-right">{paymentInfo?.appointmentInfo?.age}</span>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Age:</span>
+            <span className="text-gray-800 ">{paymentInfo?.appointmentInfo?.age}</span>
           </div>
-          <div className="flex justify-between border-b py-2">
-            <span className="text-gray-500 w-2/5">Date:</span>
-            <span className="text-gray-800 w-3/5 text-right">{paymentInfo?.appointmentInfo?.date}</span>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Date:</span>
+            <span className="text-gray-800 ">{paymentInfo?.appointmentInfo?.date}</span>
           </div>
-          <div className="flex justify-between border-b py-2">
-            <span className="text-gray-500 w-2/5">Time:</span>
-            <span className="text-gray-800 w-3/5 text-right">{paymentInfo?.appointmentInfo?.time}</span>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Time:</span>
+            <span className="text-gray-800">{paymentInfo?.appointmentInfo?.time}</span>
           </div>
         </div>
       </div>

@@ -32,17 +32,16 @@ import {
     },
     fieldRow: {
       flexDirection: "row",
-      justifyContent: "space-between",
+      gap: "24px",
       borderBottom: "1px solid #e5e5e5",
       paddingVertical: 6,
     },
     label: {
       color: "#6b7280",
-      width: "40%",
+      width: "30%",
     },
     value: {
-      width: "60%",
-      textAlign: "right",
+    
       color: "#111827",
       fontWeight: "medium",
     },
