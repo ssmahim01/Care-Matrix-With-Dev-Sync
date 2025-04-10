@@ -54,7 +54,7 @@ const MyFavoriteDoctors = () => {
                 <table className="table">
                     {/* head */}
                     <thead>
-                        <tr className='text-gray-900 bg-base-300 border border-gray-200'>
+                        <tr className='text-gray-900 bg-base-200 border border-gray-200'>
                             <th>Sl.</th>
                             <th>Doctor</th>
                             <th>Rating</th>

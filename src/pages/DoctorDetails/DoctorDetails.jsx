@@ -152,7 +152,7 @@ const DoctorDetails = () => {
                 </div>
                 {/* Location, Availability, and Fee */}
                 <div className="rounded-tl-lg rounded-tr-md bg-white p-6 flex flex-wrap items-center justify-between gap-4 text-sm text-gray-600">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full items-start">
                         <div className="flex items-center gap-2 py-1 rounded-full">
                             <div className='text-gray-500'>
                                 <IoLocationOutline size={20} />

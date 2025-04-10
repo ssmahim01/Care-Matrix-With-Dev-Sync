@@ -30,7 +30,7 @@ const MyAppointments = () => {
             <div className="overflow-x-auto border border-base-content/5 bg-base-100 ">
             <table className="table">
                 <thead>
-                    <tr className={`bg-base-300 border border-gray-200 text-gray-900`}>
+                    <tr className={`bg-base-200 border border-gray-200 text-gray-900`}>
                         <th>Sl.</th>
                         <th>Doctor</th>
                         <th>Patient</th>
