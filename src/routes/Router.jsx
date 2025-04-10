@@ -46,6 +46,14 @@ import Profile from "@/pages/DashboardPages/Profile/Profile";
 import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyFavoriteDoctors";
 import SalesReport from "@/pages/DashboardPages/Pharmacist/SalesReport/SalesReport";
 import EmergencyContact from "@/pages/Patient/EmergencyDashboard/EmergencyContact";
+import EmergencyLayout from "@/pages/emergency/EmergencyLayout";
+import Emergency from "@/pages/emergency/Emergency";
+import EmergencyContactsList from "@/pages/emergency/emergency-contacts-list";
+import EmergencyAmbulanceBooking from "@/pages/emergency/emergency-ambulance-booking";
+import EmergencyTriage from "@/pages/emergency/emergency-triage";
+
+
+
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -117,6 +125,14 @@ const Router = () => {
             </div>
           }
         />
+
+      </Route>
+
+      <Route path="emergency" element={<EmergencyLayout />}>
+        <Route index element={<Emergency />} />
+        <Route path="contacts" element={<EmergencyContactsList />} />
+        <Route path="ambulance-booking" element={<EmergencyAmbulanceBooking />} />
+        <Route path="triage" element={<EmergencyTriage />} />
       </Route>
 
       {/* Authentication Routes */}
