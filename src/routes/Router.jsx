@@ -46,6 +46,7 @@ import Profile from "@/pages/DashboardPages/Profile/Profile";
 import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyFavoriteDoctors";
 import SalesReport from "@/pages/DashboardPages/Pharmacist/SalesReport/SalesReport";
 import EmergencyContact from "@/pages/Patient/EmergencyDashboard/EmergencyContact";
+import PatientRewards from "@/pages/PatientRewards/PatientRewards";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -101,6 +102,7 @@ const Router = () => {
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="medicine/:id" element={<MedicineDetails />} />
+        <Route path="patient-rewards" element={<PatientRewards />} />
         <Route path="book-appointment/payment" element={<Payment />} />
         <Route
           path="book-appointment/payment-success"
