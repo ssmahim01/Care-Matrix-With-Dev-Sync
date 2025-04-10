@@ -1,10 +1,12 @@
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useFavoriteDoctors from '@/hooks/useFavoriteDoctors';
+import DashboardPagesHeader from '@/shared/Section/DashboardPagesHeader';
 import { ClipboardPlus, MoreVertical, Trash, Trash2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiDetail, BiTrashAlt } from 'react-icons/bi';
 import { FaStar, FaTrashAlt } from 'react-icons/fa';
+import { FaUserDoctor } from 'react-icons/fa6';
 import { MdPendingActions } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router';
@@ -42,12 +44,17 @@ const MyFavoriteDoctors = () => {
     }
 
     return (
-        <div>
+        <div className='p-7'>
+            <DashboardPagesHeader
+                title={"Favorite Doctors"}
+                subtitle={"View your all favorite doctors"}
+                icon={FaUserDoctor}
+            />
             <div className="overflow-x-auto border border-base-content/5 bg-base-100">
                 <table className="table">
                     {/* head */}
                     <thead>
-                        <tr className='text-gray-900 bg-base-300 border border-gray-200'>
+                        <tr className='text-gray-900 bg-base-200 border border-gray-200'>
                             <th>Sl.</th>
                             <th>Doctor</th>
                             <th>Rating</th>
@@ -60,9 +67,9 @@ const MyFavoriteDoctors = () => {
 
                         {
                             isLoading || showSkeleton ? (
-                                [...Array(5)].map((_, idx) => (
+                                [...Array(9)].map((_, idx) => (
                                     <tr key={idx} className="animate-pulse border border-gray-200">
-                                        <td><div className="skeleton h-4 w-8"></div></td>
+                                        <td><div className="skeleton h-8 w-8"></div></td>
                                         <td className="flex gap-2">
                                             <div className="skeleton w-10 h-10 rounded-lg"></div>
                                             <div className="space-y-1">
@@ -70,10 +77,10 @@ const MyFavoriteDoctors = () => {
                                                 <div className="skeleton h-3 w-20"></div>
                                             </div>
                                         </td>
-                                        <td><div className="skeleton h-4 w-16"></div></td>
-                                        <td><div className="skeleton h-4 w-20"></div></td>
-                                        <td><div className="skeleton h-4 w-16"></div></td>
-                                        <td><div className="skeleton h-4 w-10"></div></td>
+                                        <td><div className="skeleton h-8 w-16"></div></td>
+                                        <td><div className="skeleton h-8 w-20"></div></td>
+                                        <td><div className="skeleton h-8 w-16"></div></td>
+                                        <td><div className="skeleton h-8 w-10"></div></td>
                                     </tr>
                                 ))
                             ) : (

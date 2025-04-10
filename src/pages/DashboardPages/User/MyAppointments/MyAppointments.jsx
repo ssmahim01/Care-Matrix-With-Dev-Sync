@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { MoreVertical, Trash } from 'lucide-react';
+import { ClipboardPlus, MoreVertical, Trash } from 'lucide-react';
 import { BiDetail } from 'react-icons/bi';
 import { FaCircle } from 'react-icons/fa';
 import useMyAppointments from '@/hooks/useMyAppointments';
+import DashboardPagesHeader from '@/shared/Section/DashboardPagesHeader';
 
 const MyAppointments = () => {
     const [appointments, refetch, isLoading] = useMyAppointments();
@@ -19,10 +20,17 @@ const MyAppointments = () => {
     }, []);
 
     return (
-        <div className="overflow-x-auto border border-base-content/5 bg-base-100 ">
+        <div className='p-7'>
+             <DashboardPagesHeader
+        title={"My Appointments"}
+        subtitle={"All your appointments — upcoming, current, and past — in one place!"}
+        icon={ClipboardPlus}
+      />
+            {/* Table  */}
+            <div className="overflow-x-auto border border-base-content/5 bg-base-100 ">
             <table className="table">
                 <thead>
-                    <tr className={`bg-base-300 border border-gray-200 text-gray-900`}>
+                    <tr className={`bg-base-200 border border-gray-200 text-gray-900`}>
                         <th>Sl.</th>
                         <th>Doctor</th>
                         <th>Patient</th>
@@ -38,17 +46,17 @@ const MyAppointments = () => {
                 <tbody className="font-medium">
                     {isLoading || showSkeleton ? (
                         // Show 5 rows of skeletons as placeholders
-                        [...Array(5)].map((_, idx) => (
+                        [...Array(9)].map((_, idx) => (
                             <tr key={idx} className="animate-pulse">
-                                <td><div className="skeleton h-4 w-8"></div></td>
+                                <td><div className="skeleton h-8 w-8"></div></td>
                                 <td><div className="skeleton h-4 w-20"></div></td>
-                                <td><div className="skeleton h-4 w-20"></div></td>
-                                <td><div className="skeleton h-4 w-8"></div></td>
-                                <td><div className="skeleton h-4 w-24"></div></td>
-                                <td><div className="skeleton h-4 w-28"></div></td>
-                                <td><div className="skeleton h-4 w-16"></div></td>
-                                <td><div className="skeleton h-4 w-24"></div></td>
-                                <td><div className="skeleton h-4 w-10"></div></td>
+                                <td><div className="skeleton h-8 w-20"></div></td>
+                                <td><div className="skeleton h-8 w-8"></div></td>
+                                <td><div className="skeleton h-8 w-24"></div></td>
+                                <td><div className="skeleton h-8 w-28"></div></td>
+                                <td><div className="skeleton h-8 w-16"></div></td>
+                                <td><div className="skeleton h-8 w-24"></div></td>
+                                <td><div className="skeleton h-8 w-10"></div></td>
                             </tr>
                         ))
                     ) : (
@@ -91,6 +99,7 @@ const MyAppointments = () => {
                     )}
                 </tbody>
             </table>
+        </div>
         </div>
     );
 };

@@ -89,7 +89,7 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
             {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
             <button
                 type='submit'
-                className='btn mt-4'
+                className='btn mt-4 bg-[#3b6df8] hover:bg-blue-600 text-white border-none '
                 disabled={!stripe || isProcessing}
             >
                 {isProcessing ? 'Processing...' : 'Confirm Payment'}

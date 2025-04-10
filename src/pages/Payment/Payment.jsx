@@ -37,7 +37,7 @@ const Payment = () => {
 
   return (
     <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-24'>
-      <h1 className='text-2xl font-semibold mb-6'>Complete Your Payment</h1>
+      <h1 className='text-2xl font-bold mb-6 text-[#3b6df8]'>Complete Your Payment</h1>
       {clientSecret ? (
         <Elements stripe={stripePromise} options={options}>
           <CheckoutForm
