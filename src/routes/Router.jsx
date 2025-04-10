@@ -53,6 +53,7 @@ import Emergency from "@/pages/emergency/Emergency";
 import EmergencyContactsList from "@/pages/emergency/emergency-contacts-list";
 import EmergencyAmbulanceBooking from "@/pages/emergency/emergency-ambulance-booking";
 import EmergencyTriage from "@/pages/emergency/emergency-triage";
+import RewardsDashboard from "@/pages/Patient/Rewards/RewardsDashboard";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -199,6 +200,7 @@ const Router = () => {
 
         {/* Patient Routes */}
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
+        <Route path="/dashboard/patient/rewards" element={<RewardsDashboard />} />
         <Route
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
