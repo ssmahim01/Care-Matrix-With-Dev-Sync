@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Link } from "react-router";
+import { Separator } from "@/components/ui/separator";
 
 const BedBookingsTab = ({ bedBookings, formatDate }) => {
   return (
@@ -78,7 +79,13 @@ const BedBookingsTab = ({ bedBookings, formatDate }) => {
             </TableBody>
           </Table>
         ) : (
-          <p className="text-muted-foreground">No bed bookings found.</p>
+          <>
+            <Separator />
+            <p className="text-muted-foreground mt-2">No Bed Bookings Found!</p>
+            <Button className="mt-2 cursor-pointer" variant={"outline"}>
+              Book A Bed
+            </Button>
+          </>
         )}
       </CardContent>
     </Card>

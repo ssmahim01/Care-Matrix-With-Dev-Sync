@@ -29,7 +29,7 @@ const PatientOverview = () => {
     queryKey: ["patient-stats", user?.email],
     queryFn: async () => {
       const { data } = await axios(
-        `${import.meta.env.VITE_API_URL}/patient/stats/${user?.email}`
+        `${import.meta.env.VITE_API_URL}/patient/stats/e@gmail.com`
       );
       return data;
     },
@@ -51,7 +51,7 @@ const PatientOverview = () => {
     if (!amount && amount !== 0) return "N/A";
     return typeof amount === "string" && amount.startsWith("$")
       ? amount
-      : `$${Number(amount).toFixed(2)}`;
+      : `৳${Number(amount).toFixed(2)}`;
   }
   return (
     <div className="px-7">
@@ -85,11 +85,20 @@ const PatientOverview = () => {
             className={"cursor-pointer py-2 px-4"}
             value="medications"
           >
-            Medications
+            Medicine Cart{" "}
+            {patientStats?.medicineCart && (
+              <sub>({patientStats?.medicineCart?.length})</sub>
+            )}
           </TabsTrigger>
-          <TabsTrigger className={"cursor-pointer py-2 px-4"} value="history">
-            Purchase History
-          </TabsTrigger>
+          {patientStats?.purchaseHistory &&
+            patientStats?.purchaseHistory?.length > 0 && (
+              <TabsTrigger
+                className={"cursor-pointer py-2 px-4"}
+                value="history"
+              >
+                Purchase History
+              </TabsTrigger>
+            )}
         </TabsList>
         {/* Appointments Tab */}
         <TabsContent value="appointments" className="space-y-4">
@@ -114,13 +123,16 @@ const PatientOverview = () => {
           />
         </TabsContent>
         {/* Purchase History Tab */}
-        <TabsContent value="history" className="space-y-4">
-          <PurchaseHistoryTab
-            purchaseHistory={patientStats?.purchaseHistory}
-            formatDate={formatDate}
-            formatCurrency={formatCurrency}
-          />
-        </TabsContent>
+        {patientStats?.purchaseHistory &&
+          patientStats?.purchaseHistory?.length > 0 && (
+            <TabsContent value="history" className="space-y-4">
+              <PurchaseHistoryTab
+                purchaseHistory={patientStats?.purchaseHistory}
+                formatDate={formatDate}
+                formatCurrency={formatCurrency}
+              />
+            </TabsContent>
+          )}
       </Tabs>
     </div>
   );

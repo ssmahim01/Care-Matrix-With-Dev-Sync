@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import {
   Calendar,
   Clock,
@@ -14,6 +15,7 @@ import {
   User,
   Users,
 } from "lucide-react";
+import { Link } from "react-router";
 
 const AppointmentsTab = ({ appointment, formatDate }) => {
   return (
@@ -40,7 +42,7 @@ const AppointmentsTab = ({ appointment, formatDate }) => {
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Date:</span>
                   <span className="text-sm">
-                    {formatDate(appointment?.date)}
+                    {formatDate(appointment?.date) || "Invalid Date"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -80,14 +82,28 @@ const AppointmentsTab = ({ appointment, formatDate }) => {
               </p>
             </div>
             <div className="flex justify-end gap-2">
-              <Button variant="outline">Reschedule</Button>
-              <Button variant="destructive">Cancel</Button>
+              <Link to="/dashboard/patient/appointments">
+                <Button className={"cursor-pointer"} variant="outline">
+                  View Details
+                </Button>
+              </Link>
+              <Link to="/dashboard/patient/appointments">
+                <Button className={"cursor-pointer"} variant="destructive">
+                  Cancel
+                </Button>
+              </Link>
             </div>
           </div>
         ) : (
-          <p className="text-muted-foreground">
-            No upcoming appointments scheduled.
-          </p>
+          <>
+            <Separator />
+            <p className="text-muted-foreground mt-2">
+              No Upcoming Appointments Scheduled!
+            </p>
+            <Button className="mt-2 cursor-pointer" variant={"outline"}>
+              Book An Appointment
+            </Button>
+          </>
         )}
       </CardContent>
     </Card>
