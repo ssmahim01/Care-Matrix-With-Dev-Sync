@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -7,33 +8,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { useQuery } from "@tanstack/react-query";
+import { Pill } from "lucide-react";
 import axios from "axios";
-import {
-  Calendar,
-  Clock,
-  CreditCard,
-  FileText,
-  Pill,
-  ShoppingCart,
-  User,
-  Users,
-} from "lucide-react";
-import OverviewCards from "./OverviewCards";
-import SmartWaitTime from "./SmartWaitTime";
+
 import AppointmentsTab from "./AppointmentsTab";
 import BedBookingsTab from "./BedBookingsTab";
 import MedicineCartTab from "./MedicineCartTab";
+import OverviewCards from "./OverviewCards";
+import SmartWaitTime from "./SmartWaitTime";
+import PurchaseHistoryTab from "./PurchaseHistoryTab";
 
 const PatientOverview = () => {
   // Fetch patient overview data
@@ -127,81 +114,11 @@ const PatientOverview = () => {
         </TabsContent>
         {/* Purchase History Tab */}
         <TabsContent value="history" className="space-y-4">
-          <Card
-            className={
-              "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
-            }
-          >
-            <CardHeader>
-              <CardTitle>Purchase History</CardTitle>
-              <CardDescription>Your recent medication orders</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {patientStats?.purchaseHistory &&
-              patientStats?.purchaseHistory.length > 0 ? (
-                <div className="space-y-6">
-                  {patientStats?.purchaseHistory.map((order) => (
-                    <div
-                      key={order._id || Math.random().toString()}
-                      className="border rounded-lg p-4 space-y-3"
-                    >
-                      <div className="flex flex-col sm:flex-row justify-between gap-2">
-                        <div>
-                          <p className="text-sm font-medium">
-                            Order Date: {formatDate(order.date)}
-                          </p>
-                          <p className="text-sm">
-                            Total: {formatCurrency(order.totalPrice)}
-                          </p>
-                        </div>
-                        <div className="flex flex-col sm:items-end gap-1">
-                          <Badge
-                            className={
-                              order.paymentStatus === "Paid"
-                                ? "bg-green-500"
-                                : "bg-amber-500"
-                            }
-                          >
-                            {order.paymentStatus || "Unknown"}
-                          </Badge>
-                          <Badge variant="outline">
-                            {order.orderStatus || "Unknown"}
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="pt-2 border-t">
-                        <p className="text-sm font-medium mb-2">Items:</p>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                          {order.medicines &&
-                            order.medicines.map((med, idx) => (
-                              <div
-                                key={idx}
-                                className="flex items-center gap-2 text-sm"
-                              >
-                                <Pill className="h-3 w-3 text-muted-foreground" />
-                                <span>{med.name || "N/A"}</span>
-                                <span className="text-muted-foreground">
-                                  x{med.qty || 0}
-                                </span>
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-                      <div className="flex justify-end">
-                        <Button variant="ghost" size="sm">
-                          View Details
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-muted-foreground">
-                  No purchase history found.
-                </p>
-              )}
-            </CardContent>
-          </Card>
+          <PurchaseHistoryTab
+            purchaseHistory={patientStats?.purchaseHistory}
+            formatDate={formatDate}
+            formatCurrency={formatCurrency}
+          />
         </TabsContent>
       </Tabs>
     </div>
