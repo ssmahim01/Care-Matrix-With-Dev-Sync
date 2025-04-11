@@ -15,6 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecepOverviewCards from "./ReceptionistOverview/RecepOverviewCards";
 import RecepStatisticsChart from "./ReceptionistOverview/RecepStatisticsChart";
 import ReceptActivity from "./ReceptionistOverview/ReceptActivity";
+import AppointmentPieChart from "./ReceptionistOverview/AppointmentPieChart";
+import BedStatsPieChart from "./ReceptionistOverview/BedStatsPieChart";
 
 const ReceptionistOverview = () => {
   const [overviewData, setOverviewData] = useState({
@@ -97,10 +99,10 @@ const ReceptionistOverview = () => {
           <TabsTrigger value="overview" className={"cursor-pointer py-2 px-4"}>
             Overview
           </TabsTrigger>
-          <TabsTrigger value="analytics" className={"cursor-pointer py-2 px-4"}>
+          <TabsTrigger value="Appointment analytics" className={"cursor-pointer py-2 px-4"}>
             Appointments
           </TabsTrigger>
-          <TabsTrigger value="products" className={"cursor-pointer py-2 px-4"}>
+          <TabsTrigger value="Bed analytics" className={"cursor-pointer py-2 px-4"}>
             Bed Requests
           </TabsTrigger>
         </TabsList>
@@ -130,8 +132,26 @@ const ReceptionistOverview = () => {
 
         </TabsContent>
         {/* 2nd Tab Content */}
+        <TabsContent value="Appointment analytics" className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+         <AppointmentPieChart
+         appointmentStatusBreakdown={
+          overviewData?.appointmentStatusBreakdown
+         }
+         />
+          </div>
+        </TabsContent>
 
         {/* 3rd Tab Content */}
+        <TabsContent value="Bed analytics" className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+         <BedStatsPieChart
+            bedStatusBreakdown={
+            overviewData?.bedStatusBreakdown
+         }
+         />
+          </div>
+        </TabsContent>
       </Tabs>
     </div>
   );
