@@ -1,5 +1,5 @@
 // TopCustomerTable.jsx
-import { User, Star } from "lucide-react";
+import { User, Star, BadgeCheck, ShoppingBag } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -13,6 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import CustomerModal from "@/components/Modal/CustomerModal";
+import { Separator } from "@/components/ui/separator";
 
 const TopCustomerTable = ({ topCustomers }) => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -25,7 +26,7 @@ const TopCustomerTable = ({ topCustomers }) => {
     <div className="grid grid-cols-1 gap-6 p-4">
       {/* Left Column - Top 3 Customers in Cards */}
       <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 xl:w-11/12 mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 :w-11/12 mx-auto">
           {topThree.map((customer, idx) => (
             <Card
               key={idx}
@@ -58,27 +59,33 @@ const TopCustomerTable = ({ topCustomers }) => {
                 />
               </div>
 
-              <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold">{customer?.name}</h3>
-                <p className="text-sm text-muted-foreground">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold flex items-center justify-center gap-1">
+                  {customer?.name}{" "}
+                  {customer?.totalOrders > 10 && (
+                    <BadgeCheck className="h-4 mt-1 w-4 text-primary" />
+                  )}
+                </h3>
+                <p className="text-base text-gray-600 font-medium">
                   {customer?.email}
                 </p>
+                <p className="text-sm font-medium mt-1 text-muted-foreground">
+                  {customer?.uid}
+                </p>
               </div>
-
-              <CardContent className="w-full">
+              <Separator />
+              <CardContent className="w-full md:w-2/3">
                 <div className="flex gap-4 justify-between items-center">
-                  <div>
+                  <div className="justify-center text-center">
                     <p className="text-sm text-muted-foreground">
                       Total Orders
                     </p>
-                    <p className="font-medium">{customer?.totalOrders}</p>
-                  </div>
-                  {/* <div>
-                    <p className="text-sm text-muted-foreground">Discount</p>
-                    <p className="font-medium">
-                      {discount ? discount.discountVoucher : 0} %
+                    <p className="font-medium flex justify-center items-center">
+                      {" "}
+                      <ShoppingBag className="h-3.5 w-3.5 mr-1" />
+                      {customer?.totalOrders}
                     </p>
-                  </div> */}
+                  </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Total Spent</p>
                     <p className="font-medium">

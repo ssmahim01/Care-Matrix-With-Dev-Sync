@@ -25,7 +25,7 @@ const SocialLogin = ({ setIsError }) => {
           email: currentUser?.email,
           name: currentUser?.displayName,
           photo: currentUser?.photoURL,
-          phoneNumber: "",
+          // phoneNumber: "",
           uid: currentUser?.uid,
           createdAt: new Date(
             currentUser?.metadata?.creationTime
