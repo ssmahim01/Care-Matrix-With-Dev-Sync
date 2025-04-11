@@ -7,7 +7,9 @@ import AppointmentInvoice from "../AppointmentInvoice/AppointmentInvoice";
 const SuccessPayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const paymentInfo = location?.state?.paymentData;
+  const {paymentData, rewardInfo} = location?.state || {};
+
+  const paymentInfo = paymentData;
 
   const handleBackToHome = () => navigate("/");
 
@@ -28,8 +30,6 @@ const SuccessPayment = () => {
 
   return (
     <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-24 space-y-6 flex flex-col items-center justify-center">
-      
-
       {/* Invoice Information */}
       <div className="w-full max-w-2xl border rounded-md shadow p-6">
         {/* Header */}
@@ -62,7 +62,9 @@ const SuccessPayment = () => {
           </div>
           <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Payment Date:</span>
-            <span className="text-gray-800 ">{(paymentInfo.paymentDate.replace("T", ", ").slice(0, -5))}</span>
+            <span className="text-gray-800 ">
+              {paymentInfo.paymentDate.replace("T", ", ").slice(0, -5)}
+            </span>
           </div>
           <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Status:</span>
@@ -75,23 +77,54 @@ const SuccessPayment = () => {
         <div className="space-y-2">
           <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Doctor:</span>
-            <span className="text-gray-800 ">{paymentInfo?.appointmentInfo?.doctorName}</span>
+            <span className="text-gray-800 ">
+              {paymentInfo?.appointmentInfo?.doctorName}
+            </span>
           </div>
           <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Patient Name:</span>
-            <span className="text-gray-800 ">{paymentInfo?.appointmentInfo?.name}</span>
+            <span className="text-gray-800 ">
+              {paymentInfo?.appointmentInfo?.name}
+            </span>
           </div>
           <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Age:</span>
-            <span className="text-gray-800 ">{paymentInfo?.appointmentInfo?.age}</span>
+            <span className="text-gray-800 ">
+              {paymentInfo?.appointmentInfo?.age}
+            </span>
           </div>
           <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Date:</span>
-            <span className="text-gray-800 ">{paymentInfo?.appointmentInfo?.date}</span>
+            <span className="text-gray-800 ">
+              {paymentInfo?.appointmentInfo?.date}
+            </span>
           </div>
           <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Time:</span>
-            <span className="text-gray-800">{paymentInfo?.appointmentInfo?.time}</span>
+            <span className="text-gray-800">
+              {paymentInfo?.appointmentInfo?.time}
+            </span>
+          </div>
+        </div>
+
+        {/* Reward Info */}
+        <h2 className="text-lg font-semibold mt-6 mb-4">Reward Info</h2>
+        <div className="space-y-2">
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Award Point:</span>
+            <span className="text-gray-800 ">
+              {rewardInfo?.points}
+            </span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Action:</span>
+            <span className="text-gray-800 ">{rewardInfo?.action}</span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Awarded Date:</span>
+            <span className="text-gray-800 ">
+              {new Date(rewardInfo?.date).toDateString("en-UK")}
+            </span>
           </div>
         </div>
       </div>
@@ -99,7 +132,7 @@ const SuccessPayment = () => {
       {/* Buttons */}
       <div className="flex space-x-4 mt-6">
         <PDFDownloadLink
-          document={<AppointmentInvoice paymentInfo={paymentInfo} />}
+          document={<AppointmentInvoice paymentInfo={paymentInfo} rewardInfo={rewardInfo} />}
           fileName={`appointment-invoice-${paymentInfo.transactionId}.pdf`}
         >
           {({ loading }) => (

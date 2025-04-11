@@ -16,9 +16,9 @@ export function StaffManagement() {
   const [activeFilters, setActiveFilters] = useState({role: []})
 
   const { data = [],isLoading,refetch} = useQuery({
-    queryKey: ["users"],
+    queryKey: ["user-requests"],
     queryFn: async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/users`)
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/user-requests`)
         setStaff(data)
         return data
     },
