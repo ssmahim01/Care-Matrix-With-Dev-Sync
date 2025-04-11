@@ -108,9 +108,9 @@ const MyFavoriteDoctors = () => {
                                                 </div>
                                                 <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm right-12 top-0">
                                                     <Link to={`/doctor-details/${doctor.doctorInfo._id}`} state={doctor.doctorInfo._id}>
-                                                    <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm'>
-                                                        <span><BiDetail size={16} /></span><a>View Details</a>
-                                                    </div>
+                                                        <div className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm'>
+                                                            <span><BiDetail size={16} /></span><a>View Details</a>
+                                                        </div>
                                                     </Link>
                                                     <Link to={`/book-appointment/${doctor.doctorInfo.name}`} state={doctor.doctorInfo._id} className='flex items-center gap-4 hover:bg-base-200 cursor-pointer p-2 rounded-sm'>
                                                         <span><ClipboardPlus size={16} /></span> <a>Book Appointment</a>
