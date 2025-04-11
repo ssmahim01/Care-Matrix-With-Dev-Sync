@@ -14,14 +14,25 @@ import { useEffect, useState } from "react";
 
 // Helper function to parse time
 function parseAppointmentTime(dateStr, timeStr) {
-  const date = new Date(dateStr);
-  const [time, period] = timeStr.split(" ")[0].split(":");
-  const hours = period === "pm" && time[0] < 12 ? +time[0] + 12 : time[0];
-  const minutes = time[1];
-
-  date.setHours(hours, minutes, 0, 0);
-  return date;
-}
+    const date = new Date(dateStr);
+  
+    // Extract the time (e.g., "06:30pm" -> "06:30" and "pm")
+    const timePart = timeStr.split(/([ap]m)/i)[0];
+    const period = timeStr.match(/([ap]m)/i)[1].toLowerCase();
+    const [hoursStr, minutesStr] = timePart.split(":");
+  
+    let hours = parseInt(hoursStr, 10);
+    const minutes = parseInt(minutesStr, 10);
+  
+    if (period === "pm" && hours < 12) {
+      hours += 12;
+    } else if (period === "am" && hours === 12) {
+      hours = 0;
+    }
+  
+    date.setHours(hours, minutes, 0, 0);
+    return date;
+  }
 
 const SmartWaitTime = ({ appointment }) => {
   const [waitTimeMinutes, setWaitTimeMinutes] = useState(calculateWaitTime());
@@ -116,8 +127,8 @@ const SmartWaitTime = ({ appointment }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center gap-6">
-          <div className="flex flex-col w-full md:w-fit gap-4">
+        <div className="flex flex-col lg:flex-row items-center gap-6 xl:gap-8">
+          <div className="flex flex-col w-full lg:w-fit gap-2">
             <div>
               <p className="text-base font-medium">Appointment Details:</p>
               <p className="text-base tracking-wide mt-1">
@@ -143,7 +154,7 @@ const SmartWaitTime = ({ appointment }) => {
             </div>
           </div>
           {/* Countdown Timer */}
-          <div className="bg-white rounded-lg w-full md:w-9/12 p-4 shadow-sm border">
+          <div className="bg-white rounded-lg w-full lg:w-9/12 p-4 shadow-sm border">
             <h3 className="text-sm font-medium text-gray-900 mb-2">
               Time Until Appointment
             </h3>
@@ -157,25 +168,33 @@ const SmartWaitTime = ({ appointment }) => {
                   <div className="text-2xl font-bold text-gray-700">
                     {countdown.days}
                   </div>
-                  <div className="text-xs text-gray-600">Days</div>
+                  <div className="text-sm text-gray-700 font-medium tracking-wide">
+                    Days
+                  </div>
                 </div>
                 <div className="bg-gray-100 rounded p-2">
                   <div className="text-2xl font-bold text-gray-700">
                     {countdown.hours}
                   </div>
-                  <div className="text-xs text-gray-600">Hours</div>
+                  <div className="text-sm text-gray-700 font-medium tracking-wide">
+                    Hours
+                  </div>
                 </div>
                 <div className="bg-gray-100 rounded p-2">
                   <div className="text-2xl font-bold text-gray-700">
                     {countdown.minutes}
                   </div>
-                  <div className="text-xs text-gray-600">Minutes</div>
+                  <div className="text-sm text-gray-700 font-medium tracking-wide">
+                    Minutes
+                  </div>
                 </div>
                 <div className="bg-gray-100 rounded p-2">
                   <div className="text-2xl font-bold text-gray-700">
                     {countdown.seconds}
                   </div>
-                  <div className="text-xs text-gray-600">Seconds</div>
+                  <div className="text-sm text-gray-700 font-medium tracking-wide">
+                    Seconds
+                  </div>
                 </div>
               </div>
             )}
