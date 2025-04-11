@@ -12,7 +12,7 @@ const useRoleRequest = () => {
       refetch,
       isLoading,
     } = useQuery({
-      queryKey: ["requestedData", user?.uid],
+      queryKey: ["requestedData", user?.uid, search],
       queryFn: async () => {
         const { data } = await axios.get(
           `${import.meta.env.VITE_API_URL}/user-requests/${user?.uid}?search=${encodeURIComponent(search)}`

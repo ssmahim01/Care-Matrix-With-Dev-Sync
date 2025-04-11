@@ -51,6 +51,18 @@ export const deleteDoctor = createAsyncThunk("doctors/delete", async (id) => {
   return id;
 });
 
+// Update Schedule
+export const updateSchedule = createAsyncThunk("doctors/update-schedule", async ({id, updatedSchedule}) => {
+ const response = await axios.put(
+    `/doctors/${id}`,
+    updatedSchedule,
+    {
+      timeout: 5000,
+    }
+  );
+  return response.data;
+});
+
 const doctorSlice = createSlice({
   name: "doctors",
   initialState: { doctors: [], status: "idle", search: "", sort: "", error: null },
@@ -75,6 +87,12 @@ const doctorSlice = createSlice({
         state.doctors.push(action.payload);
       })
       .addCase(updateDoctor.fulfilled, (state, action) => {
+        const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
+        if (index !== -1) {
+          state.doctors[index] = action.payload;
+        }
+      })
+      .addCase(updateSchedule.fulfilled, (state, action) => {
         const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
         if (index !== -1) {
           state.doctors[index] = action.payload;

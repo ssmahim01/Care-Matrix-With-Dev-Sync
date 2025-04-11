@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
+import moment from "moment";
 
 const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleDoctorDetails }) => {
   const handleDeleteDoctor = async (id) => {
@@ -67,7 +68,7 @@ const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleDoctorD
           </p>
         </td>
         <td>{doctor?.department}</td>
-        <td>{new Date(doctor?.requestDate).toLocaleDateString("en-UK")}</td>
+        <td>{moment(doctor?.requestDate).fromNow()}</td>
         <td>{doctor?.shift}</td>
         <td>
           <p

@@ -132,7 +132,7 @@ const Navbar = () => {
             <div className="navbar-start w-full">
               {/* mobile sidebar */}
               <aside
-                ref={menuRef}
+                // ref={menuRef}
                 className={` ${
                   isMenuOpen
                     ? "translate-x-0 opacity-100 z-20"
@@ -142,6 +142,14 @@ const Navbar = () => {
                 <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
                   {routes}
 
+                  <div className="md:hidden block">
+                    <Link to="/emergency">
+                      <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer">
+                        <span>Emergency</span>
+                        <Siren className="text-base" />
+                      </Button>{" "}
+                    </Link>
+                  </div>
                   <li
                     className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
                     onClick={() => setIsOpen(!isOpen)}
@@ -275,20 +283,6 @@ const Navbar = () => {
                       </article>
                     )}
                   </li>
-
-                  {user && role === "patient" && (
-                    <div className="block md:hidden">
-                      <NavLink
-                        to="/dashboard/patient/emergency-cases"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
-                          <Siren className="w-4 h-4" />{" "}
-                          <span className="font-bold">Emergency</span>
-                        </button>
-                      </NavLink>
-                    </div>
-                  )}
                 </ul>
               </aside>
               <div className="flex items-center">
@@ -444,18 +438,26 @@ const Navbar = () => {
                         </div>
                       </article>
                     )}
+                    <div className="md:hidden block">
+                      <Link to="/emergency">
+                        <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer">
+                          <span>Emergency</span>
+                          <Siren className="text-base" />
+                        </Button>{" "}
+                      </Link>
+                    </div>
                   </li>
                 </ul>
               </>
 
-              {user && (
+              <div className="md:block hidden">
                 <Link to="/emergency">
                   <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer">
                     <span>Emergency</span>
                     <Siren className="text-base" />
                   </Button>{" "}
                 </Link>
-              )}
+              </div>
 
               {user ? (
                 <div className="dropdown dropdown-end avatar-online">
