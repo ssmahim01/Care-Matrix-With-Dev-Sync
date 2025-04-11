@@ -86,14 +86,13 @@ export function StaffTable({ staff, isLoading, refetch }) {
 
 
   const handleDelete = (staffId) => {
-    console.log("attampt")
     showConfirmToast(
       "Are you sure you want to delete this staff?",
       async () => {
         try {
           setIsDeleting(true);
           console.log("Deleting staff with ID:", staffId);
-          await axios.delete(`${import.meta.env.VITE_API_URL}/users/delete-user/${staffId}`);
+          await axios.delete(`${import.meta.env.VITE_API_URL}/user-requests/delete-user/${staffId}`);
           refetch();
           toast.success("Staff deleted successfully");
         } catch (error) {
@@ -143,7 +142,7 @@ export function StaffTable({ staff, isLoading, refetch }) {
           <>
             <DialogHeader>
               <DialogTitle>Edit Staff Member</DialogTitle>
-              <DialogDescription>Update information for {selectedStaff.name}</DialogDescription>
+              <DialogDescription>Update information for {selectedStaff.userName}</DialogDescription>
             </DialogHeader>
             <StaffForm
               staffData={selectedStaff}
