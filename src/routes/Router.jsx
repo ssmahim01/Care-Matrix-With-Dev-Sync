@@ -45,7 +45,15 @@ import PurchaseHistory from "@/pages/Patient/PurchaseHistory/PurchaseHistory";
 import Profile from "@/pages/DashboardPages/Profile/Profile";
 import MyFavoriteDoctors from "@/pages/DashboardPages/User/MyFavoriteDoctors/MyFavoriteDoctors";
 import SalesReport from "@/pages/DashboardPages/Pharmacist/SalesReport/SalesReport";
+import MyBedRequests from "@/pages/DashboardPages/User/MyBedRequests/MyBedRequests";
 import EmergencyContact from "@/pages/Patient/EmergencyDashboard/EmergencyContact";
+import PatientRewards from "@/pages/PatientRewards/PatientRewards";
+import EmergencyLayout from "@/pages/emergency/EmergencyLayout";
+import Emergency from "@/pages/emergency/Emergency";
+import EmergencyContactsList from "@/pages/emergency/emergency-contacts-list";
+import EmergencyAmbulanceBooking from "@/pages/emergency/emergency-ambulance-booking";
+import EmergencyTriage from "@/pages/emergency/emergency-triage";
+import RewardsDashboard from "@/pages/Patient/Rewards/RewardsDashboard";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -101,6 +109,7 @@ const Router = () => {
         <Route path="pharmacy" element={<OurPharmacy />} />
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="medicine/:id" element={<MedicineDetails />} />
+        <Route path="patient-rewards" element={<PatientRewards />} />
         <Route path="book-appointment/payment" element={<Payment />} />
         <Route
           path="book-appointment/payment-success"
@@ -117,6 +126,14 @@ const Router = () => {
             </div>
           }
         />
+
+      </Route>
+
+      <Route path="emergency" element={<EmergencyLayout />}>
+        <Route index element={<Emergency />} />
+        <Route path="contacts" element={<EmergencyContactsList />} />
+        <Route path="ambulance-booking" element={<EmergencyAmbulanceBooking />} />
+        <Route path="triage" element={<EmergencyTriage />} />
       </Route>
 
       {/* Authentication Routes */}
@@ -183,6 +200,7 @@ const Router = () => {
 
         {/* Patient Routes */}
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
+        <Route path="/dashboard/patient/rewards" element={<RewardsDashboard />} />
         <Route
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
@@ -195,6 +213,12 @@ const Router = () => {
           path="/dashboard/patient/favorite-doctors"
           element={<MyFavoriteDoctors />}
         />
+
+        <Route
+          path="/dashboard/patient/my-bedRequest"
+          element={<MyBedRequests />}
+        />
+
         <Route
           path="/dashboard/patient/request-history"
           element={<RequestHistory />}

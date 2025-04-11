@@ -7,7 +7,7 @@ import { FaFileUpload } from "react-icons/fa";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
 import { RiAccountCircleLine, RiLockPasswordLine } from "react-icons/ri";
-import { useAuthUser } from "@/redux/auth/authActions";
+import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { useNavigate } from "react-router";
 import AuthHeader from "./AuthHeader";
 import NavigateTo from "./NavigateTo";
@@ -16,10 +16,12 @@ import IsError from "./IsError";
 import { RxCross1 } from "react-icons/rx";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/auth/authSlice";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
+  const userLoading = useAuthLoading();
   const dispatch = useDispatch();
 
   // states for name, email
@@ -206,15 +208,34 @@ const Register = () => {
             };
             dispatch(
               setUser({
+                email: currentUser?.email,
                 displayName: currentUser?.displayName,
                 photoURL: currentUser?.photoURL,
+                uid: currentUser?.uid,
+                createdAt: currentUser?.metadata?.creationTime,
+                lastLoginAt: currentUser?.metadata?.lastSignInTime,
               })
             );
             // save userData in db --->
-            await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
+            const { data } = await axios.post(
+              `${import.meta.env.VITE_API_URL}/users`,
+              userData
+            );
+            // Show Success Modal
+            if (data.data.insertedId) {
+              Swal.fire({
+                title: "Registration Successful! 🎉",
+                text: "Welcome To The dashboard!",
+                icon: "success",
+                confirmButtonText: "Go To Profile",
+                confirmButtonColor: "#000",
+              }).then(() => {
+                navigate("/dashboard/profile");
+              });
+            }
           })
           .catch((error) => {
-            setIsError(error.message || "Registration Failed!")
+            setIsError(error.message || "Registration Failed!");
           })
           .finally(() => {
             setLoading(false);
@@ -227,11 +248,9 @@ const Register = () => {
             : error?.message || "Registration Failed!"
         )
       );
-
-    // console.table(user);
   };
 
-  if (user) return navigate("/");
+  if (user && userLoading) return navigate("/");
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
