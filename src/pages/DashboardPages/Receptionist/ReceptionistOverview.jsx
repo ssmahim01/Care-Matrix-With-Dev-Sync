@@ -13,6 +13,8 @@ import {
 import ReceptionistOverviewHeader from "./ReceptionistOverview/ReceptionistOverviewHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecepOverviewCards from "./ReceptionistOverview/RecepOverviewCards";
+import RecepStatisticsChart from "./ReceptionistOverview/RecepStatisticsChart";
+import ReceptActivity from "./ReceptionistOverview/ReceptActivity";
 
 const ReceptionistOverview = () => {
   const [overviewData, setOverviewData] = useState({
@@ -75,7 +77,7 @@ const ReceptionistOverview = () => {
       name: "Doctor Appointments",
       value: overviewData.totalApprovedAppointments,
     },
-    { name: "Bed Requests", value: overviewData.totalApprovedBedBookings },
+    { name: "Accepted Bed Requests", value: overviewData.totalApprovedBedBookings },
   ];
 
   return (
@@ -114,68 +116,23 @@ const ReceptionistOverview = () => {
             totalApprovedAppointments={overviewData?.totalApprovedAppointments}
             totalPendingBedBookings={overviewData?.totalPendingBedBookings}
           />
+
+           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+             {/* Appointment Overview */}
+             <RecepStatisticsChart
+                totalApprovedAppointments={overviewData?.totalApprovedAppointments}
+                totalApprovedBedBookings={overviewData?.totalApprovedBedBookings}
+            />
+
+            <ReceptActivity/>
+           </div>
+
+
         </TabsContent>
         {/* 2nd Tab Content */}
 
         {/* 3rd Tab Content */}
       </Tabs>
-
-
-      {/* Main Content */}
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Appointment Overview */}
-        <div className="flex-1">
-          <h2 className="text-xl font-semibold mb-4">Appointment Overview</h2>
-          <Card>
-            <CardContent className="pt-6">
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={appointmentOverviewData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#4a9c9a" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Recent Activity */}
-        <div className="w-full md:w-1/3">
-          <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-sm text-gray-500 mb-4">
-                Latest appointment requests
-              </p>
-              {recentActivity.map((activity, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between mb-4"
-                >
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-gray-600 font-semibold">
-                        {activity.patient[0]}
-                      </span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">{activity.patient}</p>
-                      <p className="text-xs text-gray-500">
-                        {activity.type}: {activity.details}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                    {activity.status}
-                  </span>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
-      </div>
     </div>
   );
 };
