@@ -497,7 +497,7 @@ const Navbar = () => {
                             : role === "pharmacist"
                             ? "/dashboard/pharmacist-overview"
                             : role === "patient"
-                            ? "/dashboard"
+                            ? "/dashboard/patient-overview"
                             : role === "receptionist"
                             ? "/dashboard/receptionist-overview"
                             : "/"

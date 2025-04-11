@@ -53,6 +53,7 @@ import Emergency from "@/pages/emergency/Emergency";
 import EmergencyContactsList from "@/pages/emergency/emergency-contacts-list";
 import EmergencyAmbulanceBooking from "@/pages/emergency/emergency-ambulance-booking";
 import EmergencyTriage from "@/pages/emergency/emergency-triage";
+import PatientOverview from "@/pages/DashboardPages/PatientOverview/PatientOverview";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -125,13 +126,15 @@ const Router = () => {
             </div>
           }
         />
-
       </Route>
 
       <Route path="emergency" element={<EmergencyLayout />}>
         <Route index element={<Emergency />} />
         <Route path="contacts" element={<EmergencyContactsList />} />
-        <Route path="ambulance-booking" element={<EmergencyAmbulanceBooking />} />
+        <Route
+          path="ambulance-booking"
+          element={<EmergencyAmbulanceBooking />}
+        />
         <Route path="triage" element={<EmergencyTriage />} />
       </Route>
 
@@ -198,6 +201,10 @@ const Router = () => {
         />
 
         {/* Patient Routes */}
+        <Route
+          path="/dashboard/patient-overview"
+          element={<PatientOverview />}
+        />
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
         <Route
           path="/dashboard/patient/request-form"
@@ -216,7 +223,6 @@ const Router = () => {
           path="/dashboard/patient/my-bedRequest"
           element={<MyBedRequests />}
         />
-
         <Route
           path="/dashboard/patient/request-history"
           element={<RequestHistory />}
@@ -226,8 +232,10 @@ const Router = () => {
           element={<PurchaseHistory />}
         />
         <Route path="/dashboard/invoice/:invoiceId" element={<Invoice />} />
-
-        <Route path="/dashboard/patient/emergency-cases" element={<EmergencyContact />} />
+        <Route
+          path="/dashboard/patient/emergency-cases"
+          element={<EmergencyContact />}
+        />
 
         {/* Common Routes */}
         <Route path="/dashboard/profile" element={<Profile />} />

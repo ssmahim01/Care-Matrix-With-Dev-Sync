@@ -192,15 +192,6 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              {/* <NavLink to="/dashboard/pharmacist/orders-history">
-                <h3 className="flex gap-2 items-center">
-                  <FaHistory className="text-2xl" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    {" "}
-                    Orders History{" "}
-                  </span>
-                </h3>
-              </NavLink> */}
               <NavLink to="/dashboard/pharmacist/manage-orders">
                 <h3 className="flex gap-2 items-center">
                   <FaTruck className="text-2xl" />
@@ -269,7 +260,7 @@ export function NavMain() {
                   "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
                 }
               >
-                <FaUserDoctor className="text-base" />
+                <FaUserDoctor size={25} />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
                   My Favorite Doctors
                 </span>
