@@ -13,7 +13,7 @@ const AppointmentPieChart = ({ appointmentStatusBreakdown }) => {
   // Colors for Pie Charts
   const COLORS = ["#22c55e", "#facc15", "#ef4444", "#3b82f6"];
   return (
-    <Card className="lg:col-span-3 xl:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
+    <Card className="lg:col-span-4 xl:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
       <CardHeader>
         <CardTitle>Appointment Status Breakdown</CardTitle>
       </CardHeader>
