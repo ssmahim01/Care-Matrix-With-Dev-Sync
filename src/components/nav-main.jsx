@@ -282,7 +282,7 @@ export function NavMain() {
                   "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
                 }
               >
-                <ClipboardPlus className="text-base" />
+                <FaUserDoctor className="text-base" />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
                   My Favorite Doctors
                 </span>

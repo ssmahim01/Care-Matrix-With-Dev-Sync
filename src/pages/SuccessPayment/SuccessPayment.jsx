@@ -1,75 +1,150 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import AppointmentInvoice from "../AppointmentInvoice/AppointmentInvoice";
 
 const SuccessPayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  // console.log(location?.state);
-  const paymentInfo = location?.state?.paymentData;
-  console.log(paymentInfo);
+  const {paymentData, rewardInfo} = location?.state || {};
 
-  const handleBackToHome = () => {
-    return navigate("/");
-  };
-  return (
-    <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-24 space-y-4 flex flex-col items-center justify-center">
-      <div className="max-w-[800px] w-full min-h-[200px] border rounded-md bg-green-50 p-8 text-center flex flex-col items-center justify-center gap-2 ">
-        <span className="text-green-700">
-          <FaCheckCircle size={48}></FaCheckCircle>
-        </span>
-        <h2 className="text-2xl md:text-3xl font-bold text-green-700">
-          Payment success
-        </h2>
+  const paymentInfo = paymentData;
 
-        <div className="w-full flex flex-col gap-2 mt-4">
-          <div className="flex justify-between gap-2">
-            <span>TransactionId:</span>
-            <span>{paymentInfo.transactionId}</span>
-          </div>
-          <div className="flex justify-between gap-2">
-            <span>Amount:</span>
-            <span>${paymentInfo.amount}</span>
-          </div>
-          <div className="flex justify-between gap-2">
-            <span>Payment Date:</span>
-            <span>{paymentInfo.paymentDate}</span>
-          </div>
+  const handleBackToHome = () => navigate("/");
 
-          {/* appointment info  */}
-          {/* divider  */}
-          <div className="flex w-full flex-col">
-            <div className="divider font-semibold text-base text-green-700">
-              Appointment Details
-            </div>
-          </div>
-
-          <div className="flex justify-between gap-2">
-            <span>Doctor:</span>
-            <span>{paymentInfo.appointmentInfo.doctorName}</span>
-          </div>
-
-          <div className="flex justify-between gap-2">
-            <span>Patient:</span>
-            <span>{paymentInfo.appointmentInfo.name}</span>
-          </div>
-          <div className="flex justify-between gap-2">
-            <span>Age:</span>
-            <span>{paymentInfo.appointmentInfo.age}</span>
-          </div>
-          <div className="flex justify-between gap-2">
-            <span>Date:</span>
-            <span>{paymentInfo.appointmentInfo.date}</span>
-          </div>
-          <div className="flex justify-between gap-2">
-            <span>Time:</span>
-            <span>{paymentInfo.appointmentInfo.time}</span>
-          </div>
-        </div>
-
+  // If paymentInfo is not available, show a fallback message
+  if (!paymentInfo) {
+    return (
+      <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-24 space-y-6 flex flex-col items-center justify-center">
+        <p className="text-red-500">Payment information not available.</p>
         <button
           onClick={handleBackToHome}
           className="btn mt-4 hover:bg-green-700 hover:text-white"
+        >
+          Back to Home
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-24 space-y-6 flex flex-col items-center justify-center">
+      {/* Invoice Information */}
+      <div className="w-full max-w-2xl border rounded-md shadow p-6">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-8">
+          <div>
+            <h1 className="text-xl font-bold">Appointment Invoice</h1>
+            <p className="text-gray-600">CareMatrix</p>
+          </div>
+          <div className="text-right">
+            <img
+              src="https://i.ibb.co.com/0p51x7fq/care-matrix-logo-mainlogo.png"
+              alt="CareMatrix Logo"
+              className="w-24 mb-2 ml-auto"
+            />
+            <p className="text-gray-600">Mirpur-10</p>
+            <p className="text-gray-600">Dhaka, Bangladesh</p>
+          </div>
+        </div>
+
+        {/* Payment Details */}
+        <h2 className="text-lg font-semibold mt-6 mb-4">Payment Details</h2>
+        <div className="space-y-2">
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Transaction ID:</span>
+            <span className="text-gray-800">{paymentInfo.transactionId}</span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Amount:</span>
+            <span className="text-gray-800">${paymentInfo.amount}</span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Payment Date:</span>
+            <span className="text-gray-800 ">
+              {paymentInfo.paymentDate.replace("T", ", ").slice(0, -5)}
+            </span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Status:</span>
+            <span className="text-gray-800 ">Successful</span>
+          </div>
+        </div>
+
+        {/* Appointment Info */}
+        <h2 className="text-lg font-semibold mt-6 mb-4">Appointment Info</h2>
+        <div className="space-y-2">
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Doctor:</span>
+            <span className="text-gray-800 ">
+              {paymentInfo?.appointmentInfo?.doctorName}
+            </span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Patient Name:</span>
+            <span className="text-gray-800 ">
+              {paymentInfo?.appointmentInfo?.name}
+            </span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Age:</span>
+            <span className="text-gray-800 ">
+              {paymentInfo?.appointmentInfo?.age}
+            </span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Date:</span>
+            <span className="text-gray-800 ">
+              {paymentInfo?.appointmentInfo?.date}
+            </span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Time:</span>
+            <span className="text-gray-800">
+              {paymentInfo?.appointmentInfo?.time}
+            </span>
+          </div>
+        </div>
+
+        {/* Reward Info */}
+        <h2 className="text-lg font-semibold mt-6 mb-4">Reward Info</h2>
+        <div className="space-y-2">
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Award Point:</span>
+            <span className="text-gray-800 ">
+              {rewardInfo?.points}
+            </span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Action:</span>
+            <span className="text-gray-800 ">{rewardInfo?.action}</span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Awarded Date:</span>
+            <span className="text-gray-800 ">
+              {new Date(rewardInfo?.date).toDateString("en-UK")}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex space-x-4 mt-6">
+        <PDFDownloadLink
+          document={<AppointmentInvoice paymentInfo={paymentInfo} rewardInfo={rewardInfo} />}
+          fileName={`appointment-invoice-${paymentInfo.transactionId}.pdf`}
+        >
+          {({ loading }) => (
+            <button className="btn bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded">
+              {loading ? "Generating PDF..." : "Download PDF"}
+            </button>
+          )}
+        </PDFDownloadLink>
+
+        <button
+          onClick={handleBackToHome}
+          className="btn border border-blue-600 text-blue-600 hover:bg-blue-700 hover:text-white px-6 py-2 rounded"
         >
           Back to Home
         </button>

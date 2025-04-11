@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { Award } from "lucide-react";
+import RewardsSkeleton from "@/components/RewardsSkeleton/RewardsSkeleton";
 
 const RewardsDashboard = () => {
   const user = useAuthUser();
@@ -18,7 +19,9 @@ const RewardsDashboard = () => {
   const { data: rewardsData, isLoading: rewardsLoading } = useQuery({
     queryKey: ["rewards", user?.email],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/rewards/${user?.email}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/rewards/${user?.email}`
+      );
       return res.data;
     },
   });
@@ -27,7 +30,9 @@ const RewardsDashboard = () => {
   const { data: availableRewards, isLoading: rewardsListLoading } = useQuery({
     queryKey: ["available-rewards"],
     queryFn: async () => {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/rewards/available-rewards`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/rewards/available-rewards`
+      );
       return res.data;
     },
   });
@@ -49,7 +54,7 @@ const RewardsDashboard = () => {
     },
   });
 
-  if (rewardsLoading || rewardsListLoading) return <p>Loading...</p>
+  if (rewardsLoading || rewardsListLoading) return <RewardsSkeleton />;
 
   const handleRedeem = (rewardId) => {
     redeemMutation.mutate(rewardId);
@@ -71,7 +76,9 @@ const RewardsDashboard = () => {
             <p className="text-3xl font-semibold text-blue-600">
               {rewardsData?.totalPoints || 0} Points
             </p>
-            <p className="text-gray-600 mt-2">Earned from your healthy habits!</p>
+            <p className="text-gray-600 mt-2">
+              Earned from your healthy habits!
+            </p>
           </CardContent>
         </Card>
 
@@ -84,14 +91,21 @@ const RewardsDashboard = () => {
             {availableRewards?.rewards.length > 0 ? (
               <ul className="space-y-4">
                 {availableRewards.rewards.map((reward) => (
-                  <li key={reward._id} className="flex justify-between items-center">
+                  <li
+                    key={reward._id}
+                    className="flex justify-between items-center"
+                  >
                     <div>
                       <p className="font-medium">{reward.name}</p>
-                      <p className="text-sm text-gray-600">{reward.pointsRequired} Points</p>
+                      <p className="text-sm text-gray-600">
+                        {reward.pointsRequired} Points
+                      </p>
                     </div>
                     <Button
                       onClick={() => handleRedeem(reward._id)}
-                      disabled={rewardsData?.totalPoints < reward.pointsRequired}
+                      disabled={
+                        rewardsData?.totalPoints < reward.pointsRequired
+                      }
                       className="bg-blue-600 text-white hover:bg-blue-700"
                     >
                       Redeem
@@ -109,7 +123,14 @@ const RewardsDashboard = () => {
       {/* Back to Dashboard */}
       <div className="mt-4">
         <Link to="/">
-          <Button variant="outline" className={"bg-sky-500 hover:bg-sky-600 hover:text-white/90 text-white font-bold cursor-pointer"}>Back to Home</Button>
+          <Button
+            variant="outline"
+            className={
+              "bg-sky-500 hover:bg-sky-600 hover:text-white/90 text-white font-bold cursor-pointer"
+            }
+          >
+            Back to Home
+          </Button>
         </Link>
       </div>
     </>
