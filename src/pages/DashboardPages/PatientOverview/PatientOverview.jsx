@@ -60,6 +60,7 @@ const PatientOverview = () => {
         bedBookings={patientStats?.bedBookings}
         overviewStats={patientStats?.overviewStats}
         appointment={patientStats?.appointment}
+        formatDate={formatDate}
       />
 
       {/* Smart Wait Time Prediction */}
@@ -69,6 +70,7 @@ const PatientOverview = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="appointments" className="mt-6 space-y-4">
+        {/* All TabList */}
         <TabsList className="border py-6 px-2 mb-2">
           <TabsTrigger
             className={"cursor-pointer py-2 px-4"}
@@ -89,7 +91,6 @@ const PatientOverview = () => {
             Purchase History
           </TabsTrigger>
         </TabsList>
-
         {/* Appointments Tab */}
         <TabsContent value="appointments" className="space-y-4">
           <AppointmentsTab

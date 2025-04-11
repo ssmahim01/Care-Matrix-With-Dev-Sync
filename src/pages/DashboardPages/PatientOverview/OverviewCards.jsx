@@ -1,7 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, CreditCard, Heart, Home } from "lucide-react";
 
-const OverviewCards = ({ bedBookings, overviewStats, appointment }) => {
+const OverviewCards = ({
+  bedBookings,
+  overviewStats,
+  appointment,
+  formatDate,
+}) => {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card
@@ -18,7 +23,7 @@ const OverviewCards = ({ bedBookings, overviewStats, appointment }) => {
             {overviewStats?.upcomingAppointments || 0}
           </div>
           <p className="text-sm text-muted-foreground mt-1">
-            Next: {appointment?.date || "None scheduled"}
+            Next: {formatDate(appointment?.date) || "None scheduled"}
           </p>
         </CardContent>
       </Card>

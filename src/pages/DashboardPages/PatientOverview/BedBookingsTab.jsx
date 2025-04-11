@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Link } from "react-router";
 
 const BedBookingsTab = ({ bedBookings, formatDate }) => {
   return (
@@ -28,7 +29,7 @@ const BedBookingsTab = ({ bedBookings, formatDate }) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {bedBookings && bedBookings.length > 0 ? (
+        {bedBookings && bedBookings?.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>
@@ -40,31 +41,37 @@ const BedBookingsTab = ({ bedBookings, formatDate }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {bedBookings.map((booking) => (
-                <TableRow key={booking._id || Math.random().toString()}>
+              {bedBookings?.map((booking) => (
+                <TableRow key={booking?._id || Math.random().toString()}>
                   <TableCell className="font-medium">
-                    {booking.bedTitle || "N/A"}
+                    {booking?.bedTitle || "N/A"}
                   </TableCell>
                   <TableCell>{booking.bedPrice || "N/A"}</TableCell>
                   <TableCell>{formatDate(booking.admissionDate)}</TableCell>
                   <TableCell>
                     <Badge
                       className={
-                        booking.status === "accepted"
+                        booking?.status === "accepted"
                           ? "bg-green-500"
-                          : booking.status === "pending"
+                          : booking?.status === "pending"
                           ? "bg-amber-500"
                           : "bg-gray-500"
                       }
                     >
-                      {booking.status?.charAt(0).toUpperCase() +
-                        booking.status?.slice(1) || "Unknown"}
+                      {booking?.status?.charAt(0).toUpperCase() +
+                        booking?.status?.slice(1) || "Unknown"}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm">
-                      View Details
-                    </Button>
+                    <Link to={"/dashboard/my-bedRequest"}>
+                      <Button
+                        className={"cursor-pointer"}
+                        variant="outline"
+                        size="sm"
+                      >
+                        View Details
+                      </Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}

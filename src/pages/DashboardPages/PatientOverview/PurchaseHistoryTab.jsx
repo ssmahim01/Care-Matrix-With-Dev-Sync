@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Pill } from "lucide-react";
+import { Link } from "react-router";
 
 const PurchaseHistoryTab = ({
   purchaseHistory,
@@ -19,12 +20,19 @@ const PurchaseHistoryTab = ({
       className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
     >
       <CardHeader>
-        <CardTitle>Purchase History</CardTitle>
-        <CardDescription>Your recent medication orders</CardDescription>
+        <CardTitle className={"text-xl"}>
+          Purchase History{" "}
+          {purchaseHistory && ` Of ${purchaseHistory?.length} Orders`}
+        </CardTitle>
+        <CardDescription
+          className={"text-base tracking-wide font-medium -mt-1 text-gray-600"}
+        >
+          Your Recent Medicines Orders History
+        </CardDescription>
       </CardHeader>
       <CardContent>
         {purchaseHistory && purchaseHistory.length > 0 ? (
-          <div className="space-y-6 grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
             {purchaseHistory.map((order) => (
               <div
                 key={order._id || Math.random().toString()}
@@ -73,15 +81,21 @@ const PurchaseHistoryTab = ({
                   </div>
                 </div>
                 <div className="flex justify-end">
-                  <Button variant="ghost" size="sm">
-                    View Details
-                  </Button>
+                  <Link to={"/dashboard/purchase-history"}>
+                    <Button
+                      className={"cursor-pointer"}
+                      variant="ghost"
+                      size="sm"
+                    >
+                      View Details
+                    </Button>
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-muted-foreground">No purchase history found.</p>
+          <p className="text-muted-foreground">No Purchase History Found!</p>
         )}
       </CardContent>
     </Card>
