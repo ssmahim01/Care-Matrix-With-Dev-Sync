@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import ReceptionistOverviewHeader from "./ReceptionistOverview/ReceptionistOverviewHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import RecepOverviewCards from "./ReceptionistOverview/RecepOverviewCards";
 
 const ReceptionistOverview = () => {
   const [overviewData, setOverviewData] = useState({
@@ -89,148 +90,36 @@ const ReceptionistOverview = () => {
 
       {/* Main Content */}
       <Tabs defaultValue="overview" className="space-y-4">
-          {/* All Tablist */}
-          <TabsList className="border py-6 px-1">
-            <TabsTrigger
-              value="overview"
-              className={"cursor-pointer py-2 px-4"}
-            >
-              Overview
-            </TabsTrigger>
-            <TabsTrigger
-              value="analytics"
-              className={"cursor-pointer py-2 px-4"}
-            >
-              Appointments
-            </TabsTrigger>
-            <TabsTrigger
-              value="products"
-              className={"cursor-pointer py-2 px-4"}
-            >
-              Bed Requests
-            </TabsTrigger>
-          </TabsList>
-          {/* 1st Tab Content */}
-          
-          {/* 2nd Tab Content */}
-          
-          {/* 3rd Tab Content */}
-       
-          {/* 4th Tab Content */}
-         
-        </Tabs>
+        {/* All Tablist */}
+        <TabsList className="border py-6 px-1">
+          <TabsTrigger value="overview" className={"cursor-pointer py-2 px-4"}>
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className={"cursor-pointer py-2 px-4"}>
+            Appointments
+          </TabsTrigger>
+          <TabsTrigger value="products" className={"cursor-pointer py-2 px-4"}>
+            Bed Requests
+          </TabsTrigger>
+        </TabsList>
+        {/* 1st Tab Content */}
+        <TabsContent value="overview" className="space-y-6">
+          {/* Overview Cards */}
+          <RecepOverviewCards
+            totalAppointments={
+              overviewData?.totalAppointments
+            }
+            totalBedBookings={overviewData.totalBedBookings}
+            totalPendingAppointments={overviewData.totalPendingAppointments}
+            totalApprovedAppointments={overviewData?.totalApprovedAppointments}
+            totalPendingBedBookings={overviewData?.totalPendingBedBookings}
+          />
+        </TabsContent>
+        {/* 2nd Tab Content */}
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <Card>
-          <CardHeader className="flex items-center">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Total Patients
-            </CardTitle>
-            <svg
-              className="w-5 h-5 text-gray-400 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-              ></path>
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-semibold">
-              {overviewData.totalAppointments + overviewData.totalBedBookings}
-            </p>
-            <p className="text-sm text-gray-500">Registered in the system</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex items-center">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Pending Appointments
-            </CardTitle>
-            <svg
-              className="w-5 h-5 text-gray-400 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-semibold">
-              {overviewData.totalPendingAppointments}
-            </p>
-            <p className="text-sm text-gray-500">Awaiting confirmation</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex items-center">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Doctor Appointments
-            </CardTitle>
-            <svg
-              className="w-5 h-5 text-gray-400 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              ></path>
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-semibold">
-              {overviewData.totalApprovedAppointments}
-            </p>
-            <p className="text-sm text-gray-500">Scheduled with doctors</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex items-center">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Bed Requests
-            </CardTitle>
-            <svg
-              className="w-5 h-5 text-gray-400 ml-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7m-9-2h-2m-6 0H5a2 2 0 00-2 2v2a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-2"
-              ></path>
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-semibold">
-              {overviewData.totalPendingBedBookings}
-            </p>
-            <p className="text-sm text-gray-500">Pending bed allocations</p>
-          </CardContent>
-        </Card>
-      </div>
+        {/* 3rd Tab Content */}
+      </Tabs>
+
 
       {/* Main Content */}
       <div className="flex flex-col md:flex-row gap-6">
