@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import OverviewCards from "./OverviewCards";
 import SmartWaitTime from "./SmartWaitTime";
+import AppointmentsTab from "./AppointmentsTab";
 
 const PatientOverview = () => {
   // Fetch patient overview data
@@ -78,17 +79,35 @@ const PatientOverview = () => {
       )}
 
       {/* Main Content Tabs */}
-      <Tabs defaultValue="appointments" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="appointments">Appointments</TabsTrigger>
-          <TabsTrigger value="beds">Bed Bookings</TabsTrigger>
-          <TabsTrigger value="medications">Medications</TabsTrigger>
-          <TabsTrigger value="history">Purchase History</TabsTrigger>
+      <Tabs defaultValue="appointments" className="mt-6 space-y-4">
+        <TabsList className="border py-6 px-2 mb-2">
+          <TabsTrigger
+            className={"cursor-pointer py-2 px-4"}
+            value="appointments"
+          >
+            Appointments
+          </TabsTrigger>
+          <TabsTrigger className={"cursor-pointer py-2 px-4"} value="beds">
+            Bed Bookings
+          </TabsTrigger>
+          <TabsTrigger
+            className={"cursor-pointer py-2 px-4"}
+            value="medications"
+          >
+            Medications
+          </TabsTrigger>
+          <TabsTrigger className={"cursor-pointer py-2 px-4"} value="history">
+            Purchase History
+          </TabsTrigger>
         </TabsList>
 
         {/* Appointments Tab */}
         <TabsContent value="appointments" className="space-y-4">
-          <Card>
+          {/* <Card
+            className={
+              "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+            }
+          >
             <CardHeader>
               <CardTitle>Upcoming Appointment</CardTitle>
               <CardDescription>
@@ -166,12 +185,20 @@ const PatientOverview = () => {
                 </p>
               )}
             </CardContent>
-          </Card>
+          </Card> */}
+          <AppointmentsTab
+            appointment={patientStats?.appointment}
+            formatDate={formatDate}
+          />
         </TabsContent>
 
         {/* Bed Bookings Tab */}
         <TabsContent value="beds" className="space-y-4">
-          <Card>
+          <Card
+            className={
+              "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+            }
+          >
             <CardHeader>
               <CardTitle>Bed Bookings</CardTitle>
               <CardDescription>
@@ -233,7 +260,11 @@ const PatientOverview = () => {
 
         {/* Medications Tab */}
         <TabsContent value="medications" className="space-y-4">
-          <Card>
+          <Card
+            className={
+              "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+            }
+          >
             <CardHeader>
               <CardTitle>Medicine Cart</CardTitle>
               <CardDescription>Items currently in your cart</CardDescription>
@@ -300,7 +331,11 @@ const PatientOverview = () => {
 
         {/* Purchase History Tab */}
         <TabsContent value="history" className="space-y-4">
-          <Card>
+          <Card
+            className={
+              "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+            }
+          >
             <CardHeader>
               <CardTitle>Purchase History</CardTitle>
               <CardDescription>Your recent medication orders</CardDescription>
