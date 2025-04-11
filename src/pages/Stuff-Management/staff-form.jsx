@@ -49,27 +49,27 @@ const staffFormSchema = z.object({
 export function StaffForm({ staffData, onSuccess }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [profileImage, setProfileImage] = useState(
-    staffData.photo
+    staffData.userPhoto
   );
   const [profileImagePreview, setProfileImagePreview] =
-    useState(staffData?.photo || null);
+    useState(staffData?.userPhoto || null);
 
   const form = useForm({
     resolver: zodResolver(staffFormSchema),
     defaultValues: {
-      name: staffData?.name || "",
+      name: staffData?.userName || "",
       staffId: staffData?._id?.slice(0, 6) || "",
-      role: staffData?.role || "",
-      phoneNumber: staffData?.phoneNumber || "",
-      email: staffData?.email || "",
-      photo: staffData?.photo || "",
+      role: staffData?.requestedRole || "",
+      phoneNumber: staffData?.contactNumber || "",
+      email: staffData?.userEmail || "",
+      photo: staffData?.userPhoto || "",
     },
   });
 
   const handleImageChange = async (e) => {
     const file = e.target.files?.[0];
     const imageUrl = await imgUpload(file);
-    console.log(imageUrl);
+    // console.log(imageUrl);
     if (imageUrl) {
       setProfileImage(imageUrl);
       setProfileImagePreview(imageUrl);
@@ -85,12 +85,12 @@ export function StaffForm({ staffData, onSuccess }) {
       if (profileImage) {
         formData.append("profileImage", profileImage);
       }
-      console.log(data);
+      // console.log(data);
 
       await axios.put(
         `${
           import.meta.env.VITE_API_URL
-        }/users/update-profile/${staffData.email}`,
+        }/user-requests/update-profile/${staffData.userEmail}`,
         { data, profileImage }
       );
       toast.success("Staff member updated successfully");

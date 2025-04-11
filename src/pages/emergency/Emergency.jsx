@@ -239,11 +239,6 @@ export default function Emergency() {
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="border-t p-3 bg-muted/40">
-                  <Button variant="outline" size="sm" className="w-full">
-                    View Details
-                  </Button>
-                </CardFooter>
               </Card>
             ))}
           </div>

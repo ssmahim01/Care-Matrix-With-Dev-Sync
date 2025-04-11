@@ -20,6 +20,11 @@ const Home = () => {
       <div className="pb-8">
         <Hero />
       </div>
+      
+      {/* Eid Greeting */}
+      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <EidGreetingSection />
+      </div>
 
       {/* About us */}
       <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
@@ -29,11 +34,6 @@ const Home = () => {
       {/* Stats Section */}
       <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <StatsSection />
-      </div>
-
-      {/* Eid Greeting */}
-      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
-        <EidGreetingSection />
       </div>
 
       {/* Our Services */}

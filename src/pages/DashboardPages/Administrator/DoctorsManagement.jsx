@@ -150,10 +150,10 @@ const DoctorsManagement = () => {
       toast.error("User email is missing");
       return;
     }
-    if (!data.availableDate) {
-      toast.error("Please change the schedule!");
-      return;
-    }
+    // if (!data.availableDate) {
+    //   toast.error("Please change the schedule!");
+    //   return;
+    // }
 
     try {
       const response = await dispatch(assignDoctor(id)).unwrap();
