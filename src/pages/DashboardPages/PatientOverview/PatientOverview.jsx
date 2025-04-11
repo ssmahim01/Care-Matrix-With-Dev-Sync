@@ -2,15 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import OverviewCards from "./OverviewCards";
 import { useAuthUser } from "@/redux/auth/authActions";
+import SmartWaitTime from "./SmartWaitTime";
 
 const PatientOverview = () => {
   // Fetch patient overview data
   const user = useAuthUser();
-  const {
-    data: patientStats = [],
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: patientStats = [], isLoading } = useQuery({
     queryKey: ["patient-stats", user?.email],
     queryFn: async () => {
       const { data } = await axios(
@@ -27,6 +24,10 @@ const PatientOverview = () => {
         overviewStats={patientStats?.overviewStats}
         appointment={patientStats?.appointment}
       />
+      {/* Smart Wait Time Prediction */}
+      {patientStats.appointment && (
+        <SmartWaitTime appointment={patientStats?.appointment} />
+      )}
     </div>
   );
 };
