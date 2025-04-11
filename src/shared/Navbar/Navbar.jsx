@@ -12,12 +12,13 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
-import { Moon, Siren, X } from "lucide-react";
+import { Award, Moon, Siren, X } from "lucide-react";
 import useRole from "@/hooks/useRole";
 import { GiMedicines } from "react-icons/gi";
 import "./Navbar.css";
 import toast from "react-hot-toast";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -131,7 +132,7 @@ const Navbar = () => {
             <div className="navbar-start w-full">
               {/* mobile sidebar */}
               <aside
-                ref={menuRef}
+                // ref={menuRef}
                 className={` ${
                   isMenuOpen
                     ? "translate-x-0 opacity-100 z-20"
@@ -141,6 +142,14 @@ const Navbar = () => {
                 <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
                   {routes}
 
+                  <div className="md:hidden block">
+                    <Link to="/emergency">
+                      <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer">
+                        <span>Emergency</span>
+                        <Siren className="text-base" />
+                      </Button>{" "}
+                    </Link>
+                  </div>
                   <li
                     className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
                     onClick={() => setIsOpen(!isOpen)}
@@ -250,22 +259,30 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                           </ul>
+
+                          <ul className="flex flex-col gap-4 text-gray-800">
+                            <NavLink
+                              to="/patient-rewards"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <Award size={20} className="text-gray-800" />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Rewards
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Motivating patients to adopt healthy habits
+                                  through a rewarding experience.
+                                </p>
+                              </div>
+                            </NavLink>
+                          </ul>
                         </div>
                       </article>
                     )}
                   </li>
-
-                  <div className="mr-4 block md:hidden">
-                <NavLink
-                  to="/dashboard/patient/emergency-cases"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
-                    <Siren className="w-4 h-4" />{" "}
-                    <span className="font-bold">Emergency</span>
-                  </button>
-                </NavLink>
-              </div>
                 </ul>
               </aside>
               <div className="flex items-center">
@@ -398,23 +415,48 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                           </ul>
+
+                          <ul className="flex flex-col gap-4 text-gray-800">
+                            <NavLink
+                              to="/patient-rewards"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <Award size={20} className="text-gray-800" />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Rewards
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Motivating patients to adopt healthy habits
+                                  through a rewarding experience.
+                                </p>
+                              </div>
+                            </NavLink>
+                          </ul>
                         </div>
                       </article>
                     )}
+                    <div className="md:hidden block">
+                      <Link to="/emergency">
+                        <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer">
+                          <span>Emergency</span>
+                          <Siren className="text-base" />
+                        </Button>{" "}
+                      </Link>
+                    </div>
                   </li>
                 </ul>
               </>
 
-              <div className="mr-4 md:block hidden">
-                <NavLink
-                  to="/dashboard/patient/emergency-cases"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <button className="flex gap-1 items-center btn btn-outline btn-sm text-rose-500 border hover:bg-rose-500 hover:text-white shadow-sm">
-                    <Siren className="w-4 h-4" />{" "}
-                    <span className="font-bold">Emergency</span>
-                  </button>
-                </NavLink>
+              <div className="md:block hidden">
+                <Link to="/emergency">
+                  <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer">
+                    <span>Emergency</span>
+                    <Siren className="text-base" />
+                  </Button>{" "}
+                </Link>
               </div>
 
               {user ? (
@@ -497,6 +539,7 @@ const Navbar = () => {
                   </Link>
                 </>
               )}
+
               {!isMenuOpen ? (
                 <CiMenuFries
                   className="text-[1.6rem] text-[#363030] cursor-pointer lg:hidden flex ml-4"

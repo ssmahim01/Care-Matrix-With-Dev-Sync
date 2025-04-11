@@ -9,7 +9,9 @@ import {
 import useRole from "@/hooks/useRole";
 import { useAuthLoading } from "@/redux/auth/authActions";
 import {
+  Award,
   BadgeInfo,
+  BedSingle,
   BriefcaseMedical,
   CalendarDays,
   ChartPie,
@@ -100,7 +102,7 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/reports">
+              {/* <NavLink to="/dashboard/reports">
                 <h3 className="flex gap-2 items-center">
                   <ChartPie className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
@@ -123,7 +125,7 @@ export function NavMain() {
                     Billing & Payments{" "}
                   </span>
                 </h3>
-              </NavLink>
+              </NavLink> */}
               <div className="divider mt-2"></div>
             </>
           )}
@@ -239,6 +241,18 @@ export function NavMain() {
                 </h3>
               </NavLink>
               <NavLink
+                to="/dashboard/patient/rewards"
+                className={
+                  "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+                }
+              >
+                <Award className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  My Rewards
+                </span>
+              </NavLink>
+
+              <NavLink
                 to="/dashboard/patient/request-form"
                 className={
                   "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
@@ -268,9 +282,21 @@ export function NavMain() {
                   "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
                 }
               >
-                <ClipboardPlus className="text-base" />
+                <FaUserDoctor className="text-base" />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
                   My Favorite Doctors
+                </span>
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/patient/my-bedRequest"
+                className={
+                  "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+                }
+              >
+                <BedSingle className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  My Bed Requests
                 </span>
               </NavLink>
 

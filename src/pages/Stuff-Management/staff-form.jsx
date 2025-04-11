@@ -1,18 +1,33 @@
-
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { CalendarIcon, Upload } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Input } from "@/components/ui/input"
-import { imgUpload } from "@/lib/imgUpload"
-import axios from "axios"
-import toast from "react-hot-toast"
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { imgUpload } from "@/lib/imgUpload";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const staffFormSchema = z.object({
   name: z.string().min(2, {
@@ -29,13 +44,15 @@ const staffFormSchema = z.object({
     message: "Please enter a valid email address",
   }),
   photo: z.string().optional(),
-})
+});
 
 export function StaffForm({ staffData, onSuccess }) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [profileImage, setProfileImage] = useState(staffData.photo)
-  const [profileImagePreview, setProfileImagePreview] = useState(staffData?.photo || null)
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [profileImage, setProfileImage] = useState(
+    staffData.photo
+  );
+  const [profileImagePreview, setProfileImagePreview] =
+    useState(staffData?.photo || null);
 
   const form = useForm({
     resolver: zodResolver(staffFormSchema),
@@ -46,46 +63,53 @@ export function StaffForm({ staffData, onSuccess }) {
       phoneNumber: staffData?.phoneNumber || "",
       email: staffData?.email || "",
       photo: staffData?.photo || "",
-    }
-  })
+    },
+  });
 
   const handleImageChange = async (e) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     const imageUrl = await imgUpload(file);
-    console.log(imageUrl)
+    console.log(imageUrl);
     if (imageUrl) {
-      setProfileImage(imageUrl)
-      setProfileImagePreview(imageUrl)
+      setProfileImage(imageUrl);
+      setProfileImagePreview(imageUrl);
     }
-  }
+  };
 
   const onSubmit = async (data) => {
     try {
-      setIsSubmitting(true)
+      setIsSubmitting(true);
 
       // Create FormData for file upload
-      const formData = new FormData()
+      const formData = new FormData();
       if (profileImage) {
-        formData.append("profileImage", profileImage)
+        formData.append("profileImage", profileImage);
       }
-      console.log(data)
+      console.log(data);
 
-        await axios.put(`${import.meta.env.VITE_API_URL}/users/update-profile/${staffData.email}`, {data, profileImage})
-        toast.success("Staff member updated successfully")
+      await axios.put(
+        `${
+          import.meta.env.VITE_API_URL
+        }/users/update-profile/${staffData.email}`,
+        { data, profileImage }
+      );
+      toast.success("Staff member updated successfully");
 
-      onSuccess()
+      onSuccess();
     } catch (error) {
-      console.error("Error submitting form:", error)
-      toast.error("Failed to update staff member")
+      console.error("Error submitting form:", error);
+      toast.error("Failed to update staff member");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
-
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div className="flex flex-col items-center justify-center space-y-2">
@@ -101,15 +125,24 @@ export function StaffForm({ staffData, onSuccess }) {
                     No Image
                   </div>
                 )}
-
               </div>
               <div className="flex items-center gap-2">
-                <Input id="photo" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                <Input
+                  id="photo"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => document.getElementById("photo")?.click()}
+                  onClick={() =>
+                    document
+                      .getElementById("photo")
+                      ?.click()
+                  }
                 >
                   <Upload className="mr-2 h-4 w-4" />
                   Upload Photo
@@ -124,7 +157,10 @@ export function StaffForm({ staffData, onSuccess }) {
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input
+                      placeholder="John Doe"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,13 +174,18 @@ export function StaffForm({ staffData, onSuccess }) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" readOnly disabled placeholder="john.doe@hospital.com" {...field} />
+                    <Input
+                      type="email"
+                      readOnly
+                      disabled
+                      placeholder="john.doe@hospital.com"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
           </div>
 
           <div className="space-y-4">
@@ -154,18 +195,31 @@ export function StaffForm({ staffData, onSuccess }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Role</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a role" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Doctor">Doctor</SelectItem>
-                      <SelectItem value="receptionist">Receptionist</SelectItem>
-                      <SelectItem value="administrator">Administrator</SelectItem>
-                      <SelectItem value="pharmacist">Pharmacist</SelectItem>
-                      <SelectItem value="patient">Patient</SelectItem>
+                      <SelectItem value="Doctor">
+                        Doctor
+                      </SelectItem>
+                      <SelectItem value="receptionist">
+                        Receptionist
+                      </SelectItem>
+                      <SelectItem value="administrator">
+                        Administrator
+                      </SelectItem>
+                      <SelectItem value="pharmacist">
+                        Pharmacist
+                      </SelectItem>
+                      <SelectItem value="patient">
+                        Patient
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -180,14 +234,15 @@ export function StaffForm({ staffData, onSuccess }) {
                 <FormItem>
                   <FormLabel>Contact Number</FormLabel>
                   <FormControl>
-                    <Input placeholder="+1 (555) 123-4567" {...field} />
+                    <Input
+                      placeholder="+1 (555) 123-4567"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-
 
             <FormField
               control={form.control}
@@ -196,14 +251,17 @@ export function StaffForm({ staffData, onSuccess }) {
                 <FormItem>
                   <FormLabel>Staff ID</FormLabel>
                   <FormControl>
-                    <Input placeholder="STAFF-001" readOnly disabled {...field} />
+                    <Input
+                      placeholder="STAFF-001"
+                      readOnly
+                      disabled
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-
 
             {/*         
             // Joining Date
@@ -258,7 +316,11 @@ export function StaffForm({ staffData, onSuccess }) {
         </div>
 
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => form.reset()}
+          >
             Reset
           </Button>
           <Button type="submit" disabled={isSubmitting}>
@@ -267,6 +329,5 @@ export function StaffForm({ staffData, onSuccess }) {
         </div>
       </form>
     </Form>
-  )
+  );
 }
-

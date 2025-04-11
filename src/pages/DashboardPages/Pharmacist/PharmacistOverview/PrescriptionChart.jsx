@@ -53,6 +53,7 @@ export function PrescriptionRequirementChart({ data, isLoading }) {
             cx="50%"
             cy="50%"
             labelLine={false}
+            paddingAngle={5}
             outerRadius={activeIndex !== null ? 90 : 80}
             innerRadius={activeIndex !== null ? 40 : 30}
             dataKey="count"

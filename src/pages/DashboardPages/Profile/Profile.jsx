@@ -10,6 +10,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -33,13 +34,15 @@ import { updateUsername } from "@/redux/auth/authSlice";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import axios from "axios";
 import { format } from "date-fns";
-import { updatePassword, updateProfile } from "firebase/auth";
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword, updateProfile } from "firebase/auth";
 import {
   Calendar,
   CheckCheck,
   CheckCircle2,
   Clock,
   Edit,
+  Eye,
+  EyeOff,
   IdCardIcon,
   Info,
   Lock,
@@ -59,6 +62,8 @@ const Profile = () => {
   const user = useAuthUser();
   const [newName, setNewName] = useState(user?.displayName);
   const [isNameEditing, setIsNameEditing] = useState(false);
+  const [openEye, setOpenEye] = useState(false);
+  const [openEye2, setOpenEye2] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const phoneNumber = usePhone();
   const loading = useAuthLoading();
@@ -75,7 +80,7 @@ const Profile = () => {
       return response.data;
     },
   });
-  
+
   // Schema
   const FormSchema = z
     .object({
@@ -113,7 +118,14 @@ const Profile = () => {
       );
 
       if (res.data.success) {
+        // Reauthenticate with Firebase
+        const credential = EmailAuthProvider.credential(user.email, data.password);
+        await reauthenticateWithCredential(auth.currentUser, credential);
+
+        // Update Firebase password
         await updatePassword(auth.currentUser, data.newPassword);
+
+        // Update MongoDB password
         const response = await axios.patch(
           `${import.meta.env.VITE_API_URL}/users/update-password/${user?.uid}`,
           { newPassword: data.newPassword }
@@ -123,9 +135,11 @@ const Profile = () => {
           toast.success("Password updated successfully");
           setOpenDialog(false);
           form.reset();
+        } else {
+          toast.error("Failed to update password in database");
         }
       } else {
-        toast.error("Password incorrect");
+        toast.error(res.data.message || "Password incorrect");
       }
     } catch (error) {
       // console.error("Password update error:", error);
@@ -446,13 +460,27 @@ const Profile = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Current Password</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="password"
-                              placeholder="Provide your current password"
-                              {...field}
-                            />
-                          </FormControl>
+                          <div className="relative">
+                            <FormControl>
+                              <Input
+                                type={openEye ? "text" : "password"}
+                                placeholder="Provide your current password"
+                                {...field}
+                              />
+                            </FormControl>
+                            {openEye ? (
+                              <Eye
+                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-[1.5rem] text-[#777777] cursor-pointer"
+                                onClick={() => setOpenEye(false)}
+                              />
+                            ) : (
+                              <EyeOff
+                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-[1.5rem] text-[#777777] cursor-pointer"
+                                onClick={() => setOpenEye(true)}
+                              />
+                            )}
+                          </div>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -462,13 +490,27 @@ const Profile = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>New Password</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="password"
-                              placeholder="Type your new password"
-                              {...field}
-                            />
-                          </FormControl>
+                          <div className="relative">
+                            <FormControl>
+                              <Input
+                                type={openEye2 ? "text" : "password"}
+                                placeholder="Type your new password"
+                                {...field}
+                              />
+                            </FormControl>
+                            {openEye2 ? (
+                              <Eye
+                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-[1.5rem] text-[#777777] cursor-pointer"
+                                onClick={() => setOpenEye2(false)}
+                              />
+                            ) : (
+                              <EyeOff
+                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-[1.5rem] text-[#777777] cursor-pointer"
+                                onClick={() => setOpenEye2(true)}
+                              />
+                            )}
+                          </div>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
