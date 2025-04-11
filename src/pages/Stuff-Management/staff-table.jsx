@@ -13,6 +13,7 @@ import { StaffForm } from "./staff-form"
 import toast from "react-hot-toast"
 import { useEffect } from "react"
 import axios from "axios"
+import moment from "moment"
 
 
 export function StaffTable({ staff, isLoading, refetch }) {
@@ -185,8 +186,8 @@ export function StaffTable({ staff, isLoading, refetch }) {
         <TableHead>Staff ID</TableHead>
         <TableHead>Name</TableHead>
         <TableHead>Role</TableHead>
-        <TableHead>Created At</TableHead>
-        <TableHead>Last Login</TableHead>
+        <TableHead>Request Date</TableHead>
+        <TableHead>Join Date</TableHead>
         <TableHead>Contact</TableHead>
         <TableHead className="text-right">Actions</TableHead>
       </TableRow>
@@ -200,22 +201,22 @@ export function StaffTable({ staff, isLoading, refetch }) {
           <TableCell>
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={member.photo} alt={member.name} />
+                <AvatarImage src={member.userPhoto} alt={member.userName} />
                 <AvatarFallback>
-                  {member.name?.substring(0, 2).toUpperCase()}
+                  {member.userName?.substring(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              {member.name}
+              {member.userName}
             </div>
           </TableCell>
-          <TableCell className={`capitalize`}>{member.role}</TableCell>
+          <TableCell className={`capitalize`}>{member.requestedRole}</TableCell>
           <TableCell>
-            {new Date(member.createdAt).toLocaleDateString()}
+          {member?.requestDate ? moment(member.requestDate).fromNow() : "N/A"}
           </TableCell>
           <TableCell>
-            {new Date(member.lastLoginAt).toLocaleString()}
+            {member?.joiningDate ? moment(member.joiningDate).fromNow() : "N/A"}
           </TableCell>
-          <TableCell>{member.phoneNumber}</TableCell>
+          <TableCell>{member.contactNumber}</TableCell>
           <TableCell className="text-right">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
