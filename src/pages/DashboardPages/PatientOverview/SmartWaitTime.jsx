@@ -8,31 +8,30 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { formatDate } from "date-fns";
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 
 // Helper function to parse time
 function parseAppointmentTime(dateStr, timeStr) {
-    const date = new Date(dateStr);
-  
-    // Extract the time (e.g., "06:30pm" -> "06:30" and "pm")
-    const timePart = timeStr.split(/([ap]m)/i)[0];
-    const period = timeStr.match(/([ap]m)/i)[1].toLowerCase();
-    const [hoursStr, minutesStr] = timePart.split(":");
-  
-    let hours = parseInt(hoursStr, 10);
-    const minutes = parseInt(minutesStr, 10);
-  
-    if (period === "pm" && hours < 12) {
-      hours += 12;
-    } else if (period === "am" && hours === 12) {
-      hours = 0;
-    }
-  
-    date.setHours(hours, minutes, 0, 0);
-    return date;
+  const date = new Date(dateStr);
+
+  // Extract the time (e.g., "06:30pm" -> "06:30" and "pm")
+  const timePart = timeStr.split(/([ap]m)/i)[0];
+  const period = timeStr.match(/([ap]m)/i)[1].toLowerCase();
+  const [hoursStr, minutesStr] = timePart.split(":");
+
+  let hours = parseInt(hoursStr, 10);
+  const minutes = parseInt(minutesStr, 10);
+
+  if (period === "pm" && hours < 12) {
+    hours += 12;
+  } else if (period === "am" && hours === 12) {
+    hours = 0;
   }
+
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+}
 
 const SmartWaitTime = ({ appointment }) => {
   const [waitTimeMinutes, setWaitTimeMinutes] = useState(calculateWaitTime());
