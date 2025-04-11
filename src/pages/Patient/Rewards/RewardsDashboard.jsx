@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthUser } from "@/redux/auth/authActions";
-import { Award } from "lucide-react";
+import { Award, BatteryPlus, TicketCheck } from "lucide-react";
 import RewardsSkeleton from "@/components/RewardsSkeleton/RewardsSkeleton";
 
 const RewardsDashboard = () => {
@@ -68,28 +68,46 @@ const RewardsDashboard = () => {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Points Summary */}
-        <Card className={"py-2"}>
+        <Card className={"py-2 bg-base-200 shadow-md border border-base-300"}>
           <CardHeader>
-            <CardTitle>Points Balance</CardTitle>
+            <CardTitle
+              className={
+                "flex gap-2 items-center border-b-2 border-base-300 pb-2"
+              }
+            >
+              <BatteryPlus className="w-8 h-8" />
+              <span className="text-lg">Points Balance</span>
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-semibold text-blue-600">
               {rewardsData?.totalPoints || 0} Points
             </p>
             <p className="text-gray-600 mt-2">
-              Earned from your healthy habits!
+              Earned from your booked appointments!
             </p>
           </CardContent>
         </Card>
 
         {/* Rewards List */}
-        <Card className={"py-2"}>
+        <Card className={"py-2 bg-base-200 shadow-md border border-base-300"}>
           <CardHeader>
-            <CardTitle>Redeem Rewards</CardTitle>
+            <CardTitle
+              className={
+                "flex gap-2 items-center border-b-2 border-base-300 pb-2"
+              }
+            >
+              <TicketCheck className="w-7 h-7" />
+              <span className="text-lg">Redeem Rewards</span>
+            </CardTitle>
+
+            <p className="text-gray-600 mt-2">
+              Earn more award from book appointment!
+            </p>
           </CardHeader>
           <CardContent>
             {availableRewards?.rewards.length > 0 ? (
-              <ul className="space-y-4">
+              <ul className="space-y-3">
                 {availableRewards.rewards.map((reward) => (
                   <li
                     key={reward._id}
@@ -120,7 +138,7 @@ const RewardsDashboard = () => {
         </Card>
       </div>
 
-      {/* Back to Dashboard */}
+      {/* Back to Home */}
       <div className="mt-4">
         <Link to="/">
           <Button
