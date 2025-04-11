@@ -32,6 +32,7 @@ import {
 import OverviewCards from "./OverviewCards";
 import SmartWaitTime from "./SmartWaitTime";
 import AppointmentsTab from "./AppointmentsTab";
+import BedBookingsTab from "./BedBookingsTab";
 
 const PatientOverview = () => {
   // Fetch patient overview data
@@ -103,161 +104,18 @@ const PatientOverview = () => {
 
         {/* Appointments Tab */}
         <TabsContent value="appointments" className="space-y-4">
-          {/* <Card
-            className={
-              "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
-            }
-          >
-            <CardHeader>
-              <CardTitle>Upcoming Appointment</CardTitle>
-              <CardDescription>
-                Your next scheduled appointment details
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {patientStats?.appointment ? (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">Patient:</span>
-                        <span className="text-sm">
-                          {patientStats?.appointment?.name || "N/A"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">Date:</span>
-                        <span className="text-sm">
-                          {formatDate(patientStats?.appointment?.date)}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">Time:</span>
-                        <span className="text-sm">
-                          {patientStats?.appointment?.time || "N/A"}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">Doctor:</span>
-                        <span className="text-sm">
-                          {patientStats?.appointment?.doctorName || "N/A"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">Specialty:</span>
-                        <span className="text-sm">
-                          {patientStats?.appointment?.doctorTitle || "N/A"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <CreditCard className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">Fee:</span>
-                        <span className="text-sm">
-                          {patientStats?.appointment?.consultationFee || "N/A"}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pt-2 border-t">
-                    <span className="text-sm font-medium">
-                      Reason for Visit:
-                    </span>
-                    <p className="text-sm mt-1">
-                      {patientStats?.appointment?.reason ||
-                        "No reason provided"}
-                    </p>
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <Button variant="outline">Reschedule</Button>
-                    <Button variant="destructive">Cancel</Button>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-muted-foreground">
-                  No upcoming appointments scheduled.
-                </p>
-              )}
-            </CardContent>
-          </Card> */}
           <AppointmentsTab
             appointment={patientStats?.appointment}
             formatDate={formatDate}
           />
         </TabsContent>
-
         {/* Bed Bookings Tab */}
         <TabsContent value="beds" className="space-y-4">
-          <Card
-            className={
-              "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
-            }
-          >
-            <CardHeader>
-              <CardTitle>Bed Bookings</CardTitle>
-              <CardDescription>
-                Your current and pending bed booking requests
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {patientStats?.bedBookings &&
-              patientStats?.bedBookings.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Bed Type</TableHead>
-                      <TableHead>Price</TableHead>
-                      <TableHead>Admission Date</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {patientStats?.bedBookings.map((booking) => (
-                      <TableRow key={booking._id || Math.random().toString()}>
-                        <TableCell className="font-medium">
-                          {booking.bedTitle || "N/A"}
-                        </TableCell>
-                        <TableCell>{booking.bedPrice || "N/A"}</TableCell>
-                        <TableCell>
-                          {formatDate(booking.admissionDate)}
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            className={
-                              booking.status === "accepted"
-                                ? "bg-green-500"
-                                : booking.status === "pending"
-                                ? "bg-amber-500"
-                                : "bg-gray-500"
-                            }
-                          >
-                            {booking.status?.charAt(0).toUpperCase() +
-                              booking.status?.slice(1) || "Unknown"}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="ghost" size="sm">
-                            View Details
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p className="text-muted-foreground">No bed bookings found.</p>
-              )}
-            </CardContent>
-          </Card>
+          <BedBookingsTab
+            bedBookings={patientStats?.bedBookings}
+            formatDate={formatDate}
+          />
         </TabsContent>
-
         {/* Medications Tab */}
         <TabsContent value="medications" className="space-y-4">
           <Card
@@ -328,7 +186,6 @@ const PatientOverview = () => {
             </CardContent>
           </Card>
         </TabsContent>
-
         {/* Purchase History Tab */}
         <TabsContent value="history" className="space-y-4">
           <Card
