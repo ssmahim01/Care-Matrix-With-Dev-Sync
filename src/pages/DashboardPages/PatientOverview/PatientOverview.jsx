@@ -29,7 +29,7 @@ const PatientOverview = () => {
     queryKey: ["patient-stats", user?.email],
     queryFn: async () => {
       const { data } = await axios(
-        `${import.meta.env.VITE_API_URL}/patient/stats/e@gmail.com`
+        `${import.meta.env.VITE_API_URL}/patient/stats/${user?.email}`
       );
       return data;
     },
