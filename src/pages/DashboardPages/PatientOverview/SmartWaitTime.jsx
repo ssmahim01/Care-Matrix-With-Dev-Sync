@@ -12,8 +12,18 @@ import { formatDate } from "date-fns";
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 
+// Helper function to parse time
+function parseAppointmentTime(dateStr, timeStr) {
+  const date = new Date(dateStr);
+  const [time, period] = timeStr.split(" ")[0].split(":");
+  const hours = period === "pm" && time[0] < 12 ? +time[0] + 12 : time[0];
+  const minutes = time[1];
+
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+}
+
 const SmartWaitTime = ({ appointment }) => {
-  // Calculate wait time prediction
   const [waitTimeMinutes, setWaitTimeMinutes] = useState(calculateWaitTime());
   const [countdown, setCountdown] = useState({
     days: 0,
@@ -33,15 +43,10 @@ const SmartWaitTime = ({ appointment }) => {
     if (appointmentDate.toDateString() === currentDate.toDateString()) {
       const appointmentTimeStr =
         appointment?.time?.split(" - ")[0] || "12:00am";
-      const [timeStr, period] = appointmentTimeStr.split(" ");
-      let [hours, minutes] = timeStr.split(":").map(Number);
-
-      // Convert to 24-hour format
-      if (period === "pm" && hours < 12) hours = hours + 12;
-      if (period === "am" && hours === 12) hours = 0;
-
-      const appointmentTime = new Date();
-      appointmentTime.setHours(hours, minutes, 0, 0);
+      const appointmentTime = parseAppointmentTime(
+        appointment?.date,
+        appointmentTimeStr
+      );
 
       // Calculate difference in minutes
       const diffMs = appointmentTime.getTime() - currentDate.getTime();
@@ -63,17 +68,13 @@ const SmartWaitTime = ({ appointment }) => {
 
       const appointmentDate = new Date(appointment.date);
       const appointmentTimeStr = appointment.time.split(" - ")[0] || "12:00am";
-      const [timeStr, period] = appointmentTimeStr.split(" ");
-      let [hours, minutes] = timeStr.split(":").map(Number);
-
-      // Convert to 24-hour format
-      if (period === "pm" && hours < 12) hours = hours + 12;
-      if (period === "am" && hours === 12) hours = 0;
-
-      appointmentDate.setHours(hours, minutes, 0, 0);
+      const appointmentTime = parseAppointmentTime(
+        appointment.date,
+        appointmentTimeStr
+      );
 
       const now = new Date();
-      const difference = appointmentDate.getTime() - now.getTime();
+      const difference = appointmentTime.getTime() - now.getTime();
 
       if (difference <= 0) {
         setIsPast(true);
@@ -115,8 +116,8 @@ const SmartWaitTime = ({ appointment }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex item">
-          <div className="flex flex-col w-3/12 gap-4">
+        <div className="flex items-center gap-6">
+          <div className="flex flex-col w-full md:w-fit gap-4">
             <div>
               <p className="text-base font-medium">Appointment Details:</p>
               <p className="text-base tracking-wide mt-1">
@@ -142,8 +143,8 @@ const SmartWaitTime = ({ appointment }) => {
             </div>
           </div>
           {/* Countdown Timer */}
-          <div className="bg-white rounded-lg w-full p-4 shadow-sm">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">
+          <div className="bg-white rounded-lg w-full md:w-9/12 p-4 shadow-sm border">
+            <h3 className="text-sm font-medium text-gray-900 mb-2">
               Time Until Appointment
             </h3>
             {isPast ? (
