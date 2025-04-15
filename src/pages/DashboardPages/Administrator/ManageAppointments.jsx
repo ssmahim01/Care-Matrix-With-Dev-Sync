@@ -132,7 +132,7 @@ const ManageAppointments = () => {
             {/* Table */}
             <div className="border rounded-md bg-background">
                 <Table>
-                     <TableCaption className="mb-2">A list of your appointments.</TableCaption>
+                     <TableCaption className="mb-2">A list of all appointments.</TableCaption>
                     <TableHeader>
                         <TableRow className="bg-muted/50 border-b">
                             <TableHead>Sl.</TableHead>
