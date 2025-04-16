@@ -21,6 +21,7 @@ import {
   History,
   Home,
   Hospital,
+  IdCardIcon,
   LayoutDashboard,
   LayoutDashboardIcon,
   LucideBedSingle,
@@ -98,7 +99,7 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <FaUserDoctor size={25} className="text-base " />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Doctors Management{" "}
+                    Doctor Requests{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -119,6 +120,14 @@ export function NavMain() {
                 </h3>
               </NavLink>
              */}
+              <NavLink to="/dashboard/administrator/doctors">
+                <h3 className="flex gap-2 items-center">
+                  <IdCardIcon className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Manage Doctors{" "}
+                  </span>
+                </h3>
+              </NavLink> 
               <NavLink to="/dashboard/administrator/manage-billing-payments">
                 <h3 className="flex gap-2 items-center">
                   <CreditCard className="text-base" />

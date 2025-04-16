@@ -57,6 +57,7 @@ import RewardsDashboard from "@/pages/Patient/Rewards/RewardsDashboard";
 import ManageBillings from "@/pages/DashboardPages/Administrator/ManageBillings";
 import ContactMessage from "@/pages/DashboardPages/Administrator/ContactMessage/ContactMessage";
 import AdminRoute from "./AdminRoute";
+import AllDoctors from "@/pages/DashboardPages/Administrator/AllDoctors";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -188,11 +189,20 @@ const Router = () => {
           }
         />
         <Route
+          path="/dashboard/administrator/doctors"
+          element={
+            <AdminRoute>
+              <AllDoctors />
+              </AdminRoute>
+          }
+        />
+
+        <Route
           path="/dashboard/administrator/contact-message"
           element={
             <AdminRoute>
               <ContactMessage />
-            </AdminRoute>
+              </AdminRoute>
           }
         />
 
