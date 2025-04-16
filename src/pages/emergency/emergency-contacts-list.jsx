@@ -1,5 +1,5 @@
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Phone, Plus, Edit, Trash, Search, Hospital, Ambulance, ShieldAlert, Flame } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -30,13 +30,23 @@ export default function EmergencyContactsList() {
   const [selectedContact, setSelectedContact] = useState(null)
   const [loading, setLoading] = useState(false);
 
-  const { data: contacts = [], isLoading, refetch } = useQuery({
+  const { data = [], isLoading, refetch } = useQuery({
     queryKey: ["contacts"],
     queryFn: async () => {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/emergency/contacts`)
+      setContacts(res.data)
       return res.data
     }
   })
+
+  const [contacts, setContacts] = useState(data)
+
+  // Update staff when data changes
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setContacts(data)
+    }
+  }, [data])
 
 
   // const [contacts, setContacts] = useState([
@@ -272,14 +282,23 @@ export default function EmergencyContactsList() {
   }
 
   const handleSearch = async (value) => {
-    console.log(value)
+    if (value.trim() === "") {
+      refetch()
+      return
+    }
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/emergency/search?name=${value}`)
+      setContacts(res.data)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Emergency Contacts {contacts.length}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Emergency Contacts</h1>
           <p className="text-muted-foreground">Manage and access emergency contacts for quick response</p>
         </div>
         <AddEmergencyContact
@@ -340,7 +359,7 @@ export default function EmergencyContactsList() {
                     </TableHeader>
                     <TableBody>
                       {contacts.map((contact) => (
-                        <TableRow key={contact.id}>
+                        <TableRow key={contact._id}>
                           <TableCell className="font-medium">
                             <div className="flex items-center gap-2">
                               {getTypeIcon(contact.type)}
@@ -409,7 +428,7 @@ export default function EmergencyContactsList() {
                       {contacts
                         .filter((contact) => contact.type === "hospital")
                         .map((contact) => (
-                          <TableRow key={contact.id}>
+                          <TableRow key={contact._id}>
                             <TableCell className="font-medium">
                               <div className="flex items-center gap-2">
                                 <Hospital className="h-4 w-4 text-blue-600" />
@@ -442,7 +461,7 @@ export default function EmergencyContactsList() {
                                   <Edit className="h-4 w-4" />
                                   <span className="sr-only">Edit</span>
                                 </Button>
-                                <Button variant="ghost" size="icon" onClick={() => handleDeleteContact(contact.id)}>
+                                <Button variant="ghost" size="icon" onClick={() => handleDeleteContact(contact._id)}>
                                   <Trash className="h-4 w-4" />
                                   <span className="sr-only">Delete</span>
                                 </Button>
@@ -477,7 +496,7 @@ export default function EmergencyContactsList() {
                       {contacts
                         .filter((contact) => contact.type === "ambulance")
                         .map((contact) => (
-                          <TableRow key={contact.id}>
+                          <TableRow key={contact._id}>
                             <TableCell className="font-medium">
                               <div className="flex items-center gap-2">
                                 <Ambulance className="h-4 w-4 text-red-600" />
@@ -510,7 +529,7 @@ export default function EmergencyContactsList() {
                                   <Edit className="h-4 w-4" />
                                   <span className="sr-only">Edit</span>
                                 </Button>
-                                <Button variant="ghost" size="icon" onClick={() => handleDeleteContact(contact.id)}>
+                                <Button variant="ghost" size="icon" onClick={() => handleDeleteContact(contact._id)}>
                                   <Trash className="h-4 w-4" />
                                   <span className="sr-only">Delete</span>
                                 </Button>
@@ -545,7 +564,7 @@ export default function EmergencyContactsList() {
                       {contacts
                         .filter((contact) => contact.type === "police")
                         .map((contact) => (
-                          <TableRow key={contact.id}>
+                          <TableRow key={contact._id}>
                             <TableCell className="font-medium">
                               <div className="flex items-center gap-2">
                                 <ShieldAlert className="h-4 w-4 text-blue-800" />
@@ -578,7 +597,7 @@ export default function EmergencyContactsList() {
                                   <Edit className="h-4 w-4" />
                                   <span className="sr-only">Edit</span>
                                 </Button>
-                                <Button variant="ghost" size="icon" onClick={() => handleDeleteContact(contact.id)}>
+                                <Button variant="ghost" size="icon" onClick={() => handleDeleteContact(contact._id)}>
                                   <Trash className="h-4 w-4" />
                                   <span className="sr-only">Delete</span>
                                 </Button>
@@ -613,7 +632,7 @@ export default function EmergencyContactsList() {
                       {contacts
                         .filter((contact) => contact.type === "fire")
                         .map((contact) => (
-                          <TableRow key={contact.id}>
+                          <TableRow key={contact._id}>
                             <TableCell className="font-medium">
                               <div className="flex items-center gap-2">
                                 <Flame className="h-4 w-4 text-orange-600" />
@@ -646,7 +665,7 @@ export default function EmergencyContactsList() {
                                   <Edit className="h-4 w-4" />
                                   <span className="sr-only">Edit</span>
                                 </Button>
-                                <Button variant="ghost" size="icon" onClick={() => handleDeleteContact(contact.id)}>
+                                <Button variant="ghost" size="icon" onClick={() => handleDeleteContact(contact._id)}>
                                   <Trash className="h-4 w-4" />
                                   <span className="sr-only">Delete</span>
                                 </Button>
