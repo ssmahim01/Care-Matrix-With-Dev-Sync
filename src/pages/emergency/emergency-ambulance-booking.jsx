@@ -13,12 +13,22 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { toast } from "sonner"
 import PhoneNumber from "./phone-number"
+import AddAmbulance from "@/components/emergency/AddAmbulance"
+import useRole from "@/hooks/useRole"
+import axios from "axios"
+import toast from "react-hot-toast"
+import { useQuery } from "@tanstack/react-query"
+import { Delete } from "lucide-react"
+import { X } from "lucide-react"
 
 export default function AmbulanceBooking() {
+
+  const [role] = useRole()
+
   const [step, setStep] = useState(1)
   const [bookingComplete, setBookingComplete] = useState(false)
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
 
   const [formData, setFormData] = useState({
     patientName: "",
@@ -31,53 +41,16 @@ export default function AmbulanceBooking() {
     priority: "normal",
   })
 
-  const [ambulances, setAmbulances] = useState([
-    {
-      id: "AMB-001",
-      name: "Rapid Response Unit 1",
-      status: "Available",
-      location: "City Center",
-      eta: "5 min",
-      type: "Advanced Life Support",
-      crew: 3,
-    },
-    {
-      id: "AMB-002",
-      name: "Emergency Medical Unit 2",
-      status: "Available",
-      location: "North District",
-      eta: "8 min",
-      type: "Basic Life Support",
-      crew: 2,
-    },
-    {
-      id: "AMB-003",
-      name: "Critical Care Unit 3",
-      status: "En Route",
-      location: "West District",
-      eta: "15 min",
-      type: "Advanced Life Support",
-      crew: 4,
-    },
-    {
-      id: "AMB-004",
-      name: "Paramedic Unit 4",
-      status: "Available",
-      location: "East District",
-      eta: "10 min",
-      type: "Basic Life Support",
-      crew: 2,
-    },
-    {
-      id: "AMB-005",
-      name: "Mobile ICU Unit 5",
-      status: "On Call",
-      location: "South District",
-      eta: "12 min",
-      type: "Critical Care",
-      crew: 5,
-    },
-  ])
+  const { data = [], refetch } = useQuery({
+    queryKey: ["ambulances"],
+    queryFn: async () => {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/ambulance/all`);
+      setAmbulances(res.data)
+      return res.data
+    }
+  })
+
+  const [ambulances, setAmbulances] = useState(data)
 
   const [activeAmbulances, setActiveAmbulances] = useState([
     {
@@ -138,9 +111,10 @@ export default function AmbulanceBooking() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log(e.target.value)
     // In a real app, you would submit the form data to the server
     setBookingComplete(true)
-    toast.success("Ambulance Booked Successfully",{
+    toast.success("Ambulance Booked Successfully", {
       description: "Ambulance AMB-001 has been dispatched to your location.",
     })
   }
@@ -158,6 +132,33 @@ export default function AmbulanceBooking() {
       default:
         return "bg-gray-500 text-white"
     }
+  }
+
+  const handleAddAmbulance = async (e) => {
+    e.preventDefault()
+    const form = e.target
+    const name = form.name.value;
+    const status = form.status.value;
+    const type = form.type.value;
+    const location = form.location.value;
+    const crew = parseInt(form.crew.value);
+
+
+    const ambulance = { name, status, type, location, crew };
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/ambulance/add`, ambulance);
+      if (res.data) return toast.success(res.data.message)
+    } catch (error) {
+      console.error("Error adding ambulance:", error.response?.data || error.message);
+      toast.error("Error adding ambulance:", error.response?.data || error.message)
+    } finally {
+      refetch()
+      setIsAddDialogOpen(false);
+    }
+  }
+
+  const handleDelete = async (id) => {
+    console.log(id)
   }
 
   return (
@@ -203,7 +204,7 @@ export default function AmbulanceBooking() {
                   </div>
                   <h3 className="mb-2 text-xl font-bold">Ambulance Booked Successfully</h3>
                   <p className="mb-4 text-muted-foreground">Ambulance AMB-001 has been dispatched to your location.</p>
-                  <PhoneNumber/>
+                  <PhoneNumber />
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
@@ -482,21 +483,31 @@ export default function AmbulanceBooking() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="available">
+        <TabsContent value="available" >
           <Card>
-            <CardHeader className={`mt-4`}>
-              <CardTitle>Available Ambulances</CardTitle>
-              <CardDescription>View and book available ambulance units</CardDescription>
+            <CardHeader className={`mt-4 flex items-center justify-between`}>
+              <div>
+                <CardTitle>Available Ambulances</CardTitle>
+                <CardDescription>View and book available ambulance units</CardDescription>
+              </div>
+
+              {role !== "administrator" ? null : (
+                <AddAmbulance
+                  handleAddAmbulance={handleAddAmbulance}
+                  isAddDialogOpen={isAddDialogOpen}
+                  setIsAddDialogOpen={setIsAddDialogOpen}
+                />
+              )}
             </CardHeader>
             <CardContent>
               <div className="mb-4 flex items-center gap-2">
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {ambulances.map((ambulance) => (
-                  <Card key={ambulance.id} className="overflow-hidden">
-                    <CardHeader className={cn("py-3", getStatusColor(ambulance.status))}>
+                  <Card key={ambulance._id} className=" relative group transition-all duration-300 ease-in-out">
+                    <CardHeader className={cn("py-3 rounded-t-xl", getStatusColor(ambulance.status))}>
                       <div className="flex justify-between items-center">
-                        <CardTitle className="text-sm font-medium text-white">{ambulance.id}</CardTitle>
+                        <CardTitle className="text-sm font-medium text-white capitalize">{ambulance._id.slice(-6)}</CardTitle>
                         <Badge variant="outline" className="bg-white/20 text-white">
                           {ambulance.status}
                         </Badge>
@@ -528,14 +539,19 @@ export default function AmbulanceBooking() {
                     </CardContent>
                     <CardFooter className="border-t p-3 bg-muted/40">
                       <Button
-                        variant={ambulance.status === "Available" ? "default" : "outline"}
+                        variant={ambulance.status === "available" ? "default" : "outline"}
                         size="sm"
                         className="w-full"
-                        disabled={ambulance.status !== "Available"}
+                        disabled={ambulance.status !== "available"}
                       >
-                        {ambulance.status === "Available" ? "Book Now" : "Not Available"}
+                        {ambulance.status === "available" ? "Book Now" : "Not Available"}
                       </Button>
                     </CardFooter>
+                    <div className="group-hover:inline-block absolute hidden transition-all duration-300 -right-3 -top-3">
+                      <Button size={"icon"} onClick={() => handleDelete(ambulance._id)} className={"rounded-full bg-red-700 transition-all duration-300 size-8"}>
+                        <X className="transition-all duration-300" />
+                      </Button>
+                    </div>
                   </Card>
                 ))}
               </div>

@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react"
-import { Phone, Plus, Edit, Trash, Search, Hospital, Ambulance, ShieldAlert, Flame } from "lucide-react"
+import { Phone, Edit, Trash, Search, Hospital, Ambulance, ShieldAlert, Flame } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,7 +12,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -23,8 +22,11 @@ import { useQuery } from "@tanstack/react-query"
 import AddEmergencyContact from "@/components/emergency/Add-emergency-contact"
 import { toast } from "react-hot-toast"
 import { motion, AnimatePresence } from 'framer-motion'
+import useRole from "@/hooks/useRole"
 
 export default function EmergencyContactsList() {
+  const [role] = useRole()
+
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [selectedContact, setSelectedContact] = useState(null)
@@ -41,88 +43,12 @@ export default function EmergencyContactsList() {
 
   const [contacts, setContacts] = useState(data)
 
-  // Update staff when data changes
+
   useEffect(() => {
     if (data && data.length > 0) {
       setContacts(data)
     }
   }, [data])
-
-
-  // const [contacts, setContacts] = useState([
-  //   {
-  //     id: 1,
-  //     name: "City General Hospital",
-  //     type: "hospital",
-  //     phone: "555-123-4567",
-  //     address: "123 Medical Center Blvd, City Center",
-  //     email: "emergency@citygeneral.org",
-  //     available: true,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Rapid Response Ambulance",
-  //     type: "ambulance",
-  //     phone: "555-911-0000",
-  //     address: "45 Emergency Drive, City Center",
-  //     email: "dispatch@rapidambulance.com",
-  //     available: true,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "City Police Department",
-  //     type: "police",
-  //     phone: "555-911-1234",
-  //     address: "789 Law Enforcement Ave, City Center",
-  //     email: "emergency@citypd.gov",
-  //     available: true,
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "City Fire Department",
-  //     type: "fire",
-  //     phone: "555-911-5678",
-  //     address: "567 Firefighter Lane, City Center",
-  //     email: "dispatch@cityfire.gov",
-  //     available: true,
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Westside Medical Center",
-  //     type: "hospital",
-  //     phone: "555-987-6543",
-  //     address: "456 Healthcare Pkwy, Westside",
-  //     email: "emergency@westsidemedical.org",
-  //     available: true,
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Eastside Emergency Clinic",
-  //     type: "hospital",
-  //     phone: "555-765-4321",
-  //     address: "789 Urgent Care St, Eastside",
-  //     email: "help@eastsideclinic.org",
-  //     available: false,
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Lifeline Ambulance Services",
-  //     type: "ambulance",
-  //     phone: "555-247-8899",
-  //     address: "321 Rescue Road, North District",
-  //     email: "dispatch@lifelineambulance.com",
-  //     available: true,
-  //   },
-  //   {
-  //     id: 8,
-  //     name: "County Sheriff's Office",
-  //     type: "police",
-  //     phone: "555-911-3344",
-  //     address: "100 County Line Rd, County Center",
-  //     email: "emergency@countysheriff.gov",
-  //     available: true,
-  //   },
-  // ])
 
   const getTypeIcon = (type) => {
     switch (type) {
@@ -182,7 +108,6 @@ export default function EmergencyContactsList() {
     const contact = { name, type, phone, address, email, available }
 
     try {
-
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/emergency/add-contact`, contact)
       toast.success(res.data.message);
     } catch (error) {
@@ -234,6 +159,7 @@ export default function EmergencyContactsList() {
   }
 
   const handleDeleteContact = (id) => {
+    if(role !== "administrator") return toast.error("Admin Only")
     toast.custom((t) => (
       <AnimatePresence>
         {t.visible && (
@@ -277,6 +203,8 @@ export default function EmergencyContactsList() {
   };
 
   const openEditDialog = (contact) => {
+    
+    if(role !== "administrator") return toast.error("Admin Only")
     setSelectedContact(contact)
     setIsEditDialogOpen(true)
   }
