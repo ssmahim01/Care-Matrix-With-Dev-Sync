@@ -12,7 +12,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "@/redux/auth/authActions";
-import { Award, Moon, Siren, X } from "lucide-react";
+import { Award, Contact, Moon, Siren, X } from "lucide-react";
 import useRole from "@/hooks/useRole";
 import { GiMedicines } from "react-icons/gi";
 import "./Navbar.css";
@@ -40,34 +40,12 @@ const Navbar = () => {
         setShowImage(false);
       }
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // console.log(user);
-  // const dispatch = useDispatch();
-  // const menuOpen = useSelector((state) => state.menu.menuOpen);
-  // console.log(menuOpen);
-  // const dropdownRef = useRef(null);
-
-  // const handleToggleMenu = () => {
-  //   dispatch(toggleMenu());
-  // };
-
-  // const handleClickOutSide = (e) => {
-  //   if (!e.target.closest(".dropdown")) {
-  //     dispatch(closeMenu());
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   document.addEventListener("click", handleClickOutSide);
-  //   return () => {
-  //     document.removeEventListener("click", handleClickOutSide);
-  //   };
-  // }, [dispatch]);
+  // All comment codes are stored in -->
+  // /UnusedCodes/NavbarCodes.js
 
   const menuRef = useRef(null);
 
@@ -94,17 +72,17 @@ const Navbar = () => {
       </NavLink>
       <NavLink
         className="flex gap-1 items-center"
-        to="/eid-greetings"
-        onClick={() => setIsMenuOpen(false)}
-      >
-        <Moon /> <span className="font-bold">Eid Greetings</span>
-      </NavLink>
-      <NavLink
-        className="flex gap-1 items-center"
         to="/about-us"
         onClick={() => setIsMenuOpen(false)}
       >
         <FaInfoCircle /> <span className="font-bold">About Us</span>
+      </NavLink>
+      <NavLink
+        className="flex gap-1 items-center"
+        to="/contact-us"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        <Contact size={20} /> <span className="font-bold">Contact Us</span>
       </NavLink>
     </>
   );
@@ -136,7 +114,11 @@ const Navbar = () => {
                   isMenuOpen
                     ? "translate-x-0 opacity-100 z-20"
                     : "translate-x-[200px] opacity-0 z-[-1]"
-                } ${showImage && location.pathname === "/" && "top-[84px] md:top-[101px] right-0"} top-[61px] md:top-[63px] right-0 lg:hidden bg-[#e2ebee] p-4 absolute w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
+                } ${
+                  showImage &&
+                  location.pathname === "/" &&
+                  "top-[84px] md:top-[101px] right-0"
+                } top-[61px] md:top-[63px] right-0 lg:hidden bg-[#e2ebee] p-4 absolute w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
               >
                 <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
                   {routes}
@@ -167,9 +149,7 @@ const Navbar = () => {
               <div className="md:hidden flex items-center">
                 <Link to={"/"}>
                   <img
-                    src={
-                      "https://i.ibb.co.com/m5ctR6v8/collapse-logo.png"
-                    }
+                    src={"https://i.ibb.co.com/m5ctR6v8/collapse-logo.png"}
                     className="w-12 h-12 rounded-md"
                     referrerPolicy="no-referrer"
                     alt="Logo of Care Matrix"
@@ -179,13 +159,13 @@ const Navbar = () => {
             </div>
 
             <div className="navbar-end w-full">
-                  <>
+              <>
                 <ul className="flex items-center gap-3 text-[#1b1b1b] md:mr-3 mr-1">
                   <div className="lg:flex gap-3 items-center hidden">
-                  {routes}
+                    {routes}
                   </div>
                   <li
-                  ref={menuRef}
+                    ref={menuRef}
                     className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
                     onClick={() => setIsOpen(!isOpen)}
                   >
@@ -205,9 +185,8 @@ const Navbar = () => {
                       }`}
                     />
                     {isOpen && (
-                      <article className="p-6 bg-[#f3f6f9] rounded-b-lg md:w-[550px] w-[435px] absolute top-[38px] md:right-[-90px] -right-40 z-30 transition-all duration-300">
-                        <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                          {/* Left Column */}
+                      <article className="p-6 bg-[#f3f6f9] rounded-b-lg md:w-[550px] w-[435px] absolute top-[38px] md:right-[-90px] -right-40 z-30 transition-all duration-300 border-t rounded-t-xl border-border">
+                        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/contact-us"
@@ -250,8 +229,6 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                           </ul>
-
-                          {/* Right Column */}
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/services"
@@ -294,7 +271,6 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                           </ul>
-
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
                               to="/patient-rewards"
@@ -314,6 +290,25 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                           </ul>
+                          <ul className="flex flex-col gap-4 text-gray-800">
+                            <NavLink
+                              to="/eid-greetings"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <Moon size={20} className="text-gray-800" />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Eid Greetings
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Spreading joy and heartfelt wishes through
+                                  festive Eid greetings.
+                                </p>
+                              </div>
+                            </NavLink>
+                          </ul>
                         </div>
                       </article>
                     )}
@@ -323,7 +318,10 @@ const Navbar = () => {
 
               <div className="md:block hidden">
                 <Link to="/emergency">
-                  <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer">
+                  <Button
+                    size="sm"
+                    className="mr-2 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer"
+                  >
                     <span>Emergency</span>
                     <Siren className="text-base" />
                   </Button>{" "}

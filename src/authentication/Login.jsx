@@ -95,11 +95,6 @@ const Login = () => {
       <div className="mx-auto xl:w-10/12 min-h-screen px-4 py-12 flex flex-col md:flex-row gap-6 items-center justify-center max-w-screen-xl">
         {/* Image Div */}
         <div className="hidden lg:flex flex-col w-5/12">
-          {/* <div className="mb-4">
-            <button className="btn border-none btn-sm text-base font-medium bg-blue-400 text-white ">
-              Go Back!
-            </button>
-          </div> */}
           <img src={loginImg} alt="loginImg" className="w-full h-full" />
         </div>
         <div className="max-w-lg lg:max-w-md xl:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
