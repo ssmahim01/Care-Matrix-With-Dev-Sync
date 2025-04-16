@@ -227,8 +227,12 @@ const ManageMedicines = () => {
         <TableHeader>
           <TableRow className={"bg-base-200 hover:bg-base-200"}>
             <TableHead>Image</TableHead>
-            <TableHead>Brand Name</TableHead>
-            <TableHead>Generic Name</TableHead>
+            <TableHead className={"text-[11px] font-semibold"}>
+              Brand <br /> Name
+            </TableHead>
+            <TableHead className={"text-[11px] font-semibold"}>
+              Generic <br /> Name
+            </TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Dosage</TableHead>
             <TableHead>Strength</TableHead>
@@ -267,13 +271,46 @@ const ManageMedicines = () => {
                     </Avatar>
                   </TableCell>
                   <TableCell>{medicine?.brandName || "N/A"}</TableCell>
-                  <TableCell>{medicine?.genericName || "N/A"}</TableCell>
-                  <TableCell>{medicine?.category || "N/A"}</TableCell>
+                  <TableCell className={"max-w-[100px]"}>
+                    <Tooltip>
+                      <TooltipTrigger asChild className="cursor-pointer">
+                        <div className="truncate">
+                          {medicine?.genericName || "N/A"}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div>{medicine?.genericName || "N/A"}</div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell className={"max-w-[80px]"}>
+                    <Tooltip>
+                      <TooltipTrigger asChild className="cursor-pointer">
+                        <div className="truncate">
+                          {medicine?.category || "N/A"}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div>{medicine?.category || "N/A"}</div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TableCell>
                   <TableCell>{medicine?.dosageForm || "N/A"}</TableCell>
-                  <TableCell>{medicine?.strength || "N/A"}</TableCell>
+                  <TableCell className={"max-w-[40px]"}>
+                    <Tooltip>
+                      <TooltipTrigger asChild className="cursor-pointer">
+                        <div className="truncate">
+                          {medicine?.strength || "N/A"}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div>{medicine?.strength || "N/A"}</div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TableCell>
                   <TableCell className={"cursor-pointer"}>
                     <Tooltip>
-                      <TooltipTrigger asChild>
+                      <TooltipTrigger asChild className="cursor-pointer">
                         <span>
                           ৳{medicine?.price?.amount || "N/A"} || ৳
                           {medicine?.price?.discount?.discountedAmount || "NA"}
