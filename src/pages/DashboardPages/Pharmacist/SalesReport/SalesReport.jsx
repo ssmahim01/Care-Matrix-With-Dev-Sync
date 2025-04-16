@@ -146,28 +146,28 @@ export default function SalesReport() {
         {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-4">
           {/* All Tablist */}
-          <TabsList className="border w-fit">
+          <TabsList className="border w-full flex flex-col lg:flex-row ">
             <TabsTrigger
               value="overview"
-              className={"cursor-pointer py-2 px-4"}
+              className={"cursor-pointer py-2 px-4 w-full "}
             >
               Overview
             </TabsTrigger>
             <TabsTrigger
               value="analytics"
-              className={"cursor-pointer py-2 px-4"}
+              className={"cursor-pointer py-2 px-4 w-full "}
             >
               Detailed Analytics
             </TabsTrigger>
             <TabsTrigger
               value="products"
-              className={"cursor-pointer py-2 px-4"}
+              className={"cursor-pointer py-2 px-4 w-full "}
             >
               Product Performance
             </TabsTrigger>
             <TabsTrigger
               value="insights"
-              className={"cursor-pointer py-2 px-4"}
+              className={"cursor-pointer py-2 px-4 w-full "}
             >
               Customer Insights
             </TabsTrigger>
@@ -182,7 +182,7 @@ export default function SalesReport() {
               totalRevenue={report?.totalRevenue}
             />
             {/* Revenue & OrderStatus  Charts */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+            <div className="grid gap-6 xl:grid-cols-7">
               {/* Revenue Chart */}
               <RevenueChart enhancedRevenueData={enhancedRevenueData} />
               {/* OrderStatus Chart */}
