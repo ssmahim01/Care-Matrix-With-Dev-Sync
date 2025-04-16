@@ -19,6 +19,7 @@ import ManufacturersTable from "./PharmacistOverview/ManufacturersTable";
 import SupplierTable from "./PharmacistOverview/SupplierTable";
 import CategoryChart from "./PharmacistOverview/CategoryChart";
 import OverviewSkeleton from "./PharmacistOverview/OverviewSkeleton";
+import toast from "react-hot-toast";
 
 const PharmacistOverview = () => {
   const axiosPublic = useAxiosPublic();
@@ -27,6 +28,7 @@ const PharmacistOverview = () => {
   const {
     data: stats = {},
     isLoading,
+    isError,
     refetch,
   } = useQuery({
     queryKey: ["pharmacist-stats"],
@@ -36,6 +38,7 @@ const PharmacistOverview = () => {
     },
   });
 
+  if(isError) return toast.error("Error While Fetching Data!")
   if (isLoading) return <OverviewSkeleton />;
 
   // Data For Charts
