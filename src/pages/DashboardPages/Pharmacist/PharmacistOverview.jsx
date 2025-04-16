@@ -72,11 +72,11 @@ const PharmacistOverview = () => {
         nearExpiryCount={stats?.nearExpiryCount}
       />
       {/* Category & Prescription Chart */}
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-7">
+      <div className="grid gap-6 grid-cols-1 xl:grid-cols-7">
         {/* Medicines Per Category Chart */}
         <CategoryChart chartData={chartData} isLoading={isLoading} />
         {/* Prescription Chart */}
-        <div className="lg:col-span-3 xl:col-span-2">
+        <div className="lg:col-span-4 xl:col-span-2">
           <Card className="bg-white border border-gray-200 rounded-lg px-4 py-8 shadow-sm col-span-4">
             <CardHeader>
               {isLoading ? (
@@ -102,9 +102,9 @@ const PharmacistOverview = () => {
         </div>
       </div>
       {/* Manufacturer & Supplier Table & Storage Condition Table */}
-      <div className="mt-6 grid gap-4 grid-cols-1 lg:grid-cols-7">
+      <div className="mt-6 grid gap-4 grid-cols-1 xl:grid-cols-7">
         {/* Manufacturer & Supplier */}
-        <Card className="lg:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
+        <Card className="xl:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
               Top Manufacturers & Suppliers
@@ -145,7 +145,7 @@ const PharmacistOverview = () => {
           </CardContent>
         </Card>
         {/* Storage Conditions */}
-        <Card className="lg:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
+        <Card className="xl:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
               Storage Conditions
