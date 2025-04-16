@@ -125,6 +125,13 @@ const Login = () => {
             </Badge>
 
             <Badge
+              className="cursor-pointer bg-[#064654]"
+              onClick={() => handleBadgeClick("doctor@carematrix.com", "Doctor123@")}
+            >
+              Doctor
+            </Badge>
+
+            <Badge
               className="cursor-pointer bg-[#540654]"
               onClick={() => handleBadgeClick("patient@carematrix.com", "Patient123@")}
             >
