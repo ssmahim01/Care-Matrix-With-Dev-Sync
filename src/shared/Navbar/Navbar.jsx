@@ -9,7 +9,7 @@ import {
 
 import useRole from "@/hooks/useRole";
 import { logOut, useAuthLoading } from "@/redux/auth/authActions";
-import { Award, Contact, Moon, Siren, X } from "lucide-react";
+import { Award, BedIcon, Contact, Moon, Siren, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CiMenuFries } from "react-icons/ci";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -86,6 +86,14 @@ const Navbar = () => {
         onClick={() => setIsMenuOpen(false)}
       >
         <Contact size={20} /> <span className="font-bold">Contact Us</span>
+      </NavLink>
+      <NavLink
+        className="flex gap-1 items-center"
+        to="/pharmacy"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        <GiMedicines size={20} />{" "}
+        <span className="font-bold">Our Pharmacy</span>
       </NavLink>
     </>
   );
@@ -191,26 +199,6 @@ const Navbar = () => {
                         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
-                              to="/contact-us"
-                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
-                            >
-                              <div className="mt-1">
-                                <FaMapMarkerAlt
-                                  size={20}
-                                  className="text-gray-800"
-                                />
-                              </div>
-                              <div>
-                                <span className="font-semibold text-lg">
-                                  Hospital Location
-                                </span>
-                                <p className="text-sm text-gray-600">
-                                  Displays hospital address with interactive map
-                                  feature.
-                                </p>
-                              </div>
-                            </NavLink>
-                            <NavLink
                               to="/doctors"
                               className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
@@ -227,6 +215,23 @@ const Navbar = () => {
                                 <p className="text-sm text-gray-600">
                                   Showcases skilled doctors with medical
                                   expertise details.
+                                </p>
+                              </div>
+                            </NavLink>
+                            <NavLink
+                              to="/our-available-beds"
+                              className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <BedIcon size={20} className="text-gray-800" />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Our Available Beds
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Explore real-time availability of beds & book
+                                  bed.
                                 </p>
                               </div>
                             </NavLink>
@@ -253,22 +258,22 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                             <NavLink
-                              to="/pharmacy"
+                              to="/contact-us"
                               className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">
-                                <GiMedicines
+                                <FaMapMarkerAlt
                                   size={20}
                                   className="text-gray-800"
                                 />
                               </div>
                               <div>
                                 <span className="font-semibold text-lg">
-                                  Our Pharmacy
+                                  Hospital Location
                                 </span>
                                 <p className="text-sm text-gray-600">
-                                  Presents essential pharmacy products for
-                                  medical needs.
+                                  Displays hospital address with interactive map
+                                  feature.
                                 </p>
                               </div>
                             </NavLink>
