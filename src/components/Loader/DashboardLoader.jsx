@@ -6,6 +6,7 @@ const DashboardLoader = () => {
         <div className="space-y-4">
           {/* Header */}
           <div className="h-10 w-full skeleton p-2"></div>
+
           {/* Dashboard Menu */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3 mt-1 pl-2">
@@ -35,6 +36,7 @@ const DashboardLoader = () => {
             <div className="divider w-3/5 mx-auto"></div>
           </div>
         </div>
+
         {/* Main Menu */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3 mt-1 pl-2">
@@ -56,6 +58,7 @@ const DashboardLoader = () => {
             <div className="w-3/7 h-4 bg-gray-200 skeleton animate-shimmer" />
           </div>
         </div>
+
         {/* User Menu */}
         <div className="flex items-center gap-2 mt-4 absolute bottom-4">
           <div className="w-10 h-10 rounded-full bg-gray-300 animate-pulse"></div>
@@ -65,6 +68,7 @@ const DashboardLoader = () => {
           </div>
         </div>
       </div>
+
       {/* Main Content Skeleton */}
       <div className="flex-1 p-7 space-y-4 bg-white">
         <div className="h-full w-full skeleton"></div>
