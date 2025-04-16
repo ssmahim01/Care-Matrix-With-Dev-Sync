@@ -145,7 +145,7 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
 
       {/* Dashboard Routes */}
-      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route path="/dashboard" element={<PrivateRoute><DashboardLayout /></PrivateRoute>}>
         {/* Admin Routes */}
         <Route
           path="/dashboard/administrator-overview"

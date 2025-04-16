@@ -60,7 +60,7 @@ const PatientOverview = () => {
       {/* Main Content Tabs */}
       <Tabs defaultValue="appointments" className="mt-6 space-y-4">
         {/* All TabList */}
-        <TabsList className="border py-6 px-2 mb-2">
+        <TabsList className="border w-full">
           <TabsTrigger
             className={"cursor-pointer py-2 px-4"}
             value="appointments"
