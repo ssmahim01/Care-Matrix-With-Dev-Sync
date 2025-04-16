@@ -1,15 +1,15 @@
 import DoctorCard from "@/components/DoctorCard";
+import useDoctors from "@/hooks/useDoctors";
+import SectionHeader from "@/shared/Section/SectionHeader";
+import { easeIn, motion } from "framer-motion";
+
 import React from "react";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import useDoctors from "@/hooks/useDoctors";
-import { easeIn, easeInOut, motion } from "framer-motion";
-import SectionHeader from "@/shared/Section/SectionHeader";
+import "slick-carousel/slick/slick.css";
 
 const Doctors = () => {
   const [doctors] = useDoctors();
-  // console.log("Doctors ", doctors );
 
   let settings = {
     dots: false,
@@ -67,7 +67,7 @@ const Doctors = () => {
           {/* section-content */}
           <div className="mt-6 w-11/12 md:w-full mx-auto">
             <Slider {...settings}>
-              {doctors.map((doctor) => (
+              {doctors?.map((doctor) => (
                 <DoctorCard key={doctor._id} doctor={doctor}></DoctorCard>
               ))}
             </Slider>

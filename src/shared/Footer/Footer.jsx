@@ -286,8 +286,9 @@ const Footer = () => {
           </div>
         </div>
         {/* Copy Rights */}
-        <p className="w-11/12 lg:w-10/12 mx-auto mt-6 text-base text-gray-500">
-          &copy; 2025. DEVSYNC-Care-Matrix. All rights reserved.
+        <p className="mt-6 text-base text-gray-500">
+          &copy; {new Date().getFullYear()} DEVSYNC-Care-Matrix. All rights
+          reserved.
         </p>
       </div>
     </footer>

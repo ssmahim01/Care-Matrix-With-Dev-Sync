@@ -63,7 +63,7 @@ export default function Hero() {
               <span className="block mt-2">Management With Care Matrix</span>
             </h1>
 
-            <p className="text-base md:text-lg font-medium text-white/90 max-w-xl">
+            <p className="text-base md:text-lg font-medium text-white/90 max-w-[580px]">
               Empower your hospital with an all-in-one management system. From
               patient appointments to medical records and staff coordination,
               Care Matrix ensures efficiency, accuracy, and seamless healthcare
@@ -132,7 +132,7 @@ export default function Hero() {
               <div className="absolute -top-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
               <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
 
-              <div className="relative rounded-xl overflow-hidden shadow-lg lg:mt-12">
+              <div className="relative rounded-xl overflow-hidden shadow shadow-blue-500/10 lg:mt-12">
                 <img
                   src="https://i.ibb.co.com/LDPwN7dJ/expert-doctors.png"
                   alt="Expert Medical Team"

@@ -362,7 +362,7 @@ const Navbar = () => {
                       <Separator />
 
                       <NavLink
-                        className="flex gap-1 items-center text-lg"
+                        className="flex gap-1 items-center text-lg bg-[#f1f1f1] hover:bg-[#eaeaea] transition-all duration-300 ease-in-out py-1 px-2 rounded-md mb-1"
                         to={
                           role === "administrator"
                             ? "/dashboard/administrator-overview"
@@ -378,7 +378,7 @@ const Navbar = () => {
                         }
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <MdDashboard />{" "}
+                        <MdDashboard className="mt-0.5" size={25} />{" "}
                         <span className="font-medium text-gray-800">
                           Dashboard
                         </span>
@@ -392,9 +392,9 @@ const Navbar = () => {
                             toast.success("Log out successful");
                             navigate("/");
                           }}
-                          className="flex items-center gap-[5px] cursor-pointer rounded-md p-[8px] w-full pr-[45px] py-[3px] text-[1rem] text-red-500 bg-red-50 hover:bg-red-100 duration-300"
+                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500 bg-red-50 hover:bg-red-100 duration-300"
                         >
-                          <BiLogOutCircle />
+                          <BiLogOutCircle size={25} />
                           Logout
                         </button>
                       </div>
