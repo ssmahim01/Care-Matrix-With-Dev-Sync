@@ -105,7 +105,7 @@ const ContactMessage = () => {
                     <Tooltip>
                       <TooltipTrigger>
                         {/* Truncated message */}
-                        <div className="w-[350px] truncate">
+                        <div className="w-[380px] truncate">
                           {contact?.message}
                         </div>
                       </TooltipTrigger>
@@ -145,7 +145,15 @@ const ContactMessage = () => {
                             message={contact?.message}
                           />
                         </>
-                        <DropdownMenuItem className={"cursor-pointer"}>
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() =>
+                            window.open(
+                              `https://mail.google.com/mail/?view=cm&fs=1&to=${contact?.email}`,
+                              "_blank"
+                            )
+                          }
+                        >
                           <Pencil className="w-4 h-4 mr-2" /> Reply By Email
                         </DropdownMenuItem>
                         <DropdownMenuItem
