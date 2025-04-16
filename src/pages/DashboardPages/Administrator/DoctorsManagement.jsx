@@ -186,9 +186,15 @@ const DoctorsManagement = () => {
       return;
     }
 
+    const email = detailsModal?.userEmail;
+    if (!email) {
+      toast.error("User email is missing");
+      return;
+    }
+
     try {
       const result = await dispatch(rejectDoctor(id)).unwrap();
-      const deleteDoctor = await dispatch(deleteSpecificDoctor(id)).unwrap();
+      const deleteDoctor = await dispatch(deleteSpecificDoctor(email)).unwrap();
       if (result && deleteDoctor) {
         toast.success("Rejected the request");
         document.getElementById("doctor_modal_02").close();
@@ -273,8 +279,9 @@ const DoctorsManagement = () => {
     try {
       const save_doctor = await dispatch(addDoctor(doctorData)).unwrap();
       const update_role = await dispatch(convertRole(email)).unwrap();
+      const change_status = await dispatch(assignDoctor(id)).unwrap();
 
-      if (save_doctor && update_role) {
+      if (save_doctor && update_role && change_status) {
         toast.success("Assigned the doctor");
         document.getElementById("doctor_modal_02").close();
         setServices([]);
