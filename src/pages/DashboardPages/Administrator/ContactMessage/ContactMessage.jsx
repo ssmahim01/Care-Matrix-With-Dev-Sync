@@ -27,8 +27,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import MessageDialog from "./MessageDialog";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const ContactMessage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   // Fetch ContactMessage
   const {
     data: contacts,
@@ -42,7 +45,20 @@ const ContactMessage = () => {
     },
   });
 
-  const [isOpen, setIsOpen] = useState(false);
+  // Delete Message
+  const deleteMessage = async (id) => {
+    try {
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/contact/${id}`
+      );
+      if (data.deletedCount) {
+        refetch();
+        toast.success("Message Deleted!");
+      }
+    } catch (error) {
+      toast.error(error?.message || "Error Caught While Deleting Message");
+    }
+  };
 
   return (
     <div className="px-7">
@@ -112,11 +128,10 @@ const ContactMessage = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <>
-                          {/* Dropdown Menu Item to trigger dialog */}
                           <DropdownMenuItem
                             className="cursor-pointer"
                             onSelect={(e) => {
-                              e.preventDefault(); // ✅ Prevent dropdown from closing before opening the dialog
+                              e.preventDefault();
                               setIsOpen(true);
                             }}
                           >
@@ -124,7 +139,6 @@ const ContactMessage = () => {
                             View Message
                           </DropdownMenuItem>
 
-                          {/* Dialog should be rendered OUTSIDE the dropdown */}
                           <MessageDialog
                             isOpen={isOpen}
                             setIsOpen={setIsOpen}
@@ -134,7 +148,10 @@ const ContactMessage = () => {
                         <DropdownMenuItem className={"cursor-pointer"}>
                           <Pencil className="w-4 h-4 mr-2" /> Reply By Email
                         </DropdownMenuItem>
-                        <DropdownMenuItem className={"cursor-pointer"}>
+                        <DropdownMenuItem
+                          onClick={() => deleteMessage(contact?._id)}
+                          className={"cursor-pointer tracking-tight"}
+                        >
                           <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
                           Message
                         </DropdownMenuItem>
