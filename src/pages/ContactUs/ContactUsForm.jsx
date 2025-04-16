@@ -4,8 +4,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useAuthUser } from "@/redux/auth/authActions";
 import UnderLineButton from "@/shared/Section/UnderLineButton";
-import { useState } from "react";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 const ContactUsForm = () => {
   const user = useAuthUser();
@@ -26,7 +26,7 @@ const ContactUsForm = () => {
     e.preventDefault();
 
     if (!user) {
-      return toast.error("You Must Be Login To Send Message");
+      return toast.error("You Must Be Login To Send Message!");
     } else {
       try {
         if (formData.message.length > 350)

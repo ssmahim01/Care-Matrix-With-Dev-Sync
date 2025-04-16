@@ -17,6 +17,7 @@ import {
   ChartPie,
   ClipboardPlus,
   Contact,
+  Contact2,
   CreditCard,
   FileSpreadsheet,
   History,
@@ -126,7 +127,15 @@ export function NavMain() {
                     Billing & Payments{" "}
                   </span>
                 </h3>
-              </NavLink> 
+              </NavLink>
+              <NavLink to="/dashboard/administrator/contact-message">
+                <h3 className="flex gap-2 items-center">
+                  <Contact2 className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Contact Message{" "}
+                  </span>
+                </h3>
+              </NavLink>
               <div className="divider mt-2"></div>
             </>
           )}
