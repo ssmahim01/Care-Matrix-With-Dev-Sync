@@ -126,7 +126,7 @@ const MyAppointments = () => {
                             <TableRow key={idx} className="animate-pulse">
                                 {Array(9).fill().map((_, i) => (
                                     <TableCell key={i}>
-                                        <div className="skeleton h-4 w-full max-w-[100px] rounded-md"></div>
+                                        <div className="skeleton h-6 w-full max-w-[100px] rounded-md"></div>
                                     </TableCell>
                                 ))}
                             </TableRow>

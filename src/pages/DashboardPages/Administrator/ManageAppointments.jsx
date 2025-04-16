@@ -130,8 +130,7 @@ const ManageAppointments = () => {
             </div>
 
             {/* Table */}
-            <div className="border rounded-md bg-background">
-                <Table>
+                <Table className="rounded-md border border-gray-300 mt-4">
                      <TableCaption className="mb-2">A list of all appointments.</TableCaption>
                     <TableHeader>
                         <TableRow className="bg-muted/50 border-b">
@@ -246,7 +245,6 @@ const ManageAppointments = () => {
                         )}
                     </TableBody>
                 </Table>
-            </div>
 
             {/* Modal */}
             {selectedAppointment && (
