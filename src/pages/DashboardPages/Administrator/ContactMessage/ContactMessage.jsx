@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/table";
 import { formatDate } from "date-fns";
 import moment from "moment";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ContactMessage = () => {
   // Fetch ContactMessage
@@ -45,6 +50,9 @@ const ContactMessage = () => {
             <TableHead>Email</TableHead>
             <TableHead>Phone Number</TableHead>
             <TableHead>Sent-At</TableHead>
+            <TableHead></TableHead>
+            <TableHead>Message</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -64,9 +72,24 @@ const ContactMessage = () => {
                   <TableCell>{contact?.email}</TableCell>
                   <TableCell>{contact?.phoneNumber}</TableCell>
                   <TableCell>
-                    {new Date(contact?.sentAt).toLocaleString()}{" "}
-                    <sub>({moment(contact?.sentAt).fromNow()})</sub>
+                    {new Date(contact?.sentAt).toLocaleString()}
                   </TableCell>
+                  <TableCell>({moment(contact?.sentAt).fromNow()})</TableCell>
+                  <TableCell>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        {/* Truncated message */}
+                        <div className="w-[200px] truncate">
+                          {contact?.message}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent className="whitespace-pre-line mr-8">
+                        {/* Full message */}
+                        {contact?.message}
+                      </TooltipContent>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               ))}
         </TableBody>
