@@ -2,6 +2,8 @@ import expertDoctors from "../../assets/Images/expert-doctors.png";
 import HeroBG from "../../assets/Images/hero-bg.jpg";
 import { Search } from "lucide-react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 export default function Hero() {
   return (
@@ -110,9 +112,11 @@ export default function Hero() {
                   placeholder="Search appointments..."
                   className="w-full py-4 px-3 text-gray-700 focus:outline-none"
                 />
-                <button className="bg-[#00a0c0] hover:bg-[#008ca8] text-white font-medium px-6 py-4 transition-all duration-300 flex-shrink-0">
-                  Search
-                </button>
+                <Link to="/doctors">
+                  <Button className="mr-4 bg-[#0e6efd] cursor-pointer hover:bg-[#0e56fd] text-white font-medium px-6 py-4 transition-all duration-300 flex-shrink-0">
+                    Search
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           </motion.div>

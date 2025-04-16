@@ -320,10 +320,7 @@ const Navbar = () => {
 
               <div className="md:block hidden">
                 <Link to="/emergency">
-                  <Button
-                    size="sm"
-                    className="mr-2 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer"
-                  >
+                  <Button className="mr-2 bg-red-100 hover:bg-red-200 tracking-tight text-red-500 cursor-pointer">
                     <span>Emergency</span>
                     <Siren className="text-base" />
                   </Button>{" "}
