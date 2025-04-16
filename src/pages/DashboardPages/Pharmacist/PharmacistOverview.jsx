@@ -103,7 +103,7 @@ const PharmacistOverview = () => {
       </div>
       {/* Manufacturer & Supplier Table & Storage Condition Table */}
       <div className="mt-6 grid gap-4 grid-cols-1 lg:grid-cols-7">
-        {/* Manufacturer */}
+        {/* Manufacturer & Supplier */}
         <Card className="lg:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
@@ -115,7 +115,7 @@ const PharmacistOverview = () => {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="manufacturers">
-              <TabsList className="mb-4 border py-6 px-1">
+              <TabsList className="mb-4 border w-full">
                 <TabsTrigger
                   className={"cursor-pointer py-2 px-8"}
                   value="manufacturers"
@@ -130,11 +130,13 @@ const PharmacistOverview = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="manufacturers">
+                {/* Manufacturer */}
                 <ManufacturersTable
                   medicinesPerManufacturer={stats?.medicinesPerManufacturer}
                 />
               </TabsContent>
               <TabsContent value="suppliers">
+                {/* Supplier */}
                 <SupplierTable
                   medicinesPerSupplier={stats?.medicinesPerSupplier}
                 />
@@ -142,7 +144,7 @@ const PharmacistOverview = () => {
             </Tabs>
           </CardContent>
         </Card>
-        {/* Supplier */}
+        {/* Storage Conditions */}
         <Card className="lg:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900 mb-3">

@@ -146,7 +146,7 @@ export default function SalesReport() {
         {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-4">
           {/* All Tablist */}
-          <TabsList className="border py-6 px-1">
+          <TabsList className="border w-fit">
             <TabsTrigger
               value="overview"
               className={"cursor-pointer py-2 px-4"}
