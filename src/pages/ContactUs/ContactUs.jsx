@@ -16,7 +16,7 @@ const ContactUs = () => {
   });
 
   return (
-    <div className="pt-18 pb-6 w-11/12 md:w-10/12 mx-auto max-w-[1440px]">
+    <div className="pt-14 pb-6 w-11/12 md:w-10/12 mx-auto max-w-[1440px]">
       <SectionHeader
         title_1st_slice={"Our"}
         title_2nd_slice={"Contact"}
@@ -52,7 +52,7 @@ const ContactUs = () => {
                   Phone Number
                 </h1>
                 <h1 className="text-[14px] font-semibold mt-[1px]">
-                  +8800000000000
+                  +8801818788816
                 </h1>
               </div>
             </div>

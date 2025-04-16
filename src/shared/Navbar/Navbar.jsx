@@ -132,12 +132,11 @@ const Navbar = () => {
             <div className="navbar-start w-full">
               {/* mobile sidebar */}
               <aside
-                // ref={menuRef}
                 className={` ${
                   isMenuOpen
                     ? "translate-x-0 opacity-100 z-20"
                     : "translate-x-[200px] opacity-0 z-[-1]"
-                } lg:hidden bg-[#e2ebee] p-4 absolute top-[61px] md:top-[63px] right-0 w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
+                } ${showImage && location.pathname === "/" && "top-[84px] md:top-[101px] right-0"} top-[61px] md:top-[63px] right-0 lg:hidden bg-[#e2ebee] p-4 absolute w-full md:w-[600px] sm:w-[300px] md:rounded-bl-sm transition-all duration-300`}
               >
                 <ul className="gap-[20px] text-[1rem] text-gray-900 flex flex-col">
                   {routes}
@@ -150,142 +149,9 @@ const Navbar = () => {
                       </Button>{" "}
                     </Link>
                   </div>
-                  <li
-                    className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
-                    onClick={() => setIsOpen(!isOpen)}
-                  >
-                    <p
-                      className={`flex gap-2 items-center ${
-                        isOpen ? "text-[#3B9DF8]" : ""
-                      }`}
-                    >
-                      <FaPager />
-                      <span className="font-bold">Pages</span>
-                    </p>
-                    <MdKeyboardArrowDown
-                      className={`text-[1.5rem] text-[#424242] transition-all duration-500 ${
-                        isOpen
-                          ? "rotate-180 text-[#3B9DF8]"
-                          : "group-hover:text-[#3B9DF8]"
-                      }`}
-                    />
-                    {isOpen && (
-                      <article className="p-6 bg-[#e2ebee] rounded-b-lg w-full absolute top-[38px] z-30 transition-all duration-300 overflow-y-scroll">
-                        <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                          {/* Left Column */}
-                          <ul className="flex flex-col gap-4 text-gray-800">
-                            <NavLink
-                              to="/contact-us"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
-                            >
-                              <div className="mt-1">
-                                <FaMapMarkerAlt
-                                  size={20}
-                                  className="text-gray-800"
-                                />
-                              </div>
-                              <div>
-                                <span className="font-semibold text-lg">
-                                  Hospital Location
-                                </span>
-                                <p className="text-sm text-gray-600">
-                                  Displays hospital address with interactive map
-                                  feature.
-                                </p>
-                              </div>
-                            </NavLink>
-                            <NavLink
-                              to="/doctors"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
-                            >
-                              <div className="mt-1">
-                                <FaUserDoctor
-                                  size={20}
-                                  className="text-gray-800"
-                                />
-                              </div>
-                              <div>
-                                <span className="font-semibold text-lg">
-                                  Our Expert Doctors
-                                </span>
-                                <p className="text-sm text-gray-600">
-                                  Showcases skilled doctors with medical
-                                  expertise details.
-                                </p>
-                              </div>
-                            </NavLink>
-                          </ul>
-
-                          {/* Right Column */}
-                          <ul className="flex flex-col gap-4 text-gray-800">
-                            <NavLink
-                              to="/services"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
-                            >
-                              <div className="mt-1">
-                                <MdMedicalServices
-                                  size={20}
-                                  className="text-gray-800"
-                                />
-                              </div>
-                              <div>
-                                <span className="font-semibold text-lg">
-                                  Our Services
-                                </span>
-                                <p className="text-sm text-gray-600">
-                                  Highlights diverse medical services for our
-                                  patient care.
-                                </p>
-                              </div>
-                            </NavLink>
-                            <NavLink
-                              to="/pharmacy"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
-                            >
-                              <div className="mt-1">
-                                <GiMedicines
-                                  size={20}
-                                  className="text-gray-800"
-                                />
-                              </div>
-                              <div>
-                                <span className="font-semibold text-lg">
-                                  Our Pharmacy
-                                </span>
-                                <p className="text-sm text-gray-600">
-                                  Presents essential pharmacy products for
-                                  medical needs.
-                                </p>
-                              </div>
-                            </NavLink>
-                          </ul>
-
-                          <ul className="flex flex-col gap-4 text-gray-800">
-                            <NavLink
-                              to="/patient-rewards"
-                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
-                            >
-                              <div className="mt-1">
-                                <Award size={20} className="text-gray-800" />
-                              </div>
-                              <div>
-                                <span className="font-semibold text-lg">
-                                  Rewards
-                                </span>
-                                <p className="text-sm text-gray-600">
-                                  Motivating patients to adopt healthy habits
-                                  through a rewarding experience.
-                                </p>
-                              </div>
-                            </NavLink>
-                          </ul>
-                        </div>
-                      </article>
-                    )}
-                  </li>
                 </ul>
               </aside>
-              <div className="flex items-center">
+              <div className="md:flex hidden items-center">
                 <Link to={"/"}>
                   <img
                     src={
@@ -297,16 +163,29 @@ const Navbar = () => {
                   />
                 </Link>
               </div>
+
+              <div className="md:hidden flex items-center">
+                <Link to={"/"}>
+                  <img
+                    src={
+                      "https://i.ibb.co.com/m5ctR6v8/collapse-logo.png"
+                    }
+                    className="w-12 h-12 rounded-md"
+                    referrerPolicy="no-referrer"
+                    alt="Logo of Care Matrix"
+                  />
+                </Link>
+              </div>
             </div>
 
             <div className="navbar-end w-full">
-              <>
-                <ul
-                  ref={menuRef}
-                  className="items-center gap-4 text-[#1b1b1b] lg:flex hidden mr-3"
-                >
+                  <>
+                <ul className="flex items-center gap-3 text-[#1b1b1b] md:mr-3 mr-1">
+                  <div className="lg:flex gap-3 items-center hidden">
                   {routes}
+                  </div>
                   <li
+                  ref={menuRef}
                     className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] relative"
                     onClick={() => setIsOpen(!isOpen)}
                   >
@@ -326,8 +205,8 @@ const Navbar = () => {
                       }`}
                     />
                     {isOpen && (
-                      <article className="p-6 bg-[#f3f6f9] rounded-b-lg w-[550px] absolute top-[38px] right-[-100px] z-30 transition-all duration-300">
-                        <div className="grid grid-cols-2 gap-6">
+                      <article className="p-6 bg-[#f3f6f9] rounded-b-lg md:w-[550px] w-[435px] absolute top-[38px] md:right-[-90px] -right-40 z-30 transition-all duration-300">
+                        <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
                           {/* Left Column */}
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
@@ -438,14 +317,6 @@ const Navbar = () => {
                         </div>
                       </article>
                     )}
-                    <div className="md:hidden block">
-                      <Link to="/emergency">
-                        <Button className="mr-2 border border-red-500 bg-red-100 hover:bg-red-200 text-red-500 cursor-pointer">
-                          <span>Emergency</span>
-                          <Siren className="text-base" />
-                        </Button>{" "}
-                      </Link>
-                    </div>
                   </li>
                 </ul>
               </>

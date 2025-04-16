@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import toast from "react-hot-toast";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { Award, BatteryPlus, TicketCheck } from "lucide-react";
 import RewardsSkeleton from "@/components/RewardsSkeleton/RewardsSkeleton";
@@ -61,12 +60,12 @@ const RewardsDashboard = () => {
   };
 
   return (
-    <>
+    <div className="lg:w-full w-11/12 mx-auto pb-8">
       <h2 className="text-2xl font-bold mb-3 flex gap-2 items-center">
         <Award className="w-6 h-6" />
         <span>Your Rewards</span>
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Points Summary */}
         <Card className={"py-2 bg-base-200 shadow-md border border-base-300"}>
           <CardHeader>
@@ -151,7 +150,7 @@ const RewardsDashboard = () => {
           </Button>
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 

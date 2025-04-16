@@ -90,7 +90,7 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <Users className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Manage Users{" "}
+                    Manage Staffs{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -118,14 +118,15 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/payments">
+             */}
+              <NavLink to="/dashboard/administrator/manage-billing-payments">
                 <h3 className="flex gap-2 items-center">
                   <CreditCard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Billing & Payments{" "}
                   </span>
                 </h3>
-              </NavLink> */}
+              </NavLink> 
               <div className="divider mt-2"></div>
             </>
           )}
