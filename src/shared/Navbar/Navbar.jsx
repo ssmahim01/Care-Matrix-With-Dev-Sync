@@ -219,7 +219,7 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                             <NavLink
-                              to="/our-available-beds"
+                              to="/available-beds"
                               className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
                             >
                               <div className="mt-1">

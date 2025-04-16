@@ -58,7 +58,7 @@ const BedPage = () => {
   };
 
   return (
-    <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
+    <div className="mt-16 mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
       <SectionHeader
         className="text-center"
         title_1st_slice={"OUR"}

@@ -57,6 +57,7 @@ import RewardsDashboard from "@/pages/Patient/Rewards/RewardsDashboard";
 import ManageBillings from "@/pages/DashboardPages/Administrator/ManageBillings";
 import ContactMessage from "@/pages/DashboardPages/Administrator/ContactMessage/ContactMessage";
 import AdminRoute from "./AdminRoute";
+import BedPage from "@/pages/BedBooking/BedPage";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -129,6 +130,7 @@ const Router = () => {
             </div>
           }
         />
+        <Route path="available-beds" element={<BedPage />} />
       </Route>
 
       <Route path="emergency" element={<EmergencyLayout />}>
