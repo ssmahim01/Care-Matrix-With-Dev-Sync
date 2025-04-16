@@ -1,8 +1,22 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { COLORS } from "./CustomTooltip";
 
-const TopSellingChart = ({topSellingMedicines}) => {
+const TopSellingChart = ({ topSellingMedicines }) => {
   return (
     <Card className="col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
       <CardHeader>

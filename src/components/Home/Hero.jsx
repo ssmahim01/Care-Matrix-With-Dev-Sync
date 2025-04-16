@@ -2,6 +2,8 @@ import expertDoctors from "../../assets/Images/expert-doctors.png";
 import HeroBG from "../../assets/Images/hero-bg.jpg";
 import { Search } from "lucide-react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 export default function Hero() {
   return (
@@ -61,7 +63,7 @@ export default function Hero() {
               <span className="block mt-2">Management With Care Matrix</span>
             </h1>
 
-            <p className="text-base md:text-lg font-medium text-white/90 max-w-xl">
+            <p className="text-base md:text-lg font-medium text-white/90 max-w-[600px]">
               Empower your hospital with an all-in-one management system. From
               patient appointments to medical records and staff coordination,
               Care Matrix ensures efficiency, accuracy, and seamless healthcare
@@ -110,9 +112,11 @@ export default function Hero() {
                   placeholder="Search appointments..."
                   className="w-full py-4 px-3 text-gray-700 focus:outline-none"
                 />
-                <button className="bg-[#00a0c0] hover:bg-[#008ca8] text-white font-medium px-6 py-4 transition-all duration-300 flex-shrink-0">
-                  Search
-                </button>
+                <Link to="/doctors">
+                  <Button className="mr-4 bg-[#0e6efd] cursor-pointer hover:bg-[#0e56fd] text-white font-medium px-6 py-4 transition-all duration-300 flex-shrink-0">
+                    Search
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           </motion.div>
@@ -128,7 +132,7 @@ export default function Hero() {
               <div className="absolute -top-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
               <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
 
-              <div className="relative rounded-xl overflow-hidden shadow-lg lg:mt-12">
+              <div className="relative rounded-xl overflow-hidden shadow shadow-blue-600/80 lg:mt-12">
                 <img
                   src="https://i.ibb.co.com/LDPwN7dJ/expert-doctors.png"
                   alt="Expert Medical Team"

@@ -113,7 +113,7 @@ function ManageBedBooking() {
     }
   };
 
-  if (isLoading) return <Loader text={"Loading Bed Bookings"} />;
+  // if (isLoading) return <Loader text={"Loading Bed Bookings"} />;
 
   return (
     <div className="p-7">
@@ -152,7 +152,17 @@ function ManageBedBooking() {
             </TableHeader>
             <TableBody>
 
-             {bed_booking.length === 0 ? (
+              {isLoading? Array.from({ length: 13 }).map((_, i) => (
+                    <TableRow key={i}>
+                      {Array.from({ length: 13 }).map((_, j) => (
+                        <TableCell key={j}>
+                          <div className="skeleton h-8 rounded w-full"></div>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  )):
+
+             bed_booking.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={12} className="text-center font-semibold py-10">
                     No Bed Booking Requests Found
@@ -263,7 +273,8 @@ function ManageBedBooking() {
                     )}
                   </TableCell>
                 </TableRow> )
-              ))}
+              )) 
+            }
             </TableBody>
           </Table>
         </div>

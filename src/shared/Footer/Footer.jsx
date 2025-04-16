@@ -3,9 +3,9 @@ import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className="bg-white/80">
-      <div className="max-w-screen-2xl mx-auto pb-12 border-t pt-8">
-        <div className="w-11/12 lg:w-10/12 mx-auto flex flex-col sm:flex-row flex-wrap gap-12 justify-between items-stretch">
+    <footer className="bg-white">
+      <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-8">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-12 justify-between items-stretch">
           {/* Logo DIV */}
           <div>
             {/* Logo */}
@@ -286,8 +286,9 @@ const Footer = () => {
           </div>
         </div>
         {/* Copy Rights */}
-        <p className="w-11/12 lg:w-10/12 mx-auto mt-6 text-base text-gray-500">
-          &copy; 2025. DEVSYNC-Care-Matrix. All rights reserved.
+        <p className="mt-6 text-base text-gray-500">
+          &copy; {new Date().getFullYear()} DEVSYNC-Care-Matrix. All rights
+          reserved.
         </p>
       </div>
     </footer>

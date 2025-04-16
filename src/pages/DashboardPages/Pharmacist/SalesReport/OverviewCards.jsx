@@ -9,7 +9,7 @@ const OverviewCards = ({
   totalRevenue,
 }) => {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 lg:grid-cols-2 2xl:grid-cols-4">
       <Card className={"border shadow-none border-[#e5e7eb] w-full py-6"}>
         <CardHeader className="flex flex-row-reverse justify-end items-center space-y-0 relative">
           <CardTitle className="text-lg font-bold">Total Revenue</CardTitle>
