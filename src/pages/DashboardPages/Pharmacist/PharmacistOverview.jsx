@@ -18,6 +18,7 @@ import StorageConditionsTable from "./PharmacistOverview/StorageConditionsTable"
 import ManufacturersTable from "./PharmacistOverview/ManufacturersTable";
 import SupplierTable from "./PharmacistOverview/SupplierTable";
 import CategoryChart from "./PharmacistOverview/CategoryChart";
+import OverviewSkeleton from "./PharmacistOverview/OverviewSkeleton";
 
 const PharmacistOverview = () => {
   const axiosPublic = useAxiosPublic();
@@ -35,7 +36,7 @@ const PharmacistOverview = () => {
     },
   });
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <OverviewSkeleton />;
 
   // Data For Charts
   const chartData =

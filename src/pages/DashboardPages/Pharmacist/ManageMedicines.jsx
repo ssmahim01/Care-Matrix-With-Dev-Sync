@@ -426,17 +426,27 @@ const ManageMedicines = () => {
                       <DropdownMenuContent>
                         <Link to={`/medicine/${medicine._id}`}>
                           <DropdownMenuItem className={"cursor-pointer"}>
-                            <Eye className="w-4 h-4 mr-2" /> Details
+                            <Eye className="w-4 h-4 mr-2" /> View Medicine
+                            Details
                           </DropdownMenuItem>{" "}
                         </Link>
                         <DropdownMenuItem className={"cursor-pointer"}>
+                          <Pencil className="w-4 h-4 mr-2" /> Update Valid Until
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className={"cursor-pointer"}>
+                          <Pencil className="w-4 h-4 mr-2" /> Update Medicine
+                          Price
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className={"cursor-pointer"}>
                           <Pencil className="w-4 h-4 mr-2" /> Update
+                          Availability
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className={"cursor-pointer"}
                           onClick={() => handleMedicineDelete(medicine?._id)}
                         >
                           <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
+                          Medicine
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
