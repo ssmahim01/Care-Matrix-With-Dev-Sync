@@ -55,6 +55,7 @@ import EmergencyTriage from "@/pages/emergency/emergency-triage";
 import PatientOverview from "@/pages/DashboardPages/PatientOverview/PatientOverview";
 import RewardsDashboard from "@/pages/Patient/Rewards/RewardsDashboard";
 import ManageBillings from "@/pages/DashboardPages/Administrator/ManageBillings";
+import ContactMessage from "@/pages/DashboardPages/Administrator/ContactMessage/ContactMessage";
 import AdminRoute from "./AdminRoute";
 
 const Router = () => {
@@ -183,6 +184,14 @@ const Router = () => {
           element={
             <AdminRoute>
               <ManageBillings />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/administrator/contact-message"
+          element={
+            <AdminRoute>
+              <ContactMessage />
             </AdminRoute>
           }
         />
