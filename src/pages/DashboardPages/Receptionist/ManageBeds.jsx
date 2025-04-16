@@ -98,7 +98,7 @@ function ManageBeds() {
     }
   };
 
-  if (isLoading) return <Loader text={"Loading Beds"} />;
+  // if (isLoading) return <Loader text={"Loading Beds"} />;
 
   return (
     <div className="p-7">
@@ -132,7 +132,18 @@ function ManageBeds() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {beds?.map((bed, i) => (
+              {
+                isLoading? Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({ length: 8 }).map((_, j) => (
+                      <TableCell key={j}>
+                        <div className="skeleton h-8 rounded w-full"></div>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                )) :
+              
+              beds?.map((bed, i) => (
                 <TableRow key={bed._id}>
                   <TableCell className="font-medium">{i + 1}</TableCell>
                   <TableCell>
@@ -185,7 +196,8 @@ function ManageBeds() {
                     </DropdownMenu>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            }
             </TableBody>
           </Table>
           {/* Modal */}

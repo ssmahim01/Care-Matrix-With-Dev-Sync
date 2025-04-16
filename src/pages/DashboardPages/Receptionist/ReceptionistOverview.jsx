@@ -17,6 +17,7 @@ import RecepStatisticsChart from "./ReceptionistOverview/RecepStatisticsChart";
 import ReceptActivity from "./ReceptionistOverview/ReceptActivity";
 import AppointmentPieChart from "./ReceptionistOverview/AppointmentPieChart";
 import BedStatsPieChart from "./ReceptionistOverview/BedStatsPieChart";
+import ReceptionistOverviewSkeleton from "./ReceptionistOverviewSkeleton";
 
 const ReceptionistOverview = () => {
   const axiosSecure = useAxiosSecure();
@@ -90,7 +91,7 @@ const ReceptionistOverview = () => {
 
   // Handle loading and error states
   if (isLoading) {
-    return <div className="p-6 text-center">Loading...</div>;
+    return <ReceptionistOverviewSkeleton />;
   }
 
   if (error) {
