@@ -43,7 +43,7 @@ const LocationSection = () => {
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="w-full h-full min-h-[30px] rounded-md"
+              className="w-full h-full min-h-[360px] rounded-md"
             />
           </div>
         </TabsContent>
