@@ -15,31 +15,41 @@ const ContactUsForm = () => {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [message, setMessage] = useState("");
 
-  const formData = {
-    username,
-    email,
-    phoneNumber,
-    message,
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!user) {
       return toast.error("You Must Be Login To Send Message!");
-    } else {
-      try {
-        if (formData.message.length > 350)
-          return toast.error(
-            "Your message is too long, Please keep it under 350 characters!"
-          );
-        await toast.promise(axiosPublic.post(`/contact`, formData), {
+    }
+
+    try {
+      if (message.length > 350) {
+        return toast.error(
+          "Your message is too long, Please keep it under 350 characters!"
+        );
+      }
+
+      const formData = {
+        username,
+        email,
+        phoneNumber,
+        message,
+      };
+
+      const { data } = await toast.promise(
+        axiosPublic.post(`/contact`, formData),
+        {
           loading: "Sending Your Message...",
           success: "Your Message Was Sent Successfully!",
-        });
-      } catch (error) {
-        toast.error(error?.message || "Error Caught While Sending Message");
+        }
+      );
+
+      if (data.insertedId) {
+        setPhoneNumber(null);
+        setMessage("");
       }
+    } catch (error) {
+      toast.error(error?.message || "Error Caught While Sending Message");
     }
   };
 
@@ -81,6 +91,7 @@ const ContactUsForm = () => {
           <Input
             type="text"
             required
+            value={phoneNumber || ""}
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
         </div>
@@ -90,7 +101,11 @@ const ContactUsForm = () => {
         <Label className="text-[1rem] text-gray-900 font-[400]">
           Write Message
         </Label>
-        <Textarea required onChange={(e) => setMessage(e.target.value)} />
+        <Textarea
+          required
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
       </div>
       {/* Submit Button */}
       <button
