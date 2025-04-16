@@ -274,8 +274,8 @@ const ReceptionistOverview = () => {
           </div>
 
           {/* Bed Bookings Per Admission Date */}
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <Card className={"py-6"}>
+          <div className="w-full md:w-9/12 lg:7/12 xl:w-6/12 mb-6">
+            <Card className={"border shadow-none border-[#e5e7eb] w-full py-6"}>
               <CardHeader>
                 <CardTitle>
                   Bed Bookings Per Admission Date (Last 7 Days)
