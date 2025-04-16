@@ -75,7 +75,10 @@ const BedPage = () => {
             {Array(6)
               .fill(0)
               .map((_, index) => (
-                <div key={index} className="border rounded-lg shadow-lg p-4 flex flex-col items-center animate-pulse space-y-4">
+                <div
+                  key={index}
+                  className="border rounded-lg shadow-lg p-4 flex flex-col items-center animate-pulse space-y-4"
+                >
                   <div className="flex justify-between items-center w-full">
                     <div className="h-5 bg-gray-300 rounded w-1/3" />
                     <div className="text-end space-y-2">

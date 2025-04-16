@@ -182,7 +182,7 @@ export default function SalesReport() {
               totalRevenue={report?.totalRevenue}
             />
             {/* Revenue & OrderStatus  Charts */}
-            <div className="grid gap-6 xl:grid-cols-7">
+            <div className="grid gap-6 grid-cols-1 xl:grid-cols-7">
               {/* Revenue Chart */}
               <RevenueChart enhancedRevenueData={enhancedRevenueData} />
               {/* OrderStatus Chart */}
