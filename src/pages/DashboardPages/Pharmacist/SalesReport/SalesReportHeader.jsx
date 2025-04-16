@@ -11,7 +11,7 @@ const SalesReportHeader = ({ handleDownload, sortedRevenueData, fileName }) => {
   const currentDate = format(new Date(), "MMMM d, yyyy");
 
   return (
-    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border">
+    <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border">
       <div>
         <DashboardPagesHeader
           title="Sales Report"
