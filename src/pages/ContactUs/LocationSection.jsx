@@ -54,7 +54,7 @@ const LocationSection = () => {
               "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
             }
           >
-            <CardContent className="flex gap-x-10 xl:gap-x-16 flex-col lg:flex-row lg:items-stretch">
+            <CardContent className="flex gap-y-6 gap-x-10 xl:gap-x-16 flex-col lg:flex-row lg:items-stretch">
               <div>
                 <div className="flex items-start gap-4">
                   <div className="bg-muted p-3 rounded-full">
@@ -83,7 +83,7 @@ const LocationSection = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex gap-8 items-center">
+              <div className="flex gap-8 items-center lg:border-l-2 pl-8">
                 <div>
                   <h3 className="font-medium text-lg mb-4">
                     Nearby Attractions
