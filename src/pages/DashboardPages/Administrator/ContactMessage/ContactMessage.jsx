@@ -1,6 +1,6 @@
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { useQuery } from "@tanstack/react-query";
-import { MailIcon } from "lucide-react";
+import { Eye, MailIcon, MoreVertical, Pencil, Trash } from "lucide-react";
 import axios from "axios";
 
 import {
@@ -19,6 +19,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const ContactMessage = () => {
   // Fetch ContactMessage
@@ -57,9 +63,9 @@ const ContactMessage = () => {
         </TableHeader>
         <TableBody>
           {isLoading
-            ? Array.from({ length: 8 }).map((_, i) => (
+            ? Array.from({ length: 10 }).map((_, i) => (
                 <TableRow key={i}>
-                  {Array.from({ length: 13 }).map((_, j) => (
+                  {Array.from({ length: 7 }).map((_, j) => (
                     <TableCell key={j}>
                       <div className="skeleton h-8 rounded w-full"></div>
                     </TableCell>
@@ -79,7 +85,7 @@ const ContactMessage = () => {
                     <Tooltip>
                       <TooltipTrigger>
                         {/* Truncated message */}
-                        <div className="w-[200px] truncate">
+                        <div className="w-[350px] truncate">
                           {contact?.message}
                         </div>
                       </TooltipTrigger>
@@ -89,7 +95,31 @@ const ContactMessage = () => {
                       </TooltipContent>
                     </Tooltip>
                   </TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild className={"cursor-pointer"}>
+                        <div
+                          className={
+                            "bg-base-200 p-2 rounded border border-border w-fit"
+                          }
+                        >
+                          <MoreVertical className="cursor-pointer text-gray-700" />
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem className={"cursor-pointer"}>
+                          <Eye className="w-4 h-4 mr-2" /> View Message
+                        </DropdownMenuItem>{" "}
+                        <DropdownMenuItem className={"cursor-pointer"}>
+                          <Pencil className="w-4 h-4 mr-2" /> Reply By Email
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className={"cursor-pointer"}>
+                          <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
+                          Message
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
                 </TableRow>
               ))}
         </TableBody>
