@@ -56,6 +56,7 @@ import EmergencyTriage from "@/pages/emergency/emergency-triage";
 import PatientOverview from "@/pages/DashboardPages/PatientOverview/PatientOverview";
 import RewardsDashboard from "@/pages/Patient/Rewards/RewardsDashboard";
 import ManageBillings from "@/pages/DashboardPages/Administrator/ManageBillings";
+import AdminRoute from "./AdminRoute";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -145,11 +146,22 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
 
       {/* Dashboard Routes */}
-      <Route path="/dashboard" element={<PrivateRoute><DashboardLayout /></PrivateRoute>}>
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <DashboardLayout />
+          </PrivateRoute>
+        }
+      >
         {/* Admin Routes */}
         <Route
           path="/dashboard/administrator-overview"
-          element={<AdministratorOverview />}
+          element={
+            <AdminRoute>
+              <AdministratorOverview />
+            </AdminRoute>
+          }
         />
         <Route
           path="/dashboard/administrator/manage-doctors"
@@ -212,7 +224,10 @@ const Router = () => {
           element={<PatientOverview />}
         />
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
-        <Route path="/dashboard/patient/rewards" element={<RewardsDashboard />} />
+        <Route
+          path="/dashboard/patient/rewards"
+          element={<RewardsDashboard />}
+        />
         <Route
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
@@ -225,7 +240,6 @@ const Router = () => {
           path="/dashboard/patient/favorite-doctors"
           element={<MyFavoriteDoctors />}
         />
-
         <Route
           path="/dashboard/patient/my-bedRequest"
           element={<MyBedRequests />}
