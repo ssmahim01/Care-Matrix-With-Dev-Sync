@@ -16,6 +16,9 @@ const ContactUsForm = () => {
     message,
   };
 
+  const handleSubmit = (e) => {
+    
+  }
   // Post Message In Database -->
   try {
     console.log("posted in db");
