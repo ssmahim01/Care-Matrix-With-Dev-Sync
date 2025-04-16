@@ -154,7 +154,7 @@ const ManageMedicines = () => {
       {/* Searchbar & Select & Add button */}
       <div className="flex justify-between gap-4 items-center flex-wrap mb-8">
         {/* Searchbar */}
-        <div className="relative w-[50%] xl:w-full flex flex-1">
+        <div className="relative w-full flex xl:flex-1">
           <input
             className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
             placeholder="Search Medicines..."

@@ -58,12 +58,12 @@ const ManageOrders = () => {
 
       {/* Tabs Navigation */}
       <Tabs defaultValue="All" className="w-full" onValueChange={setActiveTab}>
-        <TabsList className="flex items-center w-full flex-wrap h-full mb-4 border">
+        <TabsList className="flex flex-col md:flex-row items-center w-full flex-wrap h-full mb-4 border">
           {orderStatuses?.map((status) => (
             <TabsTrigger
               key={status}
               value={status}
-              className={"cursor-pointer py-2 px-4"}
+              className={"cursor-pointer py-2 px-4 w-full"}
             >
               {status}
               {status !== "All" ? (
