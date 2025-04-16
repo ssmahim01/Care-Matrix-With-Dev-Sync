@@ -1,24 +1,26 @@
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
 import { FaHome, FaInfoCircle, FaMapMarkerAlt, FaPager } from "react-icons/fa";
+
 import {
-  MdContacts,
   MdDashboard,
   MdKeyboardArrowDown,
   MdMedicalServices,
 } from "react-icons/md";
+
+import useRole from "@/hooks/useRole";
+import { logOut, useAuthLoading } from "@/redux/auth/authActions";
+import { Award, Contact, Moon, Siren, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { CiMenuFries } from "react-icons/ci";
 import { FaUserDoctor } from "react-icons/fa6";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { logOut } from "@/redux/auth/authActions";
-import { Award, Contact, Moon, Siren, X } from "lucide-react";
-import useRole from "@/hooks/useRole";
 import { GiMedicines } from "react-icons/gi";
-import "./Navbar.css";
-import toast from "react-hot-toast";
-import { Separator } from "@/components/ui/separator";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import toast from "react-hot-toast";
+import "./Navbar.css";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -28,7 +30,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const [role] = useRole();
+  const loading = useAuthLoading();
+  const [role, isLoading] = useRole();
 
   const [showImage, setShowImage] = useState(true);
 
@@ -157,7 +160,6 @@ const Navbar = () => {
                 </Link>
               </div>
             </div>
-
             <div className="navbar-end w-full">
               <>
                 <ul className="flex items-center gap-3 text-[#1b1b1b] md:mr-3 mr-1">
@@ -185,7 +187,7 @@ const Navbar = () => {
                       }`}
                     />
                     {isOpen && (
-                      <article className="p-6 bg-[#f3f6f9] rounded-b-lg md:w-[550px] w-[435px] absolute top-[38px] md:right-[-90px] -right-40 z-30 transition-all duration-300 border-t rounded-t-xl border-border">
+                      <article className="p-6 bg-[#f3f6f9] rounded-b-lg md:w-[550px] w-[435px] absolute top-[38px] md:right-[-125px] -right-40 z-30 transition-all duration-300 border-t rounded-t-xl border-border">
                         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
@@ -328,7 +330,11 @@ const Navbar = () => {
                 </Link>
               </div>
 
-              {user ? (
+              {loading || isLoading ? (
+                <div className="flex justify-center items-center">
+                  <span className="loading loading-spinner w-8 h-8 text-[#0E82FD]"></span>
+                </div>
+              ) : user ? (
                 <div className="dropdown dropdown-end avatar-online">
                   <div
                     tabIndex={0}
