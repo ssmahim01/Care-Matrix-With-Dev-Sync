@@ -165,15 +165,27 @@ const Router = () => {
         />
         <Route
           path="/dashboard/administrator/manage-doctors"
-          element={<DoctorsManagement />}
+          element={
+            <AdminRoute>
+              <DoctorsManagement />
+            </AdminRoute>
+          }
         />
         <Route
           path="/dashboard/administrator/manage-users"
-          element={<StuffManagement />}
+          element={
+            <AdminRoute>
+              <StuffManagement />
+            </AdminRoute>
+          }
         />
         <Route
           path="/dashboard/administrator/manage-billing-payments"
-          element={<ManageBillings />}
+          element={
+            <AdminRoute>
+              <ManageBillings />
+            </AdminRoute>
+          }
         />
 
         {/* Pharmacist Routes */}
