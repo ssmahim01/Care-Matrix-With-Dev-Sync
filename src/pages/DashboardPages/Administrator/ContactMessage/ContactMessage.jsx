@@ -25,6 +25,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import MessageDialog from "./MessageDialog";
+import { useState } from "react";
 
 const ContactMessage = () => {
   // Fetch ContactMessage
@@ -39,6 +41,8 @@ const ContactMessage = () => {
       return data;
     },
   });
+
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="px-7">
@@ -107,9 +111,26 @@ const ContactMessage = () => {
                         </div>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
-                        <DropdownMenuItem className={"cursor-pointer"}>
-                          <Eye className="w-4 h-4 mr-2" /> View Message
-                        </DropdownMenuItem>{" "}
+                        <>
+                          {/* Dropdown Menu Item to trigger dialog */}
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onSelect={(e) => {
+                              e.preventDefault(); // ✅ Prevent dropdown from closing before opening the dialog
+                              setIsOpen(true);
+                            }}
+                          >
+                            <Eye className="w-4 h-4 mr-2" />
+                            View Message
+                          </DropdownMenuItem>
+
+                          {/* Dialog should be rendered OUTSIDE the dropdown */}
+                          <MessageDialog
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
+                            message={contact?.message}
+                          />
+                        </>
                         <DropdownMenuItem className={"cursor-pointer"}>
                           <Pencil className="w-4 h-4 mr-2" /> Reply By Email
                         </DropdownMenuItem>
