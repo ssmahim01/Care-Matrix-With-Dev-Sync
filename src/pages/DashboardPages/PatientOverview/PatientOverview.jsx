@@ -1,26 +1,14 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { useQuery } from "@tanstack/react-query";
-import { Pill } from "lucide-react";
 import axios from "axios";
 
 import AppointmentsTab from "./AppointmentsTab";
-import BedBookingsTab from "./BedBookingsTab";
+import PurchaseHistoryTab from "./PurchaseHistoryTab";
 import MedicineCartTab from "./MedicineCartTab";
+import BedBookingsTab from "./BedBookingsTab";
 import OverviewCards from "./OverviewCards";
 import SmartWaitTime from "./SmartWaitTime";
-import PurchaseHistoryTab from "./PurchaseHistoryTab";
 
 const PatientOverview = () => {
   // Fetch patient overview data
@@ -53,6 +41,7 @@ const PatientOverview = () => {
       ? amount
       : `৳${Number(amount).toFixed(2)}`;
   }
+
   return (
     <div className="px-7">
       {/* Overview Cards */}
