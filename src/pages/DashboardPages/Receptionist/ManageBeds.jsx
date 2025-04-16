@@ -25,7 +25,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Pencil, Trash } from "lucide-react";
+import { BedIcon, MoreVertical, Pencil, Trash } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -104,8 +104,8 @@ function ManageBeds() {
     <div className="p-7">
       <DashboardPagesHeader
         title={"Manage Beds"}
-        subtitle={"View and manage all beds"}
-        icon={RiAdvertisementFill}
+        subtitle={"View, Add And Manage All Beds"}
+        icon={BedIcon}
       />
 
       <motion.div
@@ -148,7 +148,7 @@ function ManageBeds() {
                   <TableCell className="font-medium">{i + 1}</TableCell>
                   <TableCell>
                     <Avatar>
-                      <AvatarImage src={bed.image} />
+                      <AvatarImage src={bed.image} className={"object-cover"} />
                       <AvatarFallback>{bed.title[0]}</AvatarFallback>
                     </Avatar>
                   </TableCell>

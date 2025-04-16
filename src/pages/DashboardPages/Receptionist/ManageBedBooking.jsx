@@ -123,8 +123,8 @@ function ManageBedBooking() {
   return (
     <div className="p-7">
       <DashboardPagesHeader
-        title={"Manage Bed Booking Requests"}
-        subtitle={"View and manage all bed booking Requests"}
+        title={"Bed Booking Requests"}
+        subtitle={"View And Manage All Bed Booking Requests"}
         icon={LuBedSingle}
       />
 
