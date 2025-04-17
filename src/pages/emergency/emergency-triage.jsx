@@ -74,10 +74,7 @@ export default function EmergencyTriage() {
 
 
   const [patients, setPatients] = useState(data)
-
-
   const [doctors, setDoctors] = useState(doctor)
-
   const [rooms, setRooms] = useState(bed)
 
 
@@ -86,7 +83,6 @@ export default function EmergencyTriage() {
     // Check if today is in availableDays
     return days.includes(today);
   };
-
 
   const getPriorityColor = (priority) => {
     switch (priority.toLowerCase()) {
@@ -235,6 +231,20 @@ export default function EmergencyTriage() {
     return sortedPatients;
   }
 
+  const handleSearch = async (value) => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/triage/search`, {
+        params: { name: value }
+      });
+      
+      // Assuming you're managing a state to store filtered patients:
+      setPatients(res.data);
+    } catch (error) {
+      console.error("Search error:", error);
+      toast.error("Failed to fetch search results");
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -364,8 +374,7 @@ export default function EmergencyTriage() {
           <Search className="h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search patients..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             className="max-w-sm"
           />
         </div>
@@ -383,7 +392,7 @@ export default function EmergencyTriage() {
         </TabsList>
 
         <TabsContent value="waiting">
-          <Card>
+          <Card className={`pt-3`}>
             <CardHeader>
               <CardTitle>Waiting Patients</CardTitle>
               <CardDescription>Patients waiting for triage assessment and treatment</CardDescription>
@@ -453,7 +462,7 @@ export default function EmergencyTriage() {
 
 
         <TabsContent value="in-treatment">
-          <Card>
+          <Card className={`pt-3`}>
             <CardHeader>
               <CardTitle>Patients In Treatment</CardTitle>
               <CardDescription>Patients currently receiving treatment</CardDescription>
