@@ -57,7 +57,7 @@ const HeroSearch = () => {
       className="relative w-full sm:w-full product_search_input z-40"
     >
       <input
-        className="px-4 py-2 border border-border bg-white rounded-md w-full pl-[40px] outline-none"
+        className="px-4 py-2 border border-border bg-white rounded-md w-full pl-[40px] outline-none cursor-pointer"
         placeholder="Search..."
         onChange={(e) => setSearch(e.target.value)}
         onClick={() => setKeyPressOpen(true)}
@@ -151,7 +151,10 @@ const HeroSearch = () => {
                         </div>
                       </div>
                       <div>
-                        <Link to={`/book-appointment/${doctor?.name || ""}`}>
+                        <Link
+                          to={`/doctor-details/${doctor._id}`}
+                          state={doctor._id}
+                        >
                           <Button
                             size="xs"
                             variant={"outline"}
