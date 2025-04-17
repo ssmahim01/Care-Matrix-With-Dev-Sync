@@ -17,8 +17,13 @@ const Home = () => {
   return (
     <section className="w-full space-y-6">
       {/* Hero Section */}
-      <div className="pb-8">
+      <div className="lg:pt-12 md:pt-8 pt-2 pb-8">
         <Hero />
+      </div>
+      
+      {/* Eid Greeting */}
+      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+        <EidGreetingSection />
       </div>
 
       {/* About us */}
@@ -29,11 +34,6 @@ const Home = () => {
       {/* Stats Section */}
       <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <StatsSection />
-      </div>
-
-      {/* Eid Greeting */}
-      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
-        <EidGreetingSection />
       </div>
 
       {/* Our Services */}

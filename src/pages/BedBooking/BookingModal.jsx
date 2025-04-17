@@ -174,7 +174,7 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch }) => {
               id="bookingReason"
               {...register("bookingReason", {
                 required: "Booking reason is required",
-                minLength: { value: 5, message: "Booking reason must be at least 5 characters" },
+                minLength: { value: 5, message: "Booking reason must be at least 4 characters" },
                 maxLength: { value: 40, message: "Booking reason cannot exceed 40 characters" },
               })}
               className="text-sm sm:text-base"

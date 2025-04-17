@@ -1,6 +1,7 @@
 import { deleteDoctor } from "@/redux/doctors/doctorSlice";
 import {
   BookmarkX,
+  CalendarCheck2,
   EllipsisVertical,
   NotebookPen,
   NotebookTabs,
@@ -15,8 +16,9 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
+import moment from "moment";
 
-const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleDoctorDetails }) => {
+const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleChangeAvailability, handleDoctorDetails }) => {
   const handleDeleteDoctor = async (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -67,7 +69,7 @@ const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleDoctorD
           </p>
         </td>
         <td>{doctor?.department}</td>
-        <td>{new Date(doctor?.requestDate).toLocaleDateString("en-UK")}</td>
+        <td>{moment(doctor?.requestDate).fromNow()}</td>
         <td>{doctor?.shift}</td>
         <td>
           <p
@@ -100,6 +102,14 @@ const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleDoctorD
               >
                 <BookmarkX className="w-4 h-4" />
                 <span>Remove</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
+                onClick={() => handleChangeAvailability(doctor)}
+              >
+                <CalendarCheck2 className="w-4 h-4" />
+                <span>Change Availability</span>
               </DropdownMenuItem>
 
               <DropdownMenuItem

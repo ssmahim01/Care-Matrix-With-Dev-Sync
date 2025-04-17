@@ -9,6 +9,7 @@ import {
 import useRole from "@/hooks/useRole";
 import { useAuthLoading } from "@/redux/auth/authActions";
 import {
+  Award,
   BadgeInfo,
   BedSingle,
   BriefcaseMedical,
@@ -89,7 +90,7 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <Users className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Manage Users{" "}
+                    Manage Staffs{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -101,7 +102,7 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/reports">
+              {/* <NavLink to="/dashboard/reports">
                 <h3 className="flex gap-2 items-center">
                   <ChartPie className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
@@ -117,14 +118,15 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/payments">
+             */}
+              <NavLink to="/dashboard/administrator/manage-billing-payments">
                 <h3 className="flex gap-2 items-center">
                   <CreditCard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Billing & Payments{" "}
                   </span>
                 </h3>
-              </NavLink>
+              </NavLink> 
               <div className="divider mt-2"></div>
             </>
           )}
@@ -192,15 +194,6 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              {/* <NavLink to="/dashboard/pharmacist/orders-history">
-                <h3 className="flex gap-2 items-center">
-                  <FaHistory className="text-2xl" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    {" "}
-                    Orders History{" "}
-                  </span>
-                </h3>
-              </NavLink> */}
               <NavLink to="/dashboard/pharmacist/manage-orders">
                 <h3 className="flex gap-2 items-center">
                   <FaTruck className="text-2xl" />
@@ -240,6 +233,18 @@ export function NavMain() {
                 </h3>
               </NavLink>
               <NavLink
+                to="/dashboard/patient/rewards"
+                className={
+                  "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+                }
+              >
+                <Award className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  My Rewards
+                </span>
+              </NavLink>
+
+              <NavLink
                 to="/dashboard/patient/request-form"
                 className={
                   "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
@@ -269,7 +274,7 @@ export function NavMain() {
                   "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
                 }
               >
-                <FaUserDoctor className="text-base" />
+                <FaUserDoctor size={25} />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
                   My Favorite Doctors
                 </span>

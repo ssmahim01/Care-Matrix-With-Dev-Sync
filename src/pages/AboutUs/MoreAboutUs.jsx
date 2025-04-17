@@ -57,7 +57,7 @@ const MoreAboutUs = () => {
           </div>
 
           {/* Learn More Button */}
-          <Link to="#" className="mt-8 inline-flex items-center text-[#0E82FD] font-medium hover:underline">
+          <Link to="/contact-us" className="mt-8 inline-flex items-center text-[#0E82FD] font-medium hover:underline">
             Learn More <FaArrowRight className="ml-2" />
           </Link>
         </div>

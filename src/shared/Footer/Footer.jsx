@@ -3,9 +3,9 @@ import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className="bg-white">
-      <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-8">
-        <div className="flex flex-col sm:flex-row flex-wrap gap-12 justify-between items-stretch">
+    <footer className="bg-white/80">
+      <div className="max-w-screen-2xl mx-auto pb-12 border-t pt-8">
+        <div className="w-11/12 lg:w-10/12 mx-auto flex flex-col sm:flex-row flex-wrap gap-12 justify-between items-stretch">
           {/* Logo DIV */}
           <div>
             {/* Logo */}
@@ -24,7 +24,7 @@ const Footer = () => {
               {/* Facebook */}
               <li>
                 <a
-                  href="#"
+                  href="https://www.facebook.com/ssmahim"
                   rel="noreferrer"
                   target="_blank"
                   className="text-gray-700 transition hover:opacity-75"
@@ -68,7 +68,7 @@ const Footer = () => {
               {/* Github */}
               <li>
                 <a
-                  href="#"
+                  href="https://github.com/ssmahim01/Care-Matrix-With-Dev-Sync"
                   rel="noreferrer"
                   target="_blank"
                   className="text-gray-700 transition hover:opacity-75"
@@ -173,7 +173,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/emergency"
                   className="text-gray-700 transition hover:opacity-75"
                 >
                   Emergency Department
@@ -286,7 +286,7 @@ const Footer = () => {
           </div>
         </div>
         {/* Copy Rights */}
-        <p className="mt-6 text-base text-gray-500">
+        <p className="w-11/12 lg:w-10/12 mx-auto mt-6 text-base text-gray-500">
           &copy; 2025. DEVSYNC-Care-Matrix. All rights reserved.
         </p>
       </div>
