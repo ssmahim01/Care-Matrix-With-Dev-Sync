@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <section className="w-full space-y-6">
       {/* Hero Section */}
-      <div className="pb-8">
+      <div className="lg:pt-12 md:pt-8 pt-2 pb-8">
         <Hero />
       </div>
       

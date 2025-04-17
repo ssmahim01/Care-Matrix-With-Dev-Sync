@@ -90,7 +90,7 @@ const Login = () => {
 
   return (
     <div className="bg-blue-100/20">
-      <div className="w-11/12 mx-auto xl:w-10/12 min-h-screen px-4 py-12 flex flex-col md:flex-row gap-6 items-center justify-center max-w-screen-xl">
+      <div className="mx-auto xl:w-10/12 min-h-screen px-4 py-12 flex flex-col md:flex-row gap-6 items-center justify-center max-w-screen-xl">
         {/* Image Div */}
         <div className="hidden lg:flex flex-col w-5/12">
           {/* <div className="mb-4">
@@ -122,6 +122,13 @@ const Login = () => {
               }
             >
               Administrator
+            </Badge>
+
+            <Badge
+              className="cursor-pointer bg-[#064654]"
+              onClick={() => handleBadgeClick("doctor@carematrix.com", "Doctor123@")}
+            >
+              Doctor
             </Badge>
 
             <Badge

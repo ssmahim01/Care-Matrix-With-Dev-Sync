@@ -21,6 +21,7 @@ import toast from "react-hot-toast"
 import { useQuery } from "@tanstack/react-query"
 import { Delete } from "lucide-react"
 import { X } from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
 
 export default function AmbulanceBooking() {
 
@@ -158,7 +159,47 @@ export default function AmbulanceBooking() {
   }
 
   const handleDelete = async (id) => {
-    console.log(id)
+    if(role !== "administrator") return toast.error("Admin Only")
+      toast.custom((t) => (
+        <AnimatePresence>
+          {t.visible && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.25 }}
+              className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md mx-auto flex flex-col items-center justify-center text-center space-y-4 z-[9999] border border-gray-200"
+            >
+              <h2 className="text-lg font-semibold text-gray-800">Are you absolutely sure?</h2>
+              <p className="text-sm text-gray-600">This action cannot be undone.</p>
+              <div className="flex gap-4 mt-2">
+                <button
+                  onClick={async () => {
+                    toast.dismiss(t.id);
+                    try {
+                      const res = await axios.delete(`${import.meta.env.VITE_API_URL}/ambulance/delete-ambulance/${id}`);
+                      toast.success(res.data.message);
+                    } catch (error) {
+                      toast.error(error.message || 'Something went wrong');
+                    } finally {
+                      refetch();
+                    }
+                  }}
+                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all duration-200"
+                >
+                  Yes, Delete
+                </button>
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-150"
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      ), { position: 'top-center', duration: Infinity });
   }
 
   return (
@@ -182,12 +223,89 @@ export default function AmbulanceBooking() {
         </div>
       </div>
 
-      <Tabs defaultValue="book">
+      <Tabs defaultValue="available">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="book">Book Ambulance</TabsTrigger>
           <TabsTrigger value="available">Available Ambulances</TabsTrigger>
-          <TabsTrigger value="active">Active Dispatches</TabsTrigger>
+          <TabsTrigger value="book">Book Ambulance</TabsTrigger>
+          <TabsTrigger value="active">Active Bookings</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="available" >
+          <Card>
+            <CardHeader className={`mt-4 flex items-center justify-between`}>
+              <div>
+                <CardTitle>Available Ambulances</CardTitle>
+                <CardDescription>View and book available ambulance units</CardDescription>
+              </div>
+
+              {role !== "administrator" ? null : (
+                <AddAmbulance
+                  handleAddAmbulance={handleAddAmbulance}
+                  isAddDialogOpen={isAddDialogOpen}
+                  setIsAddDialogOpen={setIsAddDialogOpen}
+                />
+              )}
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4 flex items-center gap-2">
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {ambulances.map((ambulance) => (
+                  <Card key={ambulance._id} className=" relative group transition-all duration-300 ease-in-out">
+                    <CardHeader className={cn("py-3 rounded-t-xl", getStatusColor(ambulance.status))}>
+                      <div className="flex justify-between items-center">
+                        <CardTitle className="text-sm font-medium text-white capitalize">{ambulance._id.slice(-6)}</CardTitle>
+                        <Badge variant="outline" className="bg-white/20 text-white">
+                          {ambulance.status}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4">
+                      <div className="grid gap-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Name:</span>
+                          <span>{ambulance.name}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Location:</span>
+                          <span>{ambulance.location}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">ETA:</span>
+                          <span>{ambulance.eta}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Type:</span>
+                          <span>{ambulance.type}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Crew:</span>
+                          <span>{ambulance.crew} personnel</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="border-t p-3 bg-muted/40">
+                      <Button
+                        variant={ambulance.status === "available" ? "default" : "outline"}
+                        size="sm"
+                        className="w-full"
+                        disabled={ambulance.status !== "available"}
+                      >
+                        {ambulance.status === "available" ? "Book Now" : "Not Available"}
+                      </Button>
+                    </CardFooter>
+                    <div className="group-hover:inline-block absolute hidden transition-all duration-300 -right-3 -top-3">
+                      <Button size={"icon"} onClick={() => handleDelete(ambulance._id)} className={"rounded-full bg-red-700 transition-all duration-300 size-8"}>
+                        <X className="transition-all duration-300" />
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="book">
           <Card>
             <CardHeader>
@@ -483,81 +601,7 @@ export default function AmbulanceBooking() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="available" >
-          <Card>
-            <CardHeader className={`mt-4 flex items-center justify-between`}>
-              <div>
-                <CardTitle>Available Ambulances</CardTitle>
-                <CardDescription>View and book available ambulance units</CardDescription>
-              </div>
-
-              {role !== "administrator" ? null : (
-                <AddAmbulance
-                  handleAddAmbulance={handleAddAmbulance}
-                  isAddDialogOpen={isAddDialogOpen}
-                  setIsAddDialogOpen={setIsAddDialogOpen}
-                />
-              )}
-            </CardHeader>
-            <CardContent>
-              <div className="mb-4 flex items-center gap-2">
-              </div>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {ambulances.map((ambulance) => (
-                  <Card key={ambulance._id} className=" relative group transition-all duration-300 ease-in-out">
-                    <CardHeader className={cn("py-3 rounded-t-xl", getStatusColor(ambulance.status))}>
-                      <div className="flex justify-between items-center">
-                        <CardTitle className="text-sm font-medium text-white capitalize">{ambulance._id.slice(-6)}</CardTitle>
-                        <Badge variant="outline" className="bg-white/20 text-white">
-                          {ambulance.status}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-4">
-                      <div className="grid gap-2">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Name:</span>
-                          <span>{ambulance.name}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Location:</span>
-                          <span>{ambulance.location}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">ETA:</span>
-                          <span>{ambulance.eta}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Type:</span>
-                          <span>{ambulance.type}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Crew:</span>
-                          <span>{ambulance.crew} personnel</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                    <CardFooter className="border-t p-3 bg-muted/40">
-                      <Button
-                        variant={ambulance.status === "available" ? "default" : "outline"}
-                        size="sm"
-                        className="w-full"
-                        disabled={ambulance.status !== "available"}
-                      >
-                        {ambulance.status === "available" ? "Book Now" : "Not Available"}
-                      </Button>
-                    </CardFooter>
-                    <div className="group-hover:inline-block absolute hidden transition-all duration-300 -right-3 -top-3">
-                      <Button size={"icon"} onClick={() => handleDelete(ambulance._id)} className={"rounded-full bg-red-700 transition-all duration-300 size-8"}>
-                        <X className="transition-all duration-300" />
-                      </Button>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+        
         <TabsContent value="active">
           <Card>
             <CardHeader>

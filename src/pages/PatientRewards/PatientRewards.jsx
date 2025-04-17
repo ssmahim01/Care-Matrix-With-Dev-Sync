@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import { Award, Heart, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuthUser } from "@/redux/auth/authActions";
+import useRole from "@/hooks/useRole";
 
 const PatientRewards = () => {
+  const user = useAuthUser();
+  const [role] = useRole();
+
   return (
     <div className="min-h-screen">
       {/* Banner Section */}
@@ -113,15 +118,16 @@ const PatientRewards = () => {
               "url('https://i.ibb.co.com/rRrh6LkK/phone-doctor.jpg')",
           }}
         >
-          <h3 className="lg:text-left text-center md:text-3xl text-2xl font-bold lg:text-white mb-4">
+          <h3 className="lg:text-left text-center md:text-3xl text-2xl font-bold text-white/90 mb-4">
             Ready to Start Earning?
           </h3>
-          <p className="lg:text-left text-center lg:text-white text-base md:text-lg mb-6 md:max-w-md lg:mx-0 md:mx-auto">
+          <p className="lg:text-left text-center text-white/95 font-medium text-base md:text-base mb-6 md:max-w-md lg:mx-0 md:mx-auto">
             Join Care Matrix today to track your health and unlock exclusive
             rewards!
           </p>
-          <div className="flex flex-col sm:flex-row lg:justify-start justify-center items-center gap-4">
-            <Link to="/dashboard">
+          {user && role === "patient" ? (
+            <div className="flex flex-col sm:flex-row lg:justify-start justify-center items-center gap-4">
+            <Link to="/dashboard/patient-overview">
               <Button className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-md text-lg font-medium cursor-pointer">
                 Go to Dashboard
               </Button>
@@ -132,6 +138,11 @@ const PatientRewards = () => {
               </Button>
             </Link>
           </div>
+          ) : (
+            <div className="lg:text-left text-center">
+              <p className="text-rose-500 md:text-base text-xs font-bold">Only logged in patients can view action buttons...</p>
+            </div>
+          )}
         </div>
       </section>
     </div>

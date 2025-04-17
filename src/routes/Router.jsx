@@ -55,6 +55,7 @@ import EmergencyAmbulanceBooking from "@/pages/emergency/emergency-ambulance-boo
 import EmergencyTriage from "@/pages/emergency/emergency-triage";
 import PatientOverview from "@/pages/DashboardPages/PatientOverview/PatientOverview";
 import RewardsDashboard from "@/pages/Patient/Rewards/RewardsDashboard";
+import ManageBillings from "@/pages/DashboardPages/Administrator/ManageBillings";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -157,6 +158,10 @@ const Router = () => {
         <Route
           path="/dashboard/administrator/manage-users"
           element={<StuffManagement />}
+        />
+        <Route
+          path="/dashboard/administrator/manage-billing-payments"
+          element={<ManageBillings />}
         />
 
         {/* Pharmacist Routes */}

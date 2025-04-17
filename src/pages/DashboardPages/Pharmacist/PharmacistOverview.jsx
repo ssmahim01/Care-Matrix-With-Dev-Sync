@@ -72,7 +72,7 @@ const PharmacistOverview = () => {
         nearExpiryCount={stats?.nearExpiryCount}
       />
       {/* Category & Prescription Chart */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-7">
         {/* Medicines Per Category Chart */}
         <CategoryChart chartData={chartData} isLoading={isLoading} />
         {/* Prescription Chart */}
@@ -102,7 +102,7 @@ const PharmacistOverview = () => {
         </div>
       </div>
       {/* Manufacturer & Supplier Table & Storage Condition Table */}
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+      <div className="mt-6 grid gap-4 grid-cols-1 lg:grid-cols-7">
         {/* Manufacturer */}
         <Card className="lg:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader>
