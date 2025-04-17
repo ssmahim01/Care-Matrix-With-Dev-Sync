@@ -62,6 +62,14 @@ export default function EmergencyTriage() {
     },
   })
 
+  const { data: bed = [], refetch: bedRefetch} = useQuery({
+    queryKey: ["bed"],
+    queryFn: async () => {
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/beds`)
+        setRooms(data)
+        return data
+    },
+  })
 
 
   const [patients, setPatients] = useState(data)
@@ -69,15 +77,7 @@ export default function EmergencyTriage() {
 
   const [doctors, setDoctors] = useState(doctor)
 
-  const [rooms, setRooms] = useState([
-    { id: "ER-1", name: "ER Room 1", status: "Available" },
-    { id: "ER-2", name: "ER Room 2", status: "Available" },
-    { id: "ER-3", name: "ER Room 3", status: "Occupied" },
-    { id: "ER-4", name: "ER Room 4", status: "Available" },
-    { id: "ER-5", name: "ER Room 5", status: "Occupied" },
-    { id: "ER-6", name: "Trauma Room 1", status: "Available" },
-    { id: "ER-7", name: "Trauma Room 2", status: "Occupied" },
-  ])
+  const [rooms, setRooms] = useState(bed)
 
 
 const isAvailableToday = (days) => {
@@ -150,13 +150,16 @@ const isAvailableToday = (days) => {
     e.preventDefault()
     const form = e.target;
     const assignedDoctor = form.assignedDoctor.value;
-    const assignedRoom = form.assignedRoom.value;
+    const roomId = form.assignedRoom.value;
+
+    const assignedRoom = rooms.find(rom=> rom._id === roomId)
 
 
     if (selectedPatient) {
       try {
-        const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-assigned/${selectedPatient._id}`, selectedPatient)
-        console.log(res.data)
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-assigned/${selectedPatient._id}`, { assignedDoctor, assignedRoom: assignedRoom.title} )
+        const bedRes = await axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${roomId}`, {status: "booked"})
+        if(bedRes.data) bedRefetch()
         toast.success(res.data?.message)
       } catch (error) {
         console.log(error)
@@ -170,6 +173,10 @@ const isAvailableToday = (days) => {
   const openAssignDialog = (patient) => {
     setSelectedPatient(patient)
     setIsAssignDialogOpen(true)
+  }
+
+  const handleCompleteTreatment = async () => {
+    console.log("object")
   }
 
   // const sortPatientsByPriority = () => {
@@ -424,7 +431,7 @@ const isAvailableToday = (days) => {
                     .filter((patient) => patient.status === "in-treatment")
                     .map((patient) => (
                       <TableRow key={patient._id}>
-                        <TableCell className="font-medium">{patient._id}</TableCell>
+                        <TableCell className="font-medium">{patient._id.slice(-6)}</TableCell>
                         <TableCell>
                           <div>
                             <div className="font-medium">{patient.name}</div>
@@ -439,7 +446,7 @@ const isAvailableToday = (days) => {
                           {patient.assignedDoctor ? (
                             <div className="flex items-center gap-1">
                               <Stethoscope className="h-4 w-4 text-blue-600" />
-                              <span>Dr. Sarah Johnson</span>
+                              <span>{patient.assignedDoctor}</span>
                             </div>
                           ) : (
                             "Not assigned"
@@ -448,7 +455,7 @@ const isAvailableToday = (days) => {
                         <TableCell>
                           {patient.assignedRoom ? (
                             <Badge variant="outline" className="bg-blue-100 text-blue-800">
-                              ER Room 1
+                              {patient.assignedRoom}
                             </Badge>
                           ) : (
                             "Not assigned"
@@ -456,10 +463,11 @@ const isAvailableToday = (days) => {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
-                            <Button variant="outline" size="sm">
+                            {/* Will be added in the feature to update all the info */}
+                            {/* <Button  variant="outline" size="sm">
                               Update
-                            </Button>
-                            <Button variant="outline" size="sm">
+                            </Button> */}
+                            <Button onClick={handleCompleteTreatment} variant="outline" size="sm">
                               Complete
                             </Button>
                           </div>
@@ -477,7 +485,7 @@ const isAvailableToday = (days) => {
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Available Doctors</CardTitle>
+                <CardTitle className={`pt-3`}>Available Doctors</CardTitle>
                 <CardDescription>Doctors available for emergency cases</CardDescription>
               </CardHeader>
               <CardContent>
@@ -504,7 +512,7 @@ const isAvailableToday = (days) => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Available Rooms</CardTitle>
+                <CardTitle className={`pt-3`}>Available Rooms</CardTitle>
                 <CardDescription>Emergency rooms available for patients</CardDescription>
               </CardHeader>
               <CardContent>
@@ -515,18 +523,18 @@ const isAvailableToday = (days) => {
                         key={room.id}
                         className={cn(
                           "flex flex-col items-center justify-center rounded-lg border p-4 text-center",
-                          room.status === "Available" ? "bg-green-50" : "bg-red-50",
+                          room.status === "available" ? "bg-green-50" : "bg-red-50",
                         )}
                       >
                         <div
                           className={cn(
                             "mb-2 rounded-full p-2",
-                            room.status === "Available" ? "bg-green-100" : "bg-red-100",
+                            room.status === "available" ? "bg-green-100" : "bg-red-100",
                           )}
                         >
-                          {room.status === "Available" ? (
+                          {room.status === "available" ? (
                             <Check
-                              className={cn("h-5 w-5", room.status === "Available" ? "text-green-600" : "text-red-600")}
+                              className={cn("h-5 w-5", room.status === "available" ? "text-green-600" : "text-red-600")}
                             />
                           ) : (
                             <X className="h-5 w-5 text-red-600" />
@@ -535,8 +543,8 @@ const isAvailableToday = (days) => {
                         <p className="font-medium">{room.name}</p>
                         <Badge
                           variant="outline"
-                          className={cn(
-                            room.status === "Available" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800",
+                          className={cn("capitalize",
+                            room.status === "available" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800",
                           )}
                         >
                           {room.status}
@@ -583,8 +591,8 @@ const isAvailableToday = (days) => {
                     </SelectTrigger>
                     <SelectContent>
                       {doctors.map((doctor) => (
-                        <SelectItem key={doctor._id} value={doctor._id} disabled={isAvailableToday(doctor.available_days)}>
-                          {doctor.name} {isAvailableToday(doctor.available_days) ? "(Busy)" : "(Available)"}
+                        <SelectItem key={doctor._id} value={doctor.name} disabled={isAvailableToday(doctor.available_days)}>
+                          {doctor.name} {isAvailableToday(doctor.available_days) ? "(Not available)" : "(Available)"}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -594,14 +602,14 @@ const isAvailableToday = (days) => {
                   <Label htmlFor="room" className="text-right">
                     Room
                   </Label>
-                  <Select name="assignedRoom" >
+                  <Select name="assignedRoom" className="capitalize" >
                     <SelectTrigger className="col-span-3">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className={`capitalize`}>
                       {rooms.map((room) => (
-                        <SelectItem key={room.id} value={room.id} disabled={room.status !== "Available"}>
-                          {room.name} {room.status !== "Available" && "(Occupied)"}
+                        <SelectItem className={`lowercase`} key={room._id} value={room._id} disabled={room.status !== "available"}>
+                          {room.title} {room.status !== "available" && "(Occupied)"}
                         </SelectItem>
                       ))}
                     </SelectContent>
