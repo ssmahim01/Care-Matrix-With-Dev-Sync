@@ -1,13 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { CalendarIcon, CircleDollarSign, Download, TrendingUp} from "lucide-react";
 import { format } from "date-fns";
-import {
-  CalendarIcon,
-  CircleDollarSign,
-  Download,
-  TrendingUp,
-} from "lucide-react";
 
 const RevenueInsightsHeader = () => {
   const currentDate = format(new Date(), "MMMM d, yyyy");
