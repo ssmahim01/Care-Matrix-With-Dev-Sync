@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import RevenueOverviewCards from "./RevenueOverviewCards";
+import RevenueByDateChart from "./RevenueByDateChart";
 
 const RevenueInsights = () => {
   const axiosPublic = useAxiosPublic();
@@ -31,9 +32,9 @@ const RevenueInsights = () => {
     <div className="px-7">
       <RevenueInsightsHeader />
       {/* Main Tab Contents */}
-      <Tabs defaultValue="overview" className="space-y-4 mt-6">
+      <Tabs defaultValue="overview" className="space-y-4 mt-10">
         {/* All Tablist */}
-        <TabsList className="border w-full flex flex-col lg:flex-row mb-1">
+        <TabsList className="border w-full flex flex-col lg:flex-row mb-4">
           <TabsTrigger
             value="overview"
             className={"cursor-pointer py-2 px-4 w-full "}
@@ -68,6 +69,10 @@ const RevenueInsights = () => {
             avgRevenuePerAppointment={revenueInsights?.avgRevenuePerAppointment}
             totalAppointments={revenueInsights?.totalAppointments}
           />
+          {/* RevenueByDateChart */}
+          <div className="mt-6">
+            <RevenueByDateChart chartData={revenueInsights?.revenueByDay} />
+          </div>
         </TabsContent>
         {/* 2nd Tab Content */}
         <TabsContent value="revenue-analytics">revenue-analytics</TabsContent>

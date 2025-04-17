@@ -12,7 +12,7 @@ const RevenueOverviewCards = ({
   return (
     <div className="grid gap-4 lg:grid-cols-2 2xl:grid-cols-4">
       {/* Total Revenue */}
-      <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
+      <Card className="border shadow-none border-[#e5e7eb] w-full py-6 grid place-items-stretch">
         <CardHeader className="flex flex-row-reverse justify-end items-center space-y-0">
           <CardTitle className="text-lg font-semibold">Total Revenue</CardTitle>
           <div className="h-8 w-8 rounded-full bg-sky-500/20 flex items-center justify-center">
@@ -33,9 +33,9 @@ const RevenueOverviewCards = ({
           </div>
         </CardContent>
       </Card>
-      
+
       {/* Avg Revenue Per Appointment */}
-      <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
+      <Card className="border shadow-none border-[#e5e7eb] w-full py-6 grid place-items-stretch">
         <CardHeader className="flex flex-row-reverse justify-end items-center space-y-0">
           <CardTitle className="text-lg font-semibold">Avg Revenue</CardTitle>
           <div className="h-8 w-8 rounded-full bg-indigo-500/20 flex items-center justify-center">
@@ -46,14 +46,17 @@ const RevenueOverviewCards = ({
           <div className="text-3xl font-extrabold">
             ৳ {avgRevenuePerAppointment?.toFixed(2) || "0.00"}
           </div>
-          <p className="text-xs text-muted-foreground mt-2">
+          <Badge
+            variant="secondary"
+            className="text-xs mt-2 bg-purple-100 text-purple-800 hover:bg-purple-100"
+          >
             Based on recent appointments
-          </p>
+          </Badge>
         </CardContent>
       </Card>
 
       {/* Unique Patients & Today’s Appointments */}
-      <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
+      <Card className="border shadow-none border-[#e5e7eb] w-full py-6 grid place-items-stretch">
         <CardHeader className="flex flex-row-reverse justify-end items-center space-y-0">
           <CardTitle className="text-lg font-semibold">
             Patients & Appointments
@@ -77,7 +80,7 @@ const RevenueOverviewCards = ({
       </Card>
 
       {/* Total Appointments */}
-      <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
+      <Card className="border shadow-none border-[#e5e7eb] w-full py-6 grid place-items-stretch">
         <CardHeader className="flex flex-row-reverse justify-end items-center space-y-0">
           <CardTitle className="text-lg font-semibold">
             Total Appointments
@@ -88,9 +91,12 @@ const RevenueOverviewCards = ({
         </CardHeader>
         <CardContent className="ml-1 -mt-3">
           <div className="text-3xl font-bold">{totalAppointments}</div>
-          <p className="text-xs text-muted-foreground mt-2">
+          <Badge
+            variant="secondary"
+            className="text-xs mt-2 bg-orange-100 text-orange-800 hover:bg-orange-100"
+          >
             All-time appointment count
-          </p>
+          </Badge>
         </CardContent>
       </Card>
     </div>
