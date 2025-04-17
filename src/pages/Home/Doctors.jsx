@@ -7,9 +7,10 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import DoctorCardSkeleton from "../Doctors/DoctorCardSkeleton";
 
 const Doctors = () => {
-  const [doctors] = useDoctors();
+  const [doctors, isLoading] = useDoctors();
 
   let settings = {
     dots: false,
@@ -67,9 +68,11 @@ const Doctors = () => {
           {/* section-content */}
           <div className="mt-6 w-11/12 md:w-full mx-auto">
             <Slider {...settings}>
-              {doctors?.map((doctor) => (
-                <DoctorCard key={doctor._id} doctor={doctor}></DoctorCard>
-              ))}
+              {isLoading
+                ? [1, 2, 3, 4].map((_, i) => <DoctorCardSkeleton key={i} />)
+                : doctors?.map((doctor) => (
+                    <DoctorCard key={doctor._id} doctor={doctor}></DoctorCard>
+                  ))}
             </Slider>
           </div>
         </div>
