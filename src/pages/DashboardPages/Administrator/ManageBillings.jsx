@@ -6,6 +6,7 @@ import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { CreditCard } from "lucide-react";
 import PaymentsTable from "./Billing&Payments/PaymentsTable";
 import Swal from "sweetalert2";
+import { IoIosSearch } from "react-icons/io";
 
 function ManageBillings() {
   const axiosSecure = useAxiosSecure();
@@ -74,17 +75,44 @@ function ManageBillings() {
         <div className="text-center text-red-500">
           Error loading payments: {error.message || "Please try again later."}
         </div>
+
+
       </div>
     );
   }
 
   return (
     <div className="p-7">
-      <DashboardPagesHeader
+     <div className="flex flex-col md:flex-row items-center justify-between mb-4">
+     <DashboardPagesHeader
         title="Payment Records"
         subtitle="View and Manage All Payment Records"
         icon={CreditCard}
       />
+
+
+        {/* search options  */}
+
+        <div className="relative md:w-2/5 flex ">
+          <input
+            className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
+            placeholder="Search Patient by name or number..."
+            // onChange={(e) => setSearch(e.target.value)}
+            // value={search}
+          />
+          <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
+
+          {/* shortcut hint */}
+          {/* <div className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-100 p-[6px] rounded-md text-gray-500">
+            Ctrl + E
+          </div> */}
+        </div>
+
+
+
+     </div>
+
+
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
