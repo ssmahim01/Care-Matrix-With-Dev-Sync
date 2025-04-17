@@ -37,6 +37,7 @@ import toast from "react-hot-toast"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
+import { AnimatePresence, motion } from "framer-motion"
 
 export default function EmergencyTriage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -151,13 +152,12 @@ const isAvailableToday = (days) => {
     const form = e.target;
     const assignedDoctor = form.assignedDoctor.value;
     const roomId = form.assignedRoom.value;
-
     const assignedRoom = rooms.find(rom=> rom._id === roomId)
 
 
     if (selectedPatient) {
       try {
-        const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-assigned/${selectedPatient._id}`, { assignedDoctor, assignedRoom: assignedRoom.title} )
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-assigned/${selectedPatient._id}`, { assignedDoctor, assignedRoom: assignedRoom.title, roomId} )
         const bedRes = await axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${roomId}`, {status: "booked"})
         if(bedRes.data) bedRefetch()
         toast.success(res.data?.message)
@@ -175,8 +175,49 @@ const isAvailableToday = (days) => {
     setIsAssignDialogOpen(true)
   }
 
-  const handleCompleteTreatment = async () => {
-    console.log("object")
+  const handleCompleteTreatment = async (patientId, roomId) => {
+      toast.custom((t) => (
+        <AnimatePresence>
+          {t.visible && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.25 }}
+              className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md mx-auto flex flex-col items-center justify-center text-center space-y-4 z-[9999] border border-gray-200"
+            >
+              <h2 className="text-lg font-semibold text-gray-800">Are you sure?</h2>
+              <p className="text-sm text-gray-600">This complete the treatment task.</p>
+              <div className="flex gap-4 mt-2">
+              <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-150"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={async () => {
+                    toast.dismiss(t.id);
+                    try {
+                      const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-status/${patientId}`);
+                      await axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${roomId}`, {status: "available"})
+                      toast.success(res.data.message);
+                    } catch (error) {
+                      toast.error(error.message || 'Something went wrong');
+                    } finally {
+                      refetch();
+                    }
+                  }}
+                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all duration-200"
+                >
+                  Treatment Complete
+                </button>
+                
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      ), { position: 'top-right', duration: Infinity });
   }
 
   // const sortPatientsByPriority = () => {
@@ -428,7 +469,7 @@ const isAvailableToday = (days) => {
                 </TableHeader>
                 <TableBody>
                   {patients
-                    .filter((patient) => patient.status === "in-treatment")
+                    .filter((patient) => patient.status === "in-treatment" || patient.status === "completed")
                     .map((patient) => (
                       <TableRow key={patient._id}>
                         <TableCell className="font-medium">{patient._id.slice(-6)}</TableCell>
@@ -467,9 +508,19 @@ const isAvailableToday = (days) => {
                             {/* <Button  variant="outline" size="sm">
                               Update
                             </Button> */}
-                            <Button onClick={handleCompleteTreatment} variant="outline" size="sm">
+                            {patient.status === "completed" 
+                            ? 
+                            (
+                              <Badge className={`bg-green-400`}>
+                                Completed
+                              </Badge>
+                            )
+                            : 
+                            (
+                              <Button onClick={()=>handleCompleteTreatment(patient._id, patient.roomId )} variant="outline" size="sm">
                               Complete
                             </Button>
+                            )}
                           </div>
                         </TableCell>
                       </TableRow>
@@ -520,7 +571,7 @@ const isAvailableToday = (days) => {
                   <div className="grid grid-cols-2 gap-4">
                     {rooms.map((room) => (
                       <div
-                        key={room.id}
+                        key={room._id}
                         className={cn(
                           "flex flex-col items-center justify-center rounded-lg border p-4 text-center",
                           room.status === "available" ? "bg-green-50" : "bg-red-50",
