@@ -117,7 +117,11 @@ const HeroSearch = () => {
 
             <div className="mt-4 h-[300px] overflow-y-auto">
               {isLoading ? (
-                <HeroDoctorSkeleton />
+                <div className="space-y-4">
+                  {[1, 2, 3].map((_, i) => (
+                    <HeroDoctorSkeleton key={i} />
+                  ))}
+                </div>
               ) : (
                 doctors?.map((doctor, index) => (
                   <div
