@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { ClipboardPlus, MoreVertical, Trash } from 'lucide-react';
 import { BiDetail } from 'react-icons/bi';
@@ -22,14 +23,16 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const MyAppointments = () => {
-    const [appointments, refetch, isLoading] = useMyAppointments();
+
+    const [sortDate, setSortDate] = useState("");
+    const [selectedSort, setSelectedSort] = useState("");
+    const [appointments, refetch, isLoading] = useMyAppointments(sortDate);
     const axiosSecure = useAxiosSecure();
     const [showSkeleton, setShowSkeleton] = useState(true);
 
     const [openModal, setOpenModal] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
 
-    const [sortDate, setSortDate] = useState("");
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -68,15 +71,13 @@ const MyAppointments = () => {
         setOpenModal(true);
     };
 
-    // Sort appointments based on selected date option
-    const sortedAppointments = [...appointments]?.sort((a, b) => {
-        if (sortDate === "asc") {
-            return new Date(a.date) - new Date(b.date);
-        } else if (sortDate === "desc") {
-            return new Date(b.date) - new Date(a.date);
-        }
-        return 0;
-    });
+    const handleSortByDate = (value) => {
+        console.log("sort by ", value);
+        setSortDate(value)
+
+    }
+
+    console.log("Sort by ", sortDate);
 
     return (
         <div className='p-7'>
@@ -89,7 +90,10 @@ const MyAppointments = () => {
 
                 {/* Sort Controls */}
                 <div className="flex gap-4 mb-6 items-center flex-wrap">
-                    <Select value={sortDate} onValueChange={setSortDate}>
+                    <Select value={selectedSort} onValueChange={(value) => {
+                        handleSortByDate(value);
+                        setSelectedSort(value);
+                    }}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Sort By" />
                         </SelectTrigger>
@@ -99,7 +103,8 @@ const MyAppointments = () => {
                         </SelectContent>
                     </Select>
 
-                    <Button onClick={() => setSortDate("")}>Reset</Button>
+                    <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); }}>Reset</Button>
+                    
                 </div>
             </div>
 
@@ -132,7 +137,7 @@ const MyAppointments = () => {
                             </TableRow>
                         ))
                     ) : (
-                        sortedAppointments?.map((appointment, index) => (
+                        appointments?.map((appointment, index) => (
                             <TableRow key={appointment._id} className="hover:bg-gray-50">
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{appointment.doctorName}</TableCell>
