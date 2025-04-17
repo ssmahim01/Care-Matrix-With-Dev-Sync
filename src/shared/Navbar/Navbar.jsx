@@ -82,13 +82,6 @@ const Navbar = () => {
       </NavLink>
       <NavLink
         className="flex gap-1 items-center"
-        to="/contact-us"
-        onClick={() => setIsMenuOpen(false)}
-      >
-        <Contact size={20} /> <span className="font-bold">Contact Us</span>
-      </NavLink>
-      <NavLink
-        className="flex gap-1 items-center"
         to="/pharmacy"
         onClick={() => setIsMenuOpen(false)}
       >
@@ -195,7 +188,7 @@ const Navbar = () => {
                       }`}
                     />
                     {isOpen && (
-                      <article className="p-6 bg-[#f3f6f9] rounded-b-lg md:w-[550px] w-[435px] absolute top-[38px] md:right-[-125px] -right-40 z-30 transition-all duration-300 border-t rounded-t-xl border-border">
+                      <article className="p-6 bg-[#f3f6f9] rounded-b-lg md:w-[550px] w-[435px] absolute top-[38px] md:right-[-125px] -right-40 z-30 transition-all duration-300 rounded-t-md border-border">
                         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                           <ul className="flex flex-col gap-4 text-gray-800">
                             <NavLink
