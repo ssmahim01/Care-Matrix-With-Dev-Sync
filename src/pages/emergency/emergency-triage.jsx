@@ -81,11 +81,11 @@ export default function EmergencyTriage() {
 
 
 const isAvailableToday = (days) => {
-  // Get today's day of the week (e.g., "Tuesday")
   const today = format(new Date(), "EEEE");
   // Check if today is in availableDays
   return days.includes(today);
 };
+
 
   const getPriorityColor = (priority) => {
     switch (priority.toLowerCase()) {
@@ -148,7 +148,11 @@ const isAvailableToday = (days) => {
 
   const handleAssignPatient = async (e) => {
     e.preventDefault()
-    // In a real app, you would update the patient in the database
+    const form = e.target;
+    const assignedDoctor = form.assignedDoctor.value;
+    const assignedRoom = form.assignedRoom.value;
+
+
     if (selectedPatient) {
       try {
         const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-assigned/${selectedPatient._id}`, selectedPatient)
@@ -417,7 +421,7 @@ const isAvailableToday = (days) => {
                 </TableHeader>
                 <TableBody>
                   {patients
-                    .filter((patient) => patient.status === "In Treatment")
+                    .filter((patient) => patient.status === "in-treatment")
                     .map((patient) => (
                       <TableRow key={patient._id}>
                         <TableCell className="font-medium">{patient._id}</TableCell>
@@ -429,7 +433,7 @@ const isAvailableToday = (days) => {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell>{patient.chiefComplaint}</TableCell>
+                        <TableCell>{patient.complaint}</TableCell>
                         <TableCell>{getPriorityBadge(patient.priority)}</TableCell>
                         <TableCell>
                           {patient.assignedDoctor ? (
@@ -573,7 +577,7 @@ const isAvailableToday = (days) => {
                   <Label htmlFor="doctor" className="text-right">
                     Doctor
                   </Label>
-                  <Select defaultValue="DR-001">
+                  <Select name="assignedDoctor" >
                     <SelectTrigger className="col-span-3">
                       <SelectValue />
                     </SelectTrigger>
@@ -590,7 +594,7 @@ const isAvailableToday = (days) => {
                   <Label htmlFor="room" className="text-right">
                     Room
                   </Label>
-                  <Select defaultValue="ER-1">
+                  <Select name="assignedRoom" >
                     <SelectTrigger className="col-span-3">
                       <SelectValue />
                     </SelectTrigger>
