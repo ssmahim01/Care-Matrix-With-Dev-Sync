@@ -6,27 +6,33 @@ import { FaRegFile } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { MdMoney, MdOutlineEmail, MdReviews } from "react-icons/md";
 import { Link } from "react-router";
+import HeroDoctorSkeleton from "./HeroDoctorSkeleton";
 
 const HeroSearch = () => {
   const axiosPublic = useAxiosPublic();
   const [keyPressOpen, setKeyPressOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   // Fetch Doctors
   const { data: doctors, isLoading } = useQuery({
-    queryKey: ["search-doctor-data"],
+    queryKey: ["search-doctor-data", search],
     queryFn: async () => {
       const { data } = await axiosPublic(
-        `/dashboard/administrator/doctors/search`
+        `/dashboard/administrator/doctors/search?search=${search}`
       );
       return data;
     },
   });
+
+  // Get all departments
+  const departments = [...new Set(doctors?.map((p) => p.title))];
 
   return (
     <div className="relative w-full sm:w-full product_search_input z-40">
       <input
         className="px-4 py-2 border border-border bg-white rounded-md w-full pl-[40px] outline-none"
         placeholder="Search..."
+        onChange={(e) => setSearch(e.target.value)}
         onClick={() => setKeyPressOpen(!keyPressOpen)}
       />
       <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
@@ -50,17 +56,12 @@ const HeroSearch = () => {
           {/* Department */}
           <p className="text-[0.9rem] text-gray-500">Filter By Department</p>
           <div className="flex items-center gap-[10px] flex-wrap mt-2">
-            {[
-              "Dental Department",
-              "Neurology Department",
-              "Emergency Department",
-              "Surgery Department",
-            ].map((term) => (
+            {departments?.map((i) => (
               <div
-                key={term}
+                key={i}
                 className="py-[5px] px-[6px] rounded-full border border-gray-300 text-gray-500 text-[0.7rem] flex items-center gap-[1px] hover:bg-gray-50 cursor-pointer"
               >
-                <p>{term}</p>
+                <p>{i}</p>
               </div>
             ))}
           </div>
@@ -70,53 +71,57 @@ const HeroSearch = () => {
             <p className="text-[0.9rem] text-gray-500">Doctors</p>
 
             <div className="mt-4 h-[300px] overflow-y-auto">
-              {doctors?.map((doctor, index) => (
-                <div
-                  key={index}
-                  className="flex flex-wrap gap-[10px] items-center justify-between w-full hover:bg-gray-100 p-[10px] cursor-pointer rounded-md group"
-                >
-                  <div className="flex items-center gap-[15px]">
-                    <img
-                      src={doctor?.image}
-                      alt="avatar"
-                      className="w-[50px] h-[50px] rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="text-[0.8rem] break-all text-gray-500">
-                        {doctor?.title}
-                      </p>
-                      <h3 className="text-[1.1rem] font-[500] text-gray-800">
-                        {doctor?.name}
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-[10px] duration-300">
-                      <div className="flex items-center gap-[5px] rounded-full bg-white border py-[2px] px-2 border-gray-200 text-[0.8rem] text-gray-500 cursor-pointer">
-                        <MdMoney className="text-[1rem]" />
-                        {doctor?.consultation_fee}
-                      </div>
-                      <div className="flex items-center gap-[5px] rounded-full bg-white border py-[2px] px-2 border-gray-200 text-[0.8rem] text-gray-500 cursor-pointer">
-                        <MdReviews className="text-[0.9rem]" />
-                        {doctor?.rating || "1.0"}
+              {isLoading ? (
+                <HeroDoctorSkeleton />
+              ) : (
+                doctors?.map((doctor, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-wrap gap-[10px] items-center justify-between w-full hover:bg-gray-100 p-[10px] cursor-pointer rounded-md group"
+                  >
+                    <div className="flex items-center gap-[15px]">
+                      <img
+                        src={doctor?.image}
+                        alt="avatar"
+                        className="w-[50px] h-[50px] rounded-full object-cover"
+                      />
+                      <div>
+                        <p className="text-[0.8rem] break-all text-gray-500">
+                          {doctor?.title}
+                        </p>
+                        <h3 className="text-[1.1rem] font-[500] text-gray-800">
+                          {doctor?.name}
+                        </h3>
                       </div>
                     </div>
-                    <div>
-                      <Link to={`/book-appointment/${doctor.name}`}>
-                        <Button
-                          size="xs"
-                          variant={"outline"}
-                          className={
-                            "w-[96%] py-1 px-2 text-gray-800 text-xs cursor-pointer"
-                          }
-                        >
-                          Book Appointment
-                        </Button>
-                      </Link>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-[10px] duration-300">
+                        <div className="flex items-center gap-[5px] rounded-full bg-white border py-[2px] px-2 border-gray-200 text-[0.8rem] text-gray-500 cursor-pointer">
+                          <MdMoney className="text-[1rem]" />
+                          {doctor?.consultation_fee}
+                        </div>
+                        <div className="flex items-center gap-[5px] rounded-full bg-white border py-[2px] px-2 border-gray-200 text-[0.8rem] text-gray-500 cursor-pointer">
+                          <MdReviews className="text-[0.9rem]" />
+                          {doctor?.rating || "1.0"}
+                        </div>
+                      </div>
+                      <div>
+                        <Link to={`/book-appointment/${doctor.name}`}>
+                          <Button
+                            size="xs"
+                            variant={"outline"}
+                            className={
+                              "w-[96%] py-1 px-2 text-gray-800 text-xs cursor-pointer"
+                            }
+                          >
+                            Book Appointment
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
