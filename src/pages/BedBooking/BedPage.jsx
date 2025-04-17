@@ -58,7 +58,7 @@ const BedPage = () => {
   };
 
   return (
-    <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
+    <div className="mt-16 mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
       <SectionHeader
         className="text-center"
         title_1st_slice={"OUR"}
@@ -70,7 +70,30 @@ const BedPage = () => {
       />
       <div className="mt-6 sm:mt-8 lg:mt-12">
         {isLoading ? (
-          <div className="text-center">Loading beds...</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            {/* Render skeleton BedCards while loading */}
+            {Array(6)
+              .fill(0)
+              .map((_, index) => (
+                <div
+                  key={index}
+                  className="border rounded-lg shadow-lg p-4 flex flex-col items-center animate-pulse space-y-4"
+                >
+                  <div className="flex justify-between items-center w-full">
+                    <div className="h-5 bg-gray-300 rounded w-1/3" />
+                    <div className="text-end space-y-2">
+                      <div className="h-4 bg-gray-300 rounded w-24" />
+                      <div className="h-6 bg-gray-400 rounded w-20" />
+                    </div>
+                  </div>
+                  <div className="w-full h-60 bg-gray-300 rounded-md" />
+                  <div className="flex justify-between w-full space-x-2">
+                    <div className="bg-gray-300 rounded-md h-10 w-1/2" />
+                    <div className="bg-gray-300 rounded-md h-10 w-1/2" />
+                  </div>
+                </div>
+              ))}
+          </div>
         ) : beds.length === 0 ? (
           <div className="text-center text-gray-500">
             No available beds at the moment.
@@ -79,7 +102,7 @@ const BedPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {beds.map((bed) => (
               <BedCard
-                key={bed._id} // Use _id instead of index for unique key
+                key={bed._id}
                 title={bed.title}
                 price={bed.price}
                 image={bed.image}
@@ -87,6 +110,7 @@ const BedPage = () => {
                 status={bed.status}
                 onRequestBooking={handleRequestBooking}
                 onShowDetails={handleShowDetails}
+                isLoading-={isLoading}
               />
             ))}
           </div>

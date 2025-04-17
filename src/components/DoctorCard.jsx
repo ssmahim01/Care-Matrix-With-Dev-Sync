@@ -2,11 +2,10 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const DoctorCard = ({ doctor }) => {
-  // console.log("Doctor name", doctor.name);
-  
   return (
-    <Link to={`/doctor-details/${doctor._id}`}
-    state={doctor._id}
+    <Link
+      to={`/doctor-details/${doctor._id}`}
+      state={doctor._id}
       className="relative w-full h-[400px] overflow-hidden rounded-lg group border border-border block"
     >
       <img
@@ -18,9 +17,9 @@ const DoctorCard = ({ doctor }) => {
         <h3 className="text-gray-600">{doctor.title}</h3>
         <h3 className="font-bold text-lg">{doctor.name}</h3>
         <Link to={`/book-appointment/${doctor.name}`} state={doctor._id}>
-        <button className="btn border-border border duration-500 w-full mt-2 hover:text-white hover:bg-[#0E82FD]">
-          Book Appointment
-        </button>
+          <button className="btn border-border border duration-500 w-full mt-2 hover:text-white hover:bg-[#0E82FD]">
+            Book Appointment
+          </button>
         </Link>
       </div>
     </Link>

@@ -51,16 +51,16 @@ export const deleteDoctor = createAsyncThunk("doctors/delete", async (id) => {
   return id;
 });
 
-// Update Availability
-export const updateAvailability = createAsyncThunk("doctors/update-availability", async ({id, updatedAvailability}) => {
- const response = await axios.put(
-    `${import.meta.env.VITE_API_URL}/user-requests/update-availability/${id}`,
-    updatedAvailability,
-    {
-      timeout: 5000,
-    }
-  );
-  return response.data;
+// Delete doctor from doctors collection
+export const deleteSpecificDoctor = createAsyncThunk("doctors/delete-doctor", async (id) => {
+  await axios.delete(`${API_URL}/${id}`);
+  return id;
+});
+
+// Change role to patient from users collection
+export const changeRole = createAsyncThunk("doctors/change-role", async (email) => {
+  await axios.patch(`${import.meta.env.VITE_API_URL}/users/convert-patient/${email}`);
+  return email;
 });
 
 const doctorSlice = createSlice({
@@ -92,12 +92,6 @@ const doctorSlice = createSlice({
           state.doctors[index] = action.payload;
         }
       })
-      .addCase(updateAvailability.fulfilled, (state, action) => {
-        const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
-        if (index !== -1) {
-          state.doctors[index] = action.payload;
-        }
-      })
       .addCase(rejectDoctor.fulfilled, (state, action) => {
         const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
         if (index !== -1) {
@@ -116,7 +110,16 @@ const doctorSlice = createSlice({
           state.doctors[index] = action.payload;
         }
       })
+      .addCase(changeRole.fulfilled, (state, action) => {
+        const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
+        if (index !== -1) {
+          state.doctors[index] = action.payload;
+        }
+      })
       .addCase(deleteDoctor.fulfilled, (state, action) => {
+        state.doctors = state.doctors.filter((doc) => doc._id !== action.payload);
+      })
+      .addCase(deleteSpecificDoctor.fulfilled, (state, action) => {
         state.doctors = state.doctors.filter((doc) => doc._id !== action.payload);
       });
     },

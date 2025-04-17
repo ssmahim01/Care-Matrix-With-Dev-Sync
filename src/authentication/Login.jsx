@@ -20,7 +20,6 @@ const Login = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
 
-
   // states for email & password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,10 +30,9 @@ const Login = () => {
 
   // default credentials
   const handleBadgeClick = (emailValue, passwordValue) => {
-    setEmail(emailValue)
-    setPassword(passwordValue)
+    setEmail(emailValue);
+    setPassword(passwordValue);
   };
-
 
   // Login User functionality --->
   const handleSubmit = async (e) => {
@@ -43,27 +41,31 @@ const Login = () => {
     setIsError("");
 
     try {
-      const response = await toast.promise(axios.post(
-        `${import.meta.env.VITE_API_URL}/users/login`,
-        { email, password }
-      ), {
-        loading: "Signing in...",
-        success: <b>Sign in Successful!</b>,
-      })
+      const response = await toast.promise(
+        axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
+          email,
+          password,
+        }),
+        {
+          loading: "Signing in...",
+          success: <b>Sign in Successful!</b>,
+        }
+      );
 
       if (response?.data?.message === "Login successful") {
-        signInWithEmailAndPassword(auth, email, password)
-          .then(async (result) => {
+        signInWithEmailAndPassword(auth, email, password).then(
+          async (result) => {
             const user = result.user;
             if (user) {
               // Optionally update last login time
               await axios.patch(
                 `${import.meta.env.VITE_API_URL}/users/last-login-at/${email}`,
-                { lastLoginAt: new Date().toISOString() },
+                { lastLoginAt: new Date().toISOString() }
               );
               setLoading(false);
             }
-          })
+          }
+        );
       }
     } catch (error) {
       let errorMessage = "Login Failed!";
@@ -93,17 +95,11 @@ const Login = () => {
       <div className="mx-auto xl:w-10/12 min-h-screen px-4 py-12 flex flex-col md:flex-row gap-6 items-center justify-center max-w-screen-xl">
         {/* Image Div */}
         <div className="hidden lg:flex flex-col w-5/12">
-          {/* <div className="mb-4">
-            <button className="btn border-none btn-sm text-base font-medium bg-blue-400 text-white ">
-              Go Back!
-            </button>
-          </div> */}
           <img src={loginImg} alt="loginImg" className="w-full h-full" />
         </div>
         <div className="max-w-lg lg:max-w-md xl:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
           {/* Header & Logo */}
           <AuthHeader />
-
           {/* Default Credentials */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -113,43 +109,43 @@ const Login = () => {
             viewport={{ once: true }}
           >
             <Badge
-              className="cursor-pointer bg-green-400"
+              className="cursor-pointer bg-blue-600"
               onClick={() =>
-                handleBadgeClick(
-                  "admin-care-matrix@gmail.com",
-                  "Admin@1234"
-                )
+                handleBadgeClick("admin-care-matrix@gmail.com", "Admin@1234")
               }
             >
               Administrator
             </Badge>
 
             <Badge
-              className="cursor-pointer bg-[#064654]"
-              onClick={() => handleBadgeClick("doctor@carematrix.com", "Doctor123@")}
+              className="cursor-pointer bg-sky-500"
+              onClick={() =>
+                handleBadgeClick("doctor@carematrix.com", "Doctor123@")
+              }
             >
               Doctor
             </Badge>
 
             <Badge
-              className="cursor-pointer bg-[#540654]"
-              onClick={() => handleBadgeClick("patient@carematrix.com", "Patient123@")}
+              className="cursor-pointer bg-cyan-500"
+              onClick={() =>
+                handleBadgeClick("patient@carematrix.com", "Patient123@")
+              }
             >
               Patient
             </Badge>
+
             <Badge
-              className="cursor-pointer bg-[#cc0d85]"
+              className="cursor-pointer bg-indigo-500"
               onClick={() =>
-                handleBadgeClick(
-                  "pharmacist@carematrix.com",
-                  "Pharmacist123@"
-                )
+                handleBadgeClick("pharmacist@carematrix.com", "Pharmacist123@")
               }
             >
               Pharmacist
             </Badge>
+
             <Badge
-              className="cursor-pointer bg-blue-500"
+              className="cursor-pointer bg-blue-400"
               onClick={() =>
                 handleBadgeClick(
                   "receptionist@carematrix.com",
@@ -160,9 +156,12 @@ const Login = () => {
               Receptionist
             </Badge>
           </motion.div>
-          {/* Register Form */}
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-3">
+          {/* Use Default */}
+          <div className="divider font-medium text-gray-800">
+            Use Default Or Login By
+          </div>
+          {/* Login Form */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Email input */}
             <div>
               {/* Label */}

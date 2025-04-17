@@ -25,7 +25,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreVertical, Pencil, Trash } from "lucide-react";
+import { BedIcon, MoreVertical, Pencil, Trash } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -98,14 +98,14 @@ function ManageBeds() {
     }
   };
 
-  if (isLoading) return <Loader text={"Loading Beds"} />;
+  // if (isLoading) return <Loader text={"Loading Beds"} />;
 
   return (
     <div className="p-7">
       <DashboardPagesHeader
         title={"Manage Beds"}
-        subtitle={"View and manage all beds"}
-        icon={RiAdvertisementFill}
+        subtitle={"View, Add And Manage All Beds"}
+        icon={BedIcon}
       />
 
       <motion.div
@@ -132,12 +132,23 @@ function ManageBeds() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {beds?.map((bed, i) => (
+              {
+                isLoading? Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({ length: 8 }).map((_, j) => (
+                      <TableCell key={j}>
+                        <div className="skeleton h-8 rounded w-full"></div>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                )) :
+              
+              beds?.map((bed, i) => (
                 <TableRow key={bed._id}>
                   <TableCell className="font-medium">{i + 1}</TableCell>
                   <TableCell>
                     <Avatar>
-                      <AvatarImage src={bed.image} />
+                      <AvatarImage src={bed.image} className={"object-cover"} />
                       <AvatarFallback>{bed.title[0]}</AvatarFallback>
                     </Avatar>
                   </TableCell>
@@ -185,7 +196,8 @@ function ManageBeds() {
                     </DropdownMenu>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            }
             </TableBody>
           </Table>
           {/* Modal */}

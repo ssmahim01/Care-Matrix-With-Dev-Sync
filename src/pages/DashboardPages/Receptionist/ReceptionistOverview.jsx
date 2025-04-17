@@ -17,6 +17,7 @@ import RecepStatisticsChart from "./ReceptionistOverview/RecepStatisticsChart";
 import ReceptActivity from "./ReceptionistOverview/ReceptActivity";
 import AppointmentPieChart from "./ReceptionistOverview/AppointmentPieChart";
 import BedStatsPieChart from "./ReceptionistOverview/BedStatsPieChart";
+import ReceptionistOverviewSkeleton from "./ReceptionistOverviewSkeleton";
 
 const ReceptionistOverview = () => {
   const axiosSecure = useAxiosSecure();
@@ -90,7 +91,7 @@ const ReceptionistOverview = () => {
 
   // Handle loading and error states
   if (isLoading) {
-    return <div className="p-6 text-center">Loading...</div>;
+    return <ReceptionistOverviewSkeleton />;
   }
 
   if (error) {
@@ -105,11 +106,10 @@ const ReceptionistOverview = () => {
     <div className="flex flex-1 flex-col gap-4 px-7 md:gap-8">
       {/* Header */}
       <ReceptionistOverviewHeader />
-
       {/* Main Content */}
       <Tabs defaultValue="overview" className="space-y-4">
         {/* All Tablist */}
-        <TabsList className="border py-6 px-1">
+        <TabsList className="border w-full">
           <TabsTrigger value="overview" className="cursor-pointer py-2 px-4">
             Overview
           </TabsTrigger>
@@ -152,13 +152,14 @@ const ReceptionistOverview = () => {
         {/* 2nd Tab Content: Appointment Analytics */}
         <TabsContent value="Appointment analytics" className="space-y-6">
           <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-7">
+            {/* AppointmentPieChart */}
             <AppointmentPieChart
-              appointmentStatusBreakdown={overviewData.appointmentStatusBreakdown}
+              appointmentStatusBreakdown={
+                overviewData.appointmentStatusBreakdown
+              }
             />
-
-            <Card
-              className="lg:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6"
-            >
+            {/* Appointments Per Doctor */}
+            <Card className="lg:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
               <CardHeader>
                 <CardTitle>Appointments Per Doctor</CardTitle>
               </CardHeader>
@@ -182,69 +183,69 @@ const ReceptionistOverview = () => {
               </CardContent>
             </Card>
           </div>
-
           {/* Additional Breakdown Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Appointments Per Date */}
-          <div>
-          <Card className="py-6">
-              <CardHeader>
-                <CardTitle>Appointments Per Date (Last 7 Days)</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Count</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {overviewData.appointmentsPerDate.map((item) => (
-                      <TableRow key={item.date}>
-                        <TableCell>{item.date}</TableCell>
-                        <TableCell>{item.count}</TableCell>
+            <div className="flex flex-col">
+              <Card className="flex flex-col flex-grow border shadow-none border-[#e5e7eb] w-full py-6 h-full">
+                <CardHeader>
+                  <CardTitle>Appointments Per Date (Last 7 Days)</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Count</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-
-          </div>
+                    </TableHeader>
+                    <TableBody>
+                      {overviewData.appointmentsPerDate.map((item) => (
+                        <TableRow key={item.date}>
+                          <TableCell>{item.date}</TableCell>
+                          <TableCell>{item.count}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </div>
             {/* Appointments Per Reason */}
-           <div>
-           <Card className="py-6">
-              <CardHeader>
-                <CardTitle>Appointments Per Reason</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Reason</TableHead>
-                      <TableHead>Count</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {overviewData.appointmentsPerReason.map((item) => (
-                      <TableRow key={item.reason}>
-                        <TableCell>{item.reason}</TableCell>
-                        <TableCell>{item.count}</TableCell>
+            <div className="flex flex-col">
+              <Card className="flex flex-col flex-grow border shadow-none border-[#e5e7eb] w-full py-6 h-full">
+                <CardHeader>
+                  <CardTitle>Appointments Per Reason</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow overflow-y-auto max-h-[350px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Reason</TableHead>
+                        <TableHead>Count</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-           </div>
+                    </TableHeader>
+                    <TableBody>
+                      {overviewData.appointmentsPerReason.map((item) => (
+                        <TableRow key={item.reason}>
+                          <TableCell>{item.reason}</TableCell>
+                          <TableCell>{item.count}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </TabsContent>
 
         {/* 3rd Tab Content: Bed Analytics */}
         <TabsContent value="Bed analytics" className="space-y-6">
           <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-7">
-            <BedStatsPieChart bedStatusBreakdown={overviewData.bedStatusBreakdown} />
+            <BedStatsPieChart
+              bedStatusBreakdown={overviewData.bedStatusBreakdown}
+            />
 
             {/* Bed Bookings Per Type */}
             <Card className="lg:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
@@ -273,10 +274,12 @@ const ReceptionistOverview = () => {
           </div>
 
           {/* Bed Bookings Per Admission Date */}
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <Card className={"py-6"}>
+          <div className="w-full md:w-9/12 lg:7/12 xl:w-6/12 mb-6">
+            <Card className={"border shadow-none border-[#e5e7eb] w-full py-6"}>
               <CardHeader>
-                <CardTitle>Bed Bookings Per Admission Date (Last 7 Days)</CardTitle>
+                <CardTitle>
+                  Bed Bookings Per Admission Date (Last 7 Days)
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <Table>

@@ -1,100 +1,119 @@
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
+import { useAuthUser } from "@/redux/auth/authActions";
 import UnderLineButton from "@/shared/Section/UnderLineButton";
+import toast from "react-hot-toast";
 import { useState } from "react";
 
 const ContactUsForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const user = useAuthUser();
+  const axiosPublic = useAxiosPublic();
+  const [username, setUsername] = useState(user?.displayName || "");
+  const [email, setEmail] = useState(user?.email || "");
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [message, setMessage] = useState("");
 
-  const formData = {
-    firstName,
-    lastName,
-    email,
-    phoneNumber,
-    message,
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      return toast.error("You Must Be Login To Send Message!");
+    }
+
+    try {
+      if (message.length > 350) {
+        return toast.error(
+          "Your message is too long, Please keep it under 350 characters!"
+        );
+      }
+
+      const formData = {
+        username,
+        email,
+        phoneNumber,
+        message,
+      };
+
+      const { data } = await toast.promise(
+        axiosPublic.post(`/contact`, formData),
+        {
+          loading: "Sending Your Message...",
+          success: "Your Message Was Sent Successfully!",
+        }
+      );
+
+      if (data.insertedId) {
+        setPhoneNumber(null);
+        setMessage("");
+      }
+    } catch (error) {
+      toast.error(error?.message || "Error Caught While Sending Message");
+    }
   };
 
-  // Post Message In Database -->
-  try {
-    console.log("posted in db");
-  } catch (error) {
-    console.log(error?.message);
-  }
-
-  console.table(formData);
-
   return (
-    <form className="pt-[20px]">
-      <div className="flex flex-col sm:flex-row items-center gap-[30px]">
+    <form onSubmit={handleSubmit} className="pt-[20px]">
+      <div>
         {/* First Name */}
-        <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
-          <label className="text-[1rem] text-gray-900 font-[400]">
-            First Name
-          </label>
-          <input
+        <div className="space-y-1">
+          <Label className="text-[1rem] text-gray-900 font-[400]">
+            Username
+          </Label>
+          <Input
             type="text"
             required
-            onChange={(e) => setFirstName(e.target.value)}
-            className="peer border-gray-300 border-b outline-none focus:border-[#0E82FD] w-full text-gray-700 transition-colors duration-300"
-          />
-        </div>
-        {/* Last Name */}
-        <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
-          <label className="text-[1rem] text-gray-900 font-[400]">
-            Last Name
-          </label>
-          <input
-            type="text"
-            required
-            onChange={(e) => setLastName(e.target.value)}
-            className="peer border-gray-300 border-b outline-none focus:border-[#0E82FD] w-full text-gray-700 transition-colors duration-300"
+            defaultValue={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
       </div>
       {/* Email & Phone Number */}
-      <div className="flex flex-col sm:flex-row items-center gap-[30px] mt-10">
+      <div className="flex flex-col sm:flex-row items-center gap-[30px] mt-6">
         {/* Email */}
-        <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
-          <label className="text-[1rem] text-gray-900 font-[400]">
+        <div className="flex flex-col gap-[5px] w-full sm:w-[50%] space-y-1">
+          <Label className="text-[1rem] text-gray-900 font-[400]">
             Email Address
-          </label>
-          <input
+          </Label>
+          <Input
             type="email"
             required
+            defaultValue={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="peer border-gray-300 border-b outline-none focus:border-[#0E82FD] w-full text-gray-700 transition-colors duration-300"
           />
         </div>
         {/* Phone Number */}
-        <div className="flex flex-col gap-[5px] w-full sm:w-[50%]">
-          <label className="text-[1rem] text-gray-900 font-[400]">
+        <div className="flex flex-col gap-[5px] w-full sm:w-[50%] space-y-1">
+          <Label className="text-[1rem] text-gray-900 font-[400]">
             Phone Number
-          </label>
-          <input
-            type="number"
+          </Label>
+          <Input
+            type="text"
             required
+            value={phoneNumber || ""}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            className="peer border-gray-300 border-b outline-none focus:border-[#0E82FD] w-full text-gray-700 transition-colors duration-300"
           />
         </div>
       </div>
       {/* Message */}
-      <div className="flex flex-col gap-[5px] w-full mt-10">
-        <label className="text-[1rem] text-gray-900 font-[400]">
+      <div className="flex flex-col gap-[5px] w-full mt-6 space-y-1">
+        <Label className="text-[1rem] text-gray-900 font-[400]">
           Write Message
-        </label>
-        <textarea
+        </Label>
+        <Textarea
           required
+          value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="peer min-h-[100px] border-gray-300 border-b resize-none outline-none w-full text-gray-700 transition-colors focus:border-[#0E82FD] duration-300"
         />
       </div>
       {/* Submit Button */}
-      <div className="w-full flex items-center justify-end mt-3">
+      <button
+        type="submit"
+        className="w-full flex items-center justify-end mt-3"
+      >
         <UnderLineButton text={"Send Message"} />
-      </div>
+      </button>
     </form>
   );
 };

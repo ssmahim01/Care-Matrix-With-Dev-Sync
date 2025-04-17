@@ -64,7 +64,7 @@ const OurPharmacy = () => {
         <div className="mt-6 flex flex-col lg:flex-row w-full gap-6">
           {/* categories */}
           <div className="w-full lg:w-4/12 xl:w-3/12 border rounded h-fit">
-            <div className="p-4 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
+            <div className="p-4 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
               {medicine_categories.map((category, idx) => (
                 <button
                   key={idx}
