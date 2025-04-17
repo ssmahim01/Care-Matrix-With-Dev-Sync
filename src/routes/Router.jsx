@@ -62,6 +62,7 @@ import PharmacistRoute from "./PharmacistRoute";
 import ReceptionistRoute from "./ReceptionistRoute";
 import AllDoctors from "@/pages/DashboardPages/Administrator/AllDoctors";
 import Departments from "@/pages/Departments/Departments";
+import RevenueInsights from "@/pages/DashboardPages/Administrator/RevenueInsights/RevenueInsights";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -203,12 +204,19 @@ const Router = () => {
             </AdminRoute>
           }
         />
-
         <Route
           path="/dashboard/administrator/contact-message"
           element={
             <AdminRoute>
               <ContactMessage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/administrator/revenue-insights"
+          element={
+            <AdminRoute>
+              <RevenueInsights />
             </AdminRoute>
           }
         />
