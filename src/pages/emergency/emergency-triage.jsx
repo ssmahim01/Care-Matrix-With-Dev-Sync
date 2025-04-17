@@ -33,7 +33,9 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { toast } from "sonner"
+import toast from "react-hot-toast"
+import axios from "axios"
+import { useQuery } from "@tanstack/react-query"
 
 export default function EmergencyTriage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -41,103 +43,17 @@ export default function EmergencyTriage() {
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false)
   const [selectedPatient, setSelectedPatient] = useState(null)
 
-  const [patients, setPatients] = useState([
-    {
-      id: "PT-1001",
-      name: "John Smith",
-      age: 45,
-      gender: "Male",
-      chiefComplaint: "Chest pain and shortness of breath",
-      arrivalTime: "10:15 AM",
-      priority: "Critical",
-      vitalSigns: {
-        bloodPressure: "160/95",
-        heartRate: 110,
-        respiratoryRate: 24,
-        temperature: 37.8,
-        oxygenSaturation: 92,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
+  const { data = [], refetch} = useQuery({
+    queryKey: ["user-requests"],
+    queryFn: async () => {
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/triage/all-triage`)
+        setPatients(data)
+        return data
     },
-    {
-      id: "PT-1002",
-      name: "Emily Johnson",
-      age: 32,
-      gender: "Female",
-      chiefComplaint: "Severe abdominal pain",
-      arrivalTime: "10:30 AM",
-      priority: "Urgent",
-      vitalSigns: {
-        bloodPressure: "125/85",
-        heartRate: 95,
-        respiratoryRate: 18,
-        temperature: 37.2,
-        oxygenSaturation: 98,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
-    },
-    {
-      id: "PT-1003",
-      name: "Michael Williams",
-      age: 28,
-      gender: "Male",
-      chiefComplaint: "Laceration on right arm",
-      arrivalTime: "10:45 AM",
-      priority: "Non-urgent",
-      vitalSigns: {
-        bloodPressure: "120/80",
-        heartRate: 72,
-        respiratoryRate: 16,
-        temperature: 36.9,
-        oxygenSaturation: 99,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
-    },
-    {
-      id: "PT-1004",
-      name: "Sarah Davis",
-      age: 78,
-      gender: "Female",
-      chiefComplaint: "Dizziness and confusion",
-      arrivalTime: "11:00 AM",
-      priority: "Urgent",
-      vitalSigns: {
-        bloodPressure: "145/90",
-        heartRate: 88,
-        respiratoryRate: 20,
-        temperature: 37.5,
-        oxygenSaturation: 94,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
-    },
-    {
-      id: "PT-1005",
-      name: "Robert Brown",
-      age: 52,
-      gender: "Male",
-      chiefComplaint: "Severe headache",
-      arrivalTime: "11:15 AM",
-      priority: "Urgent",
-      vitalSigns: {
-        bloodPressure: "150/95",
-        heartRate: 85,
-        respiratoryRate: 18,
-        temperature: 37.0,
-        oxygenSaturation: 97,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
-    },
-  ])
+  })
+
+
+  const [patients, setPatients] = useState(data)
 
   const [doctors, setDoctors] = useState([
     {
@@ -213,13 +129,30 @@ export default function EmergencyTriage() {
     }
   }
 
-  const handleAddPatient = (e) => {
+  const handleAddPatient = async (e) => {
     e.preventDefault()
-    // In a real app, you would add the patient to the database
-    setIsAddDialogOpen(false)
-    toast.success("Patient Added",{
-      description: "The patient has been added to the triage list.",
-    })
+    const form = e.target;
+    const name = form.name.value;
+    const age = parseInt(form.age.value);
+    const gender = form.gender.value;
+    const complaint = form.complaint.value;
+    const priority = form.priority.value;
+    const heartRate = parseInt(form.heartRate.value);
+    const bloodPressure = form.bloodPressure.value;
+    const respiratoryRate = parseInt(form.respiratoryRate.value);
+    const oxygenSaturation = parseInt(form.oxygenSaturation.value);
+
+    const patient = { name, age, gender, complaint, priority, vitalSigns: {bloodPressure, heartRate, respiratoryRate, oxygenSaturation}}
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/triage/add`, patient)
+      toast.success(res.data.message)
+    } catch (error) {
+      console.log(error)
+      toast.error(error.error)
+    } finally {
+      setIsAddDialogOpen(false)
+    }
   }
 
   const handleAssignPatient = (e) => {
@@ -251,16 +184,16 @@ export default function EmergencyTriage() {
     setIsAssignDialogOpen(true)
   }
 
-  const sortPatientsByPriority = () => {
-    const sortedPatients = [...patients].sort((a, b) => {
-      const priorityOrder = { Critical: 0, Urgent: 1, "Non-urgent": 2 }
-      return (
-        priorityOrder[a.priority] -
-        priorityOrder[b.priority]
-      )
-    })
-    setPatients(sortedPatients)
-  }
+  // const sortPatientsByPriority = () => {
+  //   const sortedPatients = [...patients].sort((a, b) => {
+  //     const priorityOrder = { Critical: 0, Urgent: 1, "Non-urgent": 2 }
+  //     return (
+  //       priorityOrder[a.priority] -
+  //       priorityOrder[b.priority]
+  //     )
+  //   })
+  //   setPatients(sortedPatients)
+  // }
 
   return (
     <div className="space-y-6">
@@ -292,19 +225,19 @@ export default function EmergencyTriage() {
                     <Label htmlFor="name" className="text-right">
                       Name
                     </Label>
-                    <Input id="name" className="col-span-3" required />
+                    <Input name="name" className="col-span-3" required />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="age" className="text-right">
                       Age
                     </Label>
-                    <Input id="age" type="number" className="col-span-3" required />
+                    <Input name="age" type="number" className="col-span-3" required />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="gender" className="text-right">
                       Gender
                     </Label>
-                    <Select>
+                    <Select name="gender">
                       <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Select gender" />
                       </SelectTrigger>
@@ -319,13 +252,13 @@ export default function EmergencyTriage() {
                     <Label htmlFor="complaint" className="text-right">
                       Chief Complaint
                     </Label>
-                    <Textarea id="complaint" className="col-span-3" required />
+                    <Textarea name="complaint" className="col-span-3" required />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="priority" className="text-right">
                       Priority
                     </Label>
-                    <Select>
+                    <Select name="priority">
                       <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Select priority" />
                       </SelectTrigger>
@@ -335,6 +268,46 @@ export default function EmergencyTriage() {
                         <SelectItem value="non-urgent">Non-urgent</SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">Vitals</Label>
+                    <div className="col-span-3 flex gap-2">
+                      <Input
+                        name="bloodPressure"
+                        placeholder="BP (e.g., 160/95)"
+                        className="w-24 text-sm"
+                        required
+                      />
+                      <Input
+                        name="heartRate"
+                        placeholder="HR (bpm)"
+                        type="number"
+                        className="w-20 text-sm"
+                        required
+                      />
+                      <Input
+                        name="respiratoryRate"
+                        placeholder="RR (breaths/min)"
+                        type="number"
+                        className="w-20 text-sm"
+                        required
+                      />
+                      <Input
+                        name="temperature"
+                        placeholder="Temp (°C)"
+                        type="number"
+                        step="0.1"
+                        className="w-20 text-sm"
+                        required
+                      />
+                      <Input
+                        name="oxygenSaturation"
+                        placeholder="Oxy O2 (%)"
+                        type="number"
+                        className="w-20 text-sm"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
                 <DialogFooter>
@@ -356,10 +329,10 @@ export default function EmergencyTriage() {
             className="max-w-sm"
           />
         </div>
-        <Button variant="outline" onClick={sortPatientsByPriority}>
+        {/* <Button variant="outline" onClick={sortPatientsByPriority}>
           <ArrowUpDown className="mr-2 h-4 w-4" />
           Sort by Priority
-        </Button>
+        </Button> */}
       </div>
 
       <Tabs defaultValue="waiting">
