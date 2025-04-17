@@ -60,6 +60,7 @@ import AdminRoute from "./AdminRoute";
 import BedPage from "@/pages/BedBooking/BedPage";
 import PharmacistRoute from "./PharmacistRoute";
 import ReceptionistRoute from "./ReceptionistRoute";
+import AllDoctors from "@/pages/DashboardPages/Administrator/AllDoctors";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -193,11 +194,20 @@ const Router = () => {
           }
         />
         <Route
+          path="/dashboard/administrator/doctors"
+          element={
+            <AdminRoute>
+              <AllDoctors />
+              </AdminRoute>
+          }
+        />
+
+        <Route
           path="/dashboard/administrator/contact-message"
           element={
             <AdminRoute>
               <ContactMessage />
-            </AdminRoute>
+              </AdminRoute>
           }
         />
 
