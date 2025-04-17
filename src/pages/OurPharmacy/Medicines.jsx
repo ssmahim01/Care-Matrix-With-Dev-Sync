@@ -91,11 +91,11 @@ const Medicines = ({ medicines, isLoading }) => {
                       {medicine?.strength}
                     </span>
                   </h1>
-                  <h3 className="text-xl font-semibold">
-                    <span className="text-4xl">৳</span>
+                  <h3 className="text-xl mt-1 font-semibold">
+                    <span className="text-lg pr-1 font-extrabold">৳</span>
                     {medicine?.price?.discountedAmount} -{" "}
                     <span className="opacity-70 text-[16px] font-medium">
-                      <span className="text-4xl">৳</span>
+                      <span className="text-lg pr-1 font-extrabold">৳</span>
                       <span className="line-through">
                         {medicine?.price?.amount}
                       </span>

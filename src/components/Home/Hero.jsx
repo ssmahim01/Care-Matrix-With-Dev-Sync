@@ -1,13 +1,9 @@
-import expertDoctors from "../../assets/Images/expert-doctors.png";
-import HeroBG from "../../assets/Images/hero-bg.jpg";
-import { Search } from "lucide-react";
+import HeroSearch from "@/pages/Home/Hero/HeroSearch";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
 
 export default function Hero() {
   return (
-    <div className="relative w-full mx-auto overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400">
+    <div className="relative w-full mx-auto overflow-visible bg-gradient-to-r from-blue-600 to-blue-400">
       <div className="absolute inset-0 opacity-10">
         <svg
           width="100%"
@@ -103,21 +99,7 @@ export default function Hero() {
               viewport={{ once: true }}
               className="relative mt-8 max-w-xl"
             >
-              <div className="flex items-center overflow-hidden bg-white rounded-lg shadow-lg">
-                <div className="flex items-center justify-center pl-4">
-                  <Search className="h-5 w-5 text-blue-500" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search appointments..."
-                  className="w-full py-4 px-3 text-gray-700 focus:outline-none"
-                />
-                <Link to="/doctors">
-                  <Button className="mr-4 bg-[#0e6efd] cursor-pointer hover:bg-[#0e56fd] text-white font-medium px-6 py-4 transition-all duration-300 flex-shrink-0">
-                    Search
-                  </Button>
-                </Link>
-              </div>
+              <HeroSearch />
             </motion.div>
           </motion.div>
 

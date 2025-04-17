@@ -61,6 +61,7 @@ import BedPage from "@/pages/BedBooking/BedPage";
 import PharmacistRoute from "./PharmacistRoute";
 import ReceptionistRoute from "./ReceptionistRoute";
 import AllDoctors from "@/pages/DashboardPages/Administrator/AllDoctors";
+import Departments from "@/pages/Departments/Departments";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -134,6 +135,7 @@ const Router = () => {
           }
         />
         <Route path="available-beds" element={<BedPage />} />
+        <Route path="departments/:department" element={<Departments />} />
       </Route>
 
       {/* Emergency Routes */}
@@ -198,7 +200,7 @@ const Router = () => {
           element={
             <AdminRoute>
               <AllDoctors />
-              </AdminRoute>
+            </AdminRoute>
           }
         />
 
@@ -207,7 +209,7 @@ const Router = () => {
           element={
             <AdminRoute>
               <ContactMessage />
-              </AdminRoute>
+            </AdminRoute>
           }
         />
 

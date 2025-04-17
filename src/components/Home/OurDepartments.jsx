@@ -1,5 +1,6 @@
 import SectionHeader from "@/shared/Section/SectionHeader";
 import UnderLineButton from "@/shared/Section/UnderLineButton";
+import { Link } from "react-router";
 
 const OurDepartments = () => {
   // Departments Data --->
@@ -91,7 +92,12 @@ const OurDepartments = () => {
               <p className="text-[1rem] mt-1 font-[400] text-gray-600">
                 {department?.description}
               </p>
-              <UnderLineButton text={"Read More..."} />
+              <Link
+                to={`/departments/${department?.title}`}
+                state={department?.title}
+              >
+                <UnderLineButton text={"Read More..."} />
+              </Link>
             </div>
           </div>
         ))}
