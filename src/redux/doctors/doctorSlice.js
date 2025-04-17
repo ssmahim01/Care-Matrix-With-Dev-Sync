@@ -57,16 +57,10 @@ export const deleteSpecificDoctor = createAsyncThunk("doctors/delete-doctor", as
   return id;
 });
 
-// Update Availability
-export const updateAvailability = createAsyncThunk("doctors/update-availability", async ({id, updatedAvailability}) => {
- const response = await axios.put(
-    `${API_URL}/update-availability/${id}`,
-    updatedAvailability,
-    {
-      timeout: 5000,
-    }
-  );
-  return response.data;
+// Change role to patient from users collection
+export const changeRole = createAsyncThunk("doctors/change-role", async (email) => {
+  await axios.patch(`${import.meta.env.VITE_API_URL}/users/convert-patient/${email}`);
+  return email;
 });
 
 const doctorSlice = createSlice({
@@ -98,12 +92,6 @@ const doctorSlice = createSlice({
           state.doctors[index] = action.payload;
         }
       })
-      .addCase(updateAvailability.fulfilled, (state, action) => {
-        const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
-        if (index !== -1) {
-          state.doctors[index] = action.payload;
-        }
-      })
       .addCase(rejectDoctor.fulfilled, (state, action) => {
         const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
         if (index !== -1) {
@@ -117,6 +105,12 @@ const doctorSlice = createSlice({
         }
       })
       .addCase(convertRole.fulfilled, (state, action) => {
+        const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
+        if (index !== -1) {
+          state.doctors[index] = action.payload;
+        }
+      })
+      .addCase(changeRole.fulfilled, (state, action) => {
         const index = state.doctors.findIndex((doc) => doc._id === action.payload._id);
         if (index !== -1) {
           state.doctors[index] = action.payload;
