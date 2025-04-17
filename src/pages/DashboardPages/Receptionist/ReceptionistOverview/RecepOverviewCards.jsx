@@ -20,7 +20,7 @@ const RecepOverviewCards = ({
   totalPendingBedBookings,
 }) => {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
       {/* card-1  */}
 
       <Card className={"border shadow-none border-[#e5e7eb] w-full py-6"}>

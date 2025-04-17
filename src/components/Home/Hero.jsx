@@ -39,7 +39,7 @@ export default function Hero() {
         </svg>
       </div>
 
-      <div className="relative mx-auto px-4 w-11/12 lg:w-10/12 max-w-screen-2xl py-16 lg:py-20">
+      <div className="relative mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl py-16 lg:py-20">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

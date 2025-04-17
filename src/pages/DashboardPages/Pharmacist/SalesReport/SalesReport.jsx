@@ -182,7 +182,7 @@ export default function SalesReport() {
               totalRevenue={report?.totalRevenue}
             />
             {/* Revenue & OrderStatus  Charts */}
-            <div className="grid gap-6 xl:grid-cols-7">
+            <div className="grid gap-6 grid-cols-1 xl:grid-cols-7">
               {/* Revenue Chart */}
               <RevenueChart enhancedRevenueData={enhancedRevenueData} />
               {/* OrderStatus Chart */}
@@ -211,7 +211,7 @@ export default function SalesReport() {
               </CardHeader>
               <CardContent>
                 {/* Revenue Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
                   <RevenueCards
                     avgDailyRevenue={avgDailyRevenue}
                     avgOrderValue={avgOrderValue}

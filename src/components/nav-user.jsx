@@ -28,6 +28,7 @@ import {
 import { logOut, useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
+import useRole from "@/hooks/useRole";
 
 export function NavUser() {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ export function NavUser() {
   const loading = useAuthLoading();
   const { isMobile } = useSidebar();
   const user = useAuthUser();
+  const [role] = useRole();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -110,19 +112,21 @@ export function NavUser() {
                 <User size={20} />
                 View Profile
               </NavLink>
-              <NavLink
-                to="/dashboard/patient/request-form"
-                className={({ isActive }) =>
-                  `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
-                    isActive
-                      ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
-                      : "hover:bg-[#f1f5f9] transition-all duration-300 ease-in-out py-[6px] rounded-md"
-                  }`
-                }
-              >
-                <Sparkles size={20} />
-                Upgrade to Pro
-              </NavLink>
+              {role === "patient" && (
+                <NavLink
+                  to="/dashboard/patient/request-form"
+                  className={({ isActive }) =>
+                    `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
+                      isActive
+                        ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
+                        : "hover:bg-[#f1f5f9] transition-all duration-300 ease-in-out py-[6px] rounded-md"
+                    }`
+                  }
+                >
+                  <Sparkles size={20} />
+                  Upgrade to Pro
+                </NavLink>
+              )}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <div>
