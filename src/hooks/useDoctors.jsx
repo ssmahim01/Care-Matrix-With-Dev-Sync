@@ -12,7 +12,7 @@ const useDoctors = () => {
     queryKey: ["doctors"],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
-        "/dashboard/administrator/doctors"
+        "/dashboard/administrator/doctors/all"
       );
       return data;
     },
