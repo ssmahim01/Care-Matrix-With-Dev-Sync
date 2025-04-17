@@ -4,7 +4,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -16,13 +15,13 @@ import {
 import {
   addDoctor,
   assignDoctor,
+  changeRole,
   convertRole,
   deleteSpecificDoctor,
   fetchDoctors,
   rejectDoctor,
   setSearch,
   setSort,
-  updateAvailability,
   updateDoctor,
 } from "@/redux/doctors/doctorSlice";
 import {
@@ -72,8 +71,6 @@ const DoctorsManagement = () => {
   const [detailsModal, setDetailsModal] = useState({});
   const [serviceValue, setServiceValue] = useState("");
   const [services, setServices] = useState([]);
-  const [availableDate, setAvailableDate] = useState("");
-  const [availabilityModal, setAvailabilityModal] = useState({});
   const { doctors, status } = useSelector((state) => state.doctors);
   const search = useSelector((state) => state.doctors.search);
   const sort = useSelector((state) => state.doctors.sort);
@@ -124,38 +121,9 @@ const DoctorsManagement = () => {
     },
   });
 
-  // Schema for availability modal (form3)
-  const AvailabilityFormSchema = z.object({
-    availableDate: z
-      .string()
-      .min(1, "Please select a date")
-      .refine(
-        (date) => {
-          const day = new Date(date).getDay();
-          return day >= 1 && day <= 5;
-        },
-        { message: "Please select a Monday to Friday date" }
-      ),
-    shift: z.string().min(1, "Please select a shift"),
-  });
-
   const form2 = useForm({
     resolver: zodResolver(NoteFormSchema),
   });
-
-  const form3 = useForm({
-    resolver: zodResolver(AvailabilityFormSchema),
-    defaultValues: {
-      availableDate: availabilityModal?.availableDate || "",
-      shift: availabilityModal?.shift || "",
-    },
-  });
-
-  const handleChangeAvailability = (doctor) => {
-    setAvailabilityModal(doctor);
-    setAvailableDate(doctor?.availableDate);
-    document.getElementById("availability_modal_03").showModal();
-  };
 
   const onSubmit = async (data) => {
     const id = noteModal?._id;
@@ -195,7 +163,8 @@ const DoctorsManagement = () => {
     try {
       const result = await dispatch(rejectDoctor(id)).unwrap();
       const deleteDoctor = await dispatch(deleteSpecificDoctor(email)).unwrap();
-      if (result && deleteDoctor) {
+      const convertPatient = await dispatch(changeRole(email)).unwrap();
+      if (result && deleteDoctor && convertPatient) {
         toast.success("Rejected the request");
         document.getElementById("doctor_modal_02").close();
         form.reset();
@@ -270,7 +239,7 @@ const DoctorsManagement = () => {
       shift: data.shift,
       title: detailsModal?.department,
       experience: `${data.experience}+ years`,
-      consultation_fee: data.consultation_fee,
+      consultation_fee: `$${data.consultation_fee}`,
       available_days: availableDays,
       services,
       bio: data.bio,
@@ -316,56 +285,9 @@ const DoctorsManagement = () => {
     dispatch(fetchDoctors({ search, sort: value }));
   };
 
-  // Handle availability change
-  const handleAvailability = async (data) => {
-    // console.log("Submitted form", data);
-    const id = availabilityModal?._id;
-    if (!id) {
-      toast.error("ID is missing");
-      return;
-    }
-
-    try {
-      const updatedAvailability = {
-        availableDate: new Date(data.availableDate).toISOString(),
-        shift: data.shift,
-      };
-      const result = await dispatch(
-        updateAvailability({ id, updatedAvailability })
-      ).unwrap();
-      if (result.status === 200) {
-        toast.success("Updated the schedule and shift");
-        form3.reset();
-        document.getElementById("availability_modal_03").close();
-        dispatch(fetchDoctors());
-      }
-    } catch (error) {
-      toast.error(error.message || "Failed to update schedule and shift");
-    }
-  };
-
   useEffect(() => {
     dispatch(fetchDoctors({ search, sort }));
   }, [dispatch, search, sort]);
-
-  // Reset form when availabilityModal changes
-  useEffect(() => {
-    if (availabilityModal && !form3.formState.isDirty) {
-      form3.reset({
-        availableDate: availabilityModal.availableDate || "",
-        shift: availabilityModal.shift || "",
-      });
-    }
-  }, [availabilityModal, form3]);
-
-  // Sync form with detailsModal when it changes
-  useEffect(() => {
-    if (detailsModal?._id) {
-      form3.reset({
-        availableDate: detailsModal.joiningDate || "",
-      });
-    }
-  }, [detailsModal, form3]);
 
   return (
     <>
@@ -376,7 +298,7 @@ const DoctorsManagement = () => {
               {/* Heading */}
               <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
                 <BriefcaseMedical className="text-3xl text-gray-800" />
-                <span>Manage Doctors</span>
+                <span>Manage Doctor Requests</span>
               </h2>
               <p className="text-gray-600 text-base ml-8 font-medium whitespace-pre-line">
                 View requests for doctor and modify
@@ -537,7 +459,6 @@ const DoctorsManagement = () => {
                     dispatch={dispatch}
                     index={index}
                     handleAddNote={handleAddNote}
-                    handleChangeAvailability={handleChangeAvailability}
                     handleDoctorDetails={handleDoctorDetails}
                   />
                 ))}
@@ -935,174 +856,6 @@ const DoctorsManagement = () => {
                   </div>
                 </form>
               </Form>
-            </div>
-          </div>
-        )}
-      </dialog>
-
-      <dialog
-        id="availability_modal_03"
-        className="modal modal-middle z-[1000]"
-      >
-        {availabilityModal && (
-          <div className="w-full flex justify-center items-center">
-            <div className="modal-box bg-white rounded-lg shadow-lg p-6">
-              <form method="dialog">
-                <button
-                  className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-gray-600 hover:text-gray-800"
-                  aria-label="Close modal"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </form>
-
-              <div className="flex flex-col space-y-2">
-                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                  <BriefcaseMedical className="w-8 h-8 text-blue-600" />
-                  Manage Doctor Availability
-                </h2>
-                <p className="text-gray-600 text-sm font-medium ml-10">
-                  Update the schedule and shift for {availabilityModal.userName}
-                  .
-                </p>
-              </div>
-              <div className="divider my-4 border-gray-200"></div>
-
-              <div className="space-y-4">
-                {/* Doctor Info */}
-                <div className="grid grid-cols-2 gap-4 pb-3">
-                  <div className="flex items-center gap-2">
-                    <CircleUserRound className="w-5 h-5 text-gray-600" />
-                    <span className="text-base font-semibold text-gray-800">
-                      {availabilityModal.userName}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-5 h-5 text-gray-600" />
-                    <span className="text-base font-semibold text-gray-800">
-                      {availabilityModal.userEmail}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Form */}
-                <Form {...form3}>
-                  <form
-                    onSubmit={form3.handleSubmit(
-                      (data) => handleAvailability(data),
-                      (errors) => console.log("Validation errors:", errors)
-                    )}
-                    className="space-y-6"
-                  >
-                    <FormField
-                      control={form3.control}
-                      name="availableDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2 text-gray-700 font-semibold">
-                            <CalendarSearch className="w-5 h-5 text-blue-600" />
-                            Schedule (Monday - Friday)
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              {...field}
-                              value={
-                                field.value
-                                  ? new Date(field.value)
-                                      .toISOString()
-                                      .split("T")[0]
-                                  : ""
-                              }
-                              onChange={(e) => field.onChange(e.target.value)}
-                              className="w-full border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                            />
-                          </FormControl>
-                          <FormMessage className="text-red-500 text-sm mt-1" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form3.control}
-                      name="shift"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2 text-gray-700 font-semibold">
-                            <CalendarCheck className="w-5 h-5 text-blue-600" />
-                            Shift
-                          </FormLabel>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant="outline"
-                                  className="w-full justify-between border-gray-300 rounded-md"
-                                >
-                                  {field.value || "Select a shift"}
-                                  <span className="ml-2">▼</span>
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-full p-0 mt-3 mb-5 bg-white border-gray-300 rounded-md shadow-lg z-[1001]">
-                              <div className="flex flex-col">
-                                {[
-                                  {
-                                    value: "Morning (6AM - 2PM)",
-                                    label: "Morning (6AM - 2PM)",
-                                  },
-                                  {
-                                    value: "Afternoon (2PM - 10PM)",
-                                    label: "Afternoon (2PM - 10PM)",
-                                  },
-                                  {
-                                    value: "Night (10PM - 6AM)",
-                                    label: "Night (10PM - 6AM)",
-                                  },
-                                  { value: "Rotating", label: "Rotating" },
-                                ].map((shift) => (
-                                  <Button
-                                    type={"button"}
-                                    key={shift.value}
-                                    variant="ghost"
-                                    className="w-full justify-start text-left px-4 py-2 hover:bg-gray-100"
-                                    onClick={() => field.onChange(shift.value)}
-                                  >
-                                    {shift.label}
-                                  </Button>
-                                ))}
-                              </div>
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage className="text-rose-500 text-sm mt-1" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="flex md:flex-row flex-col gap-4 justify-between pt-3">
-                      <Button
-                        type="button"
-                        onClick={() =>
-                          document
-                            .getElementById("availability_modal_03")
-                            .close()
-                        }
-                        className="btn bg-rose-500 hover:bg-rose-600 text-white font-semibold rounded-md flex gap-2 items-center px-4 py-2"
-                      >
-                        <Ban className="w-4 h-4" />
-                        Cancel
-                      </Button>
-                      <Button
-                        type="submit"
-                        className="btn bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md flex gap-2 items-center px-4 py-2"
-                      >
-                        <CircleCheckBig className="w-4 h-4" />
-                        Update Availability
-                      </Button>
-                    </div>
-                  </form>
-                </Form>
-              </div>
             </div>
           </div>
         )}
