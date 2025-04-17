@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegFile } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { MdMoney, MdOutlineEmail, MdReviews } from "react-icons/md";
@@ -11,10 +11,12 @@ import HeroDoctorSkeleton from "./HeroDoctorSkeleton";
 const HeroSearch = () => {
   const axiosPublic = useAxiosPublic();
   const [keyPressOpen, setKeyPressOpen] = useState(false);
+  const [department, setDepartment] = useState("");
+  const [doctors, setDoctors] = useState(null);
   const [search, setSearch] = useState("");
 
   // Fetch Doctors
-  const { data: doctors, isLoading } = useQuery({
+  const { data = {}, isLoading } = useQuery({
     queryKey: ["search-doctor-data", search],
     queryFn: async () => {
       const { data } = await axiosPublic(
@@ -24,9 +26,18 @@ const HeroSearch = () => {
     },
   });
 
-  // Get all departments
-  const departments = [...new Set(doctors?.map((p) => p.title))];
+  useEffect(() => {
+    if (department) {
+      const filteredDoctors = data?.doctors?.filter(
+        (p) => p.title === department
+      );
+      setDoctors(filteredDoctors || []);
+    } else {
+      setDoctors(data?.doctors || []);
+    }
+  }, [department, data]);
 
+  console.log(doctors);
   return (
     <div className="relative w-full sm:w-full product_search_input z-40">
       <input
@@ -37,12 +48,25 @@ const HeroSearch = () => {
       />
       <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
 
-      <Button
-        size="sm"
-        className="absolute top-[4.7px] right-1.5 bg-blue-600 hover:bg-blue-700 duration-500"
-      >
-        Search
-      </Button>
+      {search || department ? (
+        <Button
+          onClick={() => {
+            setSearch("");
+            setDepartment(null);
+          }}
+          size="sm"
+          className="absolute top-[4.7px] right-1.5 duration-500 cursor-pointer"
+        >
+          Reset
+        </Button>
+      ) : (
+        <Button
+          size="sm"
+          className="absolute top-[4.7px] right-1.5 bg-blue-600 hover:bg-blue-700 duration-500 cursor-pointer"
+        >
+          Search
+        </Button>
+      )}
 
       {/* Dropdown Container */}
       <div
@@ -56,13 +80,18 @@ const HeroSearch = () => {
           {/* Department */}
           <p className="text-[0.9rem] text-gray-500">Filter By Department</p>
           <div className="flex items-center gap-[10px] flex-wrap mt-2">
-            {departments?.map((i) => (
-              <div
+            {data?.departments?.map((i) => (
+              <button
                 key={i}
-                className="py-[5px] px-[6px] rounded-full border border-gray-300 text-gray-500 text-[0.7rem] flex items-center gap-[1px] hover:bg-gray-50 cursor-pointer"
+                onClick={() => setDepartment(i)}
+                className={`py-[5px] px-[6px] rounded-full border text-[0.7rem] flex items-center gap-[1px] hover:bg-gray-50 cursor-pointer ${
+                  department === i
+                    ? "bg-blue-100 text-blue-600 font-medium border-blue-500"
+                    : "border-gray-300 text-gray-500 "
+                }`}
               >
-                <p>{i}</p>
-              </div>
+                <p>{i || "Department..."}</p>
+              </button>
             ))}
           </div>
 
@@ -74,23 +103,23 @@ const HeroSearch = () => {
               {isLoading ? (
                 <HeroDoctorSkeleton />
               ) : (
-                doctors?.map((doctor, index) => (
+                data?.doctors?.map((doctor, index) => (
                   <div
                     key={index}
                     className="flex flex-wrap gap-[10px] items-center justify-between w-full hover:bg-gray-100 p-[10px] cursor-pointer rounded-md group"
                   >
                     <div className="flex items-center gap-[15px]">
                       <img
-                        src={doctor?.image}
+                        src={doctor?.image || ""}
                         alt="avatar"
                         className="w-[50px] h-[50px] rounded-full object-cover"
                       />
                       <div>
                         <p className="text-[0.8rem] break-all text-gray-500">
-                          {doctor?.title}
+                          {doctor?.title || "Department"}
                         </p>
                         <h3 className="text-[1.1rem] font-[500] text-gray-800">
-                          {doctor?.name}
+                          {doctor?.name || "Doctor Name"}
                         </h3>
                       </div>
                     </div>
@@ -98,7 +127,7 @@ const HeroSearch = () => {
                       <div className="flex items-center gap-[10px] duration-300">
                         <div className="flex items-center gap-[5px] rounded-full bg-white border py-[2px] px-2 border-gray-200 text-[0.8rem] text-gray-500 cursor-pointer">
                           <MdMoney className="text-[1rem]" />
-                          {doctor?.consultation_fee}
+                          {doctor?.consultation_fee || "$000"}
                         </div>
                         <div className="flex items-center gap-[5px] rounded-full bg-white border py-[2px] px-2 border-gray-200 text-[0.8rem] text-gray-500 cursor-pointer">
                           <MdReviews className="text-[0.9rem]" />
@@ -106,7 +135,7 @@ const HeroSearch = () => {
                         </div>
                       </div>
                       <div>
-                        <Link to={`/book-appointment/${doctor.name}`}>
+                        <Link to={`/book-appointment/${doctor?.name || ""}`}>
                           <Button
                             size="xs"
                             variant={"outline"}
