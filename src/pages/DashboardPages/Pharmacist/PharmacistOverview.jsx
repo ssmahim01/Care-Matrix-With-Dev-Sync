@@ -18,6 +18,8 @@ import StorageConditionsTable from "./PharmacistOverview/StorageConditionsTable"
 import ManufacturersTable from "./PharmacistOverview/ManufacturersTable";
 import SupplierTable from "./PharmacistOverview/SupplierTable";
 import CategoryChart from "./PharmacistOverview/CategoryChart";
+import OverviewSkeleton from "./PharmacistOverview/OverviewSkeleton";
+import toast from "react-hot-toast";
 
 const PharmacistOverview = () => {
   const axiosPublic = useAxiosPublic();
@@ -26,6 +28,7 @@ const PharmacistOverview = () => {
   const {
     data: stats = {},
     isLoading,
+    isError,
     refetch,
   } = useQuery({
     queryKey: ["pharmacist-stats"],
@@ -35,7 +38,8 @@ const PharmacistOverview = () => {
     },
   });
 
-  if (isLoading) return "Loading...";
+  if(isError) return toast.error("Error While Fetching Data!")
+  if (isLoading) return <OverviewSkeleton />;
 
   // Data For Charts
   const chartData =
@@ -72,11 +76,11 @@ const PharmacistOverview = () => {
         nearExpiryCount={stats?.nearExpiryCount}
       />
       {/* Category & Prescription Chart */}
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-7">
+      <div className="grid gap-6 grid-cols-1 xl:grid-cols-7">
         {/* Medicines Per Category Chart */}
         <CategoryChart chartData={chartData} isLoading={isLoading} />
         {/* Prescription Chart */}
-        <div className="lg:col-span-3 xl:col-span-2">
+        <div className="lg:col-span-4 xl:col-span-2">
           <Card className="bg-white border border-gray-200 rounded-lg px-4 py-8 shadow-sm col-span-4">
             <CardHeader>
               {isLoading ? (
@@ -102,9 +106,9 @@ const PharmacistOverview = () => {
         </div>
       </div>
       {/* Manufacturer & Supplier Table & Storage Condition Table */}
-      <div className="mt-6 grid gap-4 grid-cols-1 lg:grid-cols-7">
-        {/* Manufacturer */}
-        <Card className="lg:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
+      <div className="mt-6 grid gap-4 grid-cols-1 xl:grid-cols-7">
+        {/* Manufacturer & Supplier */}
+        <Card className="xl:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
               Top Manufacturers & Suppliers
@@ -115,7 +119,7 @@ const PharmacistOverview = () => {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="manufacturers">
-              <TabsList className="mb-4 border py-6 px-1">
+              <TabsList className="mb-4 border w-full">
                 <TabsTrigger
                   className={"cursor-pointer py-2 px-8"}
                   value="manufacturers"
@@ -130,11 +134,13 @@ const PharmacistOverview = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="manufacturers">
+                {/* Manufacturer */}
                 <ManufacturersTable
                   medicinesPerManufacturer={stats?.medicinesPerManufacturer}
                 />
               </TabsContent>
               <TabsContent value="suppliers">
+                {/* Supplier */}
                 <SupplierTable
                   medicinesPerSupplier={stats?.medicinesPerSupplier}
                 />
@@ -142,8 +148,8 @@ const PharmacistOverview = () => {
             </Tabs>
           </CardContent>
         </Card>
-        {/* Supplier */}
-        <Card className="lg:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
+        {/* Storage Conditions */}
+        <Card className="xl:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
               Storage Conditions

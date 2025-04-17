@@ -22,7 +22,7 @@ const Home = () => {
       </div>
       
       {/* Eid Greeting */}
-      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="hidden pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <EidGreetingSection />
       </div>
 

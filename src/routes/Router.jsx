@@ -7,7 +7,6 @@ import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
 import { logOutUser, setLoading, setUser } from "@/redux/auth/authSlice";
-// import { useAuthUser } from "@/redux/auth/authActions";
 import { onAuthStateChanged } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
 import PrivateRoute from "./PrivateRoute";
@@ -56,6 +55,12 @@ import EmergencyTriage from "@/pages/emergency/emergency-triage";
 import PatientOverview from "@/pages/DashboardPages/PatientOverview/PatientOverview";
 import RewardsDashboard from "@/pages/Patient/Rewards/RewardsDashboard";
 import ManageBillings from "@/pages/DashboardPages/Administrator/ManageBillings";
+import ContactMessage from "@/pages/DashboardPages/Administrator/ContactMessage/ContactMessage";
+import AdminRoute from "./AdminRoute";
+import BedPage from "@/pages/BedBooking/BedPage";
+import PharmacistRoute from "./PharmacistRoute";
+import ReceptionistRoute from "./ReceptionistRoute";
+import AllDoctors from "@/pages/DashboardPages/Administrator/AllDoctors";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -128,8 +133,10 @@ const Router = () => {
             </div>
           }
         />
+        <Route path="available-beds" element={<BedPage />} />
       </Route>
 
+      {/* Emergency Routes */}
       <Route path="emergency" element={<EmergencyLayout />}>
         <Route index element={<Emergency />} />
         <Route path="contacts" element={<EmergencyContactsList />} />
@@ -145,45 +152,105 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
 
       {/* Dashboard Routes */}
-      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <DashboardLayout />
+          </PrivateRoute>
+        }
+      >
         {/* Admin Routes */}
         <Route
           path="/dashboard/administrator-overview"
-          element={<AdministratorOverview />}
+          element={
+            <AdminRoute>
+              <AdministratorOverview />
+            </AdminRoute>
+          }
         />
         <Route
           path="/dashboard/administrator/manage-doctors"
-          element={<DoctorsManagement />}
+          element={
+            <AdminRoute>
+              <DoctorsManagement />
+            </AdminRoute>
+          }
         />
         <Route
           path="/dashboard/administrator/manage-users"
-          element={<StuffManagement />}
+          element={
+            <AdminRoute>
+              <StuffManagement />
+            </AdminRoute>
+          }
         />
         <Route
           path="/dashboard/administrator/manage-billing-payments"
-          element={<ManageBillings />}
+          element={
+            <AdminRoute>
+              <ManageBillings />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/administrator/doctors"
+          element={
+            <AdminRoute>
+              <AllDoctors />
+              </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/administrator/contact-message"
+          element={
+            <AdminRoute>
+              <ContactMessage />
+              </AdminRoute>
+          }
         />
 
         {/* Pharmacist Routes */}
         <Route
           path="/dashboard/pharmacist-overview"
-          element={<PharmacistOverview />}
+          element={
+            <PharmacistRoute>
+              <PharmacistOverview />
+            </PharmacistRoute>
+          }
         />
         <Route
           path="/dashboard/pharmacist/sales-report"
-          element={<SalesReport />}
+          element={
+            <PharmacistRoute>
+              <SalesReport />
+            </PharmacistRoute>
+          }
         />
         <Route
           path="/dashboard/pharmacist/manage-orders"
-          element={<ManageOrders />}
+          element={
+            <PharmacistRoute>
+              <ManageOrders />
+            </PharmacistRoute>
+          }
         />
         <Route
           path="/dashboard/pharmacist/manage-medicines"
-          element={<ManageMedicines />}
+          element={
+            <PharmacistRoute>
+              <ManageMedicines />
+            </PharmacistRoute>
+          }
         />
         <Route
           path="/dashboard/pharmacist/manage-banner"
-          element={<ManageBanners />}
+          element={
+            <PharmacistRoute>
+              <ManageBanners />
+            </PharmacistRoute>
+          }
         />
 
         {/* Doctors Routes */}
@@ -191,19 +258,35 @@ const Router = () => {
         {/* Receptionist Routes */}
         <Route
           path="/dashboard/receptionist-overview"
-          element={<ReceptionistOverview />}
+          element={
+            <ReceptionistRoute>
+              <ReceptionistOverview />
+            </ReceptionistRoute>
+          }
         />
         <Route
           path="/dashboard/receptionist/manage-beds"
-          element={<ManageBeds />}
+          element={
+            <ReceptionistRoute>
+              <ManageBeds />
+            </ReceptionistRoute>
+          }
         />
         <Route
           path="/dashboard/receptionist/manage-bedBooking"
-          element={<ManageBedBooking />}
+          element={
+            <ReceptionistRoute>
+              <ManageBedBooking />
+            </ReceptionistRoute>
+          }
         />
         <Route
           path="/dashboard/receptionist/manage-appointments"
-          element={<ManageAppointments />}
+          element={
+            <ReceptionistRoute>
+              <ManageAppointments />
+            </ReceptionistRoute>
+          }
         />
 
         {/* Patient Routes */}
@@ -212,7 +295,10 @@ const Router = () => {
           element={<PatientOverview />}
         />
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
-        <Route path="/dashboard/patient/rewards" element={<RewardsDashboard />} />
+        <Route
+          path="/dashboard/patient/rewards"
+          element={<RewardsDashboard />}
+        />
         <Route
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
@@ -225,7 +311,6 @@ const Router = () => {
           path="/dashboard/patient/favorite-doctors"
           element={<MyFavoriteDoctors />}
         />
-
         <Route
           path="/dashboard/patient/my-bedRequest"
           element={<MyBedRequests />}

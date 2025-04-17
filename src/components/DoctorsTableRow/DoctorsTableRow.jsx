@@ -1,4 +1,7 @@
-import { deleteDoctor } from "@/redux/doctors/doctorSlice";
+import {
+  deleteDoctor,
+  deleteSpecificDoctor,
+} from "@/redux/doctors/doctorSlice";
 import {
   BookmarkX,
   CalendarCheck2,
@@ -18,8 +21,15 @@ import {
 import { Button } from "../ui/button";
 import moment from "moment";
 
-const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleChangeAvailability, handleDoctorDetails }) => {
-  const handleDeleteDoctor = async (id) => {
+const DoctorsTableRow = ({
+  doctor,
+  index,
+  dispatch,
+  handleAddNote,
+  handleChangeAvailability,
+  handleDoctorDetails,
+}) => {
+  const handleDeleteDoctor = async (id, email) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You cannot retrieve this doctor!",
@@ -31,7 +41,8 @@ const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleChangeA
     }).then(async (result) => {
       if (result.isConfirmed) {
         const response = await dispatch(deleteDoctor(id));
-        if (response) {
+        const removeDoctor = await dispatch(deleteSpecificDoctor(email));
+        if (response && removeDoctor) {
           toast.success("Doctor has been removed");
         }
       }
@@ -98,7 +109,7 @@ const DoctorsTableRow = ({ doctor, index, dispatch, handleAddNote, handleChangeA
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="cursor-pointer disabled:cursor-not-allowed focus:text-destructive flex gap-2 items-center"
-                onClick={() => handleDeleteDoctor(doctor?._id)}
+                onClick={() => handleDeleteDoctor(doctor?._id, doctor?.userEmail)}
               >
                 <BookmarkX className="w-4 h-4" />
                 <span>Remove</span>

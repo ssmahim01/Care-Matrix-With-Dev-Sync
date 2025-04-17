@@ -1,17 +1,15 @@
-import * as React from "react";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import CareMatrixLogo from "../assets/images/logo-care-matrix.webp";
+import * as React from "react";
 import { Link } from "react-router";
-import collapseLogo from '/collapse-logo.png'
+import collapseLogo from "/collapse-logo.png";
 
 export function HeadingPlatform() {
   const { state, isSidebarCollapsed } = useSidebar();
-
 
   return (
     <SidebarMenu>
@@ -25,18 +23,20 @@ export function HeadingPlatform() {
             <div className="w-full flex items-center gap-2 ">
               <Link to="/">
                 <figure className={`transition-all duration-300`}>
-                  {
-                    state === "collapsed" ?
-                      <img src={collapseLogo} alt=""className="absolute -top-0.5" />
-                      :
-                      <img
-                        src="https://i.ibb.co.com/NgjF57xt/care-matrix-logo-Copy-removebg-preview.png"
-                        className="w-44 h-full transition-all duration-300"
-                        referrerPolicy="no-referrer"
-                        alt="Care Matrix Logo"
-                      />
-                  }
-
+                  {state === "collapsed" ? (
+                    <img
+                      src={collapseLogo}
+                      alt=""
+                      className="absolute -top-0.5"
+                    />
+                  ) : (
+                    <img
+                      src="https://i.ibb.co.com/0p51x7fq/care-matrix-logo-mainlogo.png"
+                      className="w-44 h-full transition-all duration-300"
+                      referrerPolicy="no-referrer"
+                      alt="Care Matrix Logo"
+                    />
+                  )}
                 </figure>
               </Link>
             </div>

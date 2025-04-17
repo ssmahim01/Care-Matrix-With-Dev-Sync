@@ -102,13 +102,20 @@ const Medicines = ({ medicines, isLoading }) => {
                     </span>
                   </h3>
                   <button
+                    disabled={medicine?.availability === "Out Of Stock"}
                     onClick={(e) => handleAddToCart(e, medicine)}
-                    className="btn btn-sm border-none hover:bg-[#0e6efd] text-[1rem] duration-500 bg-[#0E82FD] text-white mt-4 relative group flex items-center gap-2"
+                    className="btn btn-sm border-none hover:bg-[#0e6efd] text-[1rem] duration-500 bg-[#0E82FD] text-white mt-4 relative group flex items-center gap-2 disabled:text-neutral-800"
                   >
-                    <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-1 after:w-0 after:h-[0.1px] after:bg-white after:transition-all after:duration-300 group-hover:after:w-full">
-                      Add
-                    </span>{" "}
-                    <FaCartPlus size={20} />
+                    {medicine?.availability === "Out Of Stock" ? (
+                      "Out Of Stock"
+                    ) : (
+                      <>
+                        <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-1 after:w-0 after:h-[0.1px] after:bg-white after:transition-all after:duration-300 group-hover:after:w-full">
+                          Add
+                        </span>{" "}
+                        <FaCartPlus size={20} />
+                      </>
+                    )}
                   </button>
                 </div>
               </div>

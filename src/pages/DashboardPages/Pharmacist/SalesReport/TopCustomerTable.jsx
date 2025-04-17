@@ -26,7 +26,7 @@ const TopCustomerTable = ({ topCustomers }) => {
     <div className="grid grid-cols-1 gap-6 p-4">
       {/* Left Column - Top 3 Customers in Cards */}
       <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 :w-11/12 mx-auto">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 :w-11/12 mx-auto">
           {topThree.map((customer, idx) => (
             <Card
               key={idx}
@@ -55,6 +55,7 @@ const TopCustomerTable = ({ topCustomers }) => {
                 <img
                   src={customer?.photo}
                   alt={customer?.name}
+                  referrerPolicy="no-referrer"
                   className="w-20 h-20 rounded-full object-cover border-2 border-primary"
                 />
               </div>
@@ -123,6 +124,7 @@ const TopCustomerTable = ({ topCustomers }) => {
                   <img
                     src={customer?.photo}
                     alt={customer?.name}
+                    referrerPolicy="no-referrer"
                     className="w-10 h-10 rounded-full object-cover"
                   />
                   {customer?.name}

@@ -14,7 +14,6 @@ import {
   BedSingle,
   BriefcaseMedical,
   CalendarDays,
-  ChartPie,
   ClipboardPlus,
   Contact,
   CreditCard,
@@ -22,20 +21,22 @@ import {
   History,
   Home,
   Hospital,
+  IdCardIcon,
   LayoutDashboard,
   LayoutDashboardIcon,
   LucideBedSingle,
+  MailIcon,
   ShoppingCart,
   Sparkles,
   Stethoscope,
   TicketSlash,
   Users,
 } from "lucide-react";
-import { FaHistory, FaTruck } from "react-icons/fa";
+import { FaTruck } from "react-icons/fa";
 import { FaUserDoctor } from "react-icons/fa6";
 import { GiMedicines } from "react-icons/gi";
-import historyIcon from "../assets/file.png";
 import { NavLink } from "react-router";
+import historyIcon from "../assets/file.png";
 
 export function NavMain() {
   const { state } = useSidebar();
@@ -98,7 +99,7 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <FaUserDoctor size={25} className="text-base " />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Doctors Management{" "}
+                    Doctor Requests{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -119,6 +120,14 @@ export function NavMain() {
                 </h3>
               </NavLink>
              */}
+              <NavLink to="/dashboard/administrator/doctors">
+                <h3 className="flex gap-2 items-center">
+                  <IdCardIcon className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Manage Doctors{" "}
+                  </span>
+                </h3>
+              </NavLink> 
               <NavLink to="/dashboard/administrator/manage-billing-payments">
                 <h3 className="flex gap-2 items-center">
                   <CreditCard className="text-base" />
@@ -126,7 +135,15 @@ export function NavMain() {
                     Billing & Payments{" "}
                   </span>
                 </h3>
-              </NavLink> 
+              </NavLink>
+              <NavLink to="/dashboard/administrator/contact-message">
+                <h3 className="flex gap-2 items-center">
+                  <MailIcon className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Contact Message{" "}
+                  </span>
+                </h3>
+              </NavLink>
               <div className="divider mt-2"></div>
             </>
           )}

@@ -8,7 +8,7 @@ const PharmacyNavbar = ({ search, setSearch }) => {
   return (
     <div className="flex justify-between gap-4 items-center flex-wrap">
       {/* Searchbar */}
-      <div className="relative w-full flex flex-1 product_search_input">
+      <div className="relative w-full min-w-xs flex flex-1 product_search_input">
         <input
           className="px-4 py-2 border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
           placeholder="Search Medicines..."

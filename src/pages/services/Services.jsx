@@ -10,9 +10,9 @@ const Services = () => {
     ">
         <ClinicAndSpecialties />
       </div>
-      <div className="my-12 mx-auto">
+      {/* <div className="my-12 mx-auto">
         <BedPage />
-      </div>
+      </div> */}
     </div>
   );
 };
