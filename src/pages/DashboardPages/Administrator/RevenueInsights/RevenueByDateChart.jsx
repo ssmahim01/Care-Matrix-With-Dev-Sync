@@ -25,7 +25,7 @@ const RevenueByDateChart = ({ chartData }) => {
           Revenue Trends Over Time
         </CardTitle>
         <CardDescription className="text-sm text-muted-foreground">
-          Visual breakdown of total revenue and appointments by date
+          Visual breakdown of total revenue and appointments by past 10 days
         </CardDescription>
       </CardHeader>
       <CardContent className="pl-2">
