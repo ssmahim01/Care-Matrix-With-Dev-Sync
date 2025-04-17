@@ -58,6 +58,7 @@ import ManageBillings from "@/pages/DashboardPages/Administrator/ManageBillings"
 import ContactMessage from "@/pages/DashboardPages/Administrator/ContactMessage/ContactMessage";
 import AdminRoute from "./AdminRoute";
 import BedPage from "@/pages/BedBooking/BedPage";
+import PharmacistRoute from "./PharmacistRoute";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -201,23 +202,43 @@ const Router = () => {
         {/* Pharmacist Routes */}
         <Route
           path="/dashboard/pharmacist-overview"
-          element={<PharmacistOverview />}
+          element={
+            <PharmacistRoute>
+              <PharmacistOverview />
+            </PharmacistRoute>
+          }
         />
         <Route
           path="/dashboard/pharmacist/sales-report"
-          element={<SalesReport />}
+          element={
+            <PharmacistRoute>
+              <SalesReport />
+            </PharmacistRoute>
+          }
         />
         <Route
           path="/dashboard/pharmacist/manage-orders"
-          element={<ManageOrders />}
+          element={
+            <PharmacistRoute>
+              <ManageOrders />
+            </PharmacistRoute>
+          }
         />
         <Route
           path="/dashboard/pharmacist/manage-medicines"
-          element={<ManageMedicines />}
+          element={
+            <PharmacistRoute>
+              <ManageMedicines />
+            </PharmacistRoute>
+          }
         />
         <Route
           path="/dashboard/pharmacist/manage-banner"
-          element={<ManageBanners />}
+          element={
+            <PharmacistRoute>
+              <ManageBanners />
+            </PharmacistRoute>
+          }
         />
 
         {/* Doctors Routes */}

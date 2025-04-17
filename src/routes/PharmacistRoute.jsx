@@ -3,7 +3,7 @@ import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { Navigate } from "react-router";
 import useRole from "@/hooks/useRole";
 
-const PharmacistRoute = () => {
+const PharmacistRoute = ({ children }) => {
   const loading = useAuthLoading();
   const [role, isLoading] = useRole();
   const user = useAuthUser();
