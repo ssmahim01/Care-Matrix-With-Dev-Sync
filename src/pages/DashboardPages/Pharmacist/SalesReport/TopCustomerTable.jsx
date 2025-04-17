@@ -55,6 +55,7 @@ const TopCustomerTable = ({ topCustomers }) => {
                 <img
                   src={customer?.photo}
                   alt={customer?.name}
+                  referrerPolicy="no-referrer"
                   className="w-20 h-20 rounded-full object-cover border-2 border-primary"
                 />
               </div>
@@ -123,6 +124,7 @@ const TopCustomerTable = ({ topCustomers }) => {
                   <img
                     src={customer?.photo}
                     alt={customer?.name}
+                    referrerPolicy="no-referrer"
                     className="w-10 h-10 rounded-full object-cover"
                   />
                   {customer?.name}

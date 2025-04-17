@@ -70,7 +70,15 @@ const BedPage = () => {
       />
       <div className="mt-6 sm:mt-8 lg:mt-12">
         {isLoading ? (
-          <div className="text-center">Loading beds...</div>
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+           {/* Render skeleton BedCards while loading */}
+           {Array(3).fill(0).map((_, index) => (
+             <BedCard
+               key={`skeleton-${index}`}
+               loading={true}
+             />
+           ))}
+         </div>
         ) : beds.length === 0 ? (
           <div className="text-center text-gray-500">
             No available beds at the moment.
@@ -87,6 +95,7 @@ const BedPage = () => {
                 status={bed.status}
                 onRequestBooking={handleRequestBooking}
                 onShowDetails={handleShowDetails}
+                isLoading-={isLoading}
               />
             ))}
           </div>

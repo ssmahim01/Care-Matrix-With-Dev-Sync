@@ -7,7 +7,6 @@ import Login from "@/authentication/Login";
 import Register from "@/authentication/Register";
 import Services from "@/pages/services/Services";
 import { logOutUser, setLoading, setUser } from "@/redux/auth/authSlice";
-// import { useAuthUser } from "@/redux/auth/authActions";
 import { onAuthStateChanged } from "firebase/auth";
 import auth from "@/firebase/firebase.config";
 import PrivateRoute from "./PrivateRoute";
@@ -56,6 +55,9 @@ import EmergencyTriage from "@/pages/emergency/emergency-triage";
 import PatientOverview from "@/pages/DashboardPages/PatientOverview/PatientOverview";
 import RewardsDashboard from "@/pages/Patient/Rewards/RewardsDashboard";
 import ManageBillings from "@/pages/DashboardPages/Administrator/ManageBillings";
+import ContactMessage from "@/pages/DashboardPages/Administrator/ContactMessage/ContactMessage";
+import AdminRoute from "./AdminRoute";
+import AllDoctors from "@/pages/DashboardPages/Administrator/AllDoctors";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -145,23 +147,63 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
 
       {/* Dashboard Routes */}
-      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <DashboardLayout />
+          </PrivateRoute>
+        }
+      >
         {/* Admin Routes */}
         <Route
           path="/dashboard/administrator-overview"
-          element={<AdministratorOverview />}
+          element={
+            <AdminRoute>
+              <AdministratorOverview />
+            </AdminRoute>
+          }
         />
         <Route
           path="/dashboard/administrator/manage-doctors"
-          element={<DoctorsManagement />}
+          element={
+            <AdminRoute>
+              <DoctorsManagement />
+            </AdminRoute>
+          }
         />
         <Route
           path="/dashboard/administrator/manage-users"
-          element={<StuffManagement />}
+          element={
+            <AdminRoute>
+              <StuffManagement />
+            </AdminRoute>
+          }
         />
         <Route
           path="/dashboard/administrator/manage-billing-payments"
-          element={<ManageBillings />}
+          element={
+            <AdminRoute>
+              <ManageBillings />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/administrator/doctors"
+          element={
+            <AdminRoute>
+              <AllDoctors />
+              </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/administrator/contact-message"
+          element={
+            <AdminRoute>
+              <ContactMessage />
+              </AdminRoute>
+          }
         />
 
         {/* Pharmacist Routes */}
@@ -212,7 +254,10 @@ const Router = () => {
           element={<PatientOverview />}
         />
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
-        <Route path="/dashboard/patient/rewards" element={<RewardsDashboard />} />
+        <Route
+          path="/dashboard/patient/rewards"
+          element={<RewardsDashboard />}
+        />
         <Route
           path="/dashboard/patient/request-form"
           element={<RoleRequest />}
@@ -225,7 +270,6 @@ const Router = () => {
           path="/dashboard/patient/favorite-doctors"
           element={<MyFavoriteDoctors />}
         />
-
         <Route
           path="/dashboard/patient/my-bedRequest"
           element={<MyBedRequests />}

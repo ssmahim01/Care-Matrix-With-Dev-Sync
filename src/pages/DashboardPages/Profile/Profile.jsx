@@ -183,7 +183,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="px-7 pb-12">
+    <div className="px-7 pb-12 max-w-screen-2xl">
       <DashboardPagesHeader
         title={"My Profile"}
         subtitle={"Manage your personal information and account settings"}
@@ -191,9 +191,9 @@ const Profile = () => {
       />
 
       {/* Main Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-5 xl:grid-cols-4 gap-8">
         {/* Left Column - Profile Image & Quick Info */}
-        <div className="lg:col-span-2 xl:col-span-1 space-y-6">
+        <div className="md:col-span-2 xl:col-span-1 space-y-6">
           {/* Profile Card */}
           <Card className="border shadow-none border-[#e5e7eb]">
             <div className="h-28 bg-gradient-to-r skeleton rounded-b-none rounded-t-[12.8px]" />
@@ -326,7 +326,7 @@ const Profile = () => {
           </Card>
         </div>
         {/* Right Column - Progress, & Profile Details & Edit Profile */}
-        <div className="lg:col-span-3 xl:col-span-2">
+        <div className="md:col-span-3 xl:col-span-2">
           {/* Profile Complete Progress */}
           <Card className="border shadow-none border-[#e5e7eb]">
             <CardContent className="p-6">

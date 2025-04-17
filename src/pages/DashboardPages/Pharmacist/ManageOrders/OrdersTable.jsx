@@ -20,6 +20,11 @@ import { Link } from "react-router";
 import MedicinesDialog from "./MedicinesDialog";
 import { FaFileInvoice } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const OrdersTable = ({
   ordersData,
@@ -126,10 +131,28 @@ const OrdersTable = ({
             <TableCell>${order?.totalPrice.toFixed(2)}</TableCell>
             <TableCell>{order?.paymentStatus}</TableCell>
             <TableCell>
-              <div className={"mt-1 text-xs flex flex-col font-medium gap-1.5"}>
-                <span>{order?._id}</span>
-                <span>{order?.transactionId}</span>
-              </div>
+              <Tooltip>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <div
+                    className={
+                      "mt-1 text-xs flex flex-col font-medium gap-1.5 w-[70px]"
+                    }
+                  >
+                    <span className=" truncate">{order?._id}</span>
+                    <span className=" truncate">{order?.transactionId}</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  className={"space-y-1.5 flex flex-col text-sm cursor-pointer"}
+                >
+                  <div
+                    className={"mt-1 text-xs flex flex-col font-medium gap-1.5"}
+                  >
+                    <span>{order?._id}</span>
+                    <span>{order?.transactionId}</span>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
             </TableCell>
             <TableCell>
               {order?.date
@@ -142,12 +165,32 @@ const OrdersTable = ({
                   : "N/A"}
               </span>
             </TableCell>
-            <TableCell className="max-w-40 overflow-x-auto">
-              <div>{order?.customerInfo?.address}</div>
-              <div>
-                {order?.customerInfo?.district}, {order?.customerInfo?.division}{" "}
-                - {order?.customerInfo?.postalCode || "N/A"}
-              </div>
+            <TableCell className="max-w-28 overflow-x-auto">
+              <Tooltip>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <div>
+                    <div>{order?.customerInfo?.address}</div>
+                    <div>
+                      {order?.customerInfo?.district},{" "}
+                      {order?.customerInfo?.division} -{" "}
+                      {order?.customerInfo?.postalCode || "N/A"}
+                    </div>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  className={"space-y-1.5 flex flex-col text-sm cursor-pointer"}
+                >
+                  <div>
+                    {" "}
+                    <div>{order?.customerInfo?.address}</div>
+                    <div>
+                      {order?.customerInfo?.district},{" "}
+                      {order?.customerInfo?.division} -{" "}
+                      {order?.customerInfo?.postalCode || "N/A"}
+                    </div>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
             </TableCell>
             <TableCell />
             <TableCell>
