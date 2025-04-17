@@ -76,13 +76,13 @@ const ConsultantTableRow = ({ consultant, dispatch, index, handleChangeAvailabil
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
+            {/* <DropdownMenuItem
               className="flex gap-2 cursor-pointer items-center"
               // onClick={() => handleView(consultant)}
             >
               <Eye className="h-5 w-5" />
               <span>View Details</span>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuItem
               className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
               onClick={() => handleChangeAvailability(consultant)}
