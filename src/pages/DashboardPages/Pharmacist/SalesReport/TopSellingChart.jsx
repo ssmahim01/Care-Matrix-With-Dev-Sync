@@ -18,7 +18,7 @@ import { COLORS } from "./CustomTooltip";
 
 const TopSellingChart = ({ topSellingMedicines }) => {
   return (
-    <Card className="col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
+    <Card className="col-span-4 lg:col-span-3 border shadow-none border-[#e5e7eb] w-full py-6">
       <CardHeader>
         <CardTitle className="text-base font-bold">
           Top Selling Medicines
@@ -27,7 +27,7 @@ const TopSellingChart = ({ topSellingMedicines }) => {
           Top 5 medicines by quantity sold
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className={"w-full"}>
         <ResponsiveContainer width="100%" height={350}>
           <BarChart
             data={topSellingMedicines}

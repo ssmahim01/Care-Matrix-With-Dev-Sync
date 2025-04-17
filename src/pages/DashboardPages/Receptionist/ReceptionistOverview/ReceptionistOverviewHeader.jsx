@@ -22,7 +22,7 @@ const ReceptionistOverviewHeader = () => {
           </Badge>
           <Badge variant="outline" className="text-muted-foreground">
             <TrendingUp className="mr-1 h-3 w-3" />
-            Last 7 days
+            Last 30 days
           </Badge>
         </div>
       </div>

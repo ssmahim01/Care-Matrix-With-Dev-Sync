@@ -375,7 +375,7 @@ export default function EmergencyTriage() {
           <Input
             placeholder="Search patients..."
             onChange={(e) => handleSearch(e.target.value)}
-            className="max-w-sm"
+            className="w-96"
           />
         </div>
         <Button variant="outline" onClick={sortPatientsByPriority}>
