@@ -64,9 +64,22 @@ const Departments = () => {
         {/* Tab Content */}
         <Tabs defaultValue="services" className="w-full">
           <TabsList className="border w-full">
-            <TabsTrigger value="services">Services</TabsTrigger>
-            <TabsTrigger value="doctors">Doctors</TabsTrigger>
-            <TabsTrigger value="contact-hours">
+            <TabsTrigger
+              className={"cursor-pointer py-2 px-4 w-full "}
+              value="services"
+            >
+              Services
+            </TabsTrigger>
+            <TabsTrigger
+              className={"cursor-pointer py-2 px-4 w-full "}
+              value="doctors"
+            >
+              Doctors
+            </TabsTrigger>
+            <TabsTrigger
+              className={"cursor-pointer py-2 px-4 w-full "}
+              value="contact-hours"
+            >
               Contact & Opening Hours
             </TabsTrigger>
           </TabsList>
@@ -99,9 +112,12 @@ const Departments = () => {
           </TabsContent>
           {/* 2nd */}
           <TabsContent value="doctors">
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-4">Doctors</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card
+              className={
+                "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+              }
+            >
+              <CardContent className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {data.doctors.map((doc, index) => (
                   <div
                     key={index}
@@ -119,34 +135,44 @@ const Departments = () => {
                     <p className="text-sm text-gray-500">{doc.experience}</p>
                   </div>
                 ))}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </TabsContent>
           {/* 3rd */}
           <TabsContent value="contact-hours" className={"flex gap-4"}>
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-3">
-                Contact Information
-              </h2>
-              <p className="text-gray-700 mb-1">
-                <strong>Phone:</strong> {data.contact.phone}
-              </p>
-              <p className="text-gray-700 mb-1">
-                <strong>Email:</strong> {data.contact.email}
-              </p>
-              <p className="text-gray-700 mb-1">
-                <strong>Location:</strong> {data.contact.location}
-              </p>
-            </div>
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-3">Operating Hours</h2>
-              <p className="text-gray-700 mb-1">
-                <strong>Weekdays:</strong> {data.hours.weekdays}
-              </p>
-              <p className="text-gray-700">
-                <strong>Weekend:</strong> {data.hours.weekend}
-              </p>
-            </div>
+            <Card
+              className={
+                "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+              }
+            >
+              <CardContent className="flex gap-y-6 gap-x-10 xl:gap-x-16 flex-col lg:flex-row lg:items-stretch">
+                <div className="px-4">
+                  <h2 className="text-xl font-semibold mb-3">
+                    Contact Information
+                  </h2>
+                  <p className="text-gray-700 mb-1">
+                    <strong>Phone:</strong> {data.contact.phone}
+                  </p>
+                  <p className="text-gray-700 mb-1">
+                    <strong>Email:</strong> {data.contact.email}
+                  </p>
+                  <p className="text-gray-700 mb-1">
+                    <strong>Location:</strong> {data.contact.location}
+                  </p>
+                </div>
+                <div className="flex flex-col lg:border-l-2 pl-8">
+                  <h2 className="text-xl font-semibold mb-3">
+                    Operating Hours
+                  </h2>
+                  <p className="text-gray-700 mb-1">
+                    <strong>Weekdays:</strong> {data.hours.weekdays}
+                  </p>
+                  <p className="text-gray-700">
+                    <strong>Weekend:</strong> {data.hours.weekend}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

@@ -21,16 +21,22 @@ export const departmentsData = [
     ],
     doctors: [
       {
-        name: "Dr. Ayesha Rahman",
-        specialization: "Senior Pediatrician",
-        experience: "10+ years",
-        photo: "/images/doctors/ayesha-rahman.jpg",
+        name: "Dr. Michael Smith",
+        specialization: "General Surgeon",
+        experience: "14+ years",
+        photo: "https://i.ibb.co.com/F4M3hFY4/image.png",
       },
       {
-        name: "Dr. Karim Ullah",
-        specialization: "Neonatologist",
-        experience: "8+ years",
-        photo: "/images/doctors/karim-ullah.jpg",
+        name: "Dr. Emily Brown",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/39hPW8d1/image.png",
+      },
+      {
+        name: "Dr. James Wilson",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/FbsX85Nn/image.png",
       },
     ],
     contact: {
@@ -65,16 +71,22 @@ export const departmentsData = [
     ],
     doctors: [
       {
-        name: "Dr. Imran Hossain",
-        specialization: "Orthodontist",
-        experience: "7+ years",
-        photo: "/images/doctors/imran-hossain.jpg",
+        name: "Dr. Michael Smith",
+        specialization: "General Surgeon",
+        experience: "14+ years",
+        photo: "https://i.ibb.co.com/F4M3hFY4/image.png",
       },
       {
-        name: "Dr. Rima Ahmed",
-        specialization: "Endodontist",
-        experience: "9+ years",
-        photo: "/images/doctors/rima-ahmed.jpg",
+        name: "Dr. Emily Brown",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/39hPW8d1/image.png",
+      },
+      {
+        name: "Dr. James Wilson",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/FbsX85Nn/image.png",
       },
     ],
     contact: {
@@ -109,16 +121,22 @@ export const departmentsData = [
     ],
     doctors: [
       {
-        name: "Dr. Fahim Kabir",
-        specialization: "Consultant Neurologist",
-        experience: "12+ years",
-        photo: "/images/doctors/fahim-kabir.jpg",
+        name: "Dr. Michael Smith",
+        specialization: "General Surgeon",
+        experience: "14+ years",
+        photo: "https://i.ibb.co.com/F4M3hFY4/image.png",
       },
       {
-        name: "Dr. Nasreen Jahan",
-        specialization: "Neurosurgeon",
-        experience: "15+ years",
-        photo: "/images/doctors/nasreen-jahan.jpg",
+        name: "Dr. Emily Brown",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/39hPW8d1/image.png",
+      },
+      {
+        name: "Dr. James Wilson",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/FbsX85Nn/image.png",
       },
     ],
     contact: {
@@ -153,16 +171,22 @@ export const departmentsData = [
     ],
     doctors: [
       {
-        name: "Dr. Saifur Rahman",
+        name: "Dr. Michael Smith",
         specialization: "General Surgeon",
         experience: "14+ years",
-        photo: "/images/doctors/saifur-rahman.jpg",
+        photo: "https://i.ibb.co.com/F4M3hFY4/image.png",
       },
       {
-        name: "Dr. Laila Khan",
+        name: "Dr. Emily Brown",
         specialization: "Orthopedic Surgeon",
         experience: "11+ years",
-        photo: "/images/doctors/laila-khan.jpg",
+        photo: "https://i.ibb.co.com/39hPW8d1/image.png",
+      },
+      {
+        name: "Dr. James Wilson",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/FbsX85Nn/image.png",
       },
     ],
     contact: {
@@ -197,16 +221,22 @@ export const departmentsData = [
     ],
     doctors: [
       {
-        name: "Dr. Tariq Mahmud",
-        specialization: "Emergency Physician",
-        experience: "9+ years",
-        photo: "/images/doctors/tariq-mahmud.jpg",
+        name: "Dr. Michael Smith",
+        specialization: "General Surgeon",
+        experience: "14+ years",
+        photo: "https://i.ibb.co.com/F4M3hFY4/image.png",
       },
       {
-        name: "Dr. Shabnam Akter",
-        specialization: "Trauma Specialist",
-        experience: "12+ years",
-        photo: "/images/doctors/shabnam-akter.jpg",
+        name: "Dr. Emily Brown",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/39hPW8d1/image.png",
+      },
+      {
+        name: "Dr. James Wilson",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/FbsX85Nn/image.png",
       },
     ],
     contact: {
@@ -241,16 +271,22 @@ export const departmentsData = [
     ],
     doctors: [
       {
-        name: "Dr. Farzana Islam",
-        specialization: "Obstetrician-Gynecologist",
-        experience: "13+ years",
-        photo: "/images/doctors/farzana-islam.jpg",
+        name: "Dr. Michael Smith",
+        specialization: "General Surgeon",
+        experience: "14+ years",
+        photo: "https://i.ibb.co.com/F4M3hFY4/image.png",
       },
       {
-        name: "Dr. Mehnaz Begum",
-        specialization: "Fertility Specialist",
-        experience: "10+ years",
-        photo: "/images/doctors/mehnaz-begum.jpg",
+        name: "Dr. Emily Brown",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/39hPW8d1/image.png",
+      },
+      {
+        name: "Dr. James Wilson",
+        specialization: "Orthopedic Surgeon",
+        experience: "11+ years",
+        photo: "https://i.ibb.co.com/FbsX85Nn/image.png",
       },
     ],
     contact: {
