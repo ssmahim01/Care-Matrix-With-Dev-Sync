@@ -13,12 +13,23 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { toast } from "sonner"
 import PhoneNumber from "./phone-number"
+import AddAmbulance from "@/components/emergency/AddAmbulance"
+import useRole from "@/hooks/useRole"
+import axios from "axios"
+import toast from "react-hot-toast"
+import { useQuery } from "@tanstack/react-query"
+import { Delete } from "lucide-react"
+import { X } from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
 
 export default function AmbulanceBooking() {
+
+  const [role] = useRole()
+
   const [step, setStep] = useState(1)
   const [bookingComplete, setBookingComplete] = useState(false)
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
 
   const [formData, setFormData] = useState({
     patientName: "",
@@ -31,87 +42,49 @@ export default function AmbulanceBooking() {
     priority: "normal",
   })
 
-  const [ambulances, setAmbulances] = useState([
-    {
-      id: "AMB-001",
-      name: "Rapid Response Unit 1",
-      status: "Available",
-      location: "City Center",
-      eta: "5 min",
-      type: "Advanced Life Support",
-      crew: 3,
-    },
-    {
-      id: "AMB-002",
-      name: "Emergency Medical Unit 2",
-      status: "Available",
-      location: "North District",
-      eta: "8 min",
-      type: "Basic Life Support",
-      crew: 2,
-    },
-    {
-      id: "AMB-003",
-      name: "Critical Care Unit 3",
-      status: "En Route",
-      location: "West District",
-      eta: "15 min",
-      type: "Advanced Life Support",
-      crew: 4,
-    },
-    {
-      id: "AMB-004",
-      name: "Paramedic Unit 4",
-      status: "Available",
-      location: "East District",
-      eta: "10 min",
-      type: "Basic Life Support",
-      crew: 2,
-    },
-    {
-      id: "AMB-005",
-      name: "Mobile ICU Unit 5",
-      status: "On Call",
-      location: "South District",
-      eta: "12 min",
-      type: "Critical Care",
-      crew: 5,
-    },
-  ])
+  const { data = [], refetch } = useQuery({
+    queryKey: ["ambulances"],
+    queryFn: async () => {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/ambulance/all`);
+      setAmbulances(res.data)
+      return res.data
+    }
+  })
 
-  const [activeAmbulances, setActiveAmbulances] = useState([
+  const [ambulances, setAmbulances] = useState(data)
+
+  const [activeBookings, setActiveBookings] = useState([
     {
-      id: "AMB-006",
-      patient: "Michael Johnson",
-      status: "En Route to Hospital",
-      pickupLocation: "123 Main St",
-      destination: "City General Hospital",
-      dispatchTime: "10:15 AM",
-      eta: "5 min",
+      id: "BOOK-006",
+      customerName: "Michael Johnson",
+      status: "Confirmed",
+      serviceType: "Consultation",
+      location: "123 Main St, City",
+      bookingTime: "2025-04-16 10:15 AM",
+      scheduledTime: "2025-04-16 11:00 AM",
       progress: 75,
     },
     {
-      id: "AMB-007",
-      patient: "Sarah Williams",
-      status: "En Route to Patient",
-      pickupLocation: "456 Oak Ave",
-      destination: "Westside Medical Center",
-      dispatchTime: "10:30 AM",
-      eta: "8 min",
+      id: "BOOK-007",
+      customerName: "Sarah Williams",
+      status: "Pending",
+      serviceType: "Spa Session",
+      location: "456 Oak Ave, City",
+      bookingTime: "2025-04-16 10:30 AM",
+      scheduledTime: "2025-04-16 12:00 PM",
       progress: 40,
     },
     {
-      id: "AMB-008",
-      patient: "David Lee",
-      status: "At Patient Location",
-      pickupLocation: "789 Pine Rd",
-      destination: "City General Hospital",
-      dispatchTime: "10:05 AM",
-      eta: "15 min to hospital",
+      id: "BOOK-008",
+      customerName: "David Lee",
+      status: "In Progress",
+      serviceType: "Taxi Ride",
+      location: "789 Pine Rd, City",
+      bookingTime: "2025-04-16 10:05 AM",
+      scheduledTime: "2025-04-16 10:45 AM",
       progress: 50,
     },
-  ])
-
+  ]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -138,9 +111,10 @@ export default function AmbulanceBooking() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log(e.target.value)
     // In a real app, you would submit the form data to the server
     setBookingComplete(true)
-    toast.success("Ambulance Booked Successfully",{
+    toast.success("Ambulance Booked Successfully", {
       description: "Ambulance AMB-001 has been dispatched to your location.",
     })
   }
@@ -158,6 +132,73 @@ export default function AmbulanceBooking() {
       default:
         return "bg-gray-500 text-white"
     }
+  }
+
+  const handleAddAmbulance = async (e) => {
+    e.preventDefault()
+    const form = e.target
+    const name = form.name.value;
+    const status = form.status.value;
+    const type = form.type.value;
+    const location = form.location.value;
+    const crew = parseInt(form.crew.value);
+
+
+    const ambulance = { name, status, type, location, crew };
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/ambulance/add`, ambulance);
+      if (res.data) return toast.success(res.data.message)
+    } catch (error) {
+      console.error("Error adding ambulance:", error.response?.data || error.message);
+      toast.error("Error adding ambulance:", error.response?.data || error.message)
+    } finally {
+      refetch()
+      setIsAddDialogOpen(false);
+    }
+  }
+
+  const handleDelete = async (id) => {
+    if (role !== "administrator") return toast.error("Admin Only")
+    toast.custom((t) => (
+      <AnimatePresence>
+        {t.visible && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.25 }}
+            className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md mx-auto flex flex-col items-center justify-center text-center space-y-4 z-[9999] border border-gray-200"
+          >
+            <h2 className="text-lg font-semibold text-gray-800">Are you absolutely sure?</h2>
+            <p className="text-sm text-gray-600">This action cannot be undone.</p>
+            <div className="flex gap-4 mt-2">
+              <button
+                onClick={async () => {
+                  toast.dismiss(t.id);
+                  try {
+                    const res = await axios.delete(`${import.meta.env.VITE_API_URL}/ambulance/delete-ambulance/${id}`);
+                    toast.success(res.data.message);
+                  } catch (error) {
+                    toast.error(error.message || 'Something went wrong');
+                  } finally {
+                    refetch();
+                  }
+                }}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all duration-200"
+              >
+                Yes, Delete
+              </button>
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-150"
+              >
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    ), { position: 'top-center', duration: Infinity });
   }
 
   return (
@@ -181,12 +222,89 @@ export default function AmbulanceBooking() {
         </div>
       </div>
 
-      <Tabs defaultValue="book">
+      <Tabs defaultValue="available">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="book">Book Ambulance</TabsTrigger>
           <TabsTrigger value="available">Available Ambulances</TabsTrigger>
-          <TabsTrigger value="active">Active Dispatches</TabsTrigger>
+          <TabsTrigger value="book">Book Ambulance</TabsTrigger>
+          <TabsTrigger value="active">Active Bookings</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="available" >
+          <Card>
+            <CardHeader className={`mt-4 flex items-center justify-between`}>
+              <div>
+                <CardTitle>Available Ambulances</CardTitle>
+                <CardDescription>View and book available ambulance units</CardDescription>
+              </div>
+
+              {role !== "administrator" ? null : (
+                <AddAmbulance
+                  handleAddAmbulance={handleAddAmbulance}
+                  isAddDialogOpen={isAddDialogOpen}
+                  setIsAddDialogOpen={setIsAddDialogOpen}
+                />
+              )}
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4 flex items-center gap-2">
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {ambulances.map((ambulance) => (
+                  <Card key={ambulance._id} className=" relative group transition-all duration-300 ease-in-out">
+                    <CardHeader className={cn("py-3 rounded-t-xl", getStatusColor(ambulance.status))}>
+                      <div className="flex justify-between items-center">
+                        <CardTitle className="text-sm font-medium text-white capitalize">{ambulance._id.slice(-6)}</CardTitle>
+                        <Badge variant="outline" className="bg-white/20 text-white">
+                          {ambulance.status}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4">
+                      <div className="grid gap-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Name:</span>
+                          <span>{ambulance.name}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Location:</span>
+                          <span>{ambulance.location}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">ETA:</span>
+                          <span>{ambulance.eta}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Type:</span>
+                          <span>{ambulance.type}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Crew:</span>
+                          <span>{ambulance.crew} personnel</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="border-t p-3 bg-muted/40">
+                      <Button
+                        variant={ambulance.status === "available" ? "default" : "outline"}
+                        size="sm"
+                        className="w-full"
+                        disabled={ambulance.status !== "available"}
+                      >
+                        {ambulance.status === "available" ? "Book Now" : "Not Available"}
+                      </Button>
+                    </CardFooter>
+                    <div className="group-hover:inline-block absolute hidden transition-all duration-300 -right-3 -top-3">
+                      <Button size={"icon"} onClick={() => handleDelete(ambulance._id)} className={"rounded-full bg-red-700 transition-all duration-300 size-8"}>
+                        <X className="transition-all duration-300" />
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="book">
           <Card>
             <CardHeader>
@@ -203,7 +321,7 @@ export default function AmbulanceBooking() {
                   </div>
                   <h3 className="mb-2 text-xl font-bold">Ambulance Booked Successfully</h3>
                   <p className="mb-4 text-muted-foreground">Ambulance AMB-001 has been dispatched to your location.</p>
-                  <PhoneNumber/>
+                  <PhoneNumber />
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
@@ -482,120 +600,56 @@ export default function AmbulanceBooking() {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="available">
-          <Card>
-            <CardHeader className={`mt-4`}>
-              <CardTitle>Available Ambulances</CardTitle>
-              <CardDescription>View and book available ambulance units</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-4 flex items-center gap-2">
-              </div>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {ambulances.map((ambulance) => (
-                  <Card key={ambulance.id} className="overflow-hidden">
-                    <CardHeader className={cn("py-3", getStatusColor(ambulance.status))}>
-                      <div className="flex justify-between items-center">
-                        <CardTitle className="text-sm font-medium text-white">{ambulance.id}</CardTitle>
-                        <Badge variant="outline" className="bg-white/20 text-white">
-                          {ambulance.status}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-4">
-                      <div className="grid gap-2">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Name:</span>
-                          <span>{ambulance.name}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Location:</span>
-                          <span>{ambulance.location}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">ETA:</span>
-                          <span>{ambulance.eta}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Type:</span>
-                          <span>{ambulance.type}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Crew:</span>
-                          <span>{ambulance.crew} personnel</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                    <CardFooter className="border-t p-3 bg-muted/40">
-                      <Button
-                        variant={ambulance.status === "Available" ? "default" : "outline"}
-                        size="sm"
-                        className="w-full"
-                        disabled={ambulance.status !== "Available"}
-                      >
-                        {ambulance.status === "Available" ? "Book Now" : "Not Available"}
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+
         <TabsContent value="active">
           <Card>
             <CardHeader>
-              <CardTitle>Active Ambulance Dispatches</CardTitle>
-              <CardDescription>Track currently active ambulance dispatches</CardDescription>
+              <CardTitle>Active Bookings</CardTitle>
+              <CardDescription>Track currently active bookings</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {activeAmbulances.map((ambulance) => (
-                  <Card key={ambulance.id}>
-                    <CardHeader className="py-3 bg-blue-500 text-white">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 pb-6">
+                {activeBookings.map((booking) => (
+                  <Card key={booking.id}>
+                    <CardHeader className="py-3 bg-blue-500 text-white rounded-t-xl">
                       <div className="flex justify-between items-center">
-                        <CardTitle className="text-sm font-medium">{ambulance.id}</CardTitle>
+                        <CardTitle className="text-sm font-medium">{booking.id}</CardTitle>
                         <Badge variant="outline" className="bg-white/20 text-white">
-                          {ambulance.status}
+                          {booking.status}
                         </Badge>
                       </div>
                     </CardHeader>
                     <CardContent className="p-4">
                       <div className="grid gap-2">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Patient:</span>
-                          <span>{ambulance.patient}</span>
+                          <span className="font-medium">Customer:</span>
+                          <span>{booking.customerName}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Pickup:</span>
-                          <span>{ambulance.pickupLocation}</span>
+                          <span className="font-medium">Service:</span>
+                          <span>{booking.serviceType}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Destination:</span>
-                          <span>{ambulance.destination}</span>
+                          <span className="font-medium">Location:</span>
+                          <span>{booking.location}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Dispatched:</span>
-                          <span>{ambulance.dispatchTime}</span>
+                          <span className="font-medium">Booked:</span>
+                          <span>{booking.bookingTime}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">ETA:</span>
-                          <span>{ambulance.eta}</span>
+                          <span className="font-medium">Scheduled:</span>
+                          <span>{booking.scheduledTime}</span>
                         </div>
                         <div className="mt-2 space-y-1">
                           <div className="flex justify-between text-xs">
                             <span>Progress</span>
-                            <span>{ambulance.progress}%</span>
+                            <span>{booking.progress}%</span>
                           </div>
-                          <Progress value={ambulance.progress} className="h-2" />
+                          <Progress value={booking.progress} className="h-2" />
                         </div>
                       </div>
                     </CardContent>
-                    <CardFooter className="border-t p-3 bg-muted/40">
-                      <Button variant="outline" size="sm" className="w-full">
-                        View Details
-                      </Button>
-                    </CardFooter>
                   </Card>
                 ))}
               </div>
