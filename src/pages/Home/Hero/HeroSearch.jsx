@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
+import { MdMoney, MdReviews } from "react-icons/md";
+import HeroDoctorSkeleton from "./HeroDoctorSkeleton";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
-import { FaRegFile } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
-import { MdMoney, MdOutlineEmail, MdReviews } from "react-icons/md";
 import { Link } from "react-router";
-import HeroDoctorSkeleton from "./HeroDoctorSkeleton";
 
 const HeroSearch = () => {
   const wrapperRef = useRef(null);
@@ -58,7 +57,7 @@ const HeroSearch = () => {
     >
       <input
         className="px-4 py-2 border border-border bg-white rounded-md w-full pl-[40px] outline-none cursor-pointer"
-        placeholder="Search..."
+        placeholder="Search Doctors..."
         onChange={(e) => setSearch(e.target.value)}
         onClick={() => setKeyPressOpen(true)}
       />
