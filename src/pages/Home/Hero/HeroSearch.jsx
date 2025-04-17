@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaRegFile } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { MdMoney, MdOutlineEmail, MdReviews } from "react-icons/md";
@@ -9,6 +9,7 @@ import { Link } from "react-router";
 import HeroDoctorSkeleton from "./HeroDoctorSkeleton";
 
 const HeroSearch = () => {
+  const wrapperRef = useRef(null);
   const axiosPublic = useAxiosPublic();
   const [keyPressOpen, setKeyPressOpen] = useState(false);
   const [department, setDepartment] = useState("");
@@ -37,14 +38,29 @@ const HeroSearch = () => {
     }
   }, [department, data]);
 
-  console.log(doctors);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setKeyPressOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="relative w-full sm:w-full product_search_input z-40">
+    <div
+      ref={wrapperRef}
+      className="relative w-full sm:w-full product_search_input z-40"
+    >
       <input
         className="px-4 py-2 border border-border bg-white rounded-md w-full pl-[40px] outline-none"
         placeholder="Search..."
         onChange={(e) => setSearch(e.target.value)}
-        onClick={() => setKeyPressOpen(!keyPressOpen)}
+        onClick={() => setKeyPressOpen(true)}
       />
       <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
 
@@ -103,7 +119,7 @@ const HeroSearch = () => {
               {isLoading ? (
                 <HeroDoctorSkeleton />
               ) : (
-                data?.doctors?.map((doctor, index) => (
+                doctors?.map((doctor, index) => (
                   <div
                     key={index}
                     className="flex flex-wrap gap-[10px] items-center justify-between w-full hover:bg-gray-100 p-[10px] cursor-pointer rounded-md group"
