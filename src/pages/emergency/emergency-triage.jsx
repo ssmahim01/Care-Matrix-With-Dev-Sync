@@ -45,30 +45,30 @@ export default function EmergencyTriage() {
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false)
   const [selectedPatient, setSelectedPatient] = useState(null)
 
-  const { data = [], refetch} = useQuery({
+  const { data = [], refetch } = useQuery({
     queryKey: ["triage"],
     queryFn: async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/triage/all-triage`)
-        setPatients(data)
-        return data
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/triage/all-triage`)
+      setPatients(data)
+      return data
     },
   })
 
-  const { data: doctor = []} = useQuery({
+  const { data: doctor = [] } = useQuery({
     queryKey: ["doctors"],
     queryFn: async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors`)
-        setDoctors(data)
-        return data
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors`)
+      setDoctors(data)
+      return data
     },
   })
 
-  const { data: bed = [], refetch: bedRefetch} = useQuery({
+  const { data: bed = [], refetch: bedRefetch } = useQuery({
     queryKey: ["bed"],
     queryFn: async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/beds`)
-        setRooms(data)
-        return data
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/beds`)
+      setRooms(data)
+      return data
     },
   })
 
@@ -81,11 +81,11 @@ export default function EmergencyTriage() {
   const [rooms, setRooms] = useState(bed)
 
 
-const isAvailableToday = (days) => {
-  const today = format(new Date(), "EEEE");
-  // Check if today is in availableDays
-  return days.includes(today);
-};
+  const isAvailableToday = (days) => {
+    const today = format(new Date(), "EEEE");
+    // Check if today is in availableDays
+    return days.includes(today);
+  };
 
 
   const getPriorityColor = (priority) => {
@@ -133,7 +133,7 @@ const isAvailableToday = (days) => {
     const temperature = parseInt(form.temperature.value);
 
 
-    const patient = { name, age, gender, complaint, priority, vitalSigns: {bloodPressure, heartRate, respiratoryRate, oxygenSaturation, temperature}}
+    const patient = { name, age, gender, complaint, priority, vitalSigns: { bloodPressure, heartRate, respiratoryRate, oxygenSaturation, temperature } }
 
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/triage/add`, patient)
@@ -152,18 +152,18 @@ const isAvailableToday = (days) => {
     const form = e.target;
     const assignedDoctor = form.assignedDoctor.value;
     const roomId = form.assignedRoom.value;
-    const assignedRoom = rooms.find(rom=> rom._id === roomId)
+    const assignedRoom = rooms.find(rom => rom._id === roomId)
 
 
     if (selectedPatient) {
       try {
-        const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-assigned/${selectedPatient._id}`, { assignedDoctor, assignedRoom: assignedRoom.title, roomId} )
-        const bedRes = await axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${roomId}`, {status: "booked"})
-        if(bedRes.data) bedRefetch()
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-assigned/${selectedPatient._id}`, { assignedDoctor, assignedRoom: assignedRoom.title, roomId })
+        const bedRes = await axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${roomId}`, { status: "booked" })
+        if (bedRes.data) bedRefetch()
         toast.success(res.data?.message)
       } catch (error) {
         console.log(error)
-      }finally {
+      } finally {
         refetch()
         setIsAssignDialogOpen(false)
       }
@@ -176,60 +176,64 @@ const isAvailableToday = (days) => {
   }
 
   const handleCompleteTreatment = async (patientId, roomId) => {
-      toast.custom((t) => (
-        <AnimatePresence>
-          {t.visible && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.25 }}
-              className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md mx-auto flex flex-col items-center justify-center text-center space-y-4 z-[9999] border border-gray-200"
-            >
-              <h2 className="text-lg font-semibold text-gray-800">Are you sure?</h2>
-              <p className="text-sm text-gray-600">This complete the treatment task.</p>
-              <div className="flex gap-4 mt-2">
+    toast.custom((t) => (
+      <AnimatePresence>
+        {t.visible && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.25 }}
+            className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md mx-auto flex flex-col items-center justify-center text-center space-y-4 z-[9999] border border-gray-200"
+          >
+            <h2 className="text-lg font-semibold text-gray-800">Are you sure?</h2>
+            <p className="text-sm text-gray-600">This complete the treatment task.</p>
+            <div className="flex gap-4 mt-2">
               <button
-                  onClick={() => toast.dismiss(t.id)}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-150"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={async () => {
-                    toast.dismiss(t.id);
-                    try {
-                      const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-status/${patientId}`);
-                      await axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${roomId}`, {status: "available"})
-                      toast.success(res.data.message);
-                    } catch (error) {
-                      toast.error(error.message || 'Something went wrong');
-                    } finally {
-                      refetch();
-                    }
-                  }}
-                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all duration-200"
-                >
-                  Treatment Complete
-                </button>
-                
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      ), { position: 'top-right', duration: Infinity });
+                onClick={() => toast.dismiss(t.id)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-150"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  toast.dismiss(t.id);
+                  try {
+                    const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-status/${patientId}`);
+                    await axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${roomId}`, { status: "available" })
+                    toast.success(res.data.message);
+                  } catch (error) {
+                    toast.error(error.message || 'Something went wrong');
+                  } finally {
+                    refetch();
+                  }
+                }}
+                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all duration-200"
+              >
+                Treatment Complete
+              </button>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    ), { position: 'top-right', duration: Infinity });
   }
 
-  // const sortPatientsByPriority = () => {
-  //   const sortedPatients = [...patients].sort((a, b) => {
-  //     const priorityOrder = { Critical: 0, Urgent: 1, "Non-urgent": 2 }
-  //     return (
-  //       priorityOrder[a.priority] -
-  //       priorityOrder[b.priority]
-  //     )
-  //   })
-  //   setPatients(sortedPatients)
-  // }
+  const sortPatientsByPriority = () => {
+
+    const priorityOrder = {
+      critical: 1,
+      urgent: 2,
+      'non-urgent': 3
+    };
+
+    const sortedPatients = [...patients].sort((a, b) => {
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    });
+    setPatients(sortedPatients)
+    return sortedPatients;
+  }
 
   return (
     <div className="space-y-6">
@@ -241,7 +245,7 @@ const isAvailableToday = (days) => {
         <div className="flex items-center gap-2">
           <Button variant="outline">
             <Clock className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Current Time:</span> 11:30 AM
+            <span className="hidden sm:inline">Current Time:</span> {format(new Date(), "h:mm a")}
           </Button>
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
@@ -365,10 +369,10 @@ const isAvailableToday = (days) => {
             className="max-w-sm"
           />
         </div>
-        {/* <Button variant="outline" onClick={sortPatientsByPriority}>
+        <Button variant="outline" onClick={sortPatientsByPriority}>
           <ArrowUpDown className="mr-2 h-4 w-4" />
           Sort by Priority
-        </Button> */}
+        </Button>
       </div>
 
       <Tabs defaultValue="waiting">
@@ -469,7 +473,10 @@ const isAvailableToday = (days) => {
                 </TableHeader>
                 <TableBody>
                   {patients
-                    .filter((patient) => patient.status === "in-treatment" || patient.status === "completed")
+                    .filter((patient) => patient.status === "in-treatment" || patient.status === "completed").sort((a, b) => {
+                      const statusOrder = { "in-treatment": 0, completed: 1 };
+                      return statusOrder[a.status] - statusOrder[b.status];
+                    })
                     .map((patient) => (
                       <TableRow key={patient._id}>
                         <TableCell className="font-medium">{patient._id.slice(-6)}</TableCell>
@@ -508,19 +515,19 @@ const isAvailableToday = (days) => {
                             {/* <Button  variant="outline" size="sm">
                               Update
                             </Button> */}
-                            {patient.status === "completed" 
-                            ? 
-                            (
-                              <Badge className={`bg-green-400`}>
-                                Completed
-                              </Badge>
-                            )
-                            : 
-                            (
-                              <Button onClick={()=>handleCompleteTreatment(patient._id, patient.roomId )} variant="outline" size="sm">
-                              Complete
-                            </Button>
-                            )}
+                            {patient.status === "completed"
+                              ?
+                              (
+                                <Badge className={`bg-green-400`}>
+                                  Completed
+                                </Badge>
+                              )
+                              :
+                              (
+                                <Button onClick={() => handleCompleteTreatment(patient._id, patient.roomId)} variant="outline" size="sm">
+                                  Complete
+                                </Button>
+                              )}
                           </div>
                         </TableCell>
                       </TableRow>
