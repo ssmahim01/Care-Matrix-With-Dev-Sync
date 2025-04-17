@@ -11,7 +11,7 @@ import {
 
 const AppointmentPieChart = ({ appointmentStatusBreakdown }) => {
   // Colors for Pie Charts
-  const COLORS = ["#22c55e", "#facc15", "#ef4444", "#3b82f6"];
+  const COLORS = ["#10B981", "#F59E0B", "#F59E0B", "#10B981"];
   return (
     <Card className="lg:col-span-4 xl:col-span-4 border shadow-none border-[#e5e7eb] w-full py-6">
       <CardHeader>
@@ -27,6 +27,7 @@ const AppointmentPieChart = ({ appointmentStatusBreakdown }) => {
               cx="50%"
               cy="50%"
               outerRadius={80}
+              paddingAngle={3}
               fill="#8884d8"
               label
             >

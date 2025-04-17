@@ -183,7 +183,7 @@ const AdministratorOverview = () => {
             </div>
           </CardHeader>
           <CardContent className="relative ml-1 -mt-3">
-            <div className="text-3xl font-bold">
+            <div className="text-3xl font-extrabold">
               ৳ {summary.totalEarnings.toLocaleString()}
             </div>
             <div className="flex items-center mt-2">
