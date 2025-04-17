@@ -59,6 +59,7 @@ import ContactMessage from "@/pages/DashboardPages/Administrator/ContactMessage/
 import AdminRoute from "./AdminRoute";
 import BedPage from "@/pages/BedBooking/BedPage";
 import PharmacistRoute from "./PharmacistRoute";
+import ReceptionistRoute from "./ReceptionistRoute";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -134,6 +135,7 @@ const Router = () => {
         <Route path="available-beds" element={<BedPage />} />
       </Route>
 
+      {/* Emergency Routes */}
       <Route path="emergency" element={<EmergencyLayout />}>
         <Route index element={<Emergency />} />
         <Route path="contacts" element={<EmergencyContactsList />} />
@@ -246,19 +248,35 @@ const Router = () => {
         {/* Receptionist Routes */}
         <Route
           path="/dashboard/receptionist-overview"
-          element={<ReceptionistOverview />}
+          element={
+            <ReceptionistRoute>
+              <ReceptionistOverview />
+            </ReceptionistRoute>
+          }
         />
         <Route
           path="/dashboard/receptionist/manage-beds"
-          element={<ManageBeds />}
+          element={
+            <ReceptionistRoute>
+              <ManageBeds />
+            </ReceptionistRoute>
+          }
         />
         <Route
           path="/dashboard/receptionist/manage-bedBooking"
-          element={<ManageBedBooking />}
+          element={
+            <ReceptionistRoute>
+              <ManageBedBooking />
+            </ReceptionistRoute>
+          }
         />
         <Route
           path="/dashboard/receptionist/manage-appointments"
-          element={<ManageAppointments />}
+          element={
+            <ReceptionistRoute>
+              <ManageAppointments />
+            </ReceptionistRoute>
+          }
         />
 
         {/* Patient Routes */}
