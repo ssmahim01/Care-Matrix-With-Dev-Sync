@@ -11,7 +11,8 @@ export const departmentsData = [
       "Growth & Development Tracking",
       "Parental Counseling",
     ],
-    image: "https://img.freepik.com/premium-photo/high-angle-view-food-table_1048944-7643498.jpg?w=1380",
+    image:
+      "https://img.freepik.com/premium-photo/high-angle-view-food-table_1048944-7643498.jpg?w=1380",
     facilities: [
       "NICU with advanced monitoring",
       "Parent waiting lounge",
@@ -54,7 +55,8 @@ export const departmentsData = [
       "Wisdom Tooth Extraction",
       "Dental Implants",
     ],
-    image: "https://img.freepik.com/free-photo/dental-clinic-interior-with-modern-dentistry-equipment-orange-color-stomatology-cabinet-with-nobody-it-orange-equipment-oral-treatment_482257-12486.jpg?t=st=1741740388~exp=1741743988~hmac=0a32faa341ad5922ef3255d29331ef201abb3e5e546f5fd0f65c4f8210b272d6&w=1380",
+    image:
+      "https://img.freepik.com/free-photo/dental-clinic-interior-with-modern-dentistry-equipment-orange-color-stomatology-cabinet-with-nobody-it-orange-equipment-oral-treatment_482257-12486.jpg?t=st=1741740388~exp=1741743988~hmac=0a32faa341ad5922ef3255d29331ef201abb3e5e546f5fd0f65c4f8210b272d6&w=1380",
     facilities: [
       "Digital X-Ray & Scanning",
       "Painless root canal setup",
@@ -97,7 +99,8 @@ export const departmentsData = [
       "Neuro Physiotherapy",
       "EEG Monitoring",
     ],
-    image: "https://img.freepik.com/free-photo/modern-empty-hospital-office-having-computer-with-mri-brain-diagaram-screen-ready-oncology-examination-cabinet-room-equipped-with-medical-professional-tools-brain-tomography-image_482257-32004.jpg?t=st=1741740440~exp=1741744040~hmac=f236cfade4afca2aa0bc48e20f4e4069cdaa110d10977c47c4ec44ab79d7fdbd&w=1380",
+    image:
+      "https://img.freepik.com/free-photo/modern-empty-hospital-office-having-computer-with-mri-brain-diagaram-screen-ready-oncology-examination-cabinet-room-equipped-with-medical-professional-tools-brain-tomography-image_482257-32004.jpg?t=st=1741740440~exp=1741744040~hmac=f236cfade4afca2aa0bc48e20f4e4069cdaa110d10977c47c4ec44ab79d7fdbd&w=1380",
     facilities: [
       "Advanced EEG labs",
       "On-site MRI/CT",
@@ -140,7 +143,8 @@ export const departmentsData = [
       "Cardiothoracic Surgery",
       "Post-Operative Care",
     ],
-    image: "https://img.freepik.com/free-photo/interior-view-operating-room_1170-2254.jpg?t=st=1741740553~exp=1741744153~hmac=ed4a77b1cf940fc3aae8a28b1f22604a70c8aa2024cf58f1b106b2896b14b631&w=1380",
+    image:
+      "https://img.freepik.com/free-photo/interior-view-operating-room_1170-2254.jpg?t=st=1741740553~exp=1741744153~hmac=ed4a77b1cf940fc3aae8a28b1f22604a70c8aa2024cf58f1b106b2896b14b631&w=1380",
     facilities: [
       "State-of-the-art operating theaters",
       "Recovery wards with monitoring",
@@ -183,7 +187,8 @@ export const departmentsData = [
       "Respiratory Emergency Care",
       "Ambulance Services",
     ],
-    image: "https://img.freepik.com/premium-photo/inside-medical-helicopter-with-emergency-life-support-equipment_1048944-21487952.jpg?w=1380",
+    image:
+      "https://img.freepik.com/premium-photo/inside-medical-helicopter-with-emergency-life-support-equipment_1048944-21487952.jpg?w=1380",
     facilities: [
       "24/7 triage unit",
       "Advanced life support systems",
@@ -226,7 +231,8 @@ export const departmentsData = [
       "Menopause Management",
       "Routine Screenings",
     ],
-    image: "https://img.freepik.com/premium-photo/empty-examination-bed-hospital_1048944-3285307.jpg?w=1380",
+    image:
+      "https://img.freepik.com/premium-photo/empty-examination-bed-hospital_1048944-3285307.jpg?w=1380",
     facilities: [
       "Private delivery suites",
       "Ultrasound & imaging labs",

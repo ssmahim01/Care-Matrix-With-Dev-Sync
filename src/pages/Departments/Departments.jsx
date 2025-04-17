@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { departmentsData } from "@/lib/department";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Departments = () => {
   const { department } = useParams();
@@ -65,28 +66,36 @@ const Departments = () => {
           <TabsList className="border w-full">
             <TabsTrigger value="services">Services</TabsTrigger>
             <TabsTrigger value="doctors">Doctors</TabsTrigger>
-            <TabsTrigger value="contact-hours">Contact & Opening Hours</TabsTrigger>
+            <TabsTrigger value="contact-hours">
+              Contact & Opening Hours
+            </TabsTrigger>
           </TabsList>
           {/* 1st */}
           <TabsContent value="services">
-            <div className="grid md:grid-cols-2 gap-8 p-4">
-              <div>
-                <h2 className="text-xl font-semibold mb-3">Services</h2>
-                <ul className="list-disc list-inside text-gray-600">
-                  {data.services.map((service, index) => (
-                    <li key={index}>{service}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold mb-3">Facilities</h2>
-                <ul className="list-disc list-inside text-gray-600">
-                  {data.facilities.map((facility, index) => (
-                    <li key={index}>{facility}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <Card
+              className={
+                "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+              }
+            >
+              <CardContent className="flex gap-y-6 gap-x-10 xl:gap-x-16 flex-col lg:flex-row lg:items-stretch">
+                <div>
+                  <h2 className="text-xl font-semibold mb-3">Services</h2>
+                  <ul className="list-disc list-inside text-gray-600">
+                    {data.services.map((service, index) => (
+                      <li key={index}>{service}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex flex-col lg:border-l-2 pl-8">
+                  <h2 className="text-xl font-semibold mb-3">Facilities</h2>
+                  <ul className="list-disc list-inside text-gray-600">
+                    {data.facilities.map((facility, index) => (
+                      <li key={index}>{facility}</li>
+                    ))}
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
           {/* 2nd */}
           <TabsContent value="doctors">
