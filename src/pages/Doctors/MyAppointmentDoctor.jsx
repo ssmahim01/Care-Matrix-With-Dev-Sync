@@ -1,6 +1,7 @@
 import AppointmentDetailsModal from '@/components/Modal/AppointmentDetailsModal ';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import useDoctorsAppointment from '@/hooks/useDoctorsAppointment';
@@ -9,13 +10,15 @@ import { ClipboardPlus, MoreVertical, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { BiDetail } from 'react-icons/bi';
 import { FaCircle } from 'react-icons/fa';
+import { IoIosSearch } from 'react-icons/io';
 import { MdOutlineCalendarMonth } from 'react-icons/md';
 
 
 const MyAppointmentDoctor = () => {
     const [selectedSort, setSelectedSort] = useState("")
+    const [search, setSearch] = useState("")
     const [sortDate, setSortDate] = useState("")
-    const [appointments, isLoading, refetch] = useDoctorsAppointment(sortDate)
+    const [appointments, isLoading, refetch] = useDoctorsAppointment(sortDate, search)
     const [showSkeleton, setShowSkeleton] = useState(true);
     const [selectedAppointment, setSelectedAppointment] = useState(null)
     const [openModal, setOpenModal] = useState(false)
@@ -47,25 +50,35 @@ const MyAppointmentDoctor = () => {
                     subtitle={"All your appointments upcoming, current, and past in one place!"}
                     icon={MdOutlineCalendarMonth}
                 />
+            </div>
+            <div className="flex gap-4 mb-6 items-center flex-wrap">
+
+                {/* Searchbar */}
+                <div className="relative w-full flex xl:flex-1">
+                    <input
+                        className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
+                        placeholder="Search with name or email..."
+                        onChange={(e) => setSearch(e.target.value)}
+                        value={search}
+                    />
+                    <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
+                </div>
 
                 {/* Sort Controls */}
+                <Select value={selectedSort} onValueChange={(value) => {
+                    handleSortByDate(value)
+                    setSelectedSort(value)
+                }}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Sort By " />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="asc">Date (Ascending)</SelectItem>
+                        <SelectItem value="desc">Date (Descending)</SelectItem>
+                    </SelectContent>
+                </Select>
 
-                <div className="flex gap-4 mb-6 items-center flex-wrap">
-                    <Select value={selectedSort} onValueChange={(value) => {
-                        handleSortByDate(value)
-                        setSelectedSort(value)
-                    }}>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Sort By " />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="asc">Date (Ascending)</SelectItem>
-                            <SelectItem value="desc">Date (Descending)</SelectItem>
-                        </SelectContent>
-                    </Select>
-
-                    <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); }}>Reset</Button>
-                </div>
+                <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); }}>Reset</Button>
             </div>
 
             {/* Table */}
