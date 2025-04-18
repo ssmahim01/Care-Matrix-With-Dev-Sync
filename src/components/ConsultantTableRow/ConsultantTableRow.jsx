@@ -1,4 +1,9 @@
-import { CalendarCheck2, EllipsisVertical, Eye, FileUser, Trash2 } from "lucide-react";
+import {
+  CalendarCheck2,
+  EllipsisVertical,
+  FileUser,
+  Trash2,
+} from "lucide-react";
 import {
   DropdownMenuContent,
   DropdownMenuTrigger,
@@ -11,8 +16,17 @@ import { FaCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { removeSpecificDoctor } from "@/redux/doctors/consultantSlice";
+import InfoModal from "../DoctorInfoModal/InfoModal";
+import { useState } from "react";
 
-const ConsultantTableRow = ({ consultant, dispatch, index, handleChangeAvailability, handleViewInfo }) => {
+const ConsultantTableRow = ({
+  consultant,
+  dispatch,
+  index,
+  handleChangeAvailability,
+}) => {
+  const [openDialog, setOpenDialog] = useState(false);
+
   const handleRemove = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -71,27 +85,34 @@ const ConsultantTableRow = ({ consultant, dispatch, index, handleChangeAvailabil
       <TableCell>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="cursor-pointer border" size="icon">
+            <Button
+              variant="ghost"
+              className="cursor-pointer border"
+              size="icon"
+            >
               <EllipsisVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* <DropdownMenuItem
-              className="flex gap-2 cursor-pointer items-center"
-              // onClick={() => handleView(consultant)}
-            >
-              <Eye className="h-5 w-5" />
-              <span>View Details</span>
-            </DropdownMenuItem> */}
             <DropdownMenuItem
-              className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
-              onClick={() => handleViewInfo(consultant)}
+              className="cursor-pointer flex gap-2 items-center"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenDialog(true);
+              }}
             >
               <FileUser className="w-4 h-4" />
               <span>View Info</span>
             </DropdownMenuItem>
+
+            <InfoModal
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              consultant={consultant}
+            />
+
             <DropdownMenuItem
-              className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
+              className="cursor-pointer flex gap-2 items-center"
               onClick={() => handleChangeAvailability(consultant)}
             >
               <CalendarCheck2 className="w-4 h-4" />
