@@ -14,6 +14,7 @@ import RevenueByDateChart from "./RevenueByDateChart";
 import { RevenueAllCards, RevenueAnalytics } from "./RevenueAnalytics";
 import DoctorInsights from "./DoctorInsights";
 import DoctorChart from "./DoctorChart";
+import PatientInsights from "./PatientInsights";
 
 const RevenueInsights = () => {
   const axiosPublic = useAxiosPublic();
@@ -39,9 +40,9 @@ const RevenueInsights = () => {
     <div className="px-7">
       <RevenueInsightsHeader />
       {/* Main Tab Contents */}
-      <Tabs defaultValue="overview" className="space-y-4 mt-10">
+      <Tabs defaultValue="overview" className="space-y-4 mt-8">
         {/* All Tablist */}
-        <TabsList className="border w-full flex flex-col lg:flex-row mb-4">
+        <TabsList className="border w-full flex flex-col lg:flex-row mb-2">
           <TabsTrigger
             value="overview"
             className={"cursor-pointer py-2 px-4 w-full "}
@@ -102,7 +103,9 @@ const RevenueInsights = () => {
           <DoctorInsights doctorInsights={revenueInsights?.doctorPerformance} />
         </TabsContent>
         {/* 4th Tab Content */}
-        <TabsContent value="patient-insights">patient-insights</TabsContent>
+        <TabsContent value="patient-insights">
+          <PatientInsights patients={revenueInsights?.topPatients} />
+        </TabsContent>
       </Tabs>
     </div>
   );
