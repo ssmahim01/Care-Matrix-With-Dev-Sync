@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/table";
 
 const DoctorInsights = ({ doctorInsights }) => {
+  const sortedDoctorData = doctorInsights.sort(
+    (a, b) => b.totalRevenue - a.totalRevenue
+  );
   return (
     <Table className={"p-6 mt-8"}>
       <TableCaption>A List Of Revenue By All Doctors</TableCaption>
@@ -30,7 +33,7 @@ const DoctorInsights = ({ doctorInsights }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {doctorInsights?.map((item, i) => {
+        {sortedDoctorData?.map((item, i) => {
           const revenuePerAppointment = item?.totalRevenue / item?.appointments;
           const earningsPerDay = item?.totalRevenue / 5;
           return (
