@@ -67,7 +67,6 @@ export const RevenueAllCards = ({
 };
 
 export const RevenueAnalytics = ({ revenueData }) => {
-  console.log(revenueData);
   return (
     <div>
       {/* Revenue Table */}

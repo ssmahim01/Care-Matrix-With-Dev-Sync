@@ -96,8 +96,8 @@ const RevenueInsights = () => {
         <TabsContent value="doctor-insights">
           <DoctorChart
             doctorData={revenueInsights?.doctorPerformance
-              .sort(() => 0.5 - Math.random())
-              .slice(0, 5)}
+              .sort(() => 0.3 - Math.random())
+              .slice(0, 3)}
           />
           <DoctorInsights doctorInsights={revenueInsights?.doctorPerformance} />
         </TabsContent>

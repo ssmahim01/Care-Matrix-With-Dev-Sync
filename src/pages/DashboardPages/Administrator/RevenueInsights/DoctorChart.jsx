@@ -54,8 +54,8 @@ const DoctorChart = ({ doctorData }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="pl-2">
-        <div className="w-full h-[300px]">
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="w-full h-[180px]">
+          <ResponsiveContainer width="100%" height={180}>
             <BarChart
               data={data}
               layout="vertical"

@@ -1,27 +1,70 @@
-import { Card } from "@/components/ui/card";
-
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 const DoctorInsights = ({ doctorInsights }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {doctorInsights?.map((doctor) => (
-        <Card className="rounded-2xl p-6 shadow-md bg-white space-y-2 w-full sm:w-[300px]">
-          <h2 className="text-xl font-semibold">👨‍⚕️ {doctor?.doctor}</h2>
-          <p className="text-gray-600">{doctor?.doctorTitle}</p>
-          <div className="flex justify-between text-sm mt-4">
-            <span>📅 Appointments</span>
-            <span>{doctor?.appointments}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span>💰 Total Revenue</span>
-            <span>৳ {doctor?.totalRevenue.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span>📊 Avg. Fee</span>
-            <span>৳ {doctor?.avgFee.toFixed(2)}</span>
-          </div>
-        </Card>
-      ))}
-    </div>
+    <Table className={"p-6 mt-8"}>
+      <TableCaption>A List Of Revenue By All Dates</TableCaption>
+      <TableHeader>
+        <TableRow className={"bg-base-200 hover:bg-base-200"}>
+          <TableHead className={"px-6"}>Doctor Name</TableHead>
+          <TableHead className={"px-6"}>Department</TableHead>
+          <TableHead className={"px-6"}>Total Revenue</TableHead>
+          <TableHead className={"px-6"}>Average Fee</TableHead>
+          <TableHead className={"px-6 tabs-xs"}>Appointments</TableHead>
+          <TableHead className={"px-6 text-xs"}>
+            Revenue Per <br /> Appointment
+          </TableHead>
+          <TableHead className={"px-6 text-xs"}>
+            Earnings <br /> Per Day
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {doctorInsights?.map((item, i) => {
+          const revenuePerAppointment = item.totalRevenue / item.appointments;
+          const earningsPerDay = item.totalRevenue / 5;
+          return (
+            <TableRow key={i}>
+              <TableCell className={"px-6"}>{item?.doctor}</TableCell>
+              <TableCell className={"px-6"}>{item?.doctorTitle}</TableCell>
+              <TableCell className={"px-6"}>
+                <span className="font-extrabold">$</span>{" "}
+                {item?.totalRevenue.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}
+              </TableCell>
+              <TableCell className={"px-6"}>
+                <span className="font-extrabold">$</span>{" "}
+                {item?.avgFee.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}
+              </TableCell>
+              <TableCell className={"px-6"}>{item?.appointments} <sub>Total</sub></TableCell>
+              <TableCell className={"px-6"}>
+                <span className="font-extrabold">$</span>{" "}
+                {revenuePerAppointment.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}
+              </TableCell>
+              <TableCell className={"px-6"}>
+                <span className="font-extrabold">$</span>{" "}
+                {earningsPerDay.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}
+              </TableCell>
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
   );
 };
 
