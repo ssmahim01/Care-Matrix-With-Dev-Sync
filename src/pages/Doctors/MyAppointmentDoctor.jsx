@@ -18,7 +18,8 @@ const MyAppointmentDoctor = () => {
     const [selectedSort, setSelectedSort] = useState("")
     const [search, setSearch] = useState("")
     const [sortDate, setSortDate] = useState("")
-    const [appointments, isLoading, refetch] = useDoctorsAppointment(sortDate, search)
+    const [category, setCategory] = useState("")
+    const [appointments, isLoading, refetch] = useDoctorsAppointment(sortDate, search, category)
     const [showSkeleton, setShowSkeleton] = useState(true);
     const [selectedAppointment, setSelectedAppointment] = useState(null)
     const [openModal, setOpenModal] = useState(false)
@@ -64,6 +65,20 @@ const MyAppointmentDoctor = () => {
                     <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
                 </div>
 
+                {/* Sort category  */}
+                <Select value={category} onValueChange={(value) => {
+                    setCategory(value)
+                }}>
+                    <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Categories " />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All</SelectItem>
+                        <SelectItem value="upcoming">Upcoming</SelectItem>
+                        <SelectItem value="past">Past</SelectItem>
+                    </SelectContent>
+                </Select>
+
                 {/* Sort Controls */}
                 <Select value={selectedSort} onValueChange={(value) => {
                     handleSortByDate(value)
@@ -78,7 +93,7 @@ const MyAppointmentDoctor = () => {
                     </SelectContent>
                 </Select>
 
-                <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); }}>Reset</Button>
+                <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); setSearch(""); setCategory("") }}>Reset</Button>
             </div>
 
             {/* Table */}
