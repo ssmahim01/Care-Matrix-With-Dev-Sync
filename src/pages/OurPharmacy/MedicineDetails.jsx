@@ -8,12 +8,21 @@ import { Separator } from "@/components/ui/separator";
 import ImageWithMagnifier from "@/shared/Section/ImageWithMagnifier";
 import { Clock, Heart, Minus, Plus, ShoppingCart } from "lucide-react";
 import ManufacturerSupplier from "./MedicineDetails/ManufacturerSupplier";
+import MedicineSkeleton from "./MedicineDetails/MedicineSkeleton";
 import ProductDetails from "./MedicineDetails/ProductDetails";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useAuthUser } from "@/redux/auth/authActions";
 import useCart from "@/hooks/useCart";
 import toast from "react-hot-toast";
-import MedicineSkeleton from "./MedicineDetails/MedicineSkeleton";
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export default function MedicineDetails() {
   const { id } = useParams();
@@ -132,8 +141,29 @@ export default function MedicineDetails() {
   if (isLoading) return <MedicineSkeleton />;
 
   return (
-    <div className="pt-24 pb-12 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+    <div className="pt-16 pb-12 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      {/* Navigate Breadcrumbs */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink>
+              <Link to="/">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink>
+              <Link to="/pharmacy">Pharmacy</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{medicine?._id}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      {/* Main Content */}
+      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* Left Column - Image & Product Details */}
         <div className="space-y-6">
           {/* Image */}

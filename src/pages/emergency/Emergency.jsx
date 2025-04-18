@@ -9,6 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Link } from "react-router"
+import { useQuery } from "@tanstack/react-query"
+import axios from "axios"
 
 export default function Emergency() {
   const [activeEmergencies, setActiveEmergencies] = useState([
@@ -133,6 +135,14 @@ export default function Emergency() {
     }
   }
 
+  const { data = [] } = useQuery({
+    queryKey: ["contacts"],
+    queryFn: async () => {
+      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/emergency/contacts`)
+      return data
+    }
+  })
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -189,12 +199,12 @@ export default function Emergency() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">ER Capacity</CardTitle>
+            <CardTitle className="text-sm font-medium">Emergency Contacts</CardTitle>
             <Activity className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">75%</div>
-            <p className="text-xs text-muted-foreground">3 rooms available</p>
+            <div className="text-2xl font-bold">{data?.length}</div>
+            <Link to={`/emergency/contacts`} className="text-xs text-muted-foreground">Add emergency contact</Link>
           </CardContent>
         </Card>
       </div>

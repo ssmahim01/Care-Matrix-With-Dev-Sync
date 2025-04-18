@@ -118,7 +118,7 @@ const Login = () => {
             </Badge>
 
             <Badge
-              className="cursor-pointer bg-sky-500"
+              className="cursor-pointer bg-neutral-800"
               onClick={() =>
                 handleBadgeClick("doctor@carematrix.com", "Doctor123@")
               }
