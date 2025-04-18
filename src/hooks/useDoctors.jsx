@@ -18,7 +18,7 @@ const useDoctors = () => {
     },
   });
 
-  return [doctors];
+  return [doctors, isLoading];
 };
 
 export default useDoctors;

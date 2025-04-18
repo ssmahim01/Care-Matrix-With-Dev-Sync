@@ -118,7 +118,7 @@ const Navbar = () => {
         )}
         <div className="max-w-[1700px] mx-auto w-11/12">
           <div className="navbar p-0">
-            <div className="navbar-start w-full">
+            <div className="navbar-start w-fit">
               {/* mobile sidebar */}
               <aside
                 className={` ${
@@ -168,7 +168,7 @@ const Navbar = () => {
                 </Link>
               </div>
             </div>
-            <div className="navbar-end w-full">
+            <div className="navbar-end  w-full">
               <>
                 <ul className="flex items-center gap-3 text-[#1b1b1b] md:mr-3 mr-1">
                   <div className="lg:flex gap-3 items-center hidden">
@@ -372,7 +372,7 @@ const Navbar = () => {
                           role === "administrator"
                             ? "/dashboard/administrator-overview"
                             : role === "doctor"
-                            ? "/dashboard/doctor-overview"
+                            ? "/dashboard"
                             : role === "pharmacist"
                             ? "/dashboard/pharmacist-overview"
                             : role === "patient"
