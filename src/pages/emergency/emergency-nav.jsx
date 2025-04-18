@@ -3,19 +3,11 @@ import {
     AlertCircle,
     Ambulance,
     ClipboardList,
-    Home,
     Phone,
-    Users,
-    Calendar,
-    PanelLeft,
-    Pill,
-    DollarSign,
-    FileText,
   } from "lucide-react"
 import { Link, useLocation } from 'react-router'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Button } from '@/components/ui/button'
 
 
 const EmergencyNav = () => {
