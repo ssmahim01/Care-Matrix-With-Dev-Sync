@@ -11,7 +11,7 @@ import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import RevenueOverviewCards from "./RevenueOverviewCards";
 import RevenueByDateChart from "./RevenueByDateChart";
-import { RevenueAllCards } from "./RevenueAnalytics";
+import { RevenueAllCards, RevenueAnalytics } from "./RevenueAnalytics";
 
 const RevenueInsights = () => {
   const axiosPublic = useAxiosPublic();
@@ -83,6 +83,8 @@ const RevenueInsights = () => {
             avgRevenuePerAppointment={revenueInsights?.avgRevenuePerAppointment}
             avgRevenuePerDates={revenueInsights?.avgRevenuePerDates}
           />
+          {/* Revenue Table */}
+          <RevenueAnalytics revenueData={revenueInsights?.revenueByAllDates} />
         </TabsContent>
         {/* 3rd Tab Content */}
         <TabsContent value="doctor-insights">doctor-insights</TabsContent>
