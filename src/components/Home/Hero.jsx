@@ -1,5 +1,6 @@
-import HeroSearch from "@/pages/Home/Hero/HeroSearch";
-import { motion } from "framer-motion";
+import React, { lazy, Suspense } from "react";
+import { motion, LazyMotion, domAnimation } from "framer-motion";
+const HeroSearch = lazy(() => import("@/pages/Home/Hero/HeroSearch"));
 
 export default function Hero() {
   return (
