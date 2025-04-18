@@ -33,7 +33,11 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { toast } from "sonner"
+import toast from "react-hot-toast"
+import axios from "axios"
+import { useQuery } from "@tanstack/react-query"
+import { format } from "date-fns"
+import { AnimatePresence, motion } from "framer-motion"
 
 export default function EmergencyTriage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -41,147 +45,44 @@ export default function EmergencyTriage() {
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false)
   const [selectedPatient, setSelectedPatient] = useState(null)
 
-  const [patients, setPatients] = useState([
-    {
-      id: "PT-1001",
-      name: "John Smith",
-      age: 45,
-      gender: "Male",
-      chiefComplaint: "Chest pain and shortness of breath",
-      arrivalTime: "10:15 AM",
-      priority: "Critical",
-      vitalSigns: {
-        bloodPressure: "160/95",
-        heartRate: 110,
-        respiratoryRate: 24,
-        temperature: 37.8,
-        oxygenSaturation: 92,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
+  const { data = [], refetch } = useQuery({
+    queryKey: ["triage"],
+    queryFn: async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/triage/all-triage`)
+      setPatients(data)
+      return data
     },
-    {
-      id: "PT-1002",
-      name: "Emily Johnson",
-      age: 32,
-      gender: "Female",
-      chiefComplaint: "Severe abdominal pain",
-      arrivalTime: "10:30 AM",
-      priority: "Urgent",
-      vitalSigns: {
-        bloodPressure: "125/85",
-        heartRate: 95,
-        respiratoryRate: 18,
-        temperature: 37.2,
-        oxygenSaturation: 98,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
-    },
-    {
-      id: "PT-1003",
-      name: "Michael Williams",
-      age: 28,
-      gender: "Male",
-      chiefComplaint: "Laceration on right arm",
-      arrivalTime: "10:45 AM",
-      priority: "Non-urgent",
-      vitalSigns: {
-        bloodPressure: "120/80",
-        heartRate: 72,
-        respiratoryRate: 16,
-        temperature: 36.9,
-        oxygenSaturation: 99,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
-    },
-    {
-      id: "PT-1004",
-      name: "Sarah Davis",
-      age: 78,
-      gender: "Female",
-      chiefComplaint: "Dizziness and confusion",
-      arrivalTime: "11:00 AM",
-      priority: "Urgent",
-      vitalSigns: {
-        bloodPressure: "145/90",
-        heartRate: 88,
-        respiratoryRate: 20,
-        temperature: 37.5,
-        oxygenSaturation: 94,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
-    },
-    {
-      id: "PT-1005",
-      name: "Robert Brown",
-      age: 52,
-      gender: "Male",
-      chiefComplaint: "Severe headache",
-      arrivalTime: "11:15 AM",
-      priority: "Urgent",
-      vitalSigns: {
-        bloodPressure: "150/95",
-        heartRate: 85,
-        respiratoryRate: 18,
-        temperature: 37.0,
-        oxygenSaturation: 97,
-      },
-      status: "Waiting",
-      assignedDoctor: null,
-      assignedRoom: null,
-    },
-  ])
+  })
 
-  const [doctors, setDoctors] = useState([
-    {
-      id: "DR-001",
-      name: "Dr. Sarah Johnson",
-      specialty: "Emergency Medicine",
-      status: "Available",
+  const { data: doctor = [] } = useQuery({
+    queryKey: ["doctors"],
+    queryFn: async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors`)
+      setDoctors(data)
+      return data
     },
-    {
-      id: "DR-002",
-      name: "Dr. Michael Chen",
-      specialty: "Trauma Surgery",
-      status: "Available",
-    },
-    {
-      id: "DR-003",
-      name: "Dr. Lisa Wong",
-      specialty: "Emergency Medicine",
-      status: "Busy",
-    },
-    {
-      id: "DR-004",
-      name: "Dr. James Wilson",
-      specialty: "Cardiology",
-      status: "Available",
-    },
-  ])
+  })
 
-  const [rooms, setRooms] = useState([
-    { id: "ER-1", name: "ER Room 1", status: "Available" },
-    { id: "ER-2", name: "ER Room 2", status: "Available" },
-    { id: "ER-3", name: "ER Room 3", status: "Occupied" },
-    { id: "ER-4", name: "ER Room 4", status: "Available" },
-    { id: "ER-5", name: "ER Room 5", status: "Occupied" },
-    { id: "ER-6", name: "Trauma Room 1", status: "Available" },
-    { id: "ER-7", name: "Trauma Room 2", status: "Occupied" },
-  ])
+  const { data: bed = [], refetch: bedRefetch } = useQuery({
+    queryKey: ["bed"],
+    queryFn: async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/beds`)
+      setRooms(data)
+      return data
+    },
+  })
 
-  const filteredPatients = patients.filter(
-    (patient) =>
-      patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      patient.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      patient.chiefComplaint.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+
+  const [patients, setPatients] = useState(data)
+  const [doctors, setDoctors] = useState(doctor)
+  const [rooms, setRooms] = useState(bed)
+
+
+  const isAvailableToday = (days) => {
+    const today = format(new Date(), "EEEE");
+    // Check if today is in availableDays
+    return days.includes(today);
+  };
 
   const getPriorityColor = (priority) => {
     switch (priority.toLowerCase()) {
@@ -213,37 +114,56 @@ export default function EmergencyTriage() {
     }
   }
 
-  const handleAddPatient = (e) => {
+  const handleAddPatient = async (e) => {
     e.preventDefault()
-    // In a real app, you would add the patient to the database
-    setIsAddDialogOpen(false)
-    toast.success("Patient Added",{
-      description: "The patient has been added to the triage list.",
-    })
+    const form = e.target;
+    const name = form.name.value;
+    const age = parseInt(form.age.value);
+    const gender = form.gender.value;
+    const complaint = form.complaint.value;
+    const priority = form.priority.value;
+    const heartRate = parseInt(form.heartRate.value);
+    const bloodPressure = form.bloodPressure.value;
+    const respiratoryRate = parseInt(form.respiratoryRate.value);
+    const oxygenSaturation = parseInt(form.oxygenSaturation.value);
+    const temperature = parseInt(form.temperature.value);
+
+
+    const patient = { name, age, gender, complaint, priority, vitalSigns: { bloodPressure, heartRate, respiratoryRate, oxygenSaturation, temperature } }
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/triage/add`, patient)
+      toast.success(res.data.message)
+    } catch (error) {
+      console.log(error)
+      toast.error(error.error)
+    } finally {
+      refetch()
+      setIsAddDialogOpen(false)
+    }
   }
 
-  const handleAssignPatient = (e) => {
+  const handleAssignPatient = async (e) => {
     e.preventDefault()
-    // In a real app, you would update the patient in the database
+    const form = e.target;
+    const assignedDoctor = form.assignedDoctor.value;
+    const roomId = form.assignedRoom.value;
+    const assignedRoom = rooms.find(rom => rom._id === roomId)
+
+
     if (selectedPatient) {
-      const updatedPatients = patients.map((patient) => {
-        if (patient.id === selectedPatient.id) {
-          return {
-            ...patient,
-            status: "In Treatment",
-            assignedDoctor: "DR-001",
-            assignedRoom: "ER-1",
-          }
-        }
-        return patient
-      })
-      setPatients(updatedPatients)
+      try {
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-assigned/${selectedPatient._id}`, { assignedDoctor, assignedRoom: assignedRoom.title, roomId })
+        const bedRes = await axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${roomId}`, { status: "booked" })
+        if (bedRes.data) bedRefetch()
+        toast.success(res.data?.message)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        refetch()
+        setIsAssignDialogOpen(false)
+      }
     }
-    setIsAssignDialogOpen(false)
-    toast({
-      title: "Patient Assigned",
-      description: "The patient has been assigned to a doctor and room.",
-    })
   }
 
   const openAssignDialog = (patient) => {
@@ -251,16 +171,79 @@ export default function EmergencyTriage() {
     setIsAssignDialogOpen(true)
   }
 
-  const sortPatientsByPriority = () => {
-    const sortedPatients = [...patients].sort((a, b) => {
-      const priorityOrder = { Critical: 0, Urgent: 1, "Non-urgent": 2 }
-      return (
-        priorityOrder[a.priority] -
-        priorityOrder[b.priority]
-      )
-    })
-    setPatients(sortedPatients)
+  const handleCompleteTreatment = async (patientId, roomId) => {
+    toast.custom((t) => (
+      <AnimatePresence>
+        {t.visible && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.25 }}
+            className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md mx-auto flex flex-col items-center justify-center text-center space-y-4 z-[9999] border border-gray-200"
+          >
+            <h2 className="text-lg font-semibold text-gray-800">Are you sure?</h2>
+            <p className="text-sm text-gray-600">This complete the treatment task.</p>
+            <div className="flex gap-4 mt-2">
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-150"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  toast.dismiss(t.id);
+                  try {
+                    const res = await axios.put(`${import.meta.env.VITE_API_URL}/triage/update-status/${patientId}`);
+                    await axios.patch(`${import.meta.env.VITE_API_URL}/beds/status/${roomId}`, { status: "available" })
+                    toast.success(res.data.message);
+                  } catch (error) {
+                    toast.error(error.message || 'Something went wrong');
+                  } finally {
+                    refetch();
+                  }
+                }}
+                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all duration-200"
+              >
+                Treatment Complete
+              </button>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    ), { position: 'top-right', duration: Infinity });
   }
+
+  const sortPatientsByPriority = () => {
+
+    const priorityOrder = {
+      critical: 1,
+      urgent: 2,
+      'non-urgent': 3
+    };
+
+    const sortedPatients = [...patients].sort((a, b) => {
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    });
+    setPatients(sortedPatients)
+    return sortedPatients;
+  }
+
+  const handleSearch = async (value) => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/triage/search`, {
+        params: { name: value }
+      });
+      
+      // Assuming you're managing a state to store filtered patients:
+      setPatients(res.data);
+    } catch (error) {
+      console.error("Search error:", error);
+      toast.error("Failed to fetch search results");
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -272,7 +255,7 @@ export default function EmergencyTriage() {
         <div className="flex items-center gap-2">
           <Button variant="outline">
             <Clock className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Current Time:</span> 11:30 AM
+            <span className="hidden sm:inline">Current Time:</span> {format(new Date(), "h:mm a")}
           </Button>
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
@@ -292,19 +275,19 @@ export default function EmergencyTriage() {
                     <Label htmlFor="name" className="text-right">
                       Name
                     </Label>
-                    <Input id="name" className="col-span-3" required />
+                    <Input name="name" className="col-span-3" required />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="age" className="text-right">
                       Age
                     </Label>
-                    <Input id="age" type="number" className="col-span-3" required />
+                    <Input name="age" type="number" className="col-span-3" required />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="gender" className="text-right">
                       Gender
                     </Label>
-                    <Select>
+                    <Select name="gender">
                       <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Select gender" />
                       </SelectTrigger>
@@ -319,13 +302,13 @@ export default function EmergencyTriage() {
                     <Label htmlFor="complaint" className="text-right">
                       Chief Complaint
                     </Label>
-                    <Textarea id="complaint" className="col-span-3" required />
+                    <Textarea name="complaint" className="col-span-3" required />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="priority" className="text-right">
                       Priority
                     </Label>
-                    <Select>
+                    <Select name="priority">
                       <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Select priority" />
                       </SelectTrigger>
@@ -335,6 +318,46 @@ export default function EmergencyTriage() {
                         <SelectItem value="non-urgent">Non-urgent</SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label className="text-right">Vitals</Label>
+                    <div className="col-span-3 flex gap-2">
+                      <Input
+                        name="bloodPressure"
+                        placeholder="BP (e.g., 160/95)"
+                        className="w-24 text-sm"
+                        required
+                      />
+                      <Input
+                        name="heartRate"
+                        placeholder="HR (bpm)"
+                        type="number"
+                        className="w-20 text-sm"
+                        required
+                      />
+                      <Input
+                        name="respiratoryRate"
+                        placeholder="RR (breaths/min)"
+                        type="number"
+                        className="w-20 text-sm"
+                        required
+                      />
+                      <Input
+                        name="temperature"
+                        placeholder="Temp (°C)"
+                        type="number"
+                        step="0.1"
+                        className="w-20 text-sm"
+                        required
+                      />
+                      <Input
+                        name="oxygenSaturation"
+                        placeholder="Oxy O2 (%)"
+                        type="number"
+                        className="w-20 text-sm"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
                 <DialogFooter>
@@ -351,9 +374,8 @@ export default function EmergencyTriage() {
           <Search className="h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search patients..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="max-w-sm"
+            onChange={(e) => handleSearch(e.target.value)}
+            className="w-96"
           />
         </div>
         <Button variant="outline" onClick={sortPatientsByPriority}>
@@ -368,8 +390,9 @@ export default function EmergencyTriage() {
           <TabsTrigger value="in-treatment">In Treatment</TabsTrigger>
           <TabsTrigger value="resources">Resources</TabsTrigger>
         </TabsList>
+
         <TabsContent value="waiting">
-          <Card>
+          <Card className={`pt-3`}>
             <CardHeader>
               <CardTitle>Waiting Patients</CardTitle>
               <CardDescription>Patients waiting for triage assessment and treatment</CardDescription>
@@ -388,11 +411,11 @@ export default function EmergencyTriage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredPatients
-                    .filter((patient) => patient.status === "Waiting")
+                  {patients
+                    .filter((patient) => patient.status === "waiting")
                     .map((patient) => (
-                      <TableRow key={patient.id}>
-                        <TableCell className="font-medium">{patient.id}</TableCell>
+                      <TableRow key={patient._id}>
+                        <TableCell className="font-medium">{patient._id.slice(-6)}</TableCell>
                         <TableCell>
                           <div>
                             <div className="font-medium">{patient.name}</div>
@@ -401,8 +424,8 @@ export default function EmergencyTriage() {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell>{patient.chiefComplaint}</TableCell>
-                        <TableCell>{patient.arrivalTime}</TableCell>
+                        <TableCell>{patient.complaint}</TableCell>
+                        <TableCell>{format(patient.arrivalTime, " h:mm a, MMM d")}</TableCell>
                         <TableCell>{getPriorityBadge(patient.priority)}</TableCell>
                         <TableCell>
                           <div className="flex flex-wrap gap-1 text-xs">
@@ -422,7 +445,7 @@ export default function EmergencyTriage() {
                         </TableCell>
                         <TableCell className="text-right">
                           <Button
-                            variant={patient.priority === "Critical" ? "destructive" : "default"}
+                            variant={patient.priority === "critical" ? "destructive" : "default"}
                             size="sm"
                             onClick={() => openAssignDialog(patient)}
                           >
@@ -436,8 +459,10 @@ export default function EmergencyTriage() {
             </CardContent>
           </Card>
         </TabsContent>
+
+
         <TabsContent value="in-treatment">
-          <Card>
+          <Card className={`pt-3`}>
             <CardHeader>
               <CardTitle>Patients In Treatment</CardTitle>
               <CardDescription>Patients currently receiving treatment</CardDescription>
@@ -456,11 +481,14 @@ export default function EmergencyTriage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredPatients
-                    .filter((patient) => patient.status === "In Treatment")
+                  {patients
+                    .filter((patient) => patient.status === "in-treatment" || patient.status === "completed").sort((a, b) => {
+                      const statusOrder = { "in-treatment": 0, completed: 1 };
+                      return statusOrder[a.status] - statusOrder[b.status];
+                    })
                     .map((patient) => (
-                      <TableRow key={patient.id}>
-                        <TableCell className="font-medium">{patient.id}</TableCell>
+                      <TableRow key={patient._id}>
+                        <TableCell className="font-medium">{patient._id.slice(-6)}</TableCell>
                         <TableCell>
                           <div>
                             <div className="font-medium">{patient.name}</div>
@@ -469,13 +497,13 @@ export default function EmergencyTriage() {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell>{patient.chiefComplaint}</TableCell>
+                        <TableCell>{patient.complaint}</TableCell>
                         <TableCell>{getPriorityBadge(patient.priority)}</TableCell>
                         <TableCell>
                           {patient.assignedDoctor ? (
                             <div className="flex items-center gap-1">
                               <Stethoscope className="h-4 w-4 text-blue-600" />
-                              <span>Dr. Sarah Johnson</span>
+                              <span>{patient.assignedDoctor}</span>
                             </div>
                           ) : (
                             "Not assigned"
@@ -484,7 +512,7 @@ export default function EmergencyTriage() {
                         <TableCell>
                           {patient.assignedRoom ? (
                             <Badge variant="outline" className="bg-blue-100 text-blue-800">
-                              ER Room 1
+                              {patient.assignedRoom}
                             </Badge>
                           ) : (
                             "Not assigned"
@@ -492,12 +520,23 @@ export default function EmergencyTriage() {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
-                            <Button variant="outline" size="sm">
+                            {/* Will be added in the feature to update all the info */}
+                            {/* <Button  variant="outline" size="sm">
                               Update
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              Complete
-                            </Button>
+                            </Button> */}
+                            {patient.status === "completed"
+                              ?
+                              (
+                                <Badge className={`bg-green-400`}>
+                                  Completed
+                                </Badge>
+                              )
+                              :
+                              (
+                                <Button onClick={() => handleCompleteTreatment(patient._id, patient.roomId)} variant="outline" size="sm">
+                                  Complete
+                                </Button>
+                              )}
                           </div>
                         </TableCell>
                       </TableRow>
@@ -507,18 +546,20 @@ export default function EmergencyTriage() {
             </CardContent>
           </Card>
         </TabsContent>
+
+
         <TabsContent value="resources">
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Available Doctors</CardTitle>
+                <CardTitle className={`pt-3`}>Available Doctors</CardTitle>
                 <CardDescription>Doctors available for emergency cases</CardDescription>
               </CardHeader>
               <CardContent>
                 <ScrollArea className="h-[300px]">
                   <div className="space-y-4">
                     {doctors.map((doctor) => (
-                      <div key={doctor.id} className="flex items-center justify-between rounded-lg border p-3">
+                      <div key={doctor._id} className="flex items-center justify-between rounded-lg border p-3">
                         <div className="flex items-center gap-3">
                           <div className="rounded-full bg-blue-100 p-2">
                             <Stethoscope className="h-4 w-4 text-blue-600" />
@@ -528,16 +569,17 @@ export default function EmergencyTriage() {
                             <p className="text-xs text-muted-foreground">{doctor.specialty}</p>
                           </div>
                         </div>
-                        <Badge variant={doctor.status === "Available" ? "outline" : "secondary"}>{doctor.status}</Badge>
+                        <Badge variant={isAvailableToday(doctor.available_days) ? "outline" : "secondary"}>{isAvailableToday(doctor.available_days) ? "Available" : "Not Available"}</Badge>
                       </div>
                     ))}
                   </div>
                 </ScrollArea>
               </CardContent>
             </Card>
+
             <Card>
               <CardHeader>
-                <CardTitle>Available Rooms</CardTitle>
+                <CardTitle className={`pt-3`}>Available Rooms</CardTitle>
                 <CardDescription>Emergency rooms available for patients</CardDescription>
               </CardHeader>
               <CardContent>
@@ -545,21 +587,21 @@ export default function EmergencyTriage() {
                   <div className="grid grid-cols-2 gap-4">
                     {rooms.map((room) => (
                       <div
-                        key={room.id}
+                        key={room._id}
                         className={cn(
                           "flex flex-col items-center justify-center rounded-lg border p-4 text-center",
-                          room.status === "Available" ? "bg-green-50" : "bg-red-50",
+                          room.status === "available" ? "bg-green-50" : "bg-red-50",
                         )}
                       >
                         <div
                           className={cn(
                             "mb-2 rounded-full p-2",
-                            room.status === "Available" ? "bg-green-100" : "bg-red-100",
+                            room.status === "available" ? "bg-green-100" : "bg-red-100",
                           )}
                         >
-                          {room.status === "Available" ? (
+                          {room.status === "available" ? (
                             <Check
-                              className={cn("h-5 w-5", room.status === "Available" ? "text-green-600" : "text-red-600")}
+                              className={cn("h-5 w-5", room.status === "available" ? "text-green-600" : "text-red-600")}
                             />
                           ) : (
                             <X className="h-5 w-5 text-red-600" />
@@ -568,8 +610,8 @@ export default function EmergencyTriage() {
                         <p className="font-medium">{room.name}</p>
                         <Badge
                           variant="outline"
-                          className={cn(
-                            room.status === "Available" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800",
+                          className={cn("capitalize",
+                            room.status === "available" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800",
                           )}
                         >
                           {room.status}
@@ -601,7 +643,7 @@ export default function EmergencyTriage() {
                     <div>
                       <p className="font-medium">{selectedPatient.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {selectedPatient.age} yrs, {selectedPatient.gender} - {selectedPatient.chiefComplaint}
+                        {selectedPatient.age} yrs, {selectedPatient.gender} - {selectedPatient.complaint}
                       </p>
                     </div>
                   </div>
@@ -610,14 +652,14 @@ export default function EmergencyTriage() {
                   <Label htmlFor="doctor" className="text-right">
                     Doctor
                   </Label>
-                  <Select defaultValue="DR-001">
+                  <Select name="assignedDoctor" >
                     <SelectTrigger className="col-span-3">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {doctors.map((doctor) => (
-                        <SelectItem key={doctor.id} value={doctor.id} disabled={doctor.status !== "Available"}>
-                          {doctor.name} {doctor.status !== "Available" && "(Busy)"}
+                        <SelectItem key={doctor._id} value={doctor.name} disabled={isAvailableToday(doctor.available_days)}>
+                          {doctor.name} {isAvailableToday(doctor.available_days) ? "(Not available)" : "(Available)"}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -627,14 +669,14 @@ export default function EmergencyTriage() {
                   <Label htmlFor="room" className="text-right">
                     Room
                   </Label>
-                  <Select defaultValue="ER-1">
+                  <Select name="assignedRoom" className="capitalize" >
                     <SelectTrigger className="col-span-3">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className={`capitalize`}>
                       {rooms.map((room) => (
-                        <SelectItem key={room.id} value={room.id} disabled={room.status !== "Available"}>
-                          {room.name} {room.status !== "Available" && "(Occupied)"}
+                        <SelectItem className={`lowercase`} key={room._id} value={room._id} disabled={room.status !== "available"}>
+                          {room.title} {room.status !== "available" && "(Occupied)"}
                         </SelectItem>
                       ))}
                     </SelectContent>

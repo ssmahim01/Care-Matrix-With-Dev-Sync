@@ -171,7 +171,7 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <CalendarDays className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    My Appointments{" "}
+                    Patient Appointments{" "}
                   </span>
                 </h3>
               </NavLink>

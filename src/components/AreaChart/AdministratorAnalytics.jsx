@@ -18,16 +18,7 @@ import {
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 // Custom Tooltip Component for better styling
 const CustomTooltip = ({ active, payload, label }) => {
@@ -83,33 +74,10 @@ export function AdministratorAnalytics({ chartData }) {
             Patient Growth & Earnings
           </CardTitle>
           <CardDescription className="text-gray-600">
-            Showing total patients and earnings for the last{" "}
-            {timeRange === "90d"
-              ? "3 months"
-              : timeRange === "30d"
-              ? "30 days"
-              : "7 days"}
+            Showing total patients and earnings.
           </CardDescription>
         </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger
-            className="w-[160px] rounded-lg sm:ml-auto border-gray-300 focus:ring-2 focus:ring-purple-500"
-            aria-label="Select a value"
-          >
-            <SelectValue placeholder="Last 3 months" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
-              Last 3 months
-            </SelectItem>
-            <SelectItem value="30d" className="rounded-lg">
-              Last 30 days
-            </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
-              Last 7 days
-            </SelectItem>
-          </SelectContent>
-        </Select>
+        
       </CardHeader>
       <CardContent className="px-4 pt-6 sm:px-8 sm:pt-8">
         {filteredData.length === 0 ? (
@@ -186,7 +154,7 @@ export function AdministratorAnalytics({ chartData }) {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                domain={[0, "auto"]} // Dynamic domain for patients
+                domain={[0, "auto"]}
                 tick={{ fill: "#6b7280", fontSize: 12 }}
                 label={{
                   value: "Patients (count)",

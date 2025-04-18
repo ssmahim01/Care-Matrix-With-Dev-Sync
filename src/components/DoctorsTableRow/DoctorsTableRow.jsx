@@ -4,7 +4,6 @@ import {
 } from "@/redux/doctors/doctorSlice";
 import {
   BookmarkX,
-  CalendarCheck2,
   EllipsisVertical,
   NotebookPen,
   NotebookTabs,
@@ -26,7 +25,6 @@ const DoctorsTableRow = ({
   index,
   dispatch,
   handleAddNote,
-  handleChangeAvailability,
   handleDoctorDetails,
 }) => {
   const handleDeleteDoctor = async (id, email) => {
@@ -113,14 +111,6 @@ const DoctorsTableRow = ({
               >
                 <BookmarkX className="w-4 h-4" />
                 <span>Remove</span>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem
-                className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
-                onClick={() => handleChangeAvailability(doctor)}
-              >
-                <CalendarCheck2 className="w-4 h-4" />
-                <span>Change Availability</span>
               </DropdownMenuItem>
 
               <DropdownMenuItem

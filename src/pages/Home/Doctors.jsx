@@ -11,6 +11,7 @@ import DoctorCardSkeleton from "../Doctors/DoctorCardSkeleton";
 
 const Doctors = () => {
   const [doctors, isLoading] = useDoctors();
+  console.log(doctors);
 
   let settings = {
     dots: false,

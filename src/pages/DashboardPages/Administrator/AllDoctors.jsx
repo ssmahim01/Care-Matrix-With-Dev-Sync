@@ -23,18 +23,52 @@ import {
   setSearch,
   setSort,
 } from "@/redux/doctors/consultantSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaUserDoctor } from "react-icons/fa6";
-import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import AvailabilityModal from "@/components/AvailabilityModal/AvailabilityModal";
 
 const AllDoctors = () => {
   const dispatch = useDispatch();
   const { consultants, status } = useSelector((state) => state.consultants);
   //   console.log(consultants);
   const search = useSelector((state) => state.consultants.search);
+  const [availabilityModal, setAvailabilityModal] = useState({});
+  const [availableDate, setAvailableDate] = useState("");
   const sort = useSelector((state) => state.consultants.sort);
   // console.log(search);
+  
+  // Schema for availability modal (form3)
+  const AvailabilityFormSchema = z.object({
+    schedule: z
+      .string()
+      .min(1, "Please select a date")
+      .refine(
+        (date) => {
+          const day = new Date(date).getDay();
+          return day >= 1 && day <= 5;
+        },
+        { message: "Please select a Monday to Friday date" }
+      ),
+    shift: z.string().min(1, "Please select a shift"),
+  });
+
+  const form = useForm({
+    resolver: zodResolver(AvailabilityFormSchema),
+    defaultValues: {
+      schedule: availabilityModal?.schedule || "",
+      shift: availabilityModal?.shift || "",
+    },
+  });
+
+  const handleChangeAvailability = (consultant) => {
+    setAvailabilityModal(consultant);
+    setAvailableDate(consultant?.schedule);
+    document.getElementById("availability_modal").showModal();
+  };
 
   // Handle sort by consultation fee
   const handleSortChange = (value) => {
@@ -42,9 +76,25 @@ const AllDoctors = () => {
     dispatch(fetchAllDoctors({ search, sort: value }));
   };
 
+  // Change search value
+  const handleSearch = (e) => {
+    dispatch(setSearch(e.target.value));
+    dispatch(fetchAllDoctors({ search: e.target.value, sort }));
+  };
+
   useEffect(() => {
     dispatch(fetchAllDoctors({ search, sort }));
   }, [dispatch, search, sort]);
+
+  // Sync form with availabilityModal when it changes
+  useEffect(() => {
+    if (availabilityModal?._id) {
+      form.reset({
+        schedule: availabilityModal?.schedule || "",
+        shift: availabilityModal?.shift || "",
+      });
+    }
+  }, [availabilityModal, form]);
 
   return (
     <div className="lg:w-full md:w-[95%] w-11/12 mx-auto">
@@ -53,7 +103,7 @@ const AllDoctors = () => {
         <div className="space-y-2">
           <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
             <FaUserDoctor className="text-2xl text-gray-800" />
-            All Doctors
+            Manage Doctors
           </h2>
           <p className="text-gray-600 text-base ml-9 font-medium whitespace-pre-line">
             Show information of doctors
@@ -62,18 +112,31 @@ const AllDoctors = () => {
 
         <div className="flex gap-4 md:flex-row flex-col items-center">
           {/* Search Input */}
-          <div className="relative">
+          <label className="input border">
+            <svg
+              className="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
             <input
-              type="text"
               value={search}
-              onChange={(e) => dispatch(setSearch(e.target.value))}
-              placeholder="Search by name or title..."
-              className="border bg-transparent border-gray-300 py-2 pl-4 pr-[65px] outline-none w-full rounded-md focus:border-blue-500"
+              onChange={handleSearch}
+              type="search"
+              required
+              placeholder="Search by name or title"
             />
-            <button className="bg-gray-300 text-gray-500 absolute top-0 right-0 h-full px-5 flex items-center justify-center rounded-r-md hover:bg-gray-400 group">
-              <IoSearch className="text-[1.3rem] group-hover:text-gray-200" />
-            </button>
-          </div>
+          </label>
 
           {/* Sort Dropdown */}
           <Select onValueChange={handleSortChange}>
@@ -159,6 +222,8 @@ const AllDoctors = () => {
                     key={consultant?._id || index}
                     consultant={consultant}
                     index={index}
+                    dispatch={dispatch}
+                    handleChangeAvailability={handleChangeAvailability}
                   />
                 ))}
           </TableBody>
@@ -177,109 +242,7 @@ const AllDoctors = () => {
         </Table>
       </div>
 
-      {/* <dialog id="request_modal" className="modal modal-middle">
-        {requestModal && (
-          <div className="w-full flex justify-center items-center">
-            <div className="modal-box">
-              <h2 className="md:text-3xl text-2xl font-bold text-center">
-                Details Of Upgrade Request
-              </h2>
-              <div className="divider md:w-11/12 mx-auto"></div>
-
-              <figure className="w-44 h-44 mx-auto mt-3">
-                <img
-                  className="w-full h-full border-4 border-muted overflow-hidden rounded-full object-cover"
-                  src={requestModal?.userPhoto}
-                  alt={requestModal?.userName}
-                />
-              </figure>
-
-              <div className="divider"></div>
-
-              <div className="w-full space-y-3">
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Name:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.userName}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Email:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.userEmail}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Request Role:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.requestedRole}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Emergency Contact:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.emergencyContact}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Shift:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.shift}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Available Moment:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {new Date(requestModal?.availableDate).toLocaleString(
-                      "en-UK"
-                    )}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Address:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.address}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Administrator Note:{" "}
-                  <p className="text-gray-700 font-semibold">
-                    {requestModal?.adminNotes === ""
-                      ? pendingNote
-                      : requestModal?.adminNotes}
-                  </p>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Cover Letter:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.coverLetter}
-                  </span>
-                </h4>
-
-                <div className="py-3">
-                  <button
-                    onClick={() =>
-                      document.getElementById("request_modal").close()
-                    }
-                    className="md:px-14 px-10 btn bg-rose-500 text-base text-white font-bold rounded-md flex gap-2 items-center"
-                  >
-                    <CopyX className="w-4 h-4" />
-                    <span>Close</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </dialog> */}
+     <AvailabilityModal form={form} availabilityModal={availabilityModal} />
     </div>
   );
 };

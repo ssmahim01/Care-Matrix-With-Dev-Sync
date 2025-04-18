@@ -1,4 +1,9 @@
-import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
+import {
+  CalendarCheck2,
+  EllipsisVertical,
+  FileUser,
+  Trash2,
+} from "lucide-react";
 import {
   DropdownMenuContent,
   DropdownMenuTrigger,
@@ -8,8 +13,39 @@ import {
 import { TableCell, TableRow } from "../ui/table";
 import { Button } from "../ui/button";
 import { FaCircle } from "react-icons/fa";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import { removeSpecificDoctor } from "@/redux/doctors/consultantSlice";
+import InfoModal from "../DoctorInfoModal/InfoModal";
+import { useState } from "react";
 
-const ConsultantTableRow = ({ consultant, index }) => {
+const ConsultantTableRow = ({
+  consultant,
+  dispatch,
+  index,
+  handleChangeAvailability,
+}) => {
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleRemove = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You cannot retrieve this doctor!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, remove!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const removeDoctor = await dispatch(removeSpecificDoctor(id));
+        if (removeDoctor) {
+          toast.success("Doctor has been removed");
+        }
+      }
+    });
+  };
+
   return (
     <TableRow className="hover:bg-gray-100 dark:hover:bg-gray-700">
       <TableCell>{index + 1}</TableCell>
@@ -26,7 +62,7 @@ const ConsultantTableRow = ({ consultant, index }) => {
       <TableCell>{consultant?.experience}</TableCell>
       <TableCell>
         {consultant?.schedule
-          ? new Date(consultant?.schedule).toLocaleString()
+          ? new Date(consultant?.schedule).toLocaleDateString("en-UK")
           : "N/A"}
       </TableCell>
       <TableCell>{consultant?.consultation_fee}</TableCell>
@@ -49,21 +85,45 @@ const ConsultantTableRow = ({ consultant, index }) => {
       <TableCell>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="cursor-pointer" size="icon">
-              <MoreHorizontal className="h-4 w-4" />
+            <Button
+              variant="ghost"
+              className="cursor-pointer border"
+              size="icon"
+            >
+              <EllipsisVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
-              className="flex gap-2 cursor-pointer items-center"
-              //   onClick={() => handleView(request)}
+              className="cursor-pointer flex gap-2 items-center"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenDialog(true);
+              }}
             >
-              <Eye className="h-5 w-5" />
-              <span>View Details</span>
+              <FileUser className="w-4 h-4" />
+              <span>View Info</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer focus:text-destructive flex gap-2 items-center">
+
+            <InfoModal
+              openDialog={openDialog}
+              setOpenDialog={setOpenDialog}
+              consultant={consultant}
+            />
+
+            <DropdownMenuItem
+              className="cursor-pointer flex gap-2 items-center"
+              onClick={() => handleChangeAvailability(consultant)}
+            >
+              <CalendarCheck2 className="w-4 h-4" />
+              <span>Change Availability</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer focus:text-destructive flex gap-2 items-center"
+              onClick={() => handleRemove(consultant?._id)}
+            >
               <Trash2 className="h-4 w-4" />
-              <span>Delete</span>
+              <span>Remove</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
