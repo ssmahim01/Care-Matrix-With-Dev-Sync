@@ -1,20 +1,13 @@
-import RevenueInsightsHeader from "./RevenueInsightsHeader";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAxiosPublic } from "@/hooks/useAxiosPublic";
-import { useQuery } from "@tanstack/react-query";
-import RevenueOverviewCards from "./RevenueOverviewCards";
-import RevenueByDateChart from "./RevenueByDateChart";
 import { RevenueAllCards, RevenueAnalytics } from "./RevenueAnalytics";
+import RevenueByDateChart from "./RevenueByDateChart";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
+import RevenueInsightsHeader from "./RevenueInsightsHeader";
+import RevenueOverviewCards from "./RevenueOverviewCards";
+import { useQuery } from "@tanstack/react-query";
+import PatientInsights from "./PatientInsights";
 import DoctorInsights from "./DoctorInsights";
 import DoctorChart from "./DoctorChart";
-import PatientInsights from "./PatientInsights";
 
 const RevenueInsights = () => {
   const axiosPublic = useAxiosPublic();
@@ -97,7 +90,7 @@ const RevenueInsights = () => {
         <TabsContent value="doctor-insights">
           <DoctorChart
             doctorData={revenueInsights?.doctorPerformance
-              .sort(() => 0.3 - Math.random())
+              .sort(() => 0.5 - Math.random())
               .slice(0, 3)}
           />
           <DoctorInsights doctorInsights={revenueInsights?.doctorPerformance} />

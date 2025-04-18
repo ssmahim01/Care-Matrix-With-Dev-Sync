@@ -44,8 +44,8 @@ const PatientInsights = ({ patients }) => {
           <TableHeader>
             <TableRow className="bg-base-200 hover:bg-base-200">
               <TableHead></TableHead>
-              <TableHead className="px-6">Name</TableHead>
-              <TableHead className="px-6">Email</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
               <TableHead className="px-6">Total Spent</TableHead>
               <TableHead className="px-6 text-xs">Appointments</TableHead>
               <TableHead className="px-6 text-xs">Avg Spend/Visit</TableHead>
@@ -78,10 +78,10 @@ const PatientInsights = ({ patients }) => {
                   className="hover:bg-base-50 transition-colors"
                 >
                   <TableCell>{idx + 1}</TableCell>
-                  <TableCell className="px-6">
+                  <TableCell>
                     {patient?.patientName || "N/A"}
                   </TableCell>
-                  <TableCell className="px-6">
+                  <TableCell>
                     {patient?.patientEmail || "N/A"}
                   </TableCell>
                   <TableCell className="px-6">
