@@ -1,15 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { AdministratorAnalytics } from "@/components/AreaChart/AdministratorAnalytics";
-import {
-  FaUserMd,
-  FaProcedures,
-  FaCalendarCheck,
-  FaDollarSign,
-} from "react-icons/fa";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { FaCalendarCheck, FaProcedures, FaUserMd } from "react-icons/fa";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import SkeletonOverview from "@/components/Skeleton/SkeletonOverview";
 
 function transformStatsData({
   revenuePerDay = [],
@@ -70,7 +65,7 @@ const AdministratorOverview = () => {
 
   // Transform data for chart
   const chartData = data ? transformStatsData(data) : [];
-  console.log(chartData, data);
+  // console.log(chartData, data);
 
   // Calculate summary stats
   const summary = data
@@ -101,11 +96,7 @@ const AdministratorOverview = () => {
       };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <p>Loading...</p>
-      </div>
-    );
+    return <SkeletonOverview />;
   }
 
   if (error) {
@@ -209,7 +200,6 @@ const AdministratorOverview = () => {
             🟢 5 new patient registrations today
           </li>
           <li className="border-b pb-2">🔴 Appointment #1234 canceled</li>
-          <li>🟢 Hospital earnings updated</li>
         </ul>
       </div>
     </div>
