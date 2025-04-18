@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+
 import { Award, Heart, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthUser } from "@/redux/auth/authActions";
 import useRole from "@/hooks/useRole";
+import { Link } from "react-router";
 
 const PatientRewards = () => {
   const user = useAuthUser();

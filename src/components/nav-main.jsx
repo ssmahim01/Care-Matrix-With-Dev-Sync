@@ -182,12 +182,12 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/my-prescriptions">
+              <NavLink to="/dashboard/doctor/manage-prescription">
                 <h3 className="flex gap-2 items-center">
                   <ClipboardPlus className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     {" "}
-                    My Prescriptions{" "}
+                    Manage Prescriptions{" "}
                   </span>
                 </h3>
               </NavLink>
