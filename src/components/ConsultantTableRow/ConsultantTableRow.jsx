@@ -1,4 +1,4 @@
-import { CalendarCheck2, EllipsisVertical, Eye, Trash2 } from "lucide-react";
+import { CalendarCheck2, EllipsisVertical, Eye, FileUser, Trash2 } from "lucide-react";
 import {
   DropdownMenuContent,
   DropdownMenuTrigger,
@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { removeSpecificDoctor } from "@/redux/doctors/consultantSlice";
 
-const ConsultantTableRow = ({ consultant, dispatch, index, handleChangeAvailability }) => {
+const ConsultantTableRow = ({ consultant, dispatch, index, handleChangeAvailability, handleViewInfo }) => {
   const handleRemove = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -48,7 +48,7 @@ const ConsultantTableRow = ({ consultant, dispatch, index, handleChangeAvailabil
       <TableCell>{consultant?.experience}</TableCell>
       <TableCell>
         {consultant?.schedule
-          ? new Date(consultant?.schedule).toLocaleString("en-UK")
+          ? new Date(consultant?.schedule).toLocaleDateString("en-UK")
           : "N/A"}
       </TableCell>
       <TableCell>{consultant?.consultation_fee}</TableCell>
@@ -83,6 +83,13 @@ const ConsultantTableRow = ({ consultant, dispatch, index, handleChangeAvailabil
               <Eye className="h-5 w-5" />
               <span>View Details</span>
             </DropdownMenuItem> */}
+            <DropdownMenuItem
+              className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
+              onClick={() => handleViewInfo(consultant)}
+            >
+              <FileUser className="w-4 h-4" />
+              <span>View Info</span>
+            </DropdownMenuItem>
             <DropdownMenuItem
               className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
               onClick={() => handleChangeAvailability(consultant)}
