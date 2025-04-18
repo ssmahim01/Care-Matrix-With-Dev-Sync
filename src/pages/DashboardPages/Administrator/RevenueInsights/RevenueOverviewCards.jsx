@@ -21,7 +21,7 @@ const RevenueOverviewCards = ({
         </CardHeader>
         <CardContent className="ml-1 -mt-3">
           <div className="text-3xl font-extrabold">
-            ৳ {totalRevenue?.toLocaleString() || 0}
+            $ {totalRevenue?.toLocaleString() || 0}
           </div>
           <div className="flex items-center mt-2">
             <Badge
@@ -44,7 +44,7 @@ const RevenueOverviewCards = ({
         </CardHeader>
         <CardContent className="ml-1 -mt-3">
           <div className="text-3xl font-extrabold">
-            ৳ {avgRevenuePerAppointment?.toFixed(2) || "0.00"}
+            $ {avgRevenuePerAppointment?.toFixed(2) || "0.00"}
           </div>
           <Badge
             variant="secondary"

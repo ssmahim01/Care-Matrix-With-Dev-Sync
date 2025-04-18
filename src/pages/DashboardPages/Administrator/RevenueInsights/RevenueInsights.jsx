@@ -12,6 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 import RevenueOverviewCards from "./RevenueOverviewCards";
 import RevenueByDateChart from "./RevenueByDateChart";
 import { RevenueAllCards, RevenueAnalytics } from "./RevenueAnalytics";
+import DoctorInsights from "./DoctorInsights";
+import DoctorChart from "./DoctorChart";
 
 const RevenueInsights = () => {
   const axiosPublic = useAxiosPublic();
@@ -20,6 +22,7 @@ const RevenueInsights = () => {
   const {
     data: revenueInsights = {},
     isLoading,
+    error,
     refetch,
   } = useQuery({
     queryKey: ["revenue-insights"],
@@ -28,6 +31,9 @@ const RevenueInsights = () => {
       return data;
     },
   });
+
+  if (isLoading) return "Loading....";
+  if (error) return "Error....";
 
   return (
     <div className="px-7">
@@ -87,7 +93,14 @@ const RevenueInsights = () => {
           <RevenueAnalytics revenueData={revenueInsights?.revenueByAllDates} />
         </TabsContent>
         {/* 3rd Tab Content */}
-        <TabsContent value="doctor-insights">doctor-insights</TabsContent>
+        <TabsContent value="doctor-insights">
+          <DoctorChart
+            doctorData={revenueInsights?.doctorPerformance
+              .sort(() => 0.5 - Math.random())
+              .slice(0, 5)}
+          />
+          <DoctorInsights doctorInsights={revenueInsights?.doctorPerformance} />
+        </TabsContent>
         {/* 4th Tab Content */}
         <TabsContent value="patient-insights">patient-insights</TabsContent>
       </Tabs>

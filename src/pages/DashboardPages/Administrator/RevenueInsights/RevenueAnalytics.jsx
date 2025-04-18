@@ -24,7 +24,7 @@ export const RevenueAllCards = ({
               Total Revenue
             </div>
             <div className="text-3xl font-extrabold mt-1 text-primary">
-              ৳{" "}
+              ${" "}
               {totalRevenue.toLocaleString(undefined, {
                 maximumFractionDigits: 2,
               })}
@@ -36,7 +36,7 @@ export const RevenueAllCards = ({
         <CardContent className="pt-6">
           <div className="text-center">
             <div className="text-3xl font-extrabold mt-1 text-primary">
-              ৳{" "}
+              ${" "}
               {avgRevenuePerAppointment.toLocaleString(undefined, {
                 maximumFractionDigits: 2,
               })}
@@ -51,7 +51,7 @@ export const RevenueAllCards = ({
         <CardContent className="pt-6">
           <div className="text-center">
             <div className="text-3xl font-extrabold mt-1 text-primary">
-              ৳{" "}
+              ${" "}
               {avgRevenuePerDates.toLocaleString(undefined, {
                 maximumFractionDigits: 2,
               })}
@@ -115,13 +115,13 @@ export const RevenueAnalytics = ({ revenueData }) => {
                   {day?.appointments} Total
                 </TableCell>
                 <TableCell className={"px-6"}>
-                  <span className="font-extrabold">৳</span>{" "}
+                  <span className="font-extrabold">$</span>{" "}
                   {day?.totalRevenue.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
                   })}
                 </TableCell>
                 <TableCell className={"px-6"}>
-                  <span className="font-extrabold">৳</span>{" "}
+                  <span className="font-extrabold">$</span>{" "}
                   {avgRevenuePerAppointment?.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
                   })}
