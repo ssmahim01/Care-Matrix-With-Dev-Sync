@@ -1,5 +1,11 @@
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
-import { FaHome, FaInfoCircle, FaMapMarkerAlt, FaPager } from "react-icons/fa";
+import {
+  FaHome,
+  FaInfoCircle,
+  FaMapMarkerAlt,
+  FaPager,
+  FaShoppingCart,
+} from "react-icons/fa";
 
 import {
   MdDashboard,
@@ -21,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import toast from "react-hot-toast";
 import "./Navbar.css";
+import useCart from "@/hooks/useCart";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -32,6 +39,7 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.auth);
   const loading = useAuthLoading();
   const [role, isLoading] = useRole();
+  const [cart] = useCart();
 
   const [showImage, setShowImage] = useState(true);
 
@@ -316,13 +324,21 @@ const Navbar = () => {
                 </ul>
               </>
 
-              <div className="md:block hidden">
+              <div className="md:flex items-center gap-4 hidden">
                 <Link to="/emergency">
-                  <Button className="mr-2 bg-red-100 hover:bg-red-200 tracking-tight text-red-500 cursor-pointer">
+                  <Button className=" bg-red-100 hover:bg-red-200 tracking-tight text-red-500 cursor-pointer">
                     <span>Emergency</span>
                     <Siren className="text-base" />
                   </Button>{" "}
-                </Link>
+                </Link>{" "}
+                {user && (
+                  <button className="mr-4 relative text-blue-500 flex items-center space-x-2">
+                    <FaShoppingCart size={30} />
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {cart?.length}
+                    </span>
+                  </button>
+                )}
               </div>
 
               {loading || isLoading ? (
