@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { imgUpload } from "@/lib/imgUpload";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { FaFileUpload } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
@@ -111,6 +112,13 @@ const AssignUserForm = () => {
       return;
     }
 
+    // Role Validation
+    if (!role) {
+      setLoading(false);
+      setIsError("Role Is Required");
+      return;
+    }
+
     // Password Validation
     if (!signal.lowercase) {
       setLoading(false);
@@ -156,6 +164,7 @@ const AssignUserForm = () => {
       );
       return;
     }
+
     const user = {
       email,
       role,
@@ -164,7 +173,14 @@ const AssignUserForm = () => {
       password: strongPassword,
       phoneNumber,
     };
-    console.log(user);
+
+    try {
+      console.log(user);
+    } catch (error) {
+      toast.error(error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <Card className="border shadow-none border-[#e5e7eb] w-full py-6 rounded-lg">

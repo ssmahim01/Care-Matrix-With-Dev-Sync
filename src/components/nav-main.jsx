@@ -101,12 +101,12 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <UserPlus className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Assign New Users{" "}
+                    Assign New User{" "}
                   </span>
                 </h3>
               </NavLink>
               <NavLink to="/dashboard/administrator/manage-doctors">
-                <h3 className="flex gap-2 items-center">
+                <h3 className="flex gap-2 items-center tracking-wide">
                   <FaUserDoctor size={25} className="text-base " />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Doctor Requests{" "}
