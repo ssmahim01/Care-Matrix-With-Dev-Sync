@@ -15,6 +15,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaFileUpload } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const AssignUserForm = () => {
   const [role, setRole] = useState("");
@@ -90,6 +91,95 @@ const AssignUserForm = () => {
         hasNumber &&
         hasSymbol &&
         password.length >= 8,
+    });
+  };
+
+  const showConfirmModal = (role, email, password) => {
+    Swal.fire({
+      title: "Account Created Successfully",
+      html: `
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-md w-full">
+          <div class="mb-4 text-center">
+            <span class="inline-block px-4 py-1 bg-blue-600 text-white text-sm font-semibold rounded-full">
+              ${role.charAt(0).toUpperCase() + role.slice(1)} Role
+            </span>
+          </div>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between bg-gray-100 p-3 rounded-md">
+              <div>
+                <p class="text-sm text-gray-600">Email</p>
+                <p id="copy-email" class="font-medium text-blue-800">${email}</p>
+              </div>
+              <button onclick="copyToClipboard('copy-email')" 
+                      class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition duration-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="flex items-center justify-between bg-gray-100 p-3 rounded-md">
+              <div>
+                <p class="text-sm text-gray-600">Password</p>
+                <p id="copy-password" class="font-medium text-blue-800">${password}</p>
+              </div>
+              <button onclick="copyToClipboard('copy-password')" 
+                      class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition duration-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      `,
+      confirmButtonText: "Done",
+      confirmButtonColor: "#2563eb",
+      background: "#f3f4f6",
+      didOpen: () => {
+        window.copyToClipboard = (id) => {
+          const text = document.getElementById(id).innerText;
+          navigator.clipboard
+            .writeText(text)
+            .then(() => {
+              Swal.fire({
+                toast: true,
+                position: "top-end",
+                icon: "success",
+                title: "Copied to clipboard!",
+                text: "The text has been copied successfully.",
+                showConfirmButton: false,
+                timer: 2000,
+                background: "#ffffff",
+                customClass: {
+                  title: "text-blue-800 font-semibold",
+                  content: "text-gray-600",
+                },
+              });
+            })
+            .catch(() => {
+              Swal.fire({
+                toast: true,
+                position: "top-end",
+                icon: "error",
+                title: "Copy failed",
+                text: "Unable to copy text to clipboard.",
+                showConfirmButton: false,
+                timer: 2000,
+                background: "#ffffff",
+                customClass: {
+                  title: "text-red-800 font-semibold",
+                  content: "text-gray-600",
+                },
+              });
+            });
+        };
+      },
+      customClass: {
+        title: "text-2xl text-blue-900 font-bold",
+        confirmButton: "px-6 py-2 text-white font-semibold rounded-md",
+      },
     });
   };
 
@@ -176,6 +266,7 @@ const AssignUserForm = () => {
 
     try {
       console.log(user);
+      showConfirmModal(user?.role, user?.email, user?.password);
     } catch (error) {
       toast.error(error?.message);
     } finally {
@@ -309,8 +400,9 @@ const AssignUserForm = () => {
               <Label>Confirmed Password</Label>
               <Input
                 type="text"
+                readonly
                 value={strongPassword}
-                onChange={handlePasswordChange}
+                // onChange={handlePasswordChange}
                 placeholder={"Enter Confirmed Password"}
               />
             </div>

@@ -87,7 +87,7 @@ const AssignUsers = () => {
               Assign New User
             </Button>
             <Button
-              onClick={() => setIsFormOpen(!isFormOpen)}
+              //   onClick={() => setIsFormOpen(!isFormOpen)}
               className={"cursor-pointer"}
             >
               Assign Doctor

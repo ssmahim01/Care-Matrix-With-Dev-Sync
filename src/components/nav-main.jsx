@@ -96,6 +96,14 @@ export function NavMain() {
                     Manage Users{" "}
                   </span>
                 </h3>
+              </NavLink>{" "}
+              <NavLink to="/dashboard/administrator/doctors">
+                <h3 className="flex gap-2 items-center tracking-[-0.2px]">
+                  <IdCardIcon className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Manage Doctors{" "}
+                  </span>
+                </h3>
               </NavLink>
               <NavLink to="/dashboard/administrator/assign-users">
                 <h3 className="flex gap-2 items-center">
@@ -130,14 +138,6 @@ export function NavMain() {
                 </h3>
               </NavLink>
              */}
-              <NavLink to="/dashboard/administrator/doctors">
-                <h3 className="flex gap-2 items-center">
-                  <IdCardIcon className="text-base" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Manage Doctors{" "}
-                  </span>
-                </h3>
-              </NavLink>
               <NavLink to="/dashboard/administrator/manage-billing-payments">
                 <h3 className="flex gap-2 items-center">
                   <CreditCard className="text-base" />
