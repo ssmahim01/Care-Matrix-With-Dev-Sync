@@ -16,7 +16,9 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const AssignUsers = () => {
+  const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("");
   // Get all assigned users data
   const {
     data: users,
@@ -24,10 +26,12 @@ const AssignUsers = () => {
     refetch,
     error,
   } = useQuery({
-    queryKey: ["assigned-users"],
+    queryKey: ["assigned-users", search, selectedRole],
     queryFn: async () => {
       const { data } = await axios(
-        `${import.meta.env.VITE_API_URL}/firebase/users`
+        `${
+          import.meta.env.VITE_API_URL
+        }/firebase/users?search=${search}&role=${selectedRole}`
       );
       return data;
     },
@@ -49,29 +53,35 @@ const AssignUsers = () => {
           <input
             className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
             placeholder="Search Users..."
-            // onChange={(e) => setSearch(e.target.value)}
-            // value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
           />
           <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
           {/* shortcut hint */}
-          <div className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-100 p-[6px] rounded-md text-gray-500">
-            Ctrl + E
-          </div>
+          <button
+            onClick={() => setSearch("")}
+            className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[6px] rounded-md text-gray-500 cursor-pointer"
+          >
+            Clear
+          </button>
         </div>
         <div className="flex items-center flex-wrap gap-4">
           {/* Select Role */}
           <div className="flex flex-1 w-fit">
             <Select
               className="w-fit"
-              // value={selectedCategory} onValueChange={setCategory}
+              value={selectedRole}
+              onValueChange={setSelectedRole}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select Role" />
+                <SelectValue placeholder="Filter By Role" />
               </SelectTrigger>
               <SelectContent className="w-fit">
-                {/* <SelectItem>{"Administrator"}</SelectItem> */}
-                {/* <SelectItem>{"Pharmacist"}</SelectItem> */}
-                {/* <SelectItem>{"Receptionist"}</SelectItem> */}
+                <SelectItem value={"administrator"}>
+                  {"Administrator"}
+                </SelectItem>
+                <SelectItem value={"pharmacist"}>{"Pharmacist"}</SelectItem>
+                <SelectItem value={"receptionist"}>{"Receptionist"}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -97,19 +107,22 @@ const AssignUsers = () => {
           </div>
           {/* Reset & Add Button */}
           <div className="flex items-center flex-wrap gap-2">
-            <Button>Reset</Button>
+            <Button
+              onClick={() => {
+                setSearch("");
+                setSelectedRole("");
+              }}
+              className={"cursor-pointer"}
+            >
+              Reset
+            </Button>
             <Button
               onClick={() => setIsFormOpen(!isFormOpen)}
               className={"cursor-pointer"}
             >
               Assign New User
             </Button>
-            <Button
-              //   onClick={() => setIsFormOpen(!isFormOpen)}
-              className={"cursor-pointer"}
-            >
-              Assign Doctor
-            </Button>
+            <Button className={"cursor-pointer"}>Assign Doctor</Button>
           </div>
         </div>
       </div>

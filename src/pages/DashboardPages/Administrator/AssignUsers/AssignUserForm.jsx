@@ -449,7 +449,7 @@ const AssignUserForm = ({ refetch }) => {
             </div>
           </div>
           {/* Error */}
-          <div className="mt-4">
+          <div className="mt-4 mb-4">
             <IsError isError={isError} />
           </div>
           {/* Add User Button */}
