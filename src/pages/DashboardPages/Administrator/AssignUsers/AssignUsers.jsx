@@ -19,6 +19,15 @@ const AssignUsers = () => {
   const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
+  const [sort, setSort] = useState("createdAt-desc");
+
+  const sortOptions = {
+    "createdAt-desc": "Created Date (Newest First)",
+    "createdAt-asc": "Created Date (Oldest First)",
+    "lastLoginAt-desc": "Last Login (Newest First)",
+    "lastLoginAt-asc": "Last Login (Oldest First)",
+  };
+
   // Get all assigned users data
   const {
     data: users,
@@ -26,12 +35,12 @@ const AssignUsers = () => {
     refetch,
     error,
   } = useQuery({
-    queryKey: ["assigned-users", search, selectedRole],
+    queryKey: ["assigned-users", sort, search, selectedRole],
     queryFn: async () => {
       const { data } = await axios(
         `${
           import.meta.env.VITE_API_URL
-        }/firebase/users?search=${search}&role=${selectedRole}`
+        }/firebase/users?sort=${sort}&search=${search}&role=${selectedRole}`
       );
       return data;
     },
@@ -88,20 +97,21 @@ const AssignUsers = () => {
           {/* Sort By */}
           <div className="flex flex-1 w-fit">
             <Select
-              className="w-fit"
-              // value={sort} onValueChange={setSort}
+              className="w-fit text-xs"
+              value={sort}
+              onValueChange={setSort}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Sort By">
-                  {/* {sort ? sortOptions[sort] : "Sort By"} */}
+                <SelectValue placeholder="Sort By" className="text-xs">
+                  {sortOptions[sort] || "Sort By"}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent className="w-fit">
-                {/* {Object.entries(sortOptions).map(([value, label]) => (
-                  <SelectItem key={value} value={value}>
+                {Object.entries(sortOptions).map(([value, label]) => (
+                  <SelectItem key={value} value={value} className={"text-xs"}>
                     {label}
                   </SelectItem>
-                ))} */}
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -111,6 +121,7 @@ const AssignUsers = () => {
               onClick={() => {
                 setSearch("");
                 setSelectedRole("");
+                setSort("createdAt-desc");
               }}
               className={"cursor-pointer"}
             >
