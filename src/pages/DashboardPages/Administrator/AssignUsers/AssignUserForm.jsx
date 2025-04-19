@@ -96,46 +96,66 @@ const AssignUserForm = () => {
 
   const showConfirmModal = (role, email, password) => {
     Swal.fire({
-      title: "Account Created Successfully",
       html: `
-        <div class="bg-white text-black p-6 rounded-lg shadow-lg max-w-md w-full">
-          <div class="mb-4 text-center">
-            <span class="inline-block px-4 py-1 bg-blue-600 text-white text-sm font-semibold rounded-full">
-              ${role.charAt(0).toUpperCase() + role.slice(1)} Role
-            </span>
-          </div>
-          <div class="space-y-4">
-            <div class="flex items-center justify-between bg-gray-100 p-3 rounded-md">
-              <div>
-                <p class="text-sm text-gray-600">Email</p>
-                <p id="copy-email" class="font-medium text-blue-800">${email}</p>
-              </div>
-              <button onclick="copyToClipboard('copy-email')" 
-                      class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition duration-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                </svg>
-              </button>
+         <div class="bg-background text-foreground p-4 mt-4 rounded-2xl max-w-md w-full border space-y-8">
+          <!-- Success Icon and Message -->
+          <div class="text-center space-y-2">
+            <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-600 mx-auto">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
             </div>
-            <div class="flex items-center justify-between bg-gray-100 p-3 rounded-md">
-              <div>
-                <p class="text-sm text-gray-600">Password</p>
-                <p id="copy-password" class="font-medium text-blue-800">${password}</p>
-              </div>
-              <button onclick="copyToClipboard('copy-password')" 
-                      class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition duration-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                </svg>
-              </button>
-            </div>
+            <h2 class="text-xl font-bold">Account Successfully Created</h2>
+            <p class="text-sm px-8 -mt-2 text-muted-foreground">The user account has been created  Share these credentials with the user.</p>
           </div>
-        </div>
+
+           <!-- Title -->
+           <div class="text-center -mt-5">
+             <span class="inline-flex items-center rounded-full bg-primary px-4 py-1 text-sm font-medium text-primary-foreground">
+               ${
+                 role.charAt(0).toUpperCase() + role.slice(1)
+               } Account Credentials
+             </span>
+           </div>
+         
+           <!-- Credentials Section -->
+           <div class="space-y-2 -mt-5">
+             <!-- Email -->
+             <div class="flex flex-col justify-start space-y-1.5">
+               <p for="copy-email" class="text-sm text-left font-medium text-gray-700">Email</p>
+               <div class="relative">
+                 <input id="copy-email" readonly type="text" value="${email}" class="w-full rounded-lg border bg-muted px-4 py-2 pr-12 text-sm font-medium text-primary focus:outline-none" />
+               </div>
+             </div>
+         
+             <!-- Password -->
+             <div class="flex flex-col justify-start space-y-1.5">
+               <p for="copy-password" class="text-sm text-left font-medium text-gray-700">Password</p>
+               <div class="relative">
+                 <input id="copy-password" readonly type="text" value="${password}" class="w-full rounded-lg border bg-muted px-4 py-2 pr-12 text-sm font-medium text-primary focus:outline-none" />
+                 <button
+                   onclick="copyToClipboard('copy-password')"
+                   class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition"
+                 >
+                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                   </svg>
+                 </button>
+               </div>
+             </div>
+           </div>
+         
+           <!-- Improved Warning Notice -->
+           <div class="flex items-start -mt-4 gap-3 p-2 rounded-xl border border-yellow-300 bg-yellow-100/60 text-yellow-900 text-sm">
+             <div>
+               <p class="font-semibold">⚠️ Important Notice</p>
+               <p class="mt-1">Please copy the password now. For security reasons, this password won’t be shown again after closing this modal.</p>
+             </div>
+           </div>
+         </div>
       `,
-      confirmButtonText: "Done",
-      confirmButtonColor: "#2563eb",
+      confirmButtonText: "Ok, Close",
+      confirmButtonColor: "#000",
       background: "#f3f4f6",
       didOpen: () => {
         window.copyToClipboard = (id) => {
@@ -177,8 +197,8 @@ const AssignUserForm = () => {
         };
       },
       customClass: {
-        title: "text-2xl text-blue-900 font-bold",
-        confirmButton: "px-6 py-2 text-white font-semibold rounded-md",
+        title: "text-2xl font-bold",
+        confirmButton: "px-6 py-2 text-white bg-black font-semibold rounded-md",
       },
     });
   };
