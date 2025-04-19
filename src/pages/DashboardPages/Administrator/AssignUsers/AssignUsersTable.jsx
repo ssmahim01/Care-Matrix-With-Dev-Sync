@@ -23,12 +23,13 @@ import {
 } from "@/components/ui/tooltip";
 
 import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, Capsule, Phone } from "lucide-react";
+import { ShieldCheck, Phone } from "lucide-react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Eye, MoreVertical, Trash } from "lucide-react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { FaCapsules } from "react-icons/fa";
 
 const AssignUsersTable = ({ users, isLoading, refetch }) => {
   const handleUserDelete = (email) => {
@@ -132,7 +133,7 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                 <TableCell>
                   {user?.role === "administrator" ? (
                     <Badge
-                      variant="secondary"
+                      variant="outline"
                       className="flex items-center gap-1"
                     >
                       <ShieldCheck className="h-4 w-4 text-blue-600" />
@@ -143,15 +144,15 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                       variant="outline"
                       className="flex items-center gap-1"
                     >
-                      <Capsule className="h-4 w-4 text-green-600" />
+                      <FaCapsules className="h-4 w-4 text-green-600" />
                       Pharmacist
                     </Badge>
                   ) : user?.role === "receptionist" ? (
                     <Badge
-                      variant="destructive"
+                      variant="outline"
                       className="flex items-center gap-1"
                     >
-                      <Phone className="h-4 w-4 text-red-600" />
+                      <Phone className="h-4 w-4" />
                       Receptionist
                     </Badge>
                   ) : (
