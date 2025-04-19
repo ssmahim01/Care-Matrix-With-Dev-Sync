@@ -1,4 +1,21 @@
-
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { useAuthUser } from "@/redux/auth/authActions";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Eye, MoreVertical, Trash } from "lucide-react";
 
 const AssignUsersTable = () => {
   const users = useAuthUser();
