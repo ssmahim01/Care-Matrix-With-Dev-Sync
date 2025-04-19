@@ -22,7 +22,7 @@ const AssignUsers = () => {
     data: users,
     isLoading,
     refetch,
-    error
+    error,
   } = useQuery({
     queryKey: ["assigned-users"],
     queryFn: async () => {
@@ -115,10 +115,10 @@ const AssignUsers = () => {
       </div>
       {/* Assign User Form */}
       <div className={`${isFormOpen ? "visible" : "hidden"} mt-4`}>
-        <AssignUserForm />
+        <AssignUserForm refetch={refetch} />
       </div>
       {/* User Table */}
-      <AssignUsersTable users={users} isLoading={isLoading}/>
+      <AssignUsersTable users={users} isLoading={isLoading} />
     </div>
   );
 };

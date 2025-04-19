@@ -1,17 +1,17 @@
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { format } from "date-fns";
@@ -56,7 +56,7 @@ const AssignUsersTable = ({ users, isLoading }) => {
                       <AvatarImage
                         src={user?.photo}
                         alt="user Image"
-                        className="min-w-10 rounded-full h-10 object-cover"
+                        className="max-w-10 rounded-full h-10 object-cover"
                       />
                     </Avatar>
                     <span>{user?.name}</span>

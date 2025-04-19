@@ -11,13 +11,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { imgUpload } from "@/lib/imgUpload";
+import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaFileUpload } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 
-const AssignUserForm = () => {
+const AssignUserForm = ({ refetch }) => {
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
@@ -278,31 +279,41 @@ const AssignUserForm = () => {
     }
 
     const user = {
-      email,
       role,
+      email,
       name,
-      image: imageUrl,
       password: strongPassword,
+      photo: imageUrl,
       phoneNumber,
     };
 
     try {
-      setIsError("");
-      setRole("");
-      setName("");
-      setImage("");
-      setEmail("");
-      setPreview("");
-      setPhoneNumber(880);
-      setStrongPassword("");
-      showConfirmModal(user?.role, user?.email, user?.password);
+      // Send Post Request In Server
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/firebase/assign-user`,
+        user
+      );
+      // Show Confirm Modal
+      if (data?.mongoDB?.insertedId) {
+        refetch();
+        setIsError("");
+        setRole("");
+        setName("");
+        setImage("");
+        setEmail("");
+        setPreview("");
+        setPhoneNumber(880);
+        setStrongPassword("");
+        showConfirmModal(user?.role, user?.email, user?.password);
+      }
     } catch (error) {
-      toast.error(error?.message);
+      const errMsg = error?.response?.data?.message || "Something went wrong!";
+      setIsError(errMsg);
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
     <Card className="border shadow-none border-[#e5e7eb] w-full py-6 rounded-lg">
       <CardContent className="px-4">
