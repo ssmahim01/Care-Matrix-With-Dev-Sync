@@ -94,6 +94,7 @@ const AssignUserForm = () => {
     });
   };
 
+  // Confirm Modal
   const showConfirmModal = (role, email, password) => {
     Swal.fire({
       html: `
@@ -149,7 +150,7 @@ const AssignUserForm = () => {
            <div class="flex items-start -mt-4 gap-3 p-2 rounded-xl border border-yellow-300 bg-yellow-100/60 text-yellow-900 text-sm">
              <div>
                <p class="font-semibold">⚠️ Important Notice</p>
-               <p class="mt-1">Please copy the password now. For security reasons, this password won’t be shown again after closing this modal.</p>
+               <p class="mt-1">Please copy the password now. For security reasons, this password won’t be shown again after closing this modal. And after copy the password the modal will be closed!</p>
              </div>
            </div>
          </div>
@@ -159,7 +160,8 @@ const AssignUserForm = () => {
       background: "#f3f4f6",
       didOpen: () => {
         window.copyToClipboard = (id) => {
-          const text = document.getElementById(id).innerText;
+          const input = document.getElementById(id);
+          const text = input.value;
           navigator.clipboard
             .writeText(text)
             .then(() => {
@@ -168,9 +170,9 @@ const AssignUserForm = () => {
                 position: "top-end",
                 icon: "success",
                 title: "Copied to clipboard!",
-                text: "The text has been copied successfully.",
+                text: "User Password has been copied successfully.",
                 showConfirmButton: false,
-                timer: 2000,
+                timer: 3000,
                 background: "#ffffff",
                 customClass: {
                   title: "text-blue-800 font-semibold",
@@ -285,7 +287,14 @@ const AssignUserForm = () => {
     };
 
     try {
-      console.log(user);
+      setIsError("");
+      setRole("");
+      setName("");
+      setImage("");
+      setEmail("");
+      setPreview("");
+      setPhoneNumber(880);
+      setStrongPassword("");
       showConfirmModal(user?.role, user?.email, user?.password);
     } catch (error) {
       toast.error(error?.message);
@@ -293,6 +302,7 @@ const AssignUserForm = () => {
       setLoading(false);
     }
   };
+  
   return (
     <Card className="border shadow-none border-[#e5e7eb] w-full py-6 rounded-lg">
       <CardContent className="px-4">

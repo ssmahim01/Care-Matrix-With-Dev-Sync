@@ -12,9 +12,27 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import AssignUserForm from "./AssignUserForm";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const AssignUsers = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  // Get all assigned users data
+  const {
+    data: users,
+    isLoading,
+    refetch,
+    error
+  } = useQuery({
+    queryKey: ["assigned-users"],
+    queryFn: async () => {
+      const { data } = await axios(
+        `${import.meta.env.VITE_API_URL}/firebase/users`
+      );
+      return data;
+    },
+  });
+
   return (
     <div className="px-7">
       <DashboardPagesHeader
@@ -100,7 +118,7 @@ const AssignUsers = () => {
         <AssignUserForm />
       </div>
       {/* User Table */}
-      <AssignUsersTable />
+      <AssignUsersTable users={users} isLoading={isLoading}/>
     </div>
   );
 };
