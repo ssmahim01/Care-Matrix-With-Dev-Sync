@@ -55,57 +55,101 @@ function transformStatsData({
 
 const AdministratorOverview = () => {
   const axiosSecure = useAxiosSecure();
-  const { data, isLoading, error } = useQuery({
+
+  // Query for admin stats (revenue, appointments, bed bookings)
+  const {
+    data: adminStats,
+    isLoading: isAdminStatsLoading,
+    error: adminStatsError,
+  } = useQuery({
     queryKey: ["adminStats"],
     queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       const res = await axiosSecure.get("/adminStats");
       return res.data.data;
     },
   });
 
-  // Transform data for chart
-  const chartData = data ? transformStatsData(data) : [];
-  // console.log(chartData, data);
+  // Query for recent activities
+  const {
+    data: activitiesData,
+    isLoading: isActivitiesLoading,
+    error: activitiesError,
+  } = useQuery({
+    queryKey: ["recentActivities"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/adminStats/recent-activities");
+      return res.data.data;
+    },
+  });
 
-  // Calculate summary stats
-  const summary = data
+  // Query for totals (patients and doctors)
+  const {
+    data: totals,
+    isLoading: isTotalsLoading,
+    error: totalsError,
+  } = useQuery({
+    queryKey: ["adminTotals"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/adminStats/totals");
+      return res.data.data;
+    },
+  });
+
+  // // Debug: Log the fetched data to inspect its structure
+  // console.log("adminStats:", adminStats);
+  // console.log("totals:", totals);
+  // console.log("activitiesData:", activitiesData);
+
+  // Transform data for chart
+  const chartData = adminStats ? transformStatsData(adminStats) : [];
+
+  // Combine loading states
+  const isLoading = isAdminStatsLoading || isActivitiesLoading || isTotalsLoading;
+
+  // Combine error states
+  const error = adminStatsError || activitiesError || totalsError;
+
+  // Calculate summary stats with fallback values
+  const summary = adminStats
     ? {
-        totalDoctors: 12,
-        totalPatients:
-          (data.appointmentsPerDate || []).reduce(
-            (sum, { count = 0 }) => sum + count,
-            0
-          ) +
-          (data.bedBookingsPerAdmissionDate || []).reduce(
-            (sum, { count = 0 }) => sum + count,
-            0
-          ),
-        appointmentsToday: (data.appointmentsPerDate || [])
+        totalDoctors: totals?.totalDoctors ?? 0,
+        totalPatients: totals?.totalPatients ?? 0,
+        appointmentsToday: (adminStats.appointmentsPerDate || [])
           .filter(({ date }) => date === new Date().toISOString().split("T")[0])
           .reduce((sum, { count = 0 }) => sum + count, 0),
-        totalEarnings: (data.revenuePerDay || []).reduce(
+        totalEarnings: (adminStats.revenuePerDay || []).reduce(
           (sum, { totalRevenue = 0 }) => sum + totalRevenue,
           0
         ),
       }
     : {
-        totalDoctors: 12,
+        totalDoctors: 0,
         totalPatients: 0,
         appointmentsToday: 0,
         totalEarnings: 0,
       };
 
+  // Show skeleton loader if any query is still loading
   if (isLoading) {
     return <SkeletonOverview />;
   }
 
+  // Show error message if any query fails
   if (error) {
     return (
       <div className="flex justify-center items-center h-64">
-        <p>Error: {error.message}</p>
+        <p>
+          Error:{" "}
+          {error.message ||
+            "An error occurred while fetching data. Please try again."}
+        </p>
       </div>
     );
   }
+
+  // Ensure activities is an array, fallback to empty array if undefined
+  const activities = activitiesData?.recentActivities || [];
 
   return (
     <div className="space-y-4">
@@ -192,15 +236,17 @@ const AdministratorOverview = () => {
       {/* Recent Activities */}
       <div className="bg-white/80 shadow-md p-6 border-b border-gray-300 rounded-lg">
         <h3 className="text-lg font-semibold mb-4">Recent Activities</h3>
-        <ul className="space-y-3">
-          <li className="border-b pb-2">
-            🟢 New doctor Dr. Smith joined the hospital
-          </li>
-          <li className="border-b pb-2">
-            🟢 5 new patient registrations today
-          </li>
-          <li className="border-b pb-2">🔴 Appointment #1234 canceled</li>
-        </ul>
+        {activities.length > 0 ? (
+          <ul className="space-y-3">
+            {activities.map((activity, index) => (
+              <li key={index} className="border-b pb-2">
+                {activity}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500">No recent activities available.</p>
+        )}
       </div>
     </div>
   );

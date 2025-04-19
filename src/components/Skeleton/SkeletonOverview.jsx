@@ -6,8 +6,8 @@ const SkeletonAnalytics = () => {
     <Card className="shadow-lg">
       <CardHeader className="flex flex-wrap md:items-center gap-2 space-y-0 border-b py-5 sm:flex-row flex-col">
         <div className="grid flex-1 gap-2 text-left">
-          <div className="skeleton h-8 w-3/4 rounded" />
-          <div className="skeleton h-4 w-1/2 rounded" />
+          <div className="skeleton h-8 w-1/3 rounded" />
+          <div className="skeleton h-4 w-1/5 rounded" />
         </div>
       </CardHeader>
       <CardContent className="px-4 pt-6 sm:px-8 sm:pt-8">
@@ -32,9 +32,9 @@ const SkeletonAnalytics = () => {
             ))}
           </div>
           {/* Legend Placeholder */}
-          <div className="flex justify-center gap-4 mt-4">
-            <div className="skeleton h-4 w-20 rounded" />
-            <div className="skeleton h-4 w-20 rounded" />
+          <div className="flex justify-center gap-4 mt-2">
+            <div className="skeleton h-3 w-5 rounded" />
+            <div className="skeleton h-3 w-5 rounded" />
           </div>
         </div>
       </CardContent>
@@ -76,7 +76,7 @@ const SkeletonOverview = () => {
         <ul className="space-y-3">
           {Array.from({ length: 3 }).map((_, index) => (
             <li key={index} className="border-b pb-2">
-              <div className="skeleton h-4 w-full rounded" />
+              <div className="skeleton h-4 w-2/5 rounded" />
             </li>
           ))}
         </ul>
