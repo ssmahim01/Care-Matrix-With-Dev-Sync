@@ -35,7 +35,7 @@ const CustomTooltip = ({ active, payload, label }) => {
           })}
         </p>
         <p className="text-purple-600 font-medium">
-          Earnings: ৳
+          Earnings: $
           {earnings.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -67,8 +67,8 @@ export function AdministratorAnalytics({ chartData }) {
   });
 
   return (
-    <Card className="shadow-lg">
-      <CardHeader className="flex flex-wrap md:items-center gap-2 space-y-0 border-b py-5 sm:flex-row flex-col">
+    <Card>
+      <CardHeader className="space-y-0 py-3">
         <div className="grid flex-1 gap-1 text-left">
           <CardTitle className="text-2xl font-bold text-gray-800">
             Patient Growth & Earnings
@@ -81,19 +81,19 @@ export function AdministratorAnalytics({ chartData }) {
       </CardHeader>
       <CardContent className="px-4 pt-6 sm:px-8 sm:pt-8">
         {filteredData.length === 0 ? (
-          <div className="flex justify-center items-center h-[350px]">
+          <div className="flex justify-center items-center h-[300px]">
             <p className="text-gray-500 text-lg">
               No data available for the selected time range.
             </p>
           </div>
         ) : (
-          <ChartContainer className="aspect-auto h-[350px] w-full">
+          <ChartContainer className="aspect-auto w-full h-[300px]">
             <AreaChart data={filteredData}>
               <defs>
                 <linearGradient id="fillEarnings" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="#8884d8" // Purple for earnings
+                    stopColor="#8884d8"
                     stopOpacity={0.6}
                   />
                   <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1} />
@@ -101,7 +101,7 @@ export function AdministratorAnalytics({ chartData }) {
                 <linearGradient id="fillPatients" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="#82ca9d" // Green for patients
+                    stopColor="#82ca9d"
                     stopOpacity={0.7}
                   />
                   <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.1} />
@@ -130,13 +130,13 @@ export function AdministratorAnalytics({ chartData }) {
               <YAxis
                 yAxisId="earnings"
                 orientation="left"
-                tickFormatter={(value) => `৳${value.toLocaleString()}`}
+                tickFormatter={(value) => `$${value.toLocaleString()}`}
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
                 tick={{ fill: "#6b7280", fontSize: 12 }}
                 label={{
-                  value: "Earnings (৳)",
+                  value: "Earnings ($)",
                   angle: -90,
                   position: "insideLeft",
                   offset: -5,

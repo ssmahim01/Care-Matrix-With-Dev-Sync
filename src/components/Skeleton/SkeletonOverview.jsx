@@ -1,10 +1,10 @@
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 
-// Skeleton Loader for AdministratorAnalytics
+// Skeleton Loader for AdministratorAnalytics (Area Chart)
 const SkeletonAnalytics = () => {
   return (
     <Card className="shadow-lg">
-      <CardHeader className="flex flex-wrap md:items-center gap-2 space-y-0 border-b py-5 sm:flex-row flex-col">
+      <CardHeader className="flex flex-col md:flex-row md:items-center gap-2 space-y-0 border-b py-5">
         <div className="grid flex-1 gap-2 text-left">
           <div className="skeleton h-8 w-1/3 rounded" />
           <div className="skeleton h-4 w-1/5 rounded" />
@@ -42,6 +42,53 @@ const SkeletonAnalytics = () => {
   );
 };
 
+// Skeleton Loader for Bar Chart Analytics (DoctorsPatientsChart)
+const SkeletonBarChartAnalytics = () => {
+  return (
+    <Card className="shadow-lg">
+      <CardHeader className="flex flex-col lg:flex-row lg:items-center gap-2 space-y-0 border-b py-5">
+        <div className="grid flex-1 gap-2 text-left">
+          <div className="skeleton h-8 w-1/3 rounded" />
+          <div className="skeleton h-4 w-1/5 rounded" />
+        </div>
+      </CardHeader>
+      <CardContent className="px-4 pt-6 sm:px-8 sm:pt-8">
+        <div className="relative h-[350px] w-full">
+          {/* Chart Area */}
+          <div className="h-[300px] w-full flex flex-col lg:flex-row items-start gap-2">
+            {/* Y-Axis Placeholder (Doctor Names) */}
+            <div className="flex flex-col justify-between h-[300px] w-full lg:w-1/4">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="skeleton h-4 w-3/4 rounded" />
+              ))}
+            </div>
+            {/* Bars Placeholder */}
+            <div className="flex-1 h-[300px] w-full lg:w-3/4 flex flex-col justify-between">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="skeleton h-8 w-1/2 rounded"
+                  style={{ width: `${Math.random() * 50 + 20}%` }}
+                />
+              ))}
+            </div>
+          </div>
+          {/* X-Axis Placeholder (Patient Counts) */}
+          <div className="flex justify-between mt-2">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="skeleton h-4 w-8 rounded" />
+            ))}
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex-col items-start gap-2 pb-4 text-sm">
+        <div className="skeleton h-4 w-1/2 rounded" />
+        <div className="skeleton h-4 w-1/3 rounded" />
+      </CardFooter>
+    </Card>
+  );
+};
+
 // Skeleton Loader for the Entire Overview Page
 const SkeletonOverview = () => {
   return (
@@ -65,16 +112,23 @@ const SkeletonOverview = () => {
         ))}
       </div>
 
-      {/* Charts & Analytics */}
-      <div className="my-6">
+     <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-5">
+       {/* Charts & Analytics (Area Chart) */}
+       <div className="my-6 lg:w-1/2 h-full">
         <SkeletonAnalytics />
       </div>
+
+      {/* Bar Chart Analytics (Doctors and Patients) */}
+      <div className="my-6 lg:w-1/2 h-full">
+        <SkeletonBarChartAnalytics />
+      </div>
+     </div>
 
       {/* Recent Activities */}
       <div className="bg-white/80 shadow-md p-6 border-b border-gray-300 rounded-lg">
         <div className="skeleton h-6 w-1/4 rounded mb-4" />
         <ul className="space-y-3">
-          {Array.from({ length: 3 }).map((_, index) => (
+          {Array.from({ length: 4 }).map((_, index) => (
             <li key={index} className="border-b pb-2">
               <div className="skeleton h-4 w-2/5 rounded" />
             </li>
