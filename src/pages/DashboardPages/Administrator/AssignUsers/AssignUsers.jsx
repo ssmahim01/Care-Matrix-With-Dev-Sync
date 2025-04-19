@@ -10,10 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import AddMedicine from "@/components/Modal/AddMedicine";
-import { medicine_categories } from "@/lib/pharmacy";
+import { useState } from "react";
+import AssignUserForm from "./AssignUserForm";
 
 const AssignUsers = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
   return (
     <div className="px-7">
       <DashboardPagesHeader
@@ -23,7 +24,6 @@ const AssignUsers = () => {
         }
         icon={UserPlus}
       />
-      {/* Assign User */}
       {/* Searchbar & Select & Add button */}
       <div className="flex justify-between gap-4 items-center flex-wrap">
         {/* Searchbar */}
@@ -42,14 +42,15 @@ const AssignUsers = () => {
         </div>
         <div className="flex items-center flex-wrap gap-4">
           {/* Select Role */}
-          <div className="flex flex-1 w-full">
+          <div className="flex flex-1 w-fit">
             <Select
-            // value={selectedCategory} onValueChange={setCategory}
+              className="w-fit"
+              // value={selectedCategory} onValueChange={setCategory}
             >
-              <SelectTrigger className="w-[100%] md:w-[150px] lg:w-[200px]">
+              <SelectTrigger>
                 <SelectValue placeholder="Select Role" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="w-fit">
                 {/* <SelectItem>{"Administrator"}</SelectItem> */}
                 {/* <SelectItem>{"Pharmacist"}</SelectItem> */}
                 {/* <SelectItem>{"Receptionist"}</SelectItem> */}
@@ -57,16 +58,17 @@ const AssignUsers = () => {
             </Select>
           </div>
           {/* Sort By */}
-          <div className="flex flex-1 w-full">
+          <div className="flex flex-1 w-fit">
             <Select
-            // value={sort} onValueChange={setSort}
+              className="w-fit"
+              // value={sort} onValueChange={setSort}
             >
-              <SelectTrigger className="w-[100%] md:w-[150px] lg:w-[200px]">
+              <SelectTrigger>
                 <SelectValue placeholder="Sort By">
                   {/* {sort ? sortOptions[sort] : "Sort By"} */}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="w-fit">
                 {/* {Object.entries(sortOptions).map(([value, label]) => (
                   <SelectItem key={value} value={value}>
                     {label}
@@ -78,9 +80,24 @@ const AssignUsers = () => {
           {/* Reset & Add Button */}
           <div className="flex items-center flex-wrap gap-2">
             <Button>Reset</Button>
-            <Button>Assign New User</Button>
+            <Button
+              onClick={() => setIsFormOpen(!isFormOpen)}
+              className={"cursor-pointer"}
+            >
+              Assign New User
+            </Button>
+            <Button
+              onClick={() => setIsFormOpen(!isFormOpen)}
+              className={"cursor-pointer"}
+            >
+              Assign Doctor
+            </Button>
           </div>
         </div>
+      </div>
+      {/* Assign User Form */}
+      <div className={`${isFormOpen ? "visible" : "hidden"} mt-4`}>
+        <AssignUserForm />
       </div>
       {/* User Table */}
       <AssignUsersTable />

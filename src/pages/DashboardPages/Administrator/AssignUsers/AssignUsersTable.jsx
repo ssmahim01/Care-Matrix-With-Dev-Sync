@@ -51,7 +51,7 @@ const AssignUsersTable = () => {
           //       </TableRow>
           //     ))
           //   :
-          [0, 1, 2, 3, 4, 5, 6, 7, 8].map((_, i) => (
+          [0, 1, 2, 3, 4].map((_, i) => (
             <TableRow key={i}>
               <TableCell>
                 <div className="flex items-center gap-3">
@@ -65,10 +65,10 @@ const AssignUsersTable = () => {
                   <span>{user?.displayName}</span>
                 </div>
               </TableCell>
-              <TableCell>{user?.email}</TableCell>
+              <TableCell className={"max-w-[150px] truncate"}>{user?.email}</TableCell>
               <TableCell>Administrator</TableCell>
               <TableCell>0199878284724</TableCell>
-              <TableCell>{user?.uid}</TableCell>
+              <TableCell className={"max-w-[100px] truncate"}>{user?.uid}</TableCell>
               <TableCell>4/19/2025</TableCell>
               <TableCell>4/19/2025</TableCell>
               <TableCell>
