@@ -94,7 +94,7 @@ export function StaffManagement() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
           <section className="shadow-md border px-4 py-2 rounded-2xl">
             <div className="flex gap-2 items-center">
-              <span className="font-medium">All Staff:</span>
+              <span className="font-medium">Requested Staff:</span>
               <span className="text-sm">{staff?.length || 0}</span>
             </div>
           </section>
