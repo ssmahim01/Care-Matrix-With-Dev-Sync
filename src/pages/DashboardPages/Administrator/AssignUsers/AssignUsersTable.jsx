@@ -1,26 +1,26 @@
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Eye, MoreVertical, Trash } from "lucide-react";
 
 const AssignUsersTable = () => {
-  const users = useAuthUser();
+  const user = useAuthUser();
   return (
-    <Table>
+    <Table className={"mt-6"}>
       <TableCaption>A List Of All Assigned Users</TableCaption>
       <TableHeader>
         <TableRow className={"bg-base-200 hover:bg-base-200"}>
@@ -51,20 +51,24 @@ const AssignUsersTable = () => {
           //       </TableRow>
           //     ))
           //   :
-          users.map((user) => (
-            <TableRow key={user._id}>
-              <TableCell className="flex items-center gap-3">
-                <Avatar>
-                  <AvatarImage
-                    src={user?.imageURL}
-                    alt="user Image"
-                    className="min-w-16 rounded-full h-16 object-cover"
-                  />
-                </Avatar>
-                <span>{user?.displayName}</span>
+          [0, 1, 2, 3, 4, 5, 6, 7, 8].map((_, i) => (
+            <TableRow key={i}>
+              <TableCell>
+                <div className="flex items-center gap-3">
+                  <Avatar>
+                    <AvatarImage
+                      src={user?.photoURL}
+                      alt="user Image"
+                      className="min-w-10 rounded-full h-10 object-cover"
+                    />
+                  </Avatar>
+                  <span>{user?.displayName}</span>
+                </div>
               </TableCell>
               <TableCell>{user?.email}</TableCell>
+              <TableCell>Administrator</TableCell>
               <TableCell>0199878284724</TableCell>
+              <TableCell>{user?.uid}</TableCell>
               <TableCell>4/19/2025</TableCell>
               <TableCell>4/19/2025</TableCell>
               <TableCell>
