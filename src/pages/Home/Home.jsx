@@ -12,15 +12,29 @@ import PatientReviews from "./Patient_Reviews/PatientReviews";
 import WhyChooseUs from "./WhyChooseUs";
 import Chat from "@/components/Home/Chat";
 import EidGreetingSection from "./EidGreetingSection";
+import { Profiler } from "react";
+
+function onRenderCallback(
+  id,
+  phase,
+  actualDuration,
+  baseDuration,
+  startTime,
+  commitTime
+) {
+  // console.log(`${id} (${phase}): ${actualDuration.toFixed(2)}ms`);
+}
 
 const Home = () => {
   return (
     <section className="w-full space-y-6">
       {/* Hero Section */}
       <div className="lg:pt-12 md:pt-8 pt-2 pb-8">
+        {/* <Profiler id="Hero" onRender={onRenderCallback}> */}
         <Hero />
+        {/* </Profiler> */}
       </div>
-      
+
       {/* Eid Greeting */}
       <div className="hidden pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <EidGreetingSection />
@@ -53,7 +67,9 @@ const Home = () => {
 
       {/* Our Departments */}
       <div className="lg:-mb-3 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
-        <OurDepartments />
+        {/* <Profiler id="Department" onRender={onRenderCallback}> */}
+          <OurDepartments />
+        {/* </Profiler> */}
       </div>
 
       {/* Our Medical Experts */}
