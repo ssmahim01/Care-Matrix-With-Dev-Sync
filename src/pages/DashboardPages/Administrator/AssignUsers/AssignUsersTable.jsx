@@ -4,6 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import {
   Table,
   TableBody,
@@ -13,10 +14,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Eye, MoreVertical, Trash } from "lucide-react";
 import { format } from "date-fns";
-import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -27,11 +28,11 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
       text: `This will permanently delete ${email} from Firebase and MongoDB.`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#000", // black
+      confirmButtonColor: "#000",
       confirmButtonText: "Yes, delete",
       cancelButtonText: "Cancel",
-      background: "#fff", // white background
-      color: "#000", // black text
+      background: "#fff",
+      color: "#000",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -62,6 +63,7 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
       }
     });
   };
+
   return (
     <Table className={"mt-6"}>
       <TableCaption>A List Of All Assigned Users</TableCaption>
