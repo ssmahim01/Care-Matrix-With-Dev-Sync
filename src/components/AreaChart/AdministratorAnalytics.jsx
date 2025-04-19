@@ -68,7 +68,7 @@ export function AdministratorAnalytics({ chartData }) {
 
   return (
     <Card>
-      <CardHeader className="space-y-0 py-3">
+      <CardHeader className="space-y-0 py-3 border-b">
         <div className="grid flex-1 gap-1 text-left">
           <CardTitle className="text-2xl font-bold text-gray-800">
             Patient Growth & Earnings
@@ -81,13 +81,13 @@ export function AdministratorAnalytics({ chartData }) {
       </CardHeader>
       <CardContent className="px-4 pt-6 sm:px-8 sm:pt-8">
         {filteredData.length === 0 ? (
-          <div className="flex justify-center items-center h-[300px]">
+          <div className="flex justify-center items-center h-[320px]">
             <p className="text-gray-500 text-lg">
               No data available for the selected time range.
             </p>
           </div>
         ) : (
-          <ChartContainer className="aspect-auto w-full h-[300px]">
+          <ChartContainer className="aspect-auto w-full h-[320px]">
             <AreaChart data={filteredData}>
               <defs>
                 <linearGradient id="fillEarnings" x1="0" y1="0" x2="0" y2="1">

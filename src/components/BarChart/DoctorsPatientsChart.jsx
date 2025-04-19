@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 import {
@@ -43,7 +42,7 @@ export default function DoctorsPatientsChart({counts}) {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={"border-b"}>
         <CardTitle>Doctors and Patients</CardTitle>
         <CardDescription>Patient Distribution by Doctor</CardDescription>
       </CardHeader>

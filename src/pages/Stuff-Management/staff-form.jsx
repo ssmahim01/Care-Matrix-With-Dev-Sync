@@ -19,11 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { imgUpload } from "@/lib/imgUpload";
 import axios from "axios";
@@ -36,10 +31,10 @@ const staffFormSchema = z.object({
   staffId: z.string().min(2, {
     message: "Staff ID is required",
   }),
-  role: z.string({
+  requestedRole: z.string({
     required_error: "Please select a role",
   }),
-  phoneNumber: z.string().optional(),
+  contactNumber: z.string().optional(),
   email: z.string().email({
     message: "Please enter a valid email address",
   }),
@@ -59,8 +54,8 @@ export function StaffForm({ staffData, onSuccess }) {
     defaultValues: {
       name: staffData?.userName || "",
       staffId: staffData?._id?.slice(0, 6) || "",
-      role: staffData?.requestedRole || "",
-      phoneNumber: staffData?.contactNumber || "",
+      requestedRole: staffData?.requestedRole || "",
+      contactNumber: staffData?.contactNumber || "",
       email: staffData?.userEmail || "",
       photo: staffData?.userPhoto || "",
     },
@@ -85,14 +80,15 @@ export function StaffForm({ staffData, onSuccess }) {
       if (profileImage) {
         formData.append("profileImage", profileImage);
       }
-      // console.log(data);
+      console.log(data)
 
-      await axios.put(
+      const res = await axios.put(
         `${
           import.meta.env.VITE_API_URL
         }/user-requests/update-profile/${staffData.userEmail}`,
-        { data, profileImage }
+        { phoneNumber: data.contactNumber, userName: data.name , profileImage, requestedRole: data.requestedRole }
       );
+      console.log(res.data)
       toast.success("Staff member updated successfully");
 
       onSuccess();
@@ -191,7 +187,7 @@ export function StaffForm({ staffData, onSuccess }) {
           <div className="space-y-4">
             <FormField
               control={form.control}
-              name="role"
+              name="requestedRole"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Role</FormLabel>
@@ -205,9 +201,6 @@ export function StaffForm({ staffData, onSuccess }) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Doctor">
-                        Doctor
-                      </SelectItem>
                       <SelectItem value="receptionist">
                         Receptionist
                       </SelectItem>
@@ -229,7 +222,7 @@ export function StaffForm({ staffData, onSuccess }) {
 
             <FormField
               control={form.control}
-              name="phoneNumber"
+              name="contactNumber"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Contact Number</FormLabel>

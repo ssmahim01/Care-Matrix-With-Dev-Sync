@@ -46,14 +46,14 @@ const SkeletonAnalytics = () => {
 const SkeletonBarChartAnalytics = () => {
   return (
     <Card className="shadow-lg">
-      <CardHeader className="flex flex-col lg:flex-row lg:items-center gap-2 space-y-0 border-b py-5">
+      <CardHeader className="flex flex-col lg:flex-row lg:items-center gap-2 space-y-0 border-b py-2">
         <div className="grid flex-1 gap-2 text-left">
-          <div className="skeleton h-8 w-1/3 rounded" />
-          <div className="skeleton h-4 w-1/5 rounded" />
+          <div className="skeleton h-8 w-1/2 rounded" />
+          <div className="skeleton h-4 w-1/4 rounded" />
         </div>
       </CardHeader>
-      <CardContent className="px-4 pt-6 sm:px-8 sm:pt-8">
-        <div className="relative h-[350px] w-full">
+      <CardContent className="px-4 sm:px-8 py-3">
+        <div className="relative h-[260px] w-full">
           {/* Chart Area */}
           <div className="h-[300px] w-full flex flex-col lg:flex-row items-start gap-2">
             {/* Y-Axis Placeholder (Doctor Names) */}
@@ -74,14 +74,14 @@ const SkeletonBarChartAnalytics = () => {
             </div>
           </div>
           {/* X-Axis Placeholder (Patient Counts) */}
-          <div className="flex justify-between mt-2">
+          {/* <div className="flex justify-between mt-2">
             {Array.from({ length: 5 }).map((_, index) => (
               <div key={index} className="skeleton h-4 w-8 rounded" />
             ))}
-          </div>
+          </div> */}
         </div>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 pb-4 text-sm">
+      <CardFooter className="flex-col items-start gap-2 pt-8 pb-4 text-sm">
         <div className="skeleton h-4 w-1/2 rounded" />
         <div className="skeleton h-4 w-1/3 rounded" />
       </CardFooter>

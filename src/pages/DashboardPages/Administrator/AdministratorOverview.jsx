@@ -124,7 +124,15 @@ const AdministratorOverview = () => {
   const summary = adminStats
     ? {
         totalDoctors: totals?.totalDoctors ?? 0,
-        totalPatients: totals?.totalPatients ?? 0,
+        totalPatients:
+        (adminStats.appointmentsPerDate || []).reduce(
+          (sum, { count = 0 }) => sum + count,
+          0
+        ) +
+        (adminStats.bedBookingsPerAdmissionDate || []).reduce(
+          (sum, { count = 0 }) => sum + count,
+          0
+        ),
         appointmentsToday: (adminStats.appointmentsPerDate || [])
           .filter(({ date }) => date === new Date().toISOString().split("T")[0])
           .reduce((sum, { count = 0 }) => sum + count, 0),

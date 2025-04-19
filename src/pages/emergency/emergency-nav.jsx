@@ -8,10 +8,13 @@ import {
 import { Link, useLocation } from 'react-router'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { SidebarGroup, SidebarMenu, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
+import { Collapsible } from '@/components/ui/collapsible'
 
 
 const EmergencyNav = () => {
     const {pathname} = useLocation()
+    const { state } = useSidebar();
 
     const routes = [
         {
@@ -43,27 +46,29 @@ const EmergencyNav = () => {
 
   return (
     <div
-      className={cn(
-        "fixed inset-y-0 left-0 z-20 flex w-64 flex-col border-r bg-muted/40 md:relative -translate-x-full",
-        "transition-transform duration-200 ease-in-out md:translate-x-0",
-      )}
     >
       <ScrollArea className="flex-1 py-4">
-        <nav className="grid gap-1 px-2">
+        <SidebarGroup className="grid gap-1 px-2">
+        <SidebarMenu>
+        <Collapsible asChild className="group/collapsible">
+          <SidebarMenuItem>
           {routes.map((route, i) => (
             <Link
               key={i}
               to={route.href}
               className={cn(
-                "flex items-center gap-3  rounded-md px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground",
+                `flex items-center gap-3  rounded-md ${state === "collapsed" ? "py-3 px-[5px]" : "px-3 py-2"}  text-muted-foreground hover:bg-muted hover:text-foreground `,
                 route.active && "bg-red-100 hover:bg-red-200 hover:text-red-600 text-red-600 font-medium",
               )}
             >
               <route.icon className="h-5 w-5" />
-              {route.label}
+              <h2 className={`${state === "collapsed" && "md:hidden"}`}>{route.label}{" "}</h2>
             </Link>
           ))}
-        </nav>
+          </SidebarMenuItem>
+        </Collapsible>
+      </SidebarMenu>
+        </SidebarGroup>
       </ScrollArea>
     </div>
   )
