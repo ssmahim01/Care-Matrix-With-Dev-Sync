@@ -1,11 +1,8 @@
+import IsError from "@/authentication/IsError";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -13,10 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { imgUpload } from "@/lib/imgUpload";
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
-import IsError from "@/authentication/IsError";
-import { Button } from "@/components/ui/button";
 import { FaFileUpload } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
@@ -30,6 +25,14 @@ const AssignUserForm = () => {
   const [loading, setLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(880);
   const [strongPassword, setStrongPassword] = useState("");
+  const [signal, setSignal] = useState({
+    lowercase: false,
+    uppercase: false,
+    number: false,
+    symbol: false,
+    length: false,
+    strong: false,
+  });
 
   // Image Upload Functionality
   const handleUploadImage = () => {
@@ -45,10 +48,128 @@ const AssignUserForm = () => {
     }
   };
 
+  // Bangladeshi phone number validation
+  const validateBangladeshiNumber = (number) => {
+    const cleanNumber = number.replace(/[^\d+]/g, "");
+    const bdNumberRegex = /^\8801[3-9][0-9]{8}$/;
+    return bdNumberRegex.test(cleanNumber);
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setPhoneNumber(value);
+    if (value && !validateBangladeshiNumber(value)) {
+      setIsError(
+        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 1XNN-NNNNNN)"
+      );
+    } else {
+      setIsError("");
+    }
+  };
+
+  // Password Validation Functionality
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    setStrongPassword(password);
+
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    setSignal({
+      lowercase: hasLowerCase,
+      uppercase: hasUpperCase,
+      number: hasNumber,
+      symbol: hasSymbol,
+      length: password.length >= 8,
+      strong:
+        hasUpperCase &&
+        hasLowerCase &&
+        hasNumber &&
+        hasSymbol &&
+        password.length >= 8,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    // Show error is image not selected
+    if (!image) {
+      setLoading(false);
+      setIsError("Please Select An Image For Your Profile!");
+      return;
+    }
+
+    // Upload Image To imgBB
+    const imageUrl = await imgUpload(image);
+    // Show error if image upload failed
+    if (!imageUrl) {
+      setLoading(false);
+      setIsError("Image Upload Failed! Try Again");
+      return;
+    }
+
+    // Password Validation
+    if (!signal.lowercase) {
+      setLoading(false);
+      setIsError("Password must contain at least one lowercase letter.");
+      return;
+    }
+
+    if (!signal.uppercase) {
+      setLoading(false);
+      setIsError("Password must contain at least one uppercase letter.");
+      return;
+    }
+
+    if (!signal.number) {
+      setLoading(false);
+      setIsError("Password must contain at least one number.");
+      return;
+    }
+
+    if (!signal.symbol) {
+      setLoading(false);
+      setIsError("Password must contain at least one special character.");
+      return;
+    }
+
+    if (!signal.length) {
+      setLoading(false);
+      setIsError("Password must be at least 8 characters long.");
+      return;
+    }
+
+    if (!signal.strong) {
+      setLoading(false);
+      setIsError("Password strength is too weak.");
+      return;
+    }
+
+    // Phone Number Validation
+    if (!validateBangladeshiNumber(phoneNumber)) {
+      setLoading(false);
+      setIsError(
+        "Please Enter A Valid Bangladeshi Phone Number \n (e.g., +880 1XNN-NNNNNN)"
+      );
+      return;
+    }
+    const user = {
+      email,
+      role,
+      name,
+      image: imageUrl,
+      password: strongPassword,
+      phoneNumber,
+    };
+    console.log(user);
+  };
   return (
     <Card className="border shadow-none border-[#e5e7eb] w-full py-6 rounded-lg">
       <CardContent className="px-4">
-        <form className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-2">
           {/* Name, Email, Role */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Name */}
@@ -65,7 +186,13 @@ const AssignUserForm = () => {
             {/* Email */}
             <div className="w-full space-y-2">
               <Label>Email</Label>
-              <Input placeholder={"Enter User Email"} />
+              <Input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={"Enter User Email"}
+              />
             </div>
             {/* Select Role */}
             <div className="w-full space-y-2">
@@ -87,7 +214,15 @@ const AssignUserForm = () => {
             {/* PhoneNumber */}
             <div className="w-full space-y-2">
               <Label>Phone Number</Label>
-              <Input placeholder={"Enter Phone Number"} />
+              <Input
+                type="number"
+                required
+                value={phoneNumber}
+                onChange={handlePhoneChange}
+                pattern="\8801[3-9][0-9]{8}"
+                maxLength={13}
+                placeholder={"Enter Phone Number"}
+              />
             </div>
             {/* Photo */}
             <div className="w-full space-y-2">
@@ -146,12 +281,22 @@ const AssignUserForm = () => {
             {/* Password */}
             <div className="w-full space-y-2">
               <Label>Password</Label>
-              <Input placeholder={"Enter Strong Password"} />
+              <Input
+                type="text"
+                value={strongPassword}
+                onChange={handlePasswordChange}
+                placeholder={"Enter Strong Password"}
+              />
             </div>
             {/* Confirmed Password */}
             <div className="w-full space-y-2">
               <Label>Confirmed Password</Label>
-              <Input placeholder={"Enter Confirmed Password"} />
+              <Input
+                type="text"
+                value={strongPassword}
+                onChange={handlePasswordChange}
+                placeholder={"Enter Confirmed Password"}
+              />
             </div>
           </div>
           {/* Error */}
@@ -160,17 +305,11 @@ const AssignUserForm = () => {
           </div>
           {/* Add User Button */}
           <Button
-            onClick={(e) => {
-              e.preventDefault();
-              setIsError(
-                isError
-                  ? ""
-                  : "Add User Features Not Available Now! Coming Soon..."
-              );
-            }}
+            type="submit"
+            disabled={loading}
             className={"cursor-pointer px-8"}
           >
-            Assign User
+            {loading ? "Assigning User..." : "Assign User"}
           </Button>
         </form>
       </CardContent>
