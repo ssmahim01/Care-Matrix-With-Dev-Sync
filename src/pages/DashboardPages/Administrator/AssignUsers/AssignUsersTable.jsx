@@ -15,6 +15,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import { Badge } from "@/components/ui/badge";
+import { ShieldCheck, Capsule, Phone } from "lucide-react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Eye, MoreVertical, Trash } from "lucide-react";
 import { format } from "date-fns";
@@ -108,13 +117,60 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                     <span>{user?.name}</span>
                   </div>
                 </TableCell>
-                <TableCell className={"max-w-[150px] truncate"}>
-                  {user?.email}
+                <TableCell className="max-w-[150px] truncate">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild className="cursor-pointer">
+                        <span>{user?.email}</span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{user?.email}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </TableCell>
-                <TableCell>{user?.role}</TableCell>
+                <TableCell>
+                  {user?.role === "administrator" ? (
+                    <Badge
+                      variant="secondary"
+                      className="flex items-center gap-1"
+                    >
+                      <ShieldCheck className="h-4 w-4 text-blue-600" />
+                      Admin
+                    </Badge>
+                  ) : user?.role === "pharmacist" ? (
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-1"
+                    >
+                      <Capsule className="h-4 w-4 text-green-600" />
+                      Pharmacist
+                    </Badge>
+                  ) : user?.role === "receptionist" ? (
+                    <Badge
+                      variant="destructive"
+                      className="flex items-center gap-1"
+                    >
+                      <Phone className="h-4 w-4 text-red-600" />
+                      Receptionist
+                    </Badge>
+                  ) : (
+                    <Badge>{user?.role}</Badge>
+                  )}
+                </TableCell>
+
                 <TableCell>{user?.phoneNumber}</TableCell>
-                <TableCell className={"max-w-[100px] truncate"}>
-                  {user?.uid}
+                <TableCell className="max-w-[100px] truncate">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild className="cursor-pointer">
+                        <span>{user?.uid}</span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{user?.uid}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </TableCell>
                 <TableCell>
                   {user?.createdAt
