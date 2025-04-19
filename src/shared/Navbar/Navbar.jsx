@@ -326,18 +326,24 @@ const Navbar = () => {
 
               <div className="md:flex items-center gap-4 hidden">
                 <Link to="/emergency">
-                  <Button className=" bg-red-100 hover:bg-red-200 tracking-tight text-red-500 cursor-pointer">
+                  <Button
+                    className={`${
+                      user && role === "patient" ? "" : "mr-4"
+                    } bg-red-100 hover:bg-red-200 tracking-tight text-red-500 cursor-pointer`}
+                  >
                     <span>Emergency</span>
                     <Siren className="text-base" />
                   </Button>{" "}
                 </Link>{" "}
-                {user && (
-                  <button className="mr-4 relative text-blue-500 flex items-center space-x-2">
-                    <FaShoppingCart size={30} />
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      {cart?.length}
-                    </span>
-                  </button>
+                {user && role === "patient" && (
+                  <Link to="/dashboard/patient/manage-cart">
+                    <button className="cursor-pointer mr-4 relative text-blue-500 flex items-center space-x-2">
+                      <FaShoppingCart size={30} />
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {cart?.length}
+                      </span>
+                    </button>
+                  </Link>
                 )}
               </div>
 
