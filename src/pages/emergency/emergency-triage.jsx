@@ -57,7 +57,7 @@ export default function EmergencyTriage() {
   const { data: doctor = [] } = useQuery({
     queryKey: ["doctors"],
     queryFn: async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors`)
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors/all`)
       setDoctors(data)
       return data
     },

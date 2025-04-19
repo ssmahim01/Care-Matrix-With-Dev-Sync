@@ -11,6 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Link } from "react-router"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
+import { format } from "date-fns"
 
 export default function Emergency() {
   const [activeEmergencies, setActiveEmergencies] = useState([
@@ -153,7 +154,7 @@ export default function Emergency() {
         <div className="flex items-center gap-2">
           <Button variant="outline">
             <Clock className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Current Time:</span> 11:30 AM
+            <span className="hidden sm:inline">Current Time:</span> {format(new Date(), "h:mm a")}
           </Button>
           <Button variant="destructive">
             <AlertCircle className="mr-2 h-4 w-4" />

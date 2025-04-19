@@ -43,10 +43,6 @@ const EmergencyNav = () => {
 
   return (
     <div
-      className={cn(
-        "fixed inset-y-0 left-0 z-20 flex w-64 flex-col border-r bg-muted/40 md:relative -translate-x-full",
-        "transition-transform duration-200 ease-in-out md:translate-x-0",
-      )}
     >
       <ScrollArea className="flex-1 py-4">
         <nav className="grid gap-1 px-2">
