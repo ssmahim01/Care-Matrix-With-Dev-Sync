@@ -143,7 +143,7 @@ const AssignUsers = () => {
       </div>
       {/* Assign User Form */}
       <div className={`${isFormOpen ? "visible" : "hidden"} mt-4`}>
-        <AssignUserForm refetch={refetch} />
+        <AssignUserForm refetch={refetch} setIsFormOpen={setIsFormOpen} />
       </div>
       {/* User Table */}
       <AssignUsersTable users={users} isLoading={isLoading} refetch={refetch} />

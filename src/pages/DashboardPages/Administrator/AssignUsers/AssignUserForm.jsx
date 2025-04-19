@@ -18,7 +18,7 @@ import { FaFileUpload } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 
-const AssignUserForm = ({ refetch }) => {
+const AssignUserForm = ({ refetch, setIsFormOpen }) => {
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
@@ -295,6 +295,7 @@ const AssignUserForm = ({ refetch }) => {
       );
       // Show Confirm Modal
       if (data?.mongoDB?.insertedId) {
+        setIsFormOpen(false);
         refetch();
         setIsError("");
         setRole("");
