@@ -77,6 +77,7 @@ const HeroSearch = () => {
       ) : (
         <Button
           size="sm"
+          onClick={() => setKeyPressOpen(true)}
           className="absolute top-[4.7px] right-1.5 bg-blue-600 hover:bg-blue-700 duration-500 cursor-pointer"
         >
           Book Appointment

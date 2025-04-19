@@ -31,6 +31,7 @@ import {
   Sparkles,
   Stethoscope,
   TicketSlash,
+  UserPlus,
   Users,
 } from "lucide-react";
 import { FaTruck } from "react-icons/fa";
@@ -92,7 +93,15 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <Users className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Manage Staffs{" "}
+                    Manage Users{" "}
+                  </span>
+                </h3>
+              </NavLink>
+              <NavLink to="/dashboard/administrator/assign-users">
+                <h3 className="flex gap-2 items-center">
+                  <UserPlus className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Assign New Users{" "}
                   </span>
                 </h3>
               </NavLink>

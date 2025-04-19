@@ -64,6 +64,7 @@ import AllDoctors from "@/pages/DashboardPages/Administrator/AllDoctors";
 import Departments from "@/pages/Departments/Departments";
 import RevenueInsights from "@/pages/DashboardPages/Administrator/RevenueInsights/RevenueInsights";
 import MyAppointmentDoctor from "@/pages/Doctors/MyAppointmentDoctor";
+import AssignUsers from "@/pages/DashboardPages/Administrator/AssignUsers/AssignUsers";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -218,6 +219,14 @@ const Router = () => {
           element={
             <AdminRoute>
               <RevenueInsights />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/administrator/assign-users"
+          element={
+            <AdminRoute>
+              <AssignUsers />
             </AdminRoute>
           }
         />
