@@ -12,7 +12,7 @@ export function StaffFilters({ staff, activeFilters, onFilterChange }) {
   // Extract unique roles from staff data
   useEffect(() => {
     if (staff && staff.length > 0) {
-      const roles = [...new Set(staff.map((member) => member.role))].filter(Boolean)
+      const roles = [...new Set(staff.map((member) => member.requestedRole))].filter(Boolean)
       setAvailableRoles(roles)
       setIsInitializing(false)
     }
