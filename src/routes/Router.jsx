@@ -62,6 +62,7 @@ import PharmacistRoute from "./PharmacistRoute";
 import ReceptionistRoute from "./ReceptionistRoute";
 import AllDoctors from "@/pages/DashboardPages/Administrator/AllDoctors";
 import Departments from "@/pages/Departments/Departments";
+import MyAppointmentDoctor from "@/pages/Doctors/MyAppointmentDoctor";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -256,6 +257,11 @@ const Router = () => {
         />
 
         {/* Doctors Routes */}
+        <Route path="/dashboard/my-appointments"
+        element={
+          <MyAppointmentDoctor />
+        }
+        />
 
         {/* Receptionist Routes */}
         <Route
