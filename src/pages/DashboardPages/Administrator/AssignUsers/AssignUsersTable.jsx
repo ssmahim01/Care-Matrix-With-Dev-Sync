@@ -14,10 +14,54 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { format } from "date-fns";
 import { Eye, MoreVertical, Trash } from "lucide-react";
+import { format } from "date-fns";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+import axios from "axios";
 
-const AssignUsersTable = ({ users, isLoading }) => {
+const AssignUsersTable = ({ users, isLoading, refetch }) => {
+  const handleUserDelete = (email) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `This will permanently delete ${email} from Firebase and MongoDB.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#000", // black
+      confirmButtonText: "Yes, delete",
+      cancelButtonText: "Cancel",
+      background: "#fff", // white background
+      color: "#000", // black text
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const { data } = await axios.delete(
+            `${import.meta.env.VITE_API_URL}/firebase/delete-user/${email}`
+          );
+          if (data?.result?.deletedCount) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: data.message || `${email} has been deleted successfully.`,
+              icon: "success",
+              confirmButtonColor: "#000",
+              background: "#fff",
+              color: "#000",
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            title: "Error!",
+            text: error?.response?.data?.message || "Something went wrong.",
+            icon: "error",
+            confirmButtonColor: "#000",
+            background: "#fff",
+            color: "#000",
+          });
+        }
+      }
+    });
+  };
   return (
     <Table className={"mt-6"}>
       <TableCaption>A List Of All Assigned Users</TableCaption>
@@ -41,7 +85,7 @@ const AssignUsersTable = ({ users, isLoading }) => {
         {isLoading
           ? Array.from({ length: 8 }).map((_, i) => (
               <TableRow key={i}>
-                {Array.from({ length: 13 }).map((_, j) => (
+                {Array.from({ length: 8 }).map((_, j) => (
                   <TableCell key={j}>
                     <div className="skeleton h-8 rounded w-full"></div>
                   </TableCell>
@@ -95,7 +139,10 @@ const AssignUsersTable = ({ users, isLoading }) => {
                       <DropdownMenuItem className={"cursor-pointer"}>
                         <Eye className="w-4 h-4 mr-2" /> User Profile
                       </DropdownMenuItem>
-                      <DropdownMenuItem className={"cursor-pointer"}>
+                      <DropdownMenuItem
+                        onClick={() => handleUserDelete(user?.email)}
+                        className={"cursor-pointer"}
+                      >
                         <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
                         User
                       </DropdownMenuItem>

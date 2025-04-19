@@ -46,6 +46,8 @@ const AssignUsers = () => {
     },
   });
 
+  if (error) return "Error While Fetching Data";
+
   return (
     <div className="px-7">
       <DashboardPagesHeader
@@ -142,7 +144,7 @@ const AssignUsers = () => {
         <AssignUserForm refetch={refetch} />
       </div>
       {/* User Table */}
-      <AssignUsersTable users={users} isLoading={isLoading} />
+      <AssignUsersTable users={users} isLoading={isLoading} refetch={refetch} />
     </div>
   );
 };
