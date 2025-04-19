@@ -1,6 +1,9 @@
-import SectionHeader from "@/shared/Section/SectionHeader";
-import UnderLineButton from "@/shared/Section/UnderLineButton";
+import React, { lazy } from "react";
 import { Link } from "react-router";
+
+// Lazy load the components
+const SectionHeader = lazy(() => import("@/shared/Section/SectionHeader"));
+const UnderLineButton = lazy(() => import("@/shared/Section/UnderLineButton"));
 
 const OurDepartments = () => {
   // Departments Data --->
