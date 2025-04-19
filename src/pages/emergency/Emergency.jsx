@@ -14,62 +14,10 @@ import axios from "axios"
 import { format } from "date-fns"
 
 export default function Emergency() {
-  const [activeEmergencies, setActiveEmergencies] = useState([
-    {
-      id: "EM-1234",
-      patient: "John Doe",
-      status: "Critical",
-      time: "10:30 AM",
-      location: "ER Room 3",
-      doctor: "Dr. Sarah Johnson",
-      type: "Cardiac Arrest",
-    },
-    {
-      id: "EM-1235",
-      patient: "Emily Clark",
-      status: "Severe",
-      time: "10:45 AM",
-      location: "ER Room 1",
-      doctor: "Dr. Michael Chen",
-      type: "Severe Trauma",
-    },
-    {
-      id: "EM-1236",
-      patient: "Robert Wilson",
-      status: "Moderate",
-      time: "11:00 AM",
-      location: "ER Room 4",
-      doctor: "Dr. Lisa Wong",
-      type: "Respiratory Distress",
-    },
-  ])
+ 
 
-  const [ambulances, setAmbulances] = useState([
-    {
-      id: "AMB-001",
-      status: "En Route",
-      patient: "Maria Garcia",
-      destination: "Main Hospital",
-      eta: "5 min",
-      dispatchTime: "11:20 AM",
-    },
-    {
-      id: "AMB-002",
-      status: "Dispatched",
-      patient: "James Brown",
-      destination: "Main Hospital",
-      eta: "12 min",
-      dispatchTime: "11:15 AM",
-    },
-    {
-      id: "AMB-003",
-      status: "Available",
-      patient: null,
-      destination: null,
-      eta: null,
-      dispatchTime: null,
-    },
-  ])
+
+
 
   const [alerts, setAlerts] = useState([
     {
@@ -108,11 +56,11 @@ export default function Emergency() {
     switch (status.toLowerCase()) {
       case "critical":
         return "bg-red-600 text-white"
-      case "severe":
+      case "urgent":
         return "bg-orange-500 text-white"
-      case "moderate":
-        return "bg-yellow-500 text-white"
       case "en route":
+        return "bg-purple-500 text-white"
+      case "non-urgent":
         return "bg-blue-500 text-white"
       case "dispatched":
         return "bg-purple-500 text-white"
@@ -136,6 +84,34 @@ export default function Emergency() {
     }
   }
 
+  const { data: ambulance = [] } = useQuery({
+    queryKey: ["ambulance"],
+    queryFn: async () => {
+      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/ambulance/all`)
+      setAmbulances(data)
+      return data
+    }
+  })
+  // {
+  //   id: "AMB-001",
+  //   status: "En Route",
+  //   patient: "Maria Garcia",
+  //   destination: "Main Hospital",
+  //   eta: "5 min",
+  //   dispatchTime: "11:20 AM",
+  // },
+  const [ambulances, setAmbulances] = useState(ambulance)
+
+  const { data: triage = [] } = useQuery({
+    queryKey: ["triage"],
+    queryFn: async () => {
+      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/triage/all-triage`)
+      setActiveEmergencies(data)
+      return data
+    }
+  })
+  const [activeEmergencies, setActiveEmergencies] = useState(triage)
+
   const { data = [] } = useQuery({
     queryKey: ["contacts"],
     queryFn: async () => {
@@ -156,10 +132,12 @@ export default function Emergency() {
             <Clock className="mr-2 h-4 w-4" />
             <span className="hidden sm:inline">Current Time:</span> {format(new Date(), "h:mm a")}
           </Button>
+          <Link to={`/emergency/triage`}>
           <Button variant="destructive">
             <AlertCircle className="mr-2 h-4 w-4" />
             Declare Emergency
           </Button>
+          </Link>
         </div>
       </div>
 
@@ -172,7 +150,7 @@ export default function Emergency() {
           <CardContent>
             <div className="text-2xl font-bold">{activeEmergencies.length}</div>
             <p className="text-xs text-muted-foreground">
-              {activeEmergencies.filter((e) => e.status === "Critical").length} critical
+              {activeEmergencies.filter((e) => e.priority === "critical").length} critical
             </p>
           </CardContent>
         </Card>
@@ -184,7 +162,7 @@ export default function Emergency() {
           <CardContent>
             <div className="text-2xl font-bold">{ambulances.length}</div>
             <p className="text-xs text-muted-foreground">
-              {ambulances.filter((a) => a.status === "Available").length} available
+              {ambulances.filter((a) => a.status === "available").length} available
             </p>
           </CardContent>
         </Card>
@@ -194,7 +172,7 @@ export default function Emergency() {
             <Users className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
+            <div className="text-2xl font-bold">{activeEmergencies.filter(waiting=> waiting.status === "waiting").length}</div>
             <p className="text-xs text-muted-foreground">Average wait: 25 minutes</p>
           </CardContent>
         </Card>
@@ -216,37 +194,38 @@ export default function Emergency() {
           <TabsTrigger value="ambulances">Ambulance Status</TabsTrigger>
           <TabsTrigger value="alerts">Emergency Alerts</TabsTrigger>
         </TabsList>
+
         <TabsContent value="emergencies" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {activeEmergencies.map((emergency) => (
-              <Card key={emergency.id} className="overflow-hidden">
-                <CardHeader className={cn("py-3", getStatusColor(emergency.status))}>
+              <Card key={emergency._id} className="overflow-hidden">
+                <CardHeader className={cn("py-3", getStatusColor(emergency.priority))}>
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-sm font-medium text-white">
-                      {emergency.id}: {emergency.patient}
+                      {emergency._id.slice(-6)}: {emergency.name}
                     </CardTitle>
                     <Badge variant="outline" className="bg-white/20 text-white">
-                      {emergency.status}
+                      {emergency.priority}
                     </Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="p-4">
                   <div className="grid gap-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-medium">Type:</span>
-                      <span>{emergency.type}</span>
+                      <span className="font-medium">Status:</span>
+                      <span className="capitalize">{emergency.status}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-medium">Location:</span>
-                      <span>{emergency.location}</span>
+                      <span className="font-medium">Complaint:</span>
+                      <span>{emergency.complaint }</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <span className="font-medium">Doctor:</span>
-                      <span>{emergency.doctor}</span>
+                      <span>{emergency.assignedDoctor || "N/A"}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <span className="font-medium">Time:</span>
-                      <span>{emergency.time}</span>
+                      <span>{format(emergency.arrivalTime, "h:m a, d E MMMM")}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -262,36 +241,37 @@ export default function Emergency() {
             </Button>
           </div>
         </TabsContent>
+
         <TabsContent value="ambulances" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {ambulances.map((ambulance) => (
-              <Card key={ambulance.id}>
-                <CardHeader className={cn("py-3", getStatusColor(ambulance.status))}>
+              <Card key={ambulance._id}>
+                <CardHeader className={cn("py-3 rounded-t-xl", getStatusColor(ambulance.status))}>
                   <div className="flex justify-between items-center">
-                    <CardTitle className="text-sm font-medium text-white">{ambulance.id}</CardTitle>
+                    <CardTitle className="text-sm font-medium text-white">{ambulance._id.slice(-6)}</CardTitle>
                     <Badge variant="outline" className="bg-white/20 text-white">
                       {ambulance.status}
                     </Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="p-4">
-                  {ambulance.patient ? (
+                  {ambulance.status !== "available" ? (
                     <div className="grid gap-2">
                       <div className="flex items-center justify-between text-sm">
                         <span className="font-medium">Patient:</span>
-                        <span>{ambulance.patient}</span>
+                        <span>{ambulance.patientDetails.patientName}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="font-medium">Destination:</span>
-                        <span>{ambulance.destination}</span>
+                        <span className="capitalize">{ambulance.patientDetails.destination}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="font-medium">ETA:</span>
-                        <span>{ambulance.eta}</span>
+                        <span>{ambulance.eta || "N/A"}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium">Dispatched:</span>
-                        <span>{ambulance.dispatchTime}</span>
+                        <span className="font-medium">Priority:</span>
+                        <span className="capitalize">{ambulance.patientDetails.priority}</span>
                       </div>
                     </div>
                   ) : (
@@ -300,30 +280,20 @@ export default function Emergency() {
                     </div>
                   )}
                 </CardContent>
-                <CardFooter className="border-t p-3 bg-muted/40">
-                  <Button
-                    variant={ambulance.status === "Available" ? "default" : "outline"}
-                    size="sm"
-                    className="w-full"
-                    asChild
-                  >
-                    <Link href="/emergency/ambulance-booking">
-                      {ambulance.status === "Available" ? "Book Ambulance" : "Track Ambulance"}
-                    </Link>
-                  </Button>
-                </CardFooter>
+
               </Card>
             ))}
           </div>
           <div className="flex justify-end">
             <Button variant="outline" asChild>
-              <Link href="/emergency/ambulance-booking">
-                Manage Ambulances
+              <Link to="/emergency/ambulance-booking">
+                To Ambulances
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
           </div>
         </TabsContent>
+
         <TabsContent value="alerts">
           <Card>
             <CardHeader>
