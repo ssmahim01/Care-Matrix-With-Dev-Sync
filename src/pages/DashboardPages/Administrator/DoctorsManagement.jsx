@@ -407,7 +407,7 @@ const DoctorsManagement = () => {
               <th className="p-4">Contact Number</th>
               <th className="p-4">Role</th>
               <th className="p-4">Department</th>
-              <th className="p-4">Request Date</th>
+              <th className="p-4">Request Moment</th>
               <th className="p-4">Shift</th>
               <th className="p-4">Status</th>
               <th className="p-4">Actions</th>
@@ -678,7 +678,7 @@ const DoctorsManagement = () => {
                         <FormItem>
                           <FormLabel className="flex items-center gap-2 text-gray-700 font-semibold">
                             <HandCoins className="w-5 h-5 text-blue-600" />
-                            Consultation Fee (৳)
+                            Consultation Fee ($)
                           </FormLabel>
                           <FormControl>
                             <Input
