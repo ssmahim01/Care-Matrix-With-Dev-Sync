@@ -81,7 +81,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const role = useRole();
 
-  const { data: person = {} } = useQuery({
+  const { data: person = {}, isLoading: personLoading } = useQuery({
     queryKey: ["person", user?.uid],
     queryFn: async () => {
       const response = await axios.get(
@@ -182,17 +182,18 @@ const Profile = () => {
       await updateProfile(auth.currentUser, { photoURL: imageUrl });
 
       // Update MongoDB via your API
-      const {data} = await axios.patch(
+      const { data } = await axios.patch(
         `${import.meta.env.VITE_API_URL}/users/update-user-photo/${
           user?.email
         }`,
         { photo: imageUrl }
       );
+
       // Show Success Toast
       if (data.data.modifiedCount) {
         dispatch(updateUserPhoto(imageUrl));
         toast.success("Profile Photo Updated!", {
-          duration: 2000, // 2 seconds
+          duration: 2000,
         });
       }
     } catch (error) {
@@ -233,7 +234,7 @@ const Profile = () => {
     }
   };
 
-  if (loading || roleLoading || phoneLoading) {
+  if (loading || roleLoading || phoneLoading || personLoading) {
     return <ProfileSkeleton />;
   }
 
@@ -256,20 +257,23 @@ const Profile = () => {
               <div className="flex flex-col items-center -mt-20">
                 <div className="relative group w-28 h-28 cursor-pointer">
                   <Avatar className="w-full h-full border-4 border-background shadow-lg">
-                    {profileImagePreview ? (
+                    {/* {profileImagePreview ? (
                       <AvatarImage
                         src={profileImagePreview}
                         alt="Profile preview"
                         className="object-cover"
                       />
-                    ) : (
-                      <AvatarImage
-                        src={user?.photoURL || "/placeholder.svg"}
-                        alt={user?.displayName}
-                        className="object-cover"
-                      />
-                    )}
-                    <AvatarFallback className="text-3xl bg-gradient-to-br from-blue-400 to-sky-600 text-white">
+                    ) : ( */}
+                    <AvatarImage
+                      src={
+                        user?.photoURL ||
+                        "https://i.ibb.co.com/XmpwWgv/doctor.jpg"
+                      }
+                      alt={user?.displayName}
+                      className="object-cover"
+                    />
+                    {/* )} */}
+                    <AvatarFallback className="text-3xl bg-gradient-to-br from-black-400 to-gray-900 text-white">
                       {user?.displayName?.charAt(0) || "U"}
                     </AvatarFallback>
                   </Avatar>
