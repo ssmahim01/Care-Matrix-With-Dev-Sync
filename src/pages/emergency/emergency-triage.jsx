@@ -38,9 +38,10 @@ import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { AnimatePresence, motion } from "framer-motion"
+import useRole from "@/hooks/useRole"
 
 export default function EmergencyTriage() {
-  const [searchQuery, setSearchQuery] = useState("")
+  const [role] = useRole()
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false)
   const [selectedPatient, setSelectedPatient] = useState(null)
@@ -57,7 +58,7 @@ export default function EmergencyTriage() {
   const { data: doctor = [] } = useQuery({
     queryKey: ["doctors"],
     queryFn: async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors`)
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors/all`)
       setDoctors(data)
       return data
     },
@@ -145,6 +146,7 @@ export default function EmergencyTriage() {
 
   const handleAssignPatient = async (e) => {
     e.preventDefault()
+
     const form = e.target;
     const assignedDoctor = form.assignedDoctor.value;
     const roomId = form.assignedRoom.value;
@@ -167,11 +169,13 @@ export default function EmergencyTriage() {
   }
 
   const openAssignDialog = (patient) => {
+    if(role !== "receptionist") return toast.error("Receptionist Only")
     setSelectedPatient(patient)
     setIsAssignDialogOpen(true)
   }
 
   const handleCompleteTreatment = async (patientId, roomId) => {
+    if(role !== "doctor") return toast.error("Doctor Only")
     toast.custom((t) => (
       <AnimatePresence>
         {t.visible && (
@@ -569,7 +573,7 @@ export default function EmergencyTriage() {
                             <p className="text-xs text-muted-foreground">{doctor.specialty}</p>
                           </div>
                         </div>
-                        <Badge variant={isAvailableToday(doctor.available_days) ? "outline" : "secondary"}>{isAvailableToday(doctor.available_days) ? "Available" : "Not Available"}</Badge>
+                        <Badge variant={isAvailableToday(doctor.available_days) ? "outline" : "secondary"}>{isAvailableToday(doctor.available_days) ? "Available" : "Not Available"}</Badge>  
                       </div>
                     ))}
                   </div>
@@ -658,8 +662,8 @@ export default function EmergencyTriage() {
                     </SelectTrigger>
                     <SelectContent>
                       {doctors.map((doctor) => (
-                        <SelectItem key={doctor._id} value={doctor.name} disabled={isAvailableToday(doctor.available_days)}>
-                          {doctor.name} {isAvailableToday(doctor.available_days) ? "(Not available)" : "(Available)"}
+                        <SelectItem key={doctor._id} value={doctor.name} disabled={isAvailableToday(doctor.available_days) ? false : true}>
+                          {doctor.name} {isAvailableToday(doctor.available_days) ? "(Available)" : "(Not available)"}
                         </SelectItem>
                       ))}
                     </SelectContent>

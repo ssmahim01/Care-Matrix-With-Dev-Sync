@@ -21,11 +21,10 @@ export function StaffManagement() {
   } = useQuery({
     queryKey: ["user-requests"],
     queryFn: async () => {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/user-requests`
-      );
-      setStaff(data);
-      return data;
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/user-requests`)
+        const newStaff = data.filter(dat=> dat.requestedRole !== "Doctor")
+        setStaff(newStaff)
+        return newStaff
     },
   });
 
@@ -46,7 +45,12 @@ export function StaffManagement() {
       return;
     }
 
-    let result = [...staff];
+    if (!staff || !Array.isArray(staff)) {
+      setFilteredStaff([]);
+      return;
+    }
+
+    let result = [...staff]
 
     // Apply role filters
     if (activeFilters.role.length > 0) {
@@ -68,11 +72,10 @@ export function StaffManagement() {
 
     try {
       const response = await axios.get(
-        `${
-          import.meta.env.VITE_API_URL
-        }/user-requests/search-users?name=${search}`
-      );
-      setStaff(response.data);
+        `${import.meta.env.VITE_API_URL}/user-requests/search?name=${search}`,
+      )
+      const newStaff = response.data.filter(dat=> dat.requestedRole !== "Doctor")
+      setStaff(newStaff)
     } catch (error) {
       console.error(
         "Error searching staff, falling back to client-side search:",
@@ -81,11 +84,11 @@ export function StaffManagement() {
       // Fallback to client-side filtering if the search endpoint fails
       const filtered = staff.filter(
         (member) =>
-          member.name.toLowerCase().includes(search) ||
-          member.email.toLowerCase().includes(search) ||
-          member.role.toLowerCase().includes(search)
-      );
-      setStaff(filtered);
+          member?.name.toLowerCase().includes(search) ||
+          member?.email.toLowerCase().includes(search) ||
+          member?.role.toLowerCase().includes(search),
+      )
+      setStaff(filtered)
     }
   };
 
@@ -97,14 +100,17 @@ export function StaffManagement() {
     <div className="space-y-6">
       <Tabs>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
+          <section className="shadow-md border px-4 py-2 rounded-2xl">
+            <div className="flex gap-2 items-center">
+              <span className="font-medium">Requested Staff:</span>
+              <span className="text-sm">{staff?.length || 0}</span>
+            </div>
+          </section>
+
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <div className="relative w-full sm:w-[300px]">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search staff..."
-                className="pl-8"
-                // onChange={handleSearch}
-              />
+              <Input placeholder="Search staff..." className="pl-8" onChange={handleSearch} />
             </div>
             <Button
               variant="outline"

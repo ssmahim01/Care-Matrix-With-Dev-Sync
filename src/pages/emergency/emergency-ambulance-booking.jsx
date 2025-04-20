@@ -1,5 +1,5 @@
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Ambulance, MapPin, User, Phone, AlertCircle, Clock, CheckCircle2, Hospital } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -22,10 +22,16 @@ import { useQuery } from "@tanstack/react-query"
 import { Delete } from "lucide-react"
 import { X } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
+import { format } from "date-fns"
+import { useAuthUser } from "@/redux/auth/authActions"
+import { Link, useNavigate } from "react-router"
+import { LockKeyhole } from "lucide-react"
 
 export default function AmbulanceBooking() {
 
   const [role] = useRole()
+  const user = useAuthUser()
+  const navigate = useNavigate()
 
   const [step, setStep] = useState(1)
   const [bookingComplete, setBookingComplete] = useState(false)
@@ -35,10 +41,12 @@ export default function AmbulanceBooking() {
     patientName: "",
     patientPhone: "",
     patientAddress: "",
+    patientEmail: user?.email,
     emergencyType: "",
     emergencyDetails: "",
     pickupLocation: "",
     destination: "",
+    ambulanceId: "",
     priority: "normal",
   })
 
@@ -53,38 +61,30 @@ export default function AmbulanceBooking() {
 
   const [ambulances, setAmbulances] = useState(data)
 
-  const [activeBookings, setActiveBookings] = useState([
-    {
-      id: "BOOK-006",
-      customerName: "Michael Johnson",
-      status: "Confirmed",
-      serviceType: "Consultation",
-      location: "123 Main St, City",
-      bookingTime: "2025-04-16 10:15 AM",
-      scheduledTime: "2025-04-16 11:00 AM",
-      progress: 75,
-    },
-    {
-      id: "BOOK-007",
-      customerName: "Sarah Williams",
-      status: "Pending",
-      serviceType: "Spa Session",
-      location: "456 Oak Ave, City",
-      bookingTime: "2025-04-16 10:30 AM",
-      scheduledTime: "2025-04-16 12:00 PM",
-      progress: 40,
-    },
-    {
-      id: "BOOK-008",
-      customerName: "David Lee",
-      status: "In Progress",
-      serviceType: "Taxi Ride",
-      location: "789 Pine Rd, City",
-      bookingTime: "2025-04-16 10:05 AM",
-      scheduledTime: "2025-04-16 10:45 AM",
-      progress: 50,
-    },
-  ]);
+
+  const [activeBookings, setActiveBookings] = useState([]);
+
+  useEffect(() => {
+    if (!user || !ambulances) {
+      setActiveBookings([]);
+      return;
+    }
+
+    let activeAmbulanceBookings = ambulances.filter(
+      (ambulance) => ambulance.status !== 'available'
+    );
+
+    if (role === 'patient') {
+      activeAmbulanceBookings = activeAmbulanceBookings.filter(
+        (ambulance) =>
+          ambulance.patientDetails?.patientEmail === user.email
+      );
+    }
+
+    setActiveBookings(activeAmbulanceBookings);
+
+  }, [user, role, ambulances]);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -96,9 +96,9 @@ export default function AmbulanceBooking() {
   }
 
   const handleNextStep = () => {
+    if (!user) return navigate("/login")
     if (step < 3) {
       setStep(step + 1)
-      window.scrollTo(0, 0)
     }
   }
 
@@ -109,20 +109,54 @@ export default function AmbulanceBooking() {
     }
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(e.target.value)
-    // In a real app, you would submit the form data to the server
-    setBookingComplete(true)
-    toast.success("Ambulance Booked Successfully", {
-      description: "Ambulance AMB-001 has been dispatched to your location.",
-    })
-  }
+  useEffect(() => {
+    if (user?.email) {
+      setFormData(prev => ({
+        ...prev,
+        patientEmail: user.email
+      }));
+    }
+  }, [user]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.ambulanceId) {
+      toast.error("Please select an ambulance to book");
+      return;
+    }
+
+    const submissionData = {
+      ...formData,
+      patientEmail: user?.email || formData.patientEmail
+    };
+    console.log(submissionData)
+    if (!submissionData.patientName || !submissionData.patientEmail || !submissionData.patientPhone || !submissionData.patientAddress) {
+      toast.error("Please fill in all required patient details");
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_URL}/ambulance/book/${submissionData.ambulanceId}`,
+        submissionData);
+
+      if (response.status === 200) {
+        setBookingComplete(true)
+        toast.success(response.data.message || "Ambulance Booked Successfully", {
+          description: `Ambulance ${submissionData.ambulanceId.slice(-6)} has been dispatched.`,
+        });
+      } else {
+        toast.error("Unexpected response from server");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case "available":
-        return "bg-green-500 text-white"
+        return "bg-green-700 text-white"
       case "en route":
         return "bg-blue-500 text-white"
       case "on call":
@@ -141,10 +175,12 @@ export default function AmbulanceBooking() {
     const status = form.status.value;
     const type = form.type.value;
     const location = form.location.value;
+    const eta = form.eta.value;
+    const phone = form.phone.value;
     const crew = parseInt(form.crew.value);
 
 
-    const ambulance = { name, status, type, location, crew };
+    const ambulance = { name, status, type, location, crew, eta, number: phone };
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/ambulance/add`, ambulance);
       if (res.data) return toast.success(res.data.message)
@@ -211,7 +247,7 @@ export default function AmbulanceBooking() {
         <div className="flex items-center gap-2">
           <Button variant="outline">
             <Clock className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Current Time:</span> 11:30 AM
+            <span className="hidden sm:inline">Current Time:</span> {format(new Date(), "h:mm a")}
           </Button>
           <Button variant="destructive" asChild>
             <a href="tel:999">
@@ -222,11 +258,16 @@ export default function AmbulanceBooking() {
         </div>
       </div>
 
-      <Tabs defaultValue="available">
+      <Tabs defaultValue={"available"} >
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="available">Available Ambulances</TabsTrigger>
           <TabsTrigger value="book">Book Ambulance</TabsTrigger>
-          <TabsTrigger value="active">Active Bookings</TabsTrigger>
+          {user
+            ?
+            <TabsTrigger value="active">{!user ? "My Bookings" : role === "patient" ? "My Bookings" : "Active Bookings"}</TabsTrigger>
+            :
+            <TabsTrigger value="login" >My Bookings</TabsTrigger>
+          }
         </TabsList>
 
         <TabsContent value="available" >
@@ -251,7 +292,7 @@ export default function AmbulanceBooking() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {ambulances.map((ambulance) => (
                   <Card key={ambulance._id} className=" relative group transition-all duration-300 ease-in-out">
-                    <CardHeader className={cn("py-3 rounded-t-xl", getStatusColor(ambulance.status))}>
+                    <CardHeader className={cn("py-3 rounded-t-xl ", getStatusColor(ambulance.status))}>
                       <div className="flex justify-between items-center">
                         <CardTitle className="text-sm font-medium text-white capitalize">{ambulance._id.slice(-6)}</CardTitle>
                         <Badge variant="outline" className="bg-white/20 text-white">
@@ -271,7 +312,11 @@ export default function AmbulanceBooking() {
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-medium">ETA:</span>
-                          <span>{ambulance.eta}</span>
+                          <span>{ambulance.eta || "N/A"}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">Phone:</span>
+                          <span>{ambulance.number || "N/A"}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-medium">Type:</span>
@@ -279,18 +324,18 @@ export default function AmbulanceBooking() {
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-medium">Crew:</span>
-                          <span>{ambulance.crew} personnel</span>
+                          <span>{ambulance.crew} person</span>
                         </div>
                       </div>
                     </CardContent>
                     <CardFooter className="border-t p-3 bg-muted/40">
                       <Button
-                        variant={ambulance.status === "available" ? "default" : "outline"}
+                        variant={"outline"}
                         size="sm"
                         className="w-full"
-                        disabled={ambulance.status !== "available"}
+                        disabled={true}
                       >
-                        {ambulance.status === "available" ? "Book Now" : "Not Available"}
+                        {ambulance.status === "available" ? "Available" : "Not Available"}
                       </Button>
                     </CardFooter>
                     <div className="group-hover:inline-block absolute hidden transition-all duration-300 -right-3 -top-3">
@@ -305,7 +350,7 @@ export default function AmbulanceBooking() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="book">
+        <TabsContent id="book" value="book">
           <Card>
             <CardHeader>
               <CardTitle>Request an Ambulance</CardTitle>
@@ -320,8 +365,8 @@ export default function AmbulanceBooking() {
                     <CheckCircle2 className="h-8 w-8 text-green-600" />
                   </div>
                   <h3 className="mb-2 text-xl font-bold">Ambulance Booked Successfully</h3>
-                  <p className="mb-4 text-muted-foreground">Ambulance AMB-001 has been dispatched to your location.</p>
-                  <PhoneNumber />
+                  <p className="mb-4 text-muted-foreground">Ambulance {ambulances.find(ambulance => ambulance._id === formData.ambulanceId)?.name} has been dispatched to your location.</p>
+                  <PhoneNumber phone={ambulances.find(ambulance => ambulance._id === formData.ambulanceId)} />
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
@@ -332,6 +377,7 @@ export default function AmbulanceBooking() {
                           patientName: "",
                           patientPhone: "",
                           patientAddress: "",
+                          patientEmail: "",
                           emergencyType: "",
                           emergencyDetails: "",
                           pickupLocation: "",
@@ -371,15 +417,21 @@ export default function AmbulanceBooking() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="patientPhone">Contact Number</Label>
-                          <Input
-                            id="patientPhone"
-                            name="patientPhone"
-                            placeholder="Enter contact number"
-                            value={formData.patientPhone}
-                            onChange={handleInputChange}
-                            required
-                          />
+                          <Label htmlFor="patientPhone" className="text-right">
+                            Contact Number
+                          </Label>
+                          <div className="col-span-3">
+                            <Input
+                              type="tel"
+                              id="patientPhone"
+                              name="patientPhone"
+                              value={formData.patientPhone}
+                              onChange={handleInputChange}
+                              placeholder="e.g., +880 123 456 7890"
+                              pattern="^\+?[0-9]{10,15}$"
+                              required
+                            />
+                          </div>
                         </div>
                       </div>
                       <div className="space-y-2">
@@ -394,8 +446,19 @@ export default function AmbulanceBooking() {
                         />
                       </div>
                       <div className="space-y-2">
+                        <Label htmlFor="patientEmail">Patient email</Label>
+                        <Input
+                          id="patientEmail"
+                          name="patientEmail"
+                          value={formData.patientEmail}
+                          onChange={handleInputChange}
+                          readOnly
+                        />
+                      </div>
+                      <div className="space-y-2">
                         <Label htmlFor="emergencyType">Emergency Type</Label>
                         <Select
+                          name="emergencyType"
                           value={formData.emergencyType}
                           onValueChange={(value) => handleSelectChange("emergencyType", value)}
                         >
@@ -436,20 +499,43 @@ export default function AmbulanceBooking() {
                         </div>
                         <Separator />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="pickupLocation">Pickup Location</Label>
-                        <Input
-                          id="pickupLocation"
-                          name="pickupLocation"
-                          placeholder="Enter pickup location"
-                          value={formData.pickupLocation}
-                          onChange={handleInputChange}
-                          required
-                        />
+                      <div className="flex items-center gap-10 w-full">
+                        <div className="space-y-2">
+                          <Label htmlFor="pickupLocation">Pickup Location</Label>
+                          <Input
+                            id="pickupLocation"
+                            name="pickupLocation"
+                            placeholder="Enter pickup location"
+                            value={formData.pickupLocation}
+                            onChange={handleInputChange}
+                            className={"w-96"}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="pickupLocation">Select ambulance</Label>
+                          <Select
+                            name="ambulanceId"
+                            value={formData.ambulanceId}
+                            onValueChange={(value) => handleSelectChange("ambulanceId", value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select destination hospital" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {ambulances.map(ambulance =>
+                                <>
+                                  <SelectItem key={ambulance._id} disabled={ambulance.status !== "available" ? true : false} value={ambulance._id}>{ambulance.name} {ambulance.status === "available" ? "(Available)" : "(Busy)"}</SelectItem>
+                                </>
+                              )}
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="destination">Destination Hospital</Label>
                         <Select
+                          name="destination"
                           value={formData.destination}
                           onValueChange={(value) => handleSelectChange("destination", value)}
                         >
@@ -468,6 +554,7 @@ export default function AmbulanceBooking() {
                       <div className="space-y-2">
                         <Label>Priority Level</Label>
                         <RadioGroup
+                          name="priority"
                           value={formData.priority}
                           onValueChange={(value) => handleSelectChange("priority", value)}
                         >
@@ -515,6 +602,10 @@ export default function AmbulanceBooking() {
                           <div className="flex items-center gap-2">
                             <MapPin className="h-4 w-4 text-muted-foreground" />
                             <span className="font-medium">Address:</span> {formData.patientAddress}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4 text-muted-foreground" />
+                            <span className="font-medium">Address:</span> {formData.patientEmail}
                           </div>
                         </div>
                       </div>
@@ -569,7 +660,7 @@ export default function AmbulanceBooking() {
                             <Ambulance className="h-6 w-6 text-green-600" />
                           </div>
                           <div>
-                            <p className="font-medium">AMB-001: Rapid Response Unit 1</p>
+                            <p className="font-medium">{ambulances.find(ambulance => ambulance._id === formData.ambulanceId)?.name}</p>
                             <p className="text-sm text-muted-foreground">ETA: 5 minutes</p>
                           </div>
                         </div>
@@ -586,9 +677,9 @@ export default function AmbulanceBooking() {
                       <div></div>
                     )}
                     {step < 3 ? (
-                      <Button type="button" onClick={handleNextStep}>
+                      <button type="button" className="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-all shrink-0 outline-none   bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 " onClick={handleNextStep}>
                         Next
-                      </Button>
+                      </button>
                     ) : (
                       <Button type="submit" variant="destructive">
                         Confirm Booking
@@ -604,16 +695,16 @@ export default function AmbulanceBooking() {
         <TabsContent value="active">
           <Card>
             <CardHeader>
-              <CardTitle>Active Bookings</CardTitle>
-              <CardDescription>Track currently active bookings</CardDescription>
+              <CardTitle>{role !== "patient" ? "Active Bookings" : user ? "My" : "Active"} Bookings</CardTitle>
+              <CardDescription>See currently active bookings</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 pb-6">
-                {activeBookings.map((booking) => (
-                  <Card key={booking.id}>
+                {activeBookings?.map((booking) => (
+                  <Card key={booking._id}>
                     <CardHeader className="py-3 bg-blue-500 text-white rounded-t-xl">
                       <div className="flex justify-between items-center">
-                        <CardTitle className="text-sm font-medium">{booking.id}</CardTitle>
+                        <CardTitle className="text-sm font-medium">{booking._id.slice(-6)}</CardTitle>
                         <Badge variant="outline" className="bg-white/20 text-white">
                           {booking.status}
                         </Badge>
@@ -623,11 +714,11 @@ export default function AmbulanceBooking() {
                       <div className="grid gap-2">
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-medium">Customer:</span>
-                          <span>{booking.customerName}</span>
+                          <span>{booking?.patientDetails?.patientName}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="font-medium">Service:</span>
-                          <span>{booking.serviceType}</span>
+                          <span className="font-medium">Type:</span>
+                          <span>{booking.patientDetails?.emergencyType}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-medium">Location:</span>
@@ -641,18 +732,32 @@ export default function AmbulanceBooking() {
                           <span className="font-medium">Scheduled:</span>
                           <span>{booking.scheduledTime}</span>
                         </div>
-                        <div className="mt-2 space-y-1">
-                          <div className="flex justify-between text-xs">
-                            <span>Progress</span>
-                            <span>{booking.progress}%</span>
-                          </div>
-                          <Progress value={booking.progress} className="h-2" />
-                        </div>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="login" className={`md:pt-20 pt-10`}>
+          <Card className="w-full max-w-md mx-auto shadow-xl border border-border rounded-2xl bg-background animate-fade-in ">
+            <CardHeader className="text-center space-y-2 py-6">
+              <div className="flex justify-center">
+                <LockKeyhole className="h-10 w-10 text-primary" />
+              </div>
+              <h2 className="text-2xl font-semibold text-foreground">Login Required</h2>
+            </CardHeader>
+            <CardContent className="text-center space-y-4 px-6 pb-6">
+              <p className="text-muted-foreground text-sm">
+                You need to be logged in to continue.
+              </p>
+              <Link to={`/login`}>
+                <button className="w-full bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-primary/90 transition duration-200">
+                  Go to Login
+                </button>
+              </Link>
             </CardContent>
           </Card>
         </TabsContent>

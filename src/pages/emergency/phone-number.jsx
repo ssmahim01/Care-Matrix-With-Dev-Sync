@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useState } from 'react';
 
-function EmergencyCard() {
-  const phoneNumber = '123-456-7890'; 
+function EmergencyCard({phone}) {
+  const phoneNumber = phone?.number; 
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -16,7 +16,7 @@ function EmergencyCard() {
     <div className="mb-6 w-full max-w-md space-y-2">
       <div className="flex justify-between text-sm">
         <span>Estimated arrival time:</span>
-        <span className="font-medium">5 minutes</span>
+        <span className="font-medium">{phone?.eta?.slice(0, 2)} minutes</span>
       </div>
       <Progress value={20} className="h-2" />
       <p className="text-xs text-muted-foreground">Ambulance is en route to your location</p>
