@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/tooltip";
 
 import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, Phone } from "lucide-react";
+import { ShieldCheck, Phone, Stethoscope } from "lucide-react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Eye, MoreVertical, Trash } from "lucide-react";
 import { format } from "date-fns";
@@ -112,7 +112,7 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                       <AvatarImage
                         src={user?.photo}
                         alt="user Image"
-                        className="max-w-10 rounded-full h-10 object-cover"
+                        className="min-w-10 max-w-10 rounded-full h-10 object-cover"
                       />
                     </Avatar>
                     <span>{user?.name}</span>
@@ -152,8 +152,16 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                       variant="outline"
                       className="flex items-center gap-1"
                     >
-                      <Phone className="h-4 w-4" />
+                      <Phone className="h-4 w-4 text-orange-600" />
                       Receptionist
+                    </Badge>
+                  ) : user?.role === "doctor" ? (
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-1"
+                    >
+                      <Stethoscope className="h-4 w-4 text-purple-600" />
+                      Doctor
                     </Badge>
                   ) : (
                     <Badge>{user?.role}</Badge>
@@ -196,15 +204,18 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem className={"cursor-pointer"}>
-                        <Eye className="w-4 h-4 mr-2" /> User Profile
+                        <Eye className="w-4 h-4 mr-2" />{" "}
+                        {user?.role !== "doctor" ? "User" : "Doctor"} Profile
                       </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => handleUserDelete(user?.email)}
-                        className={"cursor-pointer"}
-                      >
-                        <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
-                        User
-                      </DropdownMenuItem>
+                      {user?.role !== "doctor" && (
+                        <DropdownMenuItem
+                          onClick={() => handleUserDelete(user?.email)}
+                          className={"cursor-pointer"}
+                        >
+                          <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
+                          User
+                        </DropdownMenuItem>
+                      )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

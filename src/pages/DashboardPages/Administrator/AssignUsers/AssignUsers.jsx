@@ -97,6 +97,7 @@ const AssignUsers = () => {
                 </SelectItem>
                 <SelectItem value={"pharmacist"}>{"Pharmacist"}</SelectItem>
                 <SelectItem value={"receptionist"}>{"Receptionist"}</SelectItem>
+                <SelectItem value={"doctor"}>{"Doctor"}</SelectItem>
               </SelectContent>
             </Select>
           </div>

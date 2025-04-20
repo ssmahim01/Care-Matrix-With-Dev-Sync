@@ -359,6 +359,7 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
       role: "doctor",
       email: email,
       image: imageUrl,
+      phoneNumber: phoneNumber,
 
       password: strongPassword,
 
@@ -385,7 +386,10 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
         doctor
       );
       // Show Confirm Modal
-      if (data?.mongoDB?.insertedId) {
+      if (
+        data?.postUserResult?.insertedId &&
+        data?.postDoctorResult?.insertedId
+      ) {
         setIsDoctorFormOpen(false);
         refetch();
         setDepartment("");
@@ -454,37 +458,45 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
             </div>
             {/* Select Department */}
             <div className="w-full space-y-2">
-              <Label>Select Department</Label>
+              <Label>Select Department Or Title</Label>
               <Select value={department} onValueChange={setDepartment}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Department" />
+                  <SelectValue placeholder="Select Department Or Title" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="cardiology">Cardiology</SelectItem>
-                  <SelectItem value="neurology">Neurology</SelectItem>
-                  <SelectItem value="orthopedics">Orthopedics</SelectItem>
-                  <SelectItem value="pediatrics">Pediatrics</SelectItem>
-                  <SelectItem value="gynecology">Gynecology</SelectItem>
-                  <SelectItem value="dermatology">Dermatology</SelectItem>
-                  <SelectItem value="urology">Urology</SelectItem>
-                  <SelectItem value="gastroenterology">
-                    Gastroenterology
+                  <SelectItem value="Cardiologist">Cardiologist</SelectItem>
+                  <SelectItem value="Neurologist">Neurologist</SelectItem>
+                  <SelectItem value="Orthopedic Surgeon">
+                    Orthopedic Surgeon
                   </SelectItem>
-                  <SelectItem value="radiology">Radiology</SelectItem>
-                  <SelectItem value="anesthesiology">Anesthesiology</SelectItem>
-                  <SelectItem value="ent">ENT (Ear, Nose, Throat)</SelectItem>
-                  <SelectItem value="psychiatry">Psychiatry</SelectItem>
-                  <SelectItem value="oncology">Oncology</SelectItem>
-                  <SelectItem value="nephrology">Nephrology</SelectItem>
-                  <SelectItem value="emergency">Emergency Medicine</SelectItem>
-                  <SelectItem value="general_surgery">
-                    General Surgery
+                  <SelectItem value="Pediatrician">Pediatrician</SelectItem>
+                  <SelectItem value="Gynecologist">Gynecologist</SelectItem>
+                  <SelectItem value="Dermatologist">Dermatologist</SelectItem>
+                  <SelectItem value="Urologist">Urologist</SelectItem>
+                  <SelectItem value="Gastroenterologist">
+                    Gastroenterologist
                   </SelectItem>
-                  <SelectItem value="internal_medicine">
-                    Internal Medicine
+                  <SelectItem value="Radiologist">Radiologist</SelectItem>
+                  <SelectItem value="Anesthesiologist">
+                    Anesthesiologist
                   </SelectItem>
-                  <SelectItem value="pulmonology">Pulmonology</SelectItem>
-                  <SelectItem value="endocrinology">Endocrinology</SelectItem>
+                  <SelectItem value="ENT Specialist">ENT Specialist</SelectItem>
+                  <SelectItem value="Psychiatrist">Psychiatrist</SelectItem>
+                  <SelectItem value="Oncologist">Oncologist</SelectItem>
+                  <SelectItem value="Nephrologist">Nephrologist</SelectItem>
+                  <SelectItem value="Emergency Physician">
+                    Emergency Physician
+                  </SelectItem>
+                  <SelectItem value="General Surgeon">
+                    General Surgeon
+                  </SelectItem>
+                  <SelectItem value="Internal Medicine Specialist">
+                    Internal Medicine Specialist
+                  </SelectItem>
+                  <SelectItem value="Pulmonologist">Pulmonologist</SelectItem>
+                  <SelectItem value="Endocrinologist">
+                    Endocrinologist
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
