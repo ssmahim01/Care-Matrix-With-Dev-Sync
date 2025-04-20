@@ -14,26 +14,30 @@ import { Textarea } from "@/components/ui/textarea";
 import { imgUpload } from "@/lib/imgUpload";
 import axios from "axios";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { use, useState } from "react";
 import toast from "react-hot-toast";
 import { FaFileUpload } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
+
 const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
   const [department, setDepartment] = useState("");
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [doctorImage, setDoctorImage] = useState("");
   const [email, setEmail] = useState("");
-  const [preview, setPreview] = useState("");
+  const [doctorPreview, setDoctorPreview] = useState("");
   const [isError, setIsError] = useState("");
   const [loading, setLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(880);
   const [inputValue, setInputValue] = useState("");
   const [experience, setExperience] = useState(null);
   const [consultationFee, setConsultationFee] = useState(null);
+  const [selectedShift, setSelectedShift] = useState("");
   const [strongPassword, setStrongPassword] = useState("");
+  const [treatedPatients, setTreatedPatients] = useState(null);
   const [availability, setAvailability] = useState([]);
   const [serviceValue, setServiceValue] = useState("");
+  const [schedule, setSchedule] = useState(null);
   const [services, setServices] = useState([]);
   const [bio, setBio] = useState("");
   const [signal, setSignal] = useState({
@@ -84,8 +88,8 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
     e.preventDefault();
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
+      setDoctorImage(file);
+      setDoctorPreview(URL.createObjectURL(file));
     }
   };
 
@@ -98,6 +102,11 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
+    if (!value) {
+      setLoading(false);
+      setIsError("Phone Number Is Required");
+      return;
+    }
     setPhoneNumber(value);
     if (value && !validateBangladeshiNumber(value)) {
       setIsError(
@@ -247,15 +256,16 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     // Show error is image not selected
-    if (!image) {
+    if (!doctorImage) {
       setLoading(false);
       setIsError("Please Select An Image For Your Profile!");
       return;
     }
 
     // Upload Image To imgBB
-    const imageUrl = await imgUpload(image);
+    const imageUrl = await imgUpload(doctorImage);
     // Show error if image upload failed
     if (!imageUrl) {
       setLoading(false);
@@ -263,10 +273,36 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
       return;
     }
 
-    // Role Validation
-    if (!role) {
+    // Department Validation
+    if (!department) {
       setLoading(false);
-      setIsError("Role Is Required");
+      setIsError("Department Is Required");
+      return;
+    }
+
+    // Shift & Fee Validation
+    if (!selectedShift) {
+      setLoading(false);
+      setIsError("Shift Is Required");
+      return;
+    }
+
+    if (isNaN(consultationFee) || consultationFee < 0) {
+      setLoading(false);
+      setIsError("Please provide a valid consultation fee");
+      return;
+    }
+
+    // Service & Availability
+    if (!services || services.length < 4) {
+      setLoading(false);
+      setIsError("Minimum 4 Services Are Required");
+      return;
+    }
+
+    if (!availability || availability.length < 3) {
+      setLoading(false);
+      setIsError("Minimum 3 Available Days Are Required");
       return;
     }
 
@@ -316,43 +352,78 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
       return;
     }
 
-    const user = {
-      role,
-      email,
-      name,
+    // doctorData
+    const doctor = {
+      name: name,
+      title: department,
+      role: "doctor",
+      email: email,
+      image: imageUrl,
+
       password: strongPassword,
-      photo: imageUrl,
-      phoneNumber,
+
+      experience: (experience + "+ years").toString(),
+      chamber: "CareMatrix",
+      services: services,
+      bio: bio,
+
+      available_days: availability,
+      schedule: schedule,
+      shift: selectedShift,
+      consultation_fee: "$" + consultationFee,
+
+      rating: 4.0,
+      vote: 10,
+      number_of_feedback: 0,
+      treated_patients: parseInt(treatedPatients),
     };
 
-    // try {
-    //   // Send Post Request In Server
-    //   const { data } = await axios.post(
-    //     `${import.meta.env.VITE_API_URL}/firebase/assign-user`,
-    //     user
-    //   );
-    //   // Show Confirm Modal
-    //   if (data?.mongoDB?.insertedId) {
-    //     setIsDoctorFormOpen(false)
-    //     refetch();
-    //     setIsError("");
-    //     setRole("");
-    //     setName("");
-    //     setImage("");
-    //     setEmail("");
-    //     setPreview("");
-    //     setPhoneNumber(880);
-    //     setStrongPassword("");
-    //     showConfirmModal(user?.role, user?.email, user?.password);
-    //   }
-    // } catch (error) {
-    //   const errMsg = error?.response?.data?.message || "Something went wrong!";
-    //   setIsError(errMsg);
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      // Send Post Request In Server
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/firebase/assign-doctor`,
+        doctor
+      );
+      // Show Confirm Modal
+      if (data?.mongoDB?.insertedId) {
+        setIsDoctorFormOpen(false);
+        refetch();
+        setDepartment("");
+        setName("");
+        setDoctorImage("");
+        setEmail("");
+        setDoctorPreview("");
+        setIsError("");
+        setPhoneNumber(880);
+        setInputValue("");
+        setExperience(null);
+        setConsultationFee(null);
+        setSelectedShift("");
+        setStrongPassword("");
+        setTreatedPatients(null);
+        setAvailability([]);
+        setServiceValue("");
+        setSchedule(null);
+        setServices([]);
+        setBio("");
+        setSignal({
+          lowercase: false,
+          uppercase: false,
+          number: false,
+          symbol: false,
+          length: false,
+          strong: false,
+        });
+        showConfirmModal("Doctor", doctor?.email, doctor?.password);
+      }
+    } catch (error) {
+      const errMsg = error?.response?.data?.message || "Something went wrong!";
+      setIsError(errMsg);
+    } finally {
+      setLoading(false);
+    }
   };
-  
+
   return (
     <Card className="border shadow-none border-[#e5e7eb] w-full py-6 rounded-lg">
       <CardContent className="px-4">
@@ -522,6 +593,56 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
               />
             </div>
           </div>
+          {/* Schedule, Shift, Treated Patient */}
+          <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Schedule */}
+            <div className="w-full space-y-2">
+              <Label htmlFor="schedule">Schedule</Label>
+              <Input
+                type="datetime-local"
+                required
+                value={schedule}
+                onChange={(e) => setSchedule(e.target.value)}
+                placeholder="Select a schedule"
+                className="border-border border rounded-md outline-none px-4 w-full mt-1 py-3 focus:border-primary transition-colors duration-300"
+              />
+            </div>
+            {/* Shift */}
+            <div className="w-full space-y-2">
+              <Label>Choose Shift</Label>
+              <Select
+                value={selectedShift}
+                onValueChange={(val) => setSelectedShift(val)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a shift" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Morning (6AM - 2PM)">
+                    Morning (6AM - 2PM)
+                  </SelectItem>
+                  <SelectItem value="Afternoon (2PM - 10PM)">
+                    Afternoon (2PM - 10PM)
+                  </SelectItem>
+                  <SelectItem value="Night (10PM - 6AM)">
+                    Night (10PM - 6AM)
+                  </SelectItem>
+                  <SelectItem value="Rotating">Rotating Shift</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {/* Treated Patient  */}
+            <div className="w-full space-y-2">
+              <Label>Treated Patient </Label>
+              <Input
+                type="number"
+                required
+                value={treatedPatients}
+                onChange={(e) => setTreatedPatients(e.target.value)}
+                placeholder={"Enter Doctor Treated Patient Count"}
+              />
+            </div>
+          </div>
           {/* PhoneNumber, Photo */}
           <div className="grid mt-4 grid-cols-1 md:grid-cols-2 place-items-center gap-4">
             {/* PhoneNumber */}
@@ -548,7 +669,7 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
                   className="hidden"
                   onChange={handleFileChange}
                 />
-                {preview === "" ? (
+                {doctorPreview === "" ? (
                   <div
                     className="w-full md:w-[100%] flex items-center gap-3 border py-[5.6px] rounded-lg px-4 cursor-pointer"
                     onClick={handleUploadImage}
@@ -562,17 +683,18 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
                   <div className="w-full border rounded-lg p-0.5 flex justify-between items-center gap-4">
                     <div className="flex items-center gap-2 pl-2">
                       <img
-                        src={preview}
+                        src={doctorPreview}
                         alt="Selected file preview"
                         className="mx-auto object-cover rounded-lg w-7 h-7"
                       />
-                      {image && (
+                      {doctorImage && (
                         <div>
                           <p className="text-[10px] font-medium text-gray-700">
-                            {image.name}
+                            {doctorImage.name}
                           </p>
                           <p className="text-[9px] text-gray-500">
-                            {(image.size / 1024).toFixed(2)} KB | {image.type}
+                            {(doctorImage.size / 1024).toFixed(2)} KB |{" "}
+                            {doctorImage.type}
                           </p>
                         </div>
                       )}{" "}
@@ -580,8 +702,8 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
                     <MdDelete
                       className="text-[2rem] text-white bg-[#000000ad] p-1 rounded-r-lg mr-[1px] cursor-pointer"
                       onClick={() => {
-                        setPreview("");
-                        setImage(null);
+                        setDoctorPreview("");
+                        setDoctorImage(null);
                       }}
                     />
                   </div>
@@ -599,6 +721,7 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
                 value={strongPassword}
                 onChange={handlePasswordChange}
                 placeholder={"Enter Strong Password"}
+                required
               />
             </div>
             {/* Confirmed Password */}

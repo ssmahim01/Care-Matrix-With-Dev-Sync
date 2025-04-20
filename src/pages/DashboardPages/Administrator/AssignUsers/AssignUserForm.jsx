@@ -432,6 +432,7 @@ const AssignUserForm = ({ refetch, setIsFormOpen }) => {
               <Label>Password</Label>
               <Input
                 type="text"
+                required
                 value={strongPassword}
                 onChange={handlePasswordChange}
                 placeholder={"Enter Strong Password"}
