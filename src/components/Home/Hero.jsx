@@ -60,7 +60,7 @@ export default function Hero() {
               <span className="block mt-2">Management With Care Matrix</span>
             </h1>
 
-            <p className="text-base md:text-lg font-medium text-white/90 max-w-[600px]">
+            <p className="text-base md:text-lg font-medium text-white max-w-[600px]">
               Empower your hospital with an all-in-one management system. From
               patient appointments to medical records and staff coordination,
               Care Matrix ensures efficiency, accuracy, and seamless healthcare
