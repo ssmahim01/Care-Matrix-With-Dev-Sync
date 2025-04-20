@@ -28,10 +28,14 @@ import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Eye, MoreVertical, Trash } from "lucide-react";
 import { FaCapsules } from "react-icons/fa";
 import { format } from "date-fns";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import DoctorProfileDialog from "./DoctorProfileDialog";
 
 const AssignUsersTable = ({ users, isLoading, refetch }) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const handleUserDelete = (email) => {
     Swal.fire({
       title: "Are you sure?",
@@ -203,10 +207,25 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                       </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuItem className={"cursor-pointer"}>
-                        <Eye className="w-4 h-4 mr-2" />{" "}
-                        {user?.role !== "doctor" ? "User" : "Doctor"} Profile
-                      </DropdownMenuItem>
+                      {user?.role === "doctor" && (
+                        <>
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            onSelect={(e) => {
+                              e.preventDefault();
+                              setDialogOpen(true);
+                            }}
+                          >
+                            <Eye className="w-4 h-4 mr-2" />
+                            Doctor Profile
+                          </DropdownMenuItem>
+                          <DoctorProfileDialog
+                            open={dialogOpen}
+                            setOpen={setDialogOpen}
+                            doctor={user?.email}
+                          />
+                        </>
+                      )}
                       {user?.role !== "doctor" && (
                         <DropdownMenuItem
                           onClick={() => handleUserDelete(user?.email)}
