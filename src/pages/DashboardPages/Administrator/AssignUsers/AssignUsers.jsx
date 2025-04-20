@@ -16,18 +16,20 @@ import { useState } from "react";
 import AssignUserForm from "./AssignUserForm";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import AssignDoctorForm from "./AssignDoctorForm";
 
 const AssignUsers = () => {
   const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
+  const [isDoctorFormOpen, setIsDoctorFormOpen] = useState(false);
   const [sort, setSort] = useState("createdAt-desc");
 
   const sortOptions = {
-    "createdAt-desc": "Created Date (Newest First)",
-    "createdAt-asc": "Created Date (Oldest First)",
-    "lastLoginAt-desc": "Last Login (Newest First)",
-    "lastLoginAt-asc": "Last Login (Oldest First)",
+    "createdAt-desc": "Created At (Newest)",
+    "createdAt-asc": "Created At (Oldest)",
+    "lastLoginAt-desc": "Login At (Newest)",
+    "lastLoginAt-asc": "Login At (Oldest)",
   };
 
   // Get all assigned users data
@@ -137,13 +139,25 @@ const AssignUsers = () => {
             >
               Assign New User
             </Button>
-            <Button className={"cursor-pointer"}>Assign Doctor</Button>
+            <Button
+              onClick={() => setIsDoctorFormOpen(!isDoctorFormOpen)}
+              className={"cursor-pointer"}
+            >
+              Assign Doctor
+            </Button>
           </div>
         </div>
       </div>
       {/* Assign User Form */}
       <div className={`${isFormOpen ? "visible" : "hidden"} mt-4`}>
         <AssignUserForm refetch={refetch} setIsFormOpen={setIsFormOpen} />
+      </div>
+      {/* Assign Doctor Form */}
+      <div className={`${isDoctorFormOpen ? "visible" : "hidden"} mt-4`}>
+        <AssignDoctorForm
+          refetch={refetch}
+          setIsDoctorFormOpen={setIsDoctorFormOpen}
+        />
       </div>
       {/* User Table */}
       <AssignUsersTable users={users} isLoading={isLoading} refetch={refetch} />
