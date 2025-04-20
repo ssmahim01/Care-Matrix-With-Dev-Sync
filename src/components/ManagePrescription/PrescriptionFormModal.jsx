@@ -54,15 +54,16 @@ export function PrescriptionFormModal({ patient, isOpen, onClose, onSubmit }) {
     e.preventDefault();
 
     const prescription = {
-      patientId: patient._id,
-      patientName: patient.name,
-      doctorId: patient.doctorId,
-      doctorName: patient.doctorName,
+      appointmentId: patient._id,
+      patientInfo: patient,
       date: new Date().toISOString().split("T")[0],
-      medicines: medicines.map(({ id, ...rest }) => rest),
+      medicines: medicines?.map(({ id, ...rest }) => rest),
     };
 
     onSubmit(prescription);
+    setMedicines([
+      { id: 1, name: "", frequency: "", instructions: "" },
+    ]);
   };
 
   return (

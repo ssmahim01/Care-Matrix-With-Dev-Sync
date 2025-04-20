@@ -30,116 +30,161 @@ import { Badge } from "../ui/badge";
 import { PatientDetailsModal } from "./PatientDetailsModal";
 import { PrescriptionFormModal } from "./PrescriptionFormModal";
 import { DeleteConfirmationModal } from "./DeleteConfirmationModal";
+import useDoctorsAppointment from "@/hooks/useDoctorsAppointment";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { useAuthUser } from "@/redux/auth/authActions";
+import toast from "react-hot-toast";
+import { PrescriptionViewModal } from "./PrescriptionViewModal";
+import { FileDown } from "lucide-react";
 
 // Sample patient data
-const patients = [
-  {
-    _id: "6802196aaa85b8c937058b8d",
-    name: "Bangla Rugii",
-    age: "21",
-    phone: "01835353634",
-    email: "patient@carematrix.com",
-    date: "2025-04-18",
-    time: "11:00am - 11:29am",
-    reason: "Acidity problem",
-    status: "approved",
-    doctorId: "680215f8aa85b8c937058b8b",
-    doctorName: "Doctor Bapparaj",
-    doctorTitle: "Cardiology",
-    consultationFee: "$20",
-    prescriptions: [],
-  },
-  {
-    _id: "6802196aaa85b8c937058b8e",
-    name: "Sarah Johnson",
-    age: "35",
-    phone: "01712345678",
-    email: "sarah@example.com",
-    date: "2025-04-19",
-    time: "09:30am - 10:00am",
-    reason: "Migraine headaches",
-    status: "approved",
-    doctorId: "680215f8aa85b8c937058b8c",
-    doctorName: "Doctor Anika Rahman",
-    doctorTitle: "Neurology",
-    consultationFee: "$25",
-    prescriptions: [],
-  },
-  {
-    _id: "6802196aaa85b8c937058b8f",
-    name: "Mohammed Ali",
-    age: "45",
-    phone: "01898765432",
-    email: "mali@example.com",
-    date: "2025-04-19",
-    time: "02:00pm - 02:30pm",
-    reason: "Joint pain",
-    status: "approved",
-    doctorId: "680215f8aa85b8c937058b8d",
-    doctorName: "Doctor Kamal Hossain",
-    doctorTitle: "Orthopedics",
-    consultationFee: "$30",
-    prescriptions: [],
-  },
-  {
-    _id: "6802196aaa85b8c937058b90",
-    name: "Fatima Begum",
-    age: "62",
-    phone: "01756789012",
-    email: "fatima@example.com",
-    date: "2025-04-20",
-    time: "10:30am - 11:00am",
-    reason: "Diabetes checkup",
-    status: "approved",
-    doctorId: "680215f8aa85b8c937058b8e",
-    doctorName: "Doctor Nasreen Akter",
-    doctorTitle: "Endocrinology",
-    consultationFee: "$35",
-    prescriptions: [],
-  },
-  {
-    _id: "6802196aaa85b8c937058b91",
-    name: "Rahul Das",
-    age: "28",
-    phone: "01634567890",
-    email: "rahul@example.com",
-    date: "2025-04-20",
-    time: "03:30pm - 04:00pm",
-    reason: "Skin rash",
-    status: "approved",
-    doctorId: "680215f8aa85b8c937058b8f",
-    doctorName: "Doctor Farhana Islam",
-    doctorTitle: "Dermatology",
-    consultationFee: "$22",
-    prescriptions: [],
-  },
-];
+// const approvedPatient = [
+//   {
+//     _id: "6802196aaa85b8c937058b8d",
+//     name: "Bangla Rugii",
+//     age: "21",
+//     phone: "01835353634",
+//     email: "patient@carematrix.com",
+//     date: "2025-04-18",
+//     time: "11:00am - 11:29am",
+//     reason: "Acidity problem",
+//     status: "approved",
+//     doctorId: "680215f8aa85b8c937058b8b",
+//     doctorName: "Doctor Bapparaj",
+//     doctorTitle: "Cardiology",
+//     consultationFee: "$20",
+//     prescriptions: [],
+//   },
+//   {
+//     _id: "6802196aaa85b8c937058b8e",
+//     name: "Sarah Johnson",
+//     age: "35",
+//     phone: "01712345678",
+//     email: "sarah@example.com",
+//     date: "2025-04-19",
+//     time: "09:30am - 10:00am",
+//     reason: "Migraine headaches",
+//     status: "approved",
+//     doctorId: "680215f8aa85b8c937058b8c",
+//     doctorName: "Doctor Anika Rahman",
+//     doctorTitle: "Neurology",
+//     consultationFee: "$25",
+//     prescriptions: [],
+//   },
+//   {
+//     _id: "6802196aaa85b8c937058b8f",
+//     name: "Mohammed Ali",
+//     age: "45",
+//     phone: "01898765432",
+//     email: "mali@example.com",
+//     date: "2025-04-19",
+//     time: "02:00pm - 02:30pm",
+//     reason: "Joint pain",
+//     status: "approved",
+//     doctorId: "680215f8aa85b8c937058b8d",
+//     doctorName: "Doctor Kamal Hossain",
+//     doctorTitle: "Orthopedics",
+//     consultationFee: "$30",
+//     prescriptions: [],
+//   },
+//   {
+//     _id: "6802196aaa85b8c937058b90",
+//     name: "Fatima Begum",
+//     age: "62",
+//     phone: "01756789012",
+//     email: "fatima@example.com",
+//     date: "2025-04-20",
+//     time: "10:30am - 11:00am",
+//     reason: "Diabetes checkup",
+//     status: "approved",
+//     doctorId: "680215f8aa85b8c937058b8e",
+//     doctorName: "Doctor Nasreen Akter",
+//     doctorTitle: "Endocrinology",
+//     consultationFee: "$35",
+//     prescriptions: [],
+//   },
+//   {
+//     _id: "6802196aaa85b8c937058b91",
+//     name: "Rahul Das",
+//     age: "28",
+//     phone: "01634567890",
+//     email: "rahul@example.com",
+//     date: "2025-04-20",
+//     time: "03:30pm - 04:00pm",
+//     reason: "Skin rash",
+//     status: "approved",
+//     doctorId: "680215f8aa85b8c937058b8f",
+//     doctorName: "Doctor Farhana Islam",
+//     doctorTitle: "Dermatology",
+//     consultationFee: "$22",
+//     prescriptions: [],
+//   },
+//   {
+//     _id: "6802196aaa85b8c937058b91",
+//     name: "Rahul Das",
+//     age: "28",
+//     phone: "01634567890",
+//     email: "rahul@example.com",
+//     date: "2025-04-20",
+//     time: "03:30pm - 04:00pm",
+//     reason: "Skin rash",
+//     status: "approved",
+//     doctorId: "680215f8aa85b8c937058b8f",
+//     doctorName: "Doctor Farhana Islam",
+//     doctorTitle: "Dermatology",
+//     consultationFee: "$22",
+//     prescriptions: [],
+//   },
+// ];
 
 export function PrescriptionTable() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const user = useAuthUser();
+  const [search, setSearchTerm] = useState("");
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedPrescription, setSelectedPrescription] = useState(null);
+  const [isPrescriptionViewModalOpen, setIsPrescriptionViewModalOpen] =
+    useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const filter = ["Approved", "Prescribed"];
+  // const [appointments, isLoading, refetch] = useDoctorsAppointment(search);
+  // console.log(appointments);
+  const axiosSecure = useAxiosSecure();
+  const { data: approvedPatient = [] } = useQuery({
+    queryKey: ["approvedPatient", user.email, search],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(
+        `/appointments/doctors/${user.email}?filter=${filter}&search=${search}`
+      );
+      return data;
+    },
+  });
+  console.log(approvedPatient);
 
-  // Filter patients based on search term
-  const filteredPatients = patients.filter(
-    (patient) =>
-      patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      patient.reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      patient.doctorName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleViewPrescription = async (patient) => {
+    setSelectedPatient(patient);
+    try {
+      const { data } = await axiosSecure.get(`/prescriptions/${patient._id}`);
+      setSelectedPrescription(data);
+      setIsPrescriptionViewModalOpen(true);
+    } catch (error) {
+      toast.error("No prescriptions found for this patient");
+    }
+  };
 
   // Calculate pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentPatients = filteredPatients.slice(
+  const currentPatients = approvedPatient.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
-  const totalPages = Math.ceil(filteredPatients.length / itemsPerPage);
+  const totalPages = Math.ceil(approvedPatient.length / itemsPerPage);
 
   const handleViewDetails = (patient) => {
     setSelectedPatient(patient);
@@ -162,9 +207,13 @@ export function PrescriptionTable() {
     setIsDeleteModalOpen(false);
   };
 
-  const handlePrescriptionSubmit = (prescription) => {
-    // In a real application, you would call an API to save the prescription
-    console.log("Prescription submitted:", prescription);
+  const handlePrescriptionSubmit = async (prescription) => {
+    // console.log("Prescription submitted:", prescription);
+    await toast.promise(axiosSecure.post("/prescriptions", prescription), {
+      loading: "Prescribing patient...",
+      success: <b>Prescription Given</b>,
+      error: <b>Unable to prescribe</b>,
+    });
     setIsPrescriptionModalOpen(false);
   };
 
@@ -177,7 +226,7 @@ export function PrescriptionTable() {
             type="search"
             placeholder="Search patients..."
             className="pl-8"
-            value={searchTerm}
+            value={search}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
@@ -253,6 +302,14 @@ export function PrescriptionTable() {
                           <FileText className="mr-2 h-4 w-4" />
                           View Details
                         </DropdownMenuItem>
+                        {patient.status === "Prescribed" && (
+                          <DropdownMenuItem
+                            onClick={() => handleViewPrescription(patient)}
+                          >
+                            <FileDown className="mr-2 h-4 w-4" />
+                            View Prescriptions
+                          </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem
                           onClick={() => handleGivePrescription(patient)}
                         >
@@ -276,7 +333,7 @@ export function PrescriptionTable() {
       </div>
 
       {/* Pagination */}
-      {filteredPatients.length > itemsPerPage && (
+      {approvedPatient.length > itemsPerPage && (
         <div className="flex items-center justify-end space-x-2 py-4">
           <Button
             variant="outline"
@@ -325,6 +382,13 @@ export function PrescriptionTable() {
             onConfirm={confirmDelete}
           />
         </>
+      )}
+      {selectedPatient && selectedPrescription && (
+        <PrescriptionViewModal
+          prescription={selectedPrescription}
+          isOpen={isPrescriptionViewModalOpen}
+          onClose={() => setIsPrescriptionViewModalOpen(false)}
+        />
       )}
     </div>
   );

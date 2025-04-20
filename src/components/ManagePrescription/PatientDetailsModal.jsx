@@ -25,7 +25,7 @@ export function PatientDetailsModal({ patient, isOpen, onClose }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-teal-700">
+          <DialogTitle className="text-xl font-semibold ">
             Patient Details
           </DialogTitle>
           <DialogDescription>

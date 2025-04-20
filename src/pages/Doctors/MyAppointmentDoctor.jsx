@@ -23,6 +23,7 @@ const MyAppointmentDoctor = () => {
     const [showSkeleton, setShowSkeleton] = useState(true);
     const [selectedAppointment, setSelectedAppointment] = useState(null)
     const [openModal, setOpenModal] = useState(false)
+    // console.log(appointments);
 
 
     useEffect(() => {
