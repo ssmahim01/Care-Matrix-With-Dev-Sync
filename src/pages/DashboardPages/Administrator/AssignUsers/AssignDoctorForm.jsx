@@ -322,24 +322,24 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Name */}
             <div className="w-full space-y-2">
-              <Label>Username</Label>
+              <Label>Doctor Name</Label>
               <Input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder={"Enter Username"}
+                placeholder={"Enter Doctor Name"}
               />
             </div>
             {/* Email */}
             <div className="w-full space-y-2">
-              <Label>Email</Label>
+              <Label>Doctor Email</Label>
               <Input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={"Enter User Email"}
+                placeholder={"Enter Doctor Email"}
               />
             </div>
             {/* Select Department */}
@@ -379,11 +379,36 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
               </Select>
             </div>
           </div>
+          {/* consultation_fee, experience */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* consultation_fee */}
+            <div className="w-full space-y-2">
+              <Label>Consultation Fee</Label>
+              <Input
+                type="number"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={"Enter Doctor Consultation Fee"}
+              />
+            </div>
+            {/* experience */}
+            <div className="w-full space-y-2">
+              <Label>Experience Year</Label>
+              <Input
+                type="number"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={"Enter Doctor Experience Year"}
+              />
+            </div>
+          </div>
           {/* PhoneNumber, Photo */}
-          <div className="grid grid-cols-1 md:grid-cols-2 place-items-center gap-4">
+          <div className="grid mt-4 grid-cols-1 md:grid-cols-2 place-items-center gap-4">
             {/* PhoneNumber */}
             <div className="w-full space-y-2">
-              <Label>Phone Number</Label>
+              <Label>Doctor Phone Number</Label>
               <Input
                 type="number"
                 required
@@ -391,12 +416,12 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
                 onChange={handlePhoneChange}
                 pattern="\8801[3-9][0-9]{8}"
                 maxLength={13}
-                placeholder={"Enter Phone Number"}
+                placeholder={"Enter Doctor Phone Number"}
               />
             </div>
             {/* Photo */}
             <div className="w-full space-y-2">
-              <Label>Select Photo</Label>
+              <Label>Select Doctor Photo</Label>
               <div className="w-full">
                 <Input
                   type="file"
@@ -480,7 +505,7 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
             disabled={loading}
             className={"cursor-pointer px-8"}
           >
-            {loading ? "Assigning User..." : "Assign User"}
+            {loading ? "Assigning Doctor..." : "Assign Doctor"}
           </Button>
         </form>
       </CardContent>

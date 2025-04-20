@@ -62,7 +62,7 @@ const AssignUsers = () => {
         icon={UserPlus}
       />
       {/* Searchbar & Select & Add button */}
-      <div className="flex justify-between gap-4 items-center flex-wrap">
+      <div className="flex justify-between gap-2 items-center flex-wrap">
         {/* Searchbar */}
         <div className="relative w-full flex xl:flex-1">
           <input
@@ -80,7 +80,7 @@ const AssignUsers = () => {
             Clear
           </button>
         </div>
-        <div className="flex items-center flex-wrap gap-4">
+        <div className="flex items-center flex-wrap gap-2">
           {/* Select Role */}
           <div className="flex flex-1 w-fit">
             <Select
