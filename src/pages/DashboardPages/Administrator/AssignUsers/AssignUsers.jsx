@@ -135,12 +135,14 @@ const AssignUsers = () => {
               Reset
             </Button>
             <Button
+              disabled={isDoctorFormOpen}
               onClick={() => setIsFormOpen(!isFormOpen)}
               className={"cursor-pointer"}
             >
               Assign New User
             </Button>
             <Button
+              disabled={isFormOpen}
               onClick={() => setIsDoctorFormOpen(!isDoctorFormOpen)}
               className={"cursor-pointer"}
             >
