@@ -440,7 +440,7 @@ export function NavMain() {
   );
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className={"overflow-y-auto"}>
       <SidebarMenu>
         <Collapsible asChild className="group/collapsible">
           <SidebarMenuItem>
