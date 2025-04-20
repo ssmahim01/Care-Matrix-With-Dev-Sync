@@ -30,11 +30,16 @@ import auth from "@/firebase/firebase.config";
 import usePhone from "@/hooks/usePhone";
 import useRole from "@/hooks/useRole";
 import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
-import { updateUsername } from "@/redux/auth/authSlice";
+import { updateUsername, updateUserPhoto } from "@/redux/auth/authSlice";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import axios from "axios";
 import { format } from "date-fns";
-import { EmailAuthProvider, reauthenticateWithCredential, updatePassword, updateProfile } from "firebase/auth";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+  updateProfile,
+} from "firebase/auth";
 import {
   Calendar,
   CheckCheck,
@@ -49,6 +54,7 @@ import {
   Mail,
   Phone,
   Shield,
+  Upload,
   User,
   X,
 } from "lucide-react";
@@ -57,11 +63,14 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import ProfileSkeleton from "./ProfileSkeleton";
 import { useQuery } from "@tanstack/react-query";
+import { imgUpload } from "@/lib/imgUpload";
 
 const Profile = () => {
   const user = useAuthUser();
   const [newName, setNewName] = useState(user?.displayName);
   const [isNameEditing, setIsNameEditing] = useState(false);
+  const [profileImage, setProfileImage] = useState(user?.photoURL || "");
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [openEye, setOpenEye] = useState(false);
   const [openEye2, setOpenEye2] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -71,6 +80,7 @@ const Profile = () => {
   const [, phoneLoading] = usePhone();
   const dispatch = useDispatch();
   const role = useRole();
+
   const { data: person = {} } = useQuery({
     queryKey: ["person", user?.uid],
     queryFn: async () => {
@@ -119,7 +129,10 @@ const Profile = () => {
 
       if (res.data.success) {
         // Reauthenticate with Firebase
-        const credential = EmailAuthProvider.credential(user.email, data.password);
+        const credential = EmailAuthProvider.credential(
+          user.email,
+          data.password
+        );
         await reauthenticateWithCredential(auth.currentUser, credential);
 
         // Update Firebase password
@@ -144,6 +157,48 @@ const Profile = () => {
     } catch (error) {
       // console.error("Password update error:", error);
       toast.error(error.message || "Failed to update password");
+    }
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setProfileImage(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfileImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    try {
+      toast.loading("Uploading Image...");
+
+      // Upload to ImgBB
+      const imageUrl = await imgUpload(file);
+
+      // Update Firebase profile
+      await updateProfile(auth.currentUser, { photoURL: imageUrl });
+
+      // Update MongoDB via your API
+      const {data} = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/users/update-user-photo/${
+          user?.email
+        }`,
+        { photo: imageUrl }
+      );
+      // Show Success Toast
+      if (data.data.modifiedCount) {
+        dispatch(updateUserPhoto(imageUrl));
+        toast.success("Profile Photo Updated!", {
+          duration: 2000, // 2 seconds
+        });
+      }
+    } catch (error) {
+      toast.error("Something went wrong while updating your photo.");
+    } finally {
+      toast.dismiss();
     }
   };
 
@@ -199,23 +254,52 @@ const Profile = () => {
             <div className="h-28 bg-gradient-to-r skeleton rounded-b-none rounded-t-[12.8px]" />
             <CardContent className="pt-0 relative">
               <div className="flex flex-col items-center -mt-20">
-                <div
-                  className="relative group cursor-pointer"
-                  onMouseEnter={() => setIsImageHovered(true)}
-                  onMouseLeave={() => setIsImageHovered(false)}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <Avatar className="w-28 h-28 border-4 border-background shadow-lg">
-                    <AvatarImage
-                      src={user?.photoURL}
-                      alt={user?.displayName}
-                      className={"object-cover"}
-                    />
+                <div className="relative group w-28 h-28 cursor-pointer">
+                  <Avatar className="w-full h-full border-4 border-background shadow-lg">
+                    {profileImagePreview ? (
+                      <AvatarImage
+                        src={profileImagePreview}
+                        alt="Profile preview"
+                        className="object-cover"
+                      />
+                    ) : (
+                      <AvatarImage
+                        src={user?.photoURL || "/placeholder.svg"}
+                        alt={user?.displayName}
+                        className="object-cover"
+                      />
+                    )}
                     <AvatarFallback className="text-3xl bg-gradient-to-br from-blue-400 to-sky-600 text-white">
-                      {user?.displayName.charAt(0) || "Username"}
+                      {user?.displayName?.charAt(0) || "U"}
                     </AvatarFallback>
                   </Avatar>
+
+                  {/* Hidden input for image upload */}
+                  <Input
+                    id="profileImage"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageChange}
+                  />
+
+                  {/* Top-left upload icon button */}
+                  <div
+                    className="tooltip tooltip-top absolute -top-1.5 -left-1.5 p-1.5"
+                    data-tip="Change Photo"
+                  >
+                    <button
+                      type="button"
+                      onClick={() =>
+                        document.getElementById("profileImage")?.click()
+                      }
+                      className="rounded-full bg-white p-1.5 hover:bg-gray-100 shadow-md transition-all cursor-pointer"
+                    >
+                      <Upload className="h-5 w-5 text-black" />
+                    </button>
+                  </div>
                 </div>
+
                 <div className="mt-4 text-center">
                   <h2 className="text-xl font-bold">{user?.displayName}</h2>
                   <Badge className="mt-2 font-semibold capitalize bg-blue-100 text-blue-800 hover:bg-blue-100">

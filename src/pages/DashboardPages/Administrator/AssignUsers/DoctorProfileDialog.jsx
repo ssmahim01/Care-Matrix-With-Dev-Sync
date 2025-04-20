@@ -22,6 +22,7 @@ import {
   User,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+
 export default function DoctorProfileDialog({ open, setOpen, doctor }) {
   const {
     data: doctorData,
@@ -173,8 +174,8 @@ export default function DoctorProfileDialog({ open, setOpen, doctor }) {
         <DialogFooter className="mt-6">
           <Button
             onClick={() => {
-              console.log("Updated Shift:", shift);
-              console.log("Updated Schedule:", schedule?.toISOString());
+            //   console.log("Updated Shift:", shift);
+            //   console.log("Updated Schedule:", schedule?.toISOString());
               alert("Updated shift and schedule logged in console.");
             }}
           >
