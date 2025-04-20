@@ -14,6 +14,7 @@ import {
   BedSingle,
   BriefcaseMedical,
   CalendarDays,
+  CircleDollarSign,
   ClipboardPlus,
   Contact,
   CreditCard,
@@ -127,12 +128,20 @@ export function NavMain() {
                     Manage Doctors{" "}
                   </span>
                 </h3>
-              </NavLink> 
+              </NavLink>
               <NavLink to="/dashboard/administrator/manage-billing-payments">
                 <h3 className="flex gap-2 items-center">
                   <CreditCard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Billing & Payments{" "}
+                  </span>
+                </h3>
+              </NavLink>
+              <NavLink to="/dashboard/administrator/revenue-insights">
+                <h3 className="flex gap-2 items-center">
+                  <CircleDollarSign className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Revenue Insights{" "}
                   </span>
                 </h3>
               </NavLink>

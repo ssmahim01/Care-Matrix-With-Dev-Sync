@@ -42,7 +42,7 @@ const CustomTooltip = ({
             <span>
               {entry?.name}: {valuePrefix}
               {Number(entry?.value).toLocaleString()}
-              {valueSuffix}
+              <span className="ml-1">{valueSuffix}</span>
             </span>
           </p>
         ))}
@@ -52,4 +52,4 @@ const CustomTooltip = ({
   return null;
 };
 
-export default CustomTooltip
+export default CustomTooltip;

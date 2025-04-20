@@ -91,6 +91,22 @@ export default function AddAmbulance({ setIsAddDialogOpen, isAddDialogOpen, hand
                                 <Input id="eta" placeholder="Estimated time" name="eta" className="col-span-3" />
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="phone" className="text-right">
+                                    Phone 
+                                </Label>
+                                <div className="col-span-3">
+                                    <Input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="e.g., +880 123 456 7890"
+                                        pattern="^\+?[0-9]{10,15}$"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="crew" className="text-right">
                                     crew
                                 </Label>
