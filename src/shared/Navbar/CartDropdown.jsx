@@ -34,7 +34,10 @@ const CartDropdown = () => {
       </DropdownMenuTrigger>
 
       {/* Dropdown Content */}
-      <DropdownMenuContent className="w-64 p-0 shadow-none rounded-2xl border-t border-b-0" align="end">
+      <DropdownMenuContent
+        className="w-64 p-0 shadow-none rounded-2xl border-t border-b-0"
+        align="end"
+      >
         <Card>
           {/* Header */}
           <DropdownMenuLabel className="p-3">
@@ -45,7 +48,7 @@ const CartDropdown = () => {
                   <span className="text-xs">({cart?.length || 0} Items)</span>
                 </span>
                 <span className="text-sm text-gray-700 font-medium">
-                  --- <span className="font-extrabold">৳</span>{" "}
+                  Total - <span className="font-extrabold">৳</span>{" "}
                   {totalPrice.toFixed(2)}
                 </span>
               </div>
