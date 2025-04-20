@@ -10,8 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { imgUpload } from "@/lib/imgUpload";
 import axios from "axios";
+import { X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaFileUpload } from "react-icons/fa";
@@ -26,7 +28,14 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
   const [isError, setIsError] = useState("");
   const [loading, setLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(880);
+  const [inputValue, setInputValue] = useState("");
+  const [experience, setExperience] = useState(null);
+  const [consultationFee, setConsultationFee] = useState(null);
   const [strongPassword, setStrongPassword] = useState("");
+  const [availability, setAvailability] = useState([]);
+  const [serviceValue, setServiceValue] = useState("");
+  const [services, setServices] = useState([]);
+  const [bio, setBio] = useState("");
   const [signal, setSignal] = useState({
     lowercase: false,
     uppercase: false,
@@ -35,6 +44,36 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
     length: false,
     strong: false,
   });
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const trimmedValue = inputValue.trim();
+      if (trimmedValue && !availability.includes(trimmedValue)) {
+        setAvailability([...availability, trimmedValue]);
+        setInputValue("");
+      }
+    }
+  };
+
+  const handleInputChange = (e) => setInputValue(e.target.value);
+  const handleServiceChange = (e) => setServiceValue(e.target.value);
+
+  const handleServiceKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const trimmedValue = serviceValue.trim();
+      if (trimmedValue && !services.includes(trimmedValue)) {
+        setServices([...services, trimmedValue]);
+        setServiceValue("");
+      }
+    }
+  };
+
+  const removeServices = (serviceToRemove) =>
+    setServices(services.filter((s) => s !== serviceToRemove));
+  const removeAvailability = (availabilityToRemove) =>
+    setAvailability(availability.filter((a) => a !== availabilityToRemove));
 
   // Image Upload Functionality
   const handleUploadImage = () => {
@@ -313,10 +352,10 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
     //   setLoading(false);
     // }
   };
+  
   return (
     <Card className="border shadow-none border-[#e5e7eb] w-full py-6 rounded-lg">
       <CardContent className="px-4">
-        {" "}
         <form onSubmit={handleSubmit} className="space-y-2">
           {/* Name, Email, Role */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -379,7 +418,7 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
               </Select>
             </div>
           </div>
-          {/* consultation_fee, experience */}
+          {/* Consultation Fee, Experience */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* consultation_fee */}
             <div className="w-full space-y-2">
@@ -387,8 +426,8 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
               <Input
                 type="number"
                 required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={consultationFee}
+                onChange={(e) => setConsultationFee(e.target.value)}
                 placeholder={"Enter Doctor Consultation Fee"}
               />
             </div>
@@ -398,9 +437,88 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
               <Input
                 type="number"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={experience}
+                onChange={(e) => setExperience(e.target.value)}
                 placeholder={"Enter Doctor Experience Year"}
+              />
+            </div>
+          </div>
+          {/* Service*/}
+          <div className="mt-4 w-full">
+            <div>
+              <Label className="block mb-2">
+                Enter Services (Press Enter To Add){" "}
+                <span className="text-red-500">*</span>
+              </Label>
+              <div className="flex flex-wrap gap-2 border p-2 rounded-lg">
+                {services.map((service, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-black text-white rounded flex items-center gap-1"
+                  >
+                    {service}
+                    <button
+                      className="ml-2 text-white font-bold hover:cursor-pointer duration-300 hover:text-red-500"
+                      onClick={() => removeServices(service)}
+                    >
+                      <X />
+                    </button>
+                  </span>
+                ))}
+                <Input
+                  type="text"
+                  className="outline-none flex-1"
+                  value={serviceValue}
+                  onChange={handleServiceChange}
+                  onKeyDown={handleServiceKeyDown}
+                  placeholder="Add Services..."
+                />
+              </div>
+            </div>
+          </div>
+          {/* Available Days */}
+          <div className="mt-4 w-full">
+            <div>
+              <Label className="block mb-2">
+                Enter Availability Days (Press Enter To Add){" "}
+                <span className="text-red-500">*</span>
+              </Label>
+              <div className="flex flex-wrap gap-2 border p-2 rounded-lg">
+                {availability.map((available, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-black text-white rounded flex items-center gap-1"
+                  >
+                    {available}
+                    <button
+                      className="ml-2 text-white font-bold hover:cursor-pointer duration-300 hover:text-red-500"
+                      onClick={() => removeAvailability(available)}
+                    >
+                      <X />
+                    </button>
+                  </span>
+                ))}
+                <Input
+                  type="text"
+                  className="outline-none flex-1"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Add Availability Days..."
+                />
+              </div>
+            </div>
+          </div>
+          {/* Bio */}
+          <div className="mt-4 w-full">
+            <div className="space-y-2">
+              <Label>Doctor Bio</Label>
+              <Textarea
+                required
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                className={"flex flex-grow"}
+                placeholder="Enter Doctor Bio Here..."
               />
             </div>
           </div>
@@ -499,7 +617,7 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
           <div className="mt-4 mb-4">
             <IsError isError={isError} />
           </div>
-          {/* Add User Button */}
+          {/* Add Doctor Button */}
           <Button
             type="submit"
             disabled={loading}
