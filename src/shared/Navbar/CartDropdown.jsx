@@ -34,8 +34,8 @@ const CartDropdown = () => {
       </DropdownMenuTrigger>
 
       {/* Dropdown Content */}
-      <DropdownMenuContent className="w-64 p-0" align="end">
-        <Card className="shadow-lg">
+      <DropdownMenuContent className="w-64 p-0 shadow-none rounded-2xl border-t border-b-0" align="end">
+        <Card>
           {/* Header */}
           <DropdownMenuLabel className="p-3">
             {cart.length ? (
@@ -57,13 +57,13 @@ const CartDropdown = () => {
           {cart.length ? <DropdownMenuSeparator className={"-mt-6"} /> : <></>}
 
           {/* Cart Items */}
-          <CardContent className="p-0 md:px-3 -mt-4">
+          <CardContent className="p-0 md:px-3 -mt-4 shadow-none">
             {cart?.length > 0 ? (
-              <ScrollArea className="max-h-48 h-fit overflow-y-auto pb-0">
+              <ScrollArea className="max-h-48 h-fit overflow-y-auto pb-0 shadow-none">
                 {cart.map((item) => (
                   <DropdownMenuItem
                     key={item._id}
-                    className="flex items-center justify-between p-1 hover:bg-gray-50"
+                    className="flex items-center justify-between p-1 hover:bg-gray-50 shadow-none"
                   >
                     <Link
                       to={`/medicine/${item?.productId}`}
@@ -110,7 +110,7 @@ const CartDropdown = () => {
                   to="/dashboard/patient/manage-cart"
                   className="w-full cursor-pointer"
                 >
-                  <Button className="w-full">View Cart</Button>
+                  <Button className="w-full cursor-pointer">View Cart</Button>
                 </Link>
               </CardFooter>
             </>
