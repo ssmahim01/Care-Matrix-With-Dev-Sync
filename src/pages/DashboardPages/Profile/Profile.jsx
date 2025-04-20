@@ -354,7 +354,8 @@ const Profile = () => {
                       Member Since
                     </p>
                     <p className="text-sm font-medium">
-                      {user?.createdAt && user?.createdAt}
+                      {user?.createdAt &&
+                        format(new Date(user.createdAt), "PPP p")}
                     </p>
                   </div>
                 </div>
@@ -369,7 +370,8 @@ const Profile = () => {
                   <div>
                     <p className="text-xs text-muted-foreground">Last Login</p>
                     <p className="text-sm font-medium">
-                      {user?.lastLoginAt && user?.lastLoginAt}
+                      {user?.lastLoginAt &&
+                        format(new Date(user.lastLoginAt), "PPP p")}
                     </p>
                   </div>
                 </div>
