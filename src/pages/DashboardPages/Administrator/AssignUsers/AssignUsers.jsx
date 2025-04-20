@@ -12,13 +12,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
 import { useState } from "react";
 import AssignUserForm from "./AssignUserForm";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import AssignDoctorForm from "./AssignDoctorForm";
+import axios from "axios";
 
 const AssignUsers = () => {
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
@@ -33,22 +44,24 @@ const AssignUsers = () => {
   };
 
   // Get all assigned users data
-  const {
-    data: users,
-    isLoading,
-    refetch,
-    error,
-  } = useQuery({
-    queryKey: ["assigned-users", sort, search, selectedRole],
+  const { data, isLoading, refetch, error } = useQuery({
+    queryKey: ["assigned-users", page, sort, search, selectedRole],
     queryFn: async () => {
       const { data } = await axios(
         `${
           import.meta.env.VITE_API_URL
-        }/firebase/users?sort=${sort}&search=${search}&role=${selectedRole}`
+        }/firebase/users?page=${page}&sort=${sort}&search=${search}&role=${selectedRole}`
       );
       return data;
     },
   });
+
+  // Pagination Functions
+  const handlePageChange = (pageNumber) => setPage(pageNumber);
+  const handlePrevPage = () => setPage((prev) => Math.max(prev - 1, 1));
+  const handleNextPage = () => {
+    setPage((prev) => (prev < data.totalPages ? prev + 1 : prev));
+  };
 
   if (error) return "Error While Fetching Data";
 
@@ -167,7 +180,60 @@ const AssignUsers = () => {
         </div>
       )}
       {/* User Table */}
-      <AssignUsersTable users={users} isLoading={isLoading} refetch={refetch} />
+      <AssignUsersTable users={data?.users} isLoading={isLoading} refetch={refetch} />
+      {/* Pagination */}
+      <Pagination className="mt-4">
+        <PaginationContent>
+          {/* Previous */}
+          <PaginationItem>
+            <PaginationPrevious
+              className={"cursor-pointer"}
+              onClick={handlePrevPage}
+            />
+          </PaginationItem>
+
+          {/* Page Numbers */}
+          {isLoading
+            ? // Skeleton Loader
+              Array.from({ length: 3 }).map((_, i) => (
+                <PaginationItem key={i}>
+                  <div className="w-8 h-8 skeleton rounded-md"></div>
+                </PaginationItem>
+              ))
+            : // Page Numbers
+              Array.from({ length: data?.totalPages }, (_, i) => i + 1).map(
+                (pageNumber) => (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      className="cursor-pointer"
+                      isActive={pageNumber === page}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageNumber);
+                      }}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              )}
+
+          {/* Ellipsis */}
+          {data?.totalPages > 5 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+
+          {/* Next */}
+          <PaginationItem>
+            <PaginationNext
+              className={"cursor-pointer"}
+              onClick={handleNextPage}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };

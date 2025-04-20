@@ -26,10 +26,10 @@ import { Badge } from "@/components/ui/badge";
 import { ShieldCheck, Phone, Stethoscope } from "lucide-react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Eye, MoreVertical, Trash } from "lucide-react";
+import { FaCapsules } from "react-icons/fa";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { FaCapsules } from "react-icons/fa";
 
 const AssignUsersTable = ({ users, isLoading, refetch }) => {
   const handleUserDelete = (email) => {
