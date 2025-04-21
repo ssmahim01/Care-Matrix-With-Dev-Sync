@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const DoctorCard = ({ doctor }) => {
+  console.log("doctor card ", doctor);
   return (
     <Link
       to={`/doctor-details/${doctor._id}`}

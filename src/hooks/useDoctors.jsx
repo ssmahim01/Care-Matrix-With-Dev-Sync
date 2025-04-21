@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
 
-const useDoctors = () => {
+const useDoctors = (search, selectedSort ) => {
   const axiosSecure = useAxiosSecure();
 
   const {
@@ -9,10 +9,10 @@ const useDoctors = () => {
     isPending,
     isLoading,
   } = useQuery({
-    queryKey: ["doctors"],
+    queryKey: ["doctors", search, selectedSort],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
-        "/dashboard/administrator/doctors/all"
+        `/dashboard/administrator/doctors/all?search=${search}&sort=${selectedSort}`
       );
       return data;
     },

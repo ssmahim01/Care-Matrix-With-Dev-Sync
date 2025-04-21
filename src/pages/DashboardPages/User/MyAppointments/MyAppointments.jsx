@@ -137,7 +137,7 @@ const MyAppointments = () => {
                             </TableRow>
                         ))
                     ) : (
-                        appointments?.map((appointment, index) => (
+                        appointments.reverse()?.map((appointment, index) => (
                             <TableRow key={appointment._id} className="hover:bg-gray-50">
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{appointment.doctorName}</TableCell>
