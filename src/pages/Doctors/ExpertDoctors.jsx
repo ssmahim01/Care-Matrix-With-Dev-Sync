@@ -108,8 +108,8 @@ const ExpertDoctors = () => {
                 <SelectValue placeholder="Sort By " />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="asc">Date (Ascending)</SelectItem>
-                <SelectItem value="desc">Date (Descending)</SelectItem>
+                <SelectItem value="asc">Fee (Ascending)</SelectItem>
+                <SelectItem value="desc">Fee (Descending)</SelectItem>
               </SelectContent>
             </Select>
 
