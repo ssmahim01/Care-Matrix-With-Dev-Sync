@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import SkeletonChatDashboard from "./SkeletonChatDashboard";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 export default function ChatDashboard({ userId, userRole }) {
@@ -65,6 +66,10 @@ export default function ChatDashboard({ userId, userRole }) {
       receiverRole: selectedPartner.role,
     });
   };
+
+  if (loadingPartners) {
+    return <SkeletonChatDashboard />;
+  }
 
   return (
     <Card className="shadow-lg">
