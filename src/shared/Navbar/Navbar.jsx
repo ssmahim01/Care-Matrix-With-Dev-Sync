@@ -28,6 +28,7 @@ import { Separator } from "@/components/ui/separator";
 import toast from "react-hot-toast";
 import "./Navbar.css";
 import useCart from "@/hooks/useCart";
+import CartDropdown from "./CartDropdown";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -324,7 +325,7 @@ const Navbar = () => {
                 </ul>
               </>
 
-              <div className="md:flex items-center gap-4 hidden">
+              <div className="md:flex items-center gap-2 hidden">
                 <Link to="/emergency">
                   <Button
                     className={`${
@@ -336,14 +337,9 @@ const Navbar = () => {
                   </Button>{" "}
                 </Link>{" "}
                 {user && role === "patient" && (
-                  <Link to="/dashboard/patient/manage-cart">
-                    <button className="cursor-pointer mr-4 relative text-blue-500 flex items-center space-x-2">
-                      <FaShoppingCart size={30} />
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {cart?.length}
-                      </span>
-                    </button>
-                  </Link>
+                  <div className="mr-4">
+                    <CartDropdown />
+                  </div>
                 )}
               </div>
 
@@ -412,7 +408,7 @@ const Navbar = () => {
                             toast.success("Log out successful");
                             navigate("/");
                           }}
-                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500 bg-red-50 hover:bg-red-100 duration-300"
+                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500 bg-red-100/50 hover:bg-red-200/50 duration-300"
                         >
                           <BiLogOutCircle size={25} />
                           Logout
