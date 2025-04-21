@@ -40,11 +40,11 @@ const Blogs = () => {
     <div className="">
       {/* Section Heading */}
       <SectionHeader
-        title_1st_slice={"BLOG"}
+        title_1st_slice={"BLOGS"}
         title_2nd_slice={"&"}
         title_3rd_slice={"NEWS"}
         subTitle={
-          "Explore Our Latest Blogs & News."
+          "Stay informed with the latest insights and updates in healthcare \n through our Blogs & News section"
         }
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-5">
