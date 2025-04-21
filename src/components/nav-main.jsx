@@ -89,6 +89,14 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
+              <NavLink to="/dashboard/administrator/revenue-insights">
+                <h3 className="flex gap-2 items-center">
+                  <CircleDollarSign className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Revenue Insights{" "}
+                  </span>
+                </h3>
+              </NavLink>
               <NavLink to="/dashboard/administrator/manage-users">
                 <h3 className="flex gap-2 items-center">
                   <Users className="text-base" />
@@ -143,14 +151,6 @@ export function NavMain() {
                   <CreditCard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Billing & Payments{" "}
-                  </span>
-                </h3>
-              </NavLink>
-              <NavLink to="/dashboard/administrator/revenue-insights">
-                <h3 className="flex gap-2 items-center">
-                  <CircleDollarSign className="text-base" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Revenue Insights{" "}
                   </span>
                 </h3>
               </NavLink>
