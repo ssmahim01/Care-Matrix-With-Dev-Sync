@@ -172,7 +172,7 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <LayoutDashboard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Overview{" "}
+                    Doctor Overview{" "}
                   </span>
                 </h3>
               </NavLink>
