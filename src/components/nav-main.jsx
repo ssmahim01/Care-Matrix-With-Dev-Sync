@@ -193,7 +193,7 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/billing-history">
+              <NavLink to="/dashboard/doctor/billing-history">
                 <h3 className="flex gap-2 items-center">
                   <History className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
@@ -201,14 +201,14 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/medical-records">
+              {/* <NavLink to="/dashboard/medical-records">
                 <h3 className="flex gap-2 items-center">
                   <Hospital className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Medical Records{" "}
                   </span>
                 </h3>
-              </NavLink>
+              </NavLink> */}
               <div className="divider"></div>
             </>
           )}

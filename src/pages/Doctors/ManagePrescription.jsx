@@ -3,7 +3,7 @@ import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 
 function ManagePrescription() {
   return (
-    <div className="p-2 md:w-11/12 mx-auto ">
+    <div className="px-4 md:px-7">
       <DashboardPagesHeader
         title={"Manage Prescriptions"}
         subtitle={

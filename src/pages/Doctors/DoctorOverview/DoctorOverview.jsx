@@ -1,11 +1,5 @@
-
 const DoctorOverview = () => {
-    return (
-        <div>
-            DoctorOverview
-            DoctorOverview
-        </div>
-    );
+  return <div className="px-7">DoctorOverview Coming Soon.....</div>;
 };
 
 export default DoctorOverview;
