@@ -9,7 +9,7 @@ import {
 
 import useRole from "@/hooks/useRole";
 import { logOut, useAuthLoading } from "@/redux/auth/authActions";
-import { Award, BedIcon, Contact, Moon, Siren, X } from "lucide-react";
+import { Award, BedIcon, Moon, Siren, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CiMenuFries } from "react-icons/ci";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -20,6 +20,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import toast from "react-hot-toast";
+import CartDropdown from "./CartDropdown";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -96,16 +97,17 @@ const Navbar = () => {
       <div className="fixed z-20 w-full bg-[#f3f6f9] shadow-sm border-b border-[#f3f6f9]">
         {location.pathname === "/" && (
           <div
-            className={`top-0 left-1/2 z-50 transition-all duration-300 w-full ${
-              showImage
-                ? "opacity-100 translate-y-0 pointer-events-auto h-auto"
-                : "opacity-0 -translate-y-full pointer-events-none h-0 overflow-hidden"
-            }`}
+            // className={`top-0 left-1/2 z-50 w-full transition-all duration-300 ease-in-out transform ${
+            //   showImage
+            //     ? "visible translate-y-0 max-h-[200px] pointer-events-auto"
+            //     : "hidden -translate-y-full max-h-0 pointer-events-none"
+            // } overflow-hidden`}
+            className="w-full"
           >
             <img
               src="https://zenui.net/palestine-banner.svg"
               alt="Free Palestine"
-              className="w-full"
+              className="w-full max-h-[60px] object-cover"
             />
           </div>
         )}
@@ -316,13 +318,22 @@ const Navbar = () => {
                 </ul>
               </>
 
-              <div className="md:block hidden">
+              <div className="md:flex items-center gap-2 hidden">
                 <Link to="/emergency">
-                  <Button className="mr-2 bg-red-100 hover:bg-red-200 tracking-tight text-red-500 cursor-pointer">
+                  <Button
+                    className={`${
+                      user && role === "patient" ? "" : "mr-4"
+                    } bg-red-100 hover:bg-red-200 tracking-tight text-red-500 cursor-pointer`}
+                  >
                     <span>Emergency</span>
                     <Siren className="text-base" />
                   </Button>{" "}
-                </Link>
+                </Link>{" "}
+                {user && role === "patient" && (
+                  <div className="mr-4">
+                    <CartDropdown />
+                  </div>
+                )}
               </div>
 
               {loading || isLoading ? (
@@ -365,7 +376,7 @@ const Navbar = () => {
                           role === "administrator"
                             ? "/dashboard/administrator-overview"
                             : role === "doctor"
-                            ? "/dashboard"
+                            ? "/dashboard/doctor-overview"
                             : role === "pharmacist"
                             ? "/dashboard/pharmacist-overview"
                             : role === "patient"
@@ -390,7 +401,7 @@ const Navbar = () => {
                             toast.success("Log out successful");
                             navigate("/");
                           }}
-                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500 bg-red-50 hover:bg-red-100 duration-300"
+                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500 bg-red-100/50 hover:bg-red-200/50 duration-300"
                         >
                           <BiLogOutCircle size={25} />
                           Logout

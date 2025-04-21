@@ -1,5 +1,6 @@
-import HeroSearch from "@/pages/Home/Hero/HeroSearch";
-import { motion } from "framer-motion";
+import React, { lazy, Suspense } from "react";
+import { motion, LazyMotion, domAnimation } from "framer-motion";
+const HeroSearch = lazy(() => import("@/pages/Home/Hero/HeroSearch"));
 
 export default function Hero() {
   return (
@@ -36,7 +37,7 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl py-16 lg:py-20">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -59,7 +60,7 @@ export default function Hero() {
               <span className="block mt-2">Management With Care Matrix</span>
             </h1>
 
-            <p className="text-base md:text-lg font-medium text-white/90 max-w-[600px]">
+            <p className="text-base md:text-lg font-medium text-white max-w-[600px]">
               Empower your hospital with an all-in-one management system. From
               patient appointments to medical records and staff coordination,
               Care Matrix ensures efficiency, accuracy, and seamless healthcare

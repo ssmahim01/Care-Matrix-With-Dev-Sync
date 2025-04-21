@@ -18,16 +18,7 @@ import {
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 // Custom Tooltip Component for better styling
 const CustomTooltip = ({ active, payload, label }) => {
@@ -44,7 +35,7 @@ const CustomTooltip = ({ active, payload, label }) => {
           })}
         </p>
         <p className="text-purple-600 font-medium">
-          Earnings: ৳
+          Earnings: $
           {earnings.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -76,56 +67,33 @@ export function AdministratorAnalytics({ chartData }) {
   });
 
   return (
-    <Card className="shadow-lg">
-      <CardHeader className="flex flex-wrap md:items-center gap-2 space-y-0 border-b py-5 sm:flex-row flex-col">
+    <Card>
+      <CardHeader className="space-y-0 py-3 border-b">
         <div className="grid flex-1 gap-1 text-left">
           <CardTitle className="text-2xl font-bold text-gray-800">
             Patient Growth & Earnings
           </CardTitle>
           <CardDescription className="text-gray-600">
-            Showing total patients and earnings for the last{" "}
-            {timeRange === "90d"
-              ? "3 months"
-              : timeRange === "30d"
-              ? "30 days"
-              : "7 days"}
+            Showing total patients and earnings.
           </CardDescription>
         </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger
-            className="w-[160px] rounded-lg sm:ml-auto border-gray-300 focus:ring-2 focus:ring-purple-500"
-            aria-label="Select a value"
-          >
-            <SelectValue placeholder="Last 3 months" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
-              Last 3 months
-            </SelectItem>
-            <SelectItem value="30d" className="rounded-lg">
-              Last 30 days
-            </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
-              Last 7 days
-            </SelectItem>
-          </SelectContent>
-        </Select>
+        
       </CardHeader>
       <CardContent className="px-4 pt-6 sm:px-8 sm:pt-8">
         {filteredData.length === 0 ? (
-          <div className="flex justify-center items-center h-[350px]">
+          <div className="flex justify-center items-center h-[320px]">
             <p className="text-gray-500 text-lg">
               No data available for the selected time range.
             </p>
           </div>
         ) : (
-          <ChartContainer className="aspect-auto h-[350px] w-full">
+          <ChartContainer className="aspect-auto w-full h-[320px]">
             <AreaChart data={filteredData}>
               <defs>
                 <linearGradient id="fillEarnings" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="#8884d8" // Purple for earnings
+                    stopColor="#8884d8"
                     stopOpacity={0.6}
                   />
                   <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1} />
@@ -133,7 +101,7 @@ export function AdministratorAnalytics({ chartData }) {
                 <linearGradient id="fillPatients" x1="0" y1="0" x2="0" y2="1">
                   <stop
                     offset="5%"
-                    stopColor="#82ca9d" // Green for patients
+                    stopColor="#82ca9d"
                     stopOpacity={0.7}
                   />
                   <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.1} />
@@ -162,13 +130,13 @@ export function AdministratorAnalytics({ chartData }) {
               <YAxis
                 yAxisId="earnings"
                 orientation="left"
-                tickFormatter={(value) => `৳${value.toLocaleString()}`}
+                tickFormatter={(value) => `$${value.toLocaleString()}`}
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
                 tick={{ fill: "#6b7280", fontSize: 12 }}
                 label={{
-                  value: "Earnings (৳)",
+                  value: "Earnings ($)",
                   angle: -90,
                   position: "insideLeft",
                   offset: -5,
@@ -186,7 +154,7 @@ export function AdministratorAnalytics({ chartData }) {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                domain={[0, "auto"]} // Dynamic domain for patients
+                domain={[0, "auto"]}
                 tick={{ fill: "#6b7280", fontSize: 12 }}
                 label={{
                   value: "Patients (count)",

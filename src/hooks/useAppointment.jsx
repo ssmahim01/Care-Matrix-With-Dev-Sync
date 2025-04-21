@@ -3,16 +3,17 @@ import React from 'react';
 import useAxiosSecure from './useAxiosSecure';
 import { useSelector } from 'react-redux';
 
-const useAppointment = () => {
+const useAppointment = (sortDate) => {
+    console.log("sort date from ", sortDate);
 
     const axiosSecure = useAxiosSecure();
     const { user } = useSelector((state) => state.auth);
 
     const { data: appointments = [], isPending, isLoading, refetch } = useQuery({
-        queryKey: "appointments",
+        queryKey: ["appointments", sortDate],
         enabled: !!user,
         queryFn: async () => {
-            const { data } = await axiosSecure.get(`/appointments/${user?.email}`)
+            const { data } = await axiosSecure.get(`/appointments/${user?.email}?sort=${sortDate}`)
             return data;
         }
     })

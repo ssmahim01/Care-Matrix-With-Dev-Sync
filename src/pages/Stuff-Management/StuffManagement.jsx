@@ -1,17 +1,24 @@
-import { Suspense } from "react"
-import { StaffManagementSkeleton } from "./staff-management-skeleton"
-import { StaffManagement } from "./staff-management"
-
+import { Suspense } from "react";
+import { StaffManagementSkeleton } from "./staff-management-skeleton";
+import { StaffManagement } from "./staff-management";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { Users } from "lucide-react";
 
 const StuffManagement = () => {
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-6">Staff Management</h1>
+    <div className="px-7">
+      <DashboardPagesHeader
+        title={"Manage-Users"}
+        subtitle={
+          "This section allows you to manage all registered users, including viewing profiles,updating roles, \n tracking activity, and controlling access to the system."
+        }
+        icon={Users}
+      />
       <Suspense fallback={<StaffManagementSkeleton />}>
         <StaffManagement />
       </Suspense>
     </div>
-  )
-}
+  );
+};
 
-export default StuffManagement
+export default StuffManagement;

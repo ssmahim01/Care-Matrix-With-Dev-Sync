@@ -14,6 +14,7 @@ import {
   BedSingle,
   BriefcaseMedical,
   CalendarDays,
+  CircleDollarSign,
   ClipboardPlus,
   Contact,
   CreditCard,
@@ -30,6 +31,7 @@ import {
   Sparkles,
   Stethoscope,
   TicketSlash,
+  UserPlus,
   Users,
 } from "lucide-react";
 import { FaTruck } from "react-icons/fa";
@@ -91,12 +93,28 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <Users className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Manage Staffs{" "}
+                    Manage Users{" "}
+                  </span>
+                </h3>
+              </NavLink>{" "}
+              <NavLink to="/dashboard/administrator/doctors">
+                <h3 className="flex gap-2 items-center tracking-[-0.2px]">
+                  <IdCardIcon className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Manage Doctors{" "}
+                  </span>
+                </h3>
+              </NavLink>
+              <NavLink to="/dashboard/administrator/assign-users">
+                <h3 className="flex gap-2 items-center">
+                  <UserPlus className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Assign New User{" "}
                   </span>
                 </h3>
               </NavLink>
               <NavLink to="/dashboard/administrator/manage-doctors">
-                <h3 className="flex gap-2 items-center">
+                <h3 className="flex gap-2 items-center tracking-wide">
                   <FaUserDoctor size={25} className="text-base " />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Doctor Requests{" "}
@@ -120,19 +138,19 @@ export function NavMain() {
                 </h3>
               </NavLink>
              */}
-              <NavLink to="/dashboard/administrator/doctors">
-                <h3 className="flex gap-2 items-center">
-                  <IdCardIcon className="text-base" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Manage Doctors{" "}
-                  </span>
-                </h3>
-              </NavLink> 
               <NavLink to="/dashboard/administrator/manage-billing-payments">
                 <h3 className="flex gap-2 items-center">
                   <CreditCard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Billing & Payments{" "}
+                  </span>
+                </h3>
+              </NavLink>
+              <NavLink to="/dashboard/administrator/revenue-insights">
+                <h3 className="flex gap-2 items-center">
+                  <CircleDollarSign className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Revenue Insights{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -150,11 +168,11 @@ export function NavMain() {
           {/* Doctor Dashboard Menu */}
           {role === "doctor" && (
             <>
-              <NavLink to="/dashboard/administrator-overview">
+              <NavLink to="/dashboard/doctor-overview">
                 <h3 className="flex gap-2 items-center">
                   <LayoutDashboard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Overview{" "}
+                    Doctor Overview{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -162,35 +180,35 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <CalendarDays className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    My Appointments{" "}
+                    Patient Appointments{" "}
+                  </span>
+                </h3>
+              </NavLink>{" "}
+              <NavLink to="/dashboard/doctor/manage-prescription">
+                <h3 className="flex gap-2 items-center">
+                  <ClipboardPlus className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    {" "}
+                    Manage Prescriptions{" "}
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/billing-history">
+              <NavLink to="/dashboard/doctor/billing-history">
                 <h3 className="flex gap-2 items-center">
                   <History className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Billing History{" "}
+                    My Billing History{" "}
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/medical-records">
+              {/* <NavLink to="/dashboard/medical-records">
                 <h3 className="flex gap-2 items-center">
                   <Hospital className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Medical Records{" "}
                   </span>
                 </h3>
-              </NavLink>
-              <NavLink to="/dashboard/my-prescriptions">
-                <h3 className="flex gap-2 items-center">
-                  <ClipboardPlus className="text-base" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    {" "}
-                    My Prescriptions{" "}
-                  </span>
-                </h3>
-              </NavLink>
+              </NavLink> */}
               <div className="divider"></div>
             </>
           )}
@@ -422,7 +440,7 @@ export function NavMain() {
   );
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className={"overflow-y-auto"}>
       <SidebarMenu>
         <Collapsible asChild className="group/collapsible">
           <SidebarMenuItem>

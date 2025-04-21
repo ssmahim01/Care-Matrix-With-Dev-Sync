@@ -17,7 +17,9 @@ import { BsCurrencyDollar } from 'react-icons/bs';
 
 const DoctorDetails = () => {
     const { user } = useSelector((state) => state.auth);
-    const [doctors] = useDoctors();
+      const [search, setSearch] = useState("")
+      const [selectedSort, setSelectedSort] = useState("")
+    const [doctors] = useDoctors(search, selectedSort);
     const axiosSecure = useAxiosSecure();
     const location = useLocation();
 
@@ -26,7 +28,7 @@ const DoctorDetails = () => {
     // State for active tab
     const [activeTab, setActiveTab] = useState('About');
 
-
+console.log("doctor data is ,", doctorInfo);
     const timeSlots = [
         "10:00 am",
         "10:30 am",

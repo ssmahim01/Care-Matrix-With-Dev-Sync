@@ -33,7 +33,8 @@ const ManageAppointments = () => {
     const [showSkeleton, setShowSkeleton] = useState(true);
     const [openModal, setOpenModal] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
-    const [appointments, refetch, isLoading] = useAppointment();
+    const [selectedSort, setSelectedSort] = useState("")
+    const [appointments, refetch, isLoading] = useAppointment(sortDate);
 
     useEffect(() => {
         const timer = setTimeout(() => setShowSkeleton(false), 2000);
@@ -92,18 +93,12 @@ const ManageAppointments = () => {
                 toast.err("Something went wrong try again.")
 
             })
-
     }
 
 
-    const sortedAppointments = [...appointments]?.sort((a, b) => {
-        if (sortDate === "asc") {
-            return new Date(a.date) - new Date(b.date);
-        } else if (sortDate === "desc") {
-            return new Date(b.date) - new Date(a.date);
-        }
-        return 0;
-    });
+    const handleSortByDate = (value) => {
+        setSortDate(value);
+    }
 
     return (
         <div className="p-7">
@@ -116,7 +111,10 @@ const ManageAppointments = () => {
 
                 {/* Sort Controls */}
                 <div className="flex gap-4 mb-6 items-center flex-wrap">
-                    <Select value={sortDate} onValueChange={setSortDate}>
+                    <Select value={selectedSort} onValueChange={(value) => {
+                        handleSortByDate(value);
+                        setSelectedSort(value);
+                    }}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Sort By" />
                         </SelectTrigger>
@@ -125,126 +123,126 @@ const ManageAppointments = () => {
                             <SelectItem value="desc">Date (Descending)</SelectItem>
                         </SelectContent>
                     </Select>
-                    <Button onClick={() => setSortDate("")}>Reset</Button>
+                    <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); }}>Reset</Button>
                 </div>
             </div>
 
             {/* Table */}
-                <Table className="rounded-md border border-gray-300 mt-4">
-                     <TableCaption className="mb-2">A list of all appointments.</TableCaption>
-                    <TableHeader>
-                        <TableRow className="bg-muted/50 border-b">
-                            <TableHead>Sl.</TableHead>
-                            <TableHead>Doctor</TableHead>
-                            <TableHead>Patient</TableHead>
-                            <TableHead>Age</TableHead>
-                            <TableHead>Phone</TableHead>
-                            <TableHead>Email</TableHead>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Action</TableHead>
-                        </TableRow>
-                    </TableHeader>
+            <Table className="rounded-md border border-gray-300 mt-4">
+                <TableCaption className="mb-2">A list of all appointments.</TableCaption>
+                <TableHeader>
+                    <TableRow className="bg-muted/50 border-b">
+                        <TableHead>Sl.</TableHead>
+                        <TableHead>Doctor</TableHead>
+                        <TableHead>Patient</TableHead>
+                        <TableHead>Age</TableHead>
+                        <TableHead>Phone</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Action</TableHead>
+                    </TableRow>
+                </TableHeader>
 
-                    <TableBody>
-                        {isLoading || showSkeleton ? (
-                            [...Array(9)].map((_, idx) => (
-                                <TableRow key={idx} className="animate-pulse">
-                                    <TableCell>
-                                        <div className="h-8 w-8 bg-muted rounded"></div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-4 w-20 bg-muted rounded"></div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-8 w-20 bg-muted rounded"></div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-8 w-8 bg-muted rounded"></div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-8 w-24 bg-muted rounded"></div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-8 w-28 bg-muted rounded"></div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-8 w-16 bg-muted rounded"></div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-8 w-24 bg-muted rounded"></div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="h-8 w-10 bg-muted rounded"></div>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        ) : (
-                            sortedAppointments?.map((appointment, index) => (
-                                <TableRow
-                                    key={appointment._id}
-                                    className="hover:bg-muted/50 border-b"
-                                >
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{appointment.doctorName}</TableCell>
-                                    <TableCell>{appointment.name}</TableCell>
-                                    <TableCell>{appointment.age}</TableCell>
-                                    <TableCell>{appointment.phone}</TableCell>
-                                    <TableCell>{appointment.email}</TableCell>
-                                    <TableCell>{appointment.date}</TableCell>
-                                    <TableCell>
-                                        <div className="flex items-center gap-2">
-                                            <span
-                                                className={`text-xs p-1 rounded-full ${appointment.status === "pending"
-                                                        ? "bg-yellow-500"
-                                                        : "bg-green-600"
-                                                    } text-white`}
+                <TableBody>
+                    {isLoading || showSkeleton ? (
+                        [...Array(9)].map((_, idx) => (
+                            <TableRow key={idx} className="animate-pulse">
+                                <TableCell>
+                                    <div className="h-8 w-8 bg-muted rounded"></div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="h-4 w-20 bg-muted rounded"></div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="h-8 w-20 bg-muted rounded"></div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="h-8 w-8 bg-muted rounded"></div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="h-8 w-24 bg-muted rounded"></div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="h-8 w-28 bg-muted rounded"></div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="h-8 w-16 bg-muted rounded"></div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="h-8 w-24 bg-muted rounded"></div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="h-8 w-10 bg-muted rounded"></div>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    ) : (
+                        appointments.reverse()?.map((appointment, index) => (
+                            <TableRow
+                                key={appointment._id}
+                                className="hover:bg-muted/50 border-b"
+                            >
+                                <TableCell>{index + 1}</TableCell>
+                                <TableCell>{appointment.doctorName}</TableCell>
+                                <TableCell>{appointment.name}</TableCell>
+                                <TableCell>{appointment.age}</TableCell>
+                                <TableCell>{appointment.phone}</TableCell>
+                                <TableCell>{appointment.email}</TableCell>
+                                <TableCell>{appointment.date}</TableCell>
+                                <TableCell>
+                                    <div className="flex items-center gap-2">
+                                        <span
+                                            className={`text-xs p-1 rounded-full ${appointment.status === "pending"
+                                                ? "bg-yellow-500"
+                                                : "bg-green-600"
+                                                } text-white`}
+                                        >
+                                            <FaCircle size={7} />
+                                        </span>
+                                        <span className="capitalize text-sm font-medium text-foreground">
+                                            {appointment.status}
+                                        </span>
+                                    </div>
+                                </TableCell>
+                                <TableCell>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" size="icon">
+                                                <MoreVertical className="h-5 w-5 text-foreground" />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem
+                                                onClick={() => handleChangeAppointmentStatus(appointment)}
+                                                className="flex items-center gap-2"
                                             >
-                                                <FaCircle size={7} />
-                                            </span>
-                                            <span className="capitalize text-sm font-medium text-foreground">
-                                                {appointment.status}
-                                            </span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="icon">
-                                                    <MoreVertical className="h-5 w-5 text-foreground" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuItem
-                                                    onClick={() => handleChangeAppointmentStatus(appointment)}
-                                                    className="flex items-center gap-2"
-                                                >
-                                                    <ClipboardPlus size={16} />
-                                                    {appointment?.status === "pending" ? "Confirm Appointment" : "Make Pending Appointment"}
-                                                </DropdownMenuItem>
+                                                <ClipboardPlus size={16} />
+                                                {appointment?.status === "pending" ? "Confirm Appointment" : "Make Pending Appointment"}
+                                            </DropdownMenuItem>
 
-                                                <DropdownMenuItem
-                                                    onClick={() => handleDetails(appointment)}
-                                                    className="flex items-center gap-2"
-                                                >
-                                                    <BiDetail size={16} />
-                                                    View Details
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem
-                                                    onClick={() => handleDeleteAppointment(appointment._id)}
-                                                    className="flex items-center gap-2"
-                                                >
-                                                    <Trash size={16} />
-                                                    Cancel Appointment
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
+                                            <DropdownMenuItem
+                                                onClick={() => handleDetails(appointment)}
+                                                className="flex items-center gap-2"
+                                            >
+                                                <BiDetail size={16} />
+                                                View Details
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={() => handleDeleteAppointment(appointment._id)}
+                                                className="flex items-center gap-2"
+                                            >
+                                                <Trash size={16} />
+                                                Cancel Appointment
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    )}
+                </TableBody>
+            </Table>
 
             {/* Modal */}
             {selectedAppointment && (
