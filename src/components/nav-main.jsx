@@ -168,7 +168,7 @@ export function NavMain() {
           {/* Doctor Dashboard Menu */}
           {role === "doctor" && (
             <>
-              <NavLink to="/dashboard/administrator-overview">
+              <NavLink to="/dashboard/doctor-overview">
                 <h3 className="flex gap-2 items-center">
                   <LayoutDashboard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
@@ -183,12 +183,21 @@ export function NavMain() {
                     Patient Appointments{" "}
                   </span>
                 </h3>
+              </NavLink>{" "}
+              <NavLink to="/dashboard/doctor/manage-prescription">
+                <h3 className="flex gap-2 items-center">
+                  <ClipboardPlus className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    {" "}
+                    Manage Prescriptions{" "}
+                  </span>
+                </h3>
               </NavLink>
               <NavLink to="/dashboard/billing-history">
                 <h3 className="flex gap-2 items-center">
                   <History className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Billing History{" "}
+                    My Billing History{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -197,15 +206,6 @@ export function NavMain() {
                   <Hospital className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Medical Records{" "}
-                  </span>
-                </h3>
-              </NavLink>
-              <NavLink to="/dashboard/doctor/manage-prescription">
-                <h3 className="flex gap-2 items-center">
-                  <ClipboardPlus className="text-base" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    {" "}
-                    Manage Prescriptions{" "}
                   </span>
                 </h3>
               </NavLink>

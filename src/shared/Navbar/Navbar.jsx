@@ -376,7 +376,7 @@ const Navbar = () => {
                           role === "administrator"
                             ? "/dashboard/administrator-overview"
                             : role === "doctor"
-                            ? "/dashboard"
+                            ? "/dashboard/doctor-overview"
                             : role === "pharmacist"
                             ? "/dashboard/pharmacist-overview"
                             : role === "patient"
