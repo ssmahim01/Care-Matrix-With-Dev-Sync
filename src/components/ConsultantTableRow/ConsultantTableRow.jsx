@@ -18,6 +18,12 @@ import toast from "react-hot-toast";
 import { removeSpecificDoctor } from "@/redux/doctors/consultantSlice";
 import InfoModal from "../DoctorInfoModal/InfoModal";
 import { useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ConsultantTableRow = ({
   consultant,
@@ -57,13 +63,34 @@ const ConsultantTableRow = ({
           referrerPolicy="no-referrer"
         />
       </TableCell>
-      <TableCell className="font-medium">{consultant?.name}</TableCell>
+      <TableCell>
+        <div className="font-medium flex flex-col gap-1">
+          <h6>
+            Name: <span className="font-normal">{consultant?.name}</span>
+          </h6>
+          <h6>
+            Email: <span className="font-normal">{consultant?.email}</span>
+          </h6>
+        </div>
+      </TableCell>
       <TableCell>{consultant?.title}</TableCell>
       <TableCell>{consultant?.experience}</TableCell>
       <TableCell>
         {consultant?.schedule
           ? new Date(consultant?.schedule).toLocaleDateString("en-UK")
           : "N/A"}
+      </TableCell>
+      <TableCell className="max-w-18 truncate">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild className="cursor-pointer">
+              <span>{consultant?.shift}</span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{consultant?.shift}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </TableCell>
       <TableCell>{consultant?.consultation_fee}</TableCell>
       <TableCell>
