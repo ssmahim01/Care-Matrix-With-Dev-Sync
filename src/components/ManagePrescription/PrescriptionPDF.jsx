@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 10,
     marginBottom: 5,
+    maxWidth: 208,
   },
   table: {
     display: "table",
@@ -109,8 +110,8 @@ export function PrescriptionPDF({ prescription }) {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.title}>Medical Prescription</Text>
-          <Text style={styles.subtitle}>CareMatrix Health Services</Text>
+          <Text style={styles.title}>Care Matrix</Text>
+          <Text style={styles.subtitle}>Medical Report</Text>
           <Text style={styles.subtitle}>
             Prescription Date: {prescription.date || today}
           </Text>
