@@ -1,6 +1,6 @@
 import useAppointment from '@/hooks/useAppointment';
 import useDoctors from '@/hooks/useDoctors';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaStar, FaPhoneAlt, FaCalendarAlt, FaClock, FaUser } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
@@ -8,7 +8,9 @@ import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 
 const BookAppointment = () => {
-    const [doctors] = useDoctors();
+      const [search, setSearch] = useState("")
+      const [selectedSort, setSelectedSort] = useState("")
+    const [doctors] = useDoctors(search, selectedSort);
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [appointments] = useAppointment();
