@@ -6,30 +6,30 @@ const Blogs = () => {
   const blogs = [
     {
       image:
-        "https://images.unsplash.com/photo-1576091160399-112e338460ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-      date: "18 Jul 2023",
+        "/Nurse-Practitioner-vs-Doctor.jpg",
+      date: "15 Apr 2025",
       category1: "Doctor",
-      category2: "Clinic",
-      title: "Docure – Making your clinic painless?",
+     
+      title: "Doccure – Making your clinic painless visit?",
       description:
         "Explore the benefits & challenges of virtual healthcare appointments, along with tips for making good...",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1580281658623-369597f3c188?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-      date: "28 Sep 2021",
+        "/doctor-Patient-at-Appointment-1400046250-770x533-1_jpg.webp",
+      date: "17 Apr 2025",
       category1: "Clinic",
-      category2: null,
+     
       title: "Benefits of Consulting With an Online Doctor",
       description:
         "Uncover strategies to achieve a harmonious balance between professional and personal well-being...",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1576765607924-3f7b847c0a96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-      date: "28 Sep 2021",
+        "/shutterstock_624008096.jpg",
+      date: "19 Apr 2025",
       category1: "Clinic",
-      category2: null,
+      
       title: "Benefits of online doctor booking?",
       description:
         "Explore importance of quality sleep & learn tips to improve your sleep, ensuring raise-up refreshed...",
@@ -54,7 +54,7 @@ const Blogs = () => {
             image={blog.image}
             date={blog.date}
             category1={blog.category1}
-            category2={blog.category2}
+           
             title={blog.title}
             description={blog.description}
           />
