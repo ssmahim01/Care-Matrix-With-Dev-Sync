@@ -23,7 +23,7 @@ const RevenueInsights = () => {
   } = useQuery({
     queryKey: ["revenue-insights"],
     queryFn: async () => {
-      const { data } = await axiosPublic(`/revenues-insights`);
+      const { data } = await axiosPublic(`/revenue-insights`);
       return data;
     },
   });
