@@ -4,10 +4,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useDoctorsAppointment from '@/hooks/useDoctorsAppointment';
 import DashboardPagesHeader from '@/shared/Section/DashboardPagesHeader';
 import { ClipboardPlus, MoreVertical, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { BiDetail } from 'react-icons/bi';
 import { FaCircle } from 'react-icons/fa';
 import { IoIosSearch } from 'react-icons/io';
@@ -23,6 +25,7 @@ const MyAppointmentDoctor = () => {
     const [showSkeleton, setShowSkeleton] = useState(true);
     const [selectedAppointment, setSelectedAppointment] = useState(null)
     const [openModal, setOpenModal] = useState(false)
+    const axiosSecure = useAxiosSecure()
 
 
     useEffect(() => {
@@ -40,6 +43,24 @@ const MyAppointmentDoctor = () => {
     const handleSortByDate = (value) => {
         console.log(value);
         setSortDate(value)
+    }
+
+    const handleCancelAppointment = (appointment) => {
+        console.log(appointment);
+        axiosSecure.patch(`appointments/${appointment._id}`)
+            .then(res => {
+                console.log(res);
+                if (res.data.result.modifiedCount > 0) {
+                    refetch()
+                    toast.success("Appointment canceled successful.")
+                }
+            })
+
+            .catch(err => {
+                console.log(err);
+                toast.error("Something went wrong try again.")
+
+            })
     }
 
     console.log("Doctors appointments are ", appointments);
@@ -70,7 +91,7 @@ const MyAppointmentDoctor = () => {
                     setCategory(value)
                 }}>
                     <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Categories " />
+                        <SelectValue placeholder="Categories " />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all">All</SelectItem>
@@ -102,7 +123,6 @@ const MyAppointmentDoctor = () => {
                 <TableHeader>
                     <TableRow className="bg-gray-100">
                         <TableHead>Sl.</TableHead>
-                        <TableHead>Doctor</TableHead>
                         <TableHead>Patient</TableHead>
                         <TableHead>Age</TableHead>
                         <TableHead>Phone</TableHead>
@@ -128,7 +148,6 @@ const MyAppointmentDoctor = () => {
                         appointments?.map((appointment, index) => (
                             <TableRow key={appointment._id} className="hover:bg-gray-50">
                                 <TableCell>{index + 1}</TableCell>
-                                <TableCell>{appointment.doctorName}</TableCell>
                                 <TableCell>{appointment.name}</TableCell>
                                 <TableCell>{appointment.age}</TableCell>
                                 <TableCell>{appointment.phone}</TableCell>
@@ -152,8 +171,6 @@ const MyAppointmentDoctor = () => {
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-
-
                                             <DropdownMenuItem
                                                 onClick={() => handleDetails(appointment)}
                                                 className="flex items-center gap-2"
@@ -162,7 +179,7 @@ const MyAppointmentDoctor = () => {
                                                 View Details
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
-                                                onClick={() => handleDeleteAppointment(appointment._id)}
+                                                onClick={() => handleCancelAppointment(appointment)}
                                                 className="flex items-center gap-2"
                                             >
                                                 <Trash size={16} />

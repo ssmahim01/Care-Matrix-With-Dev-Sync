@@ -26,7 +26,7 @@ const DoctorDetails = () => {
     // State for active tab
     const [activeTab, setActiveTab] = useState('About');
 
-
+console.log("doctor data is ,", doctorInfo);
     const timeSlots = [
         "10:00 am",
         "10:30 am",
