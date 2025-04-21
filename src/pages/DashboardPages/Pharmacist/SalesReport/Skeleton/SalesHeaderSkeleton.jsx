@@ -22,7 +22,6 @@ const SalesHeaderSkeleton = () => {
       {/* Right section - buttons */}
       <div className="flex items-center gap-2">
         <SkeletonBox className="w-20 h-8 rounded-md" />
-        <SkeletonBox className="w-20 h-8 rounded-md" />
         <SkeletonBox className="w-32 h-8 rounded-md" />
       </div>
     </div>
