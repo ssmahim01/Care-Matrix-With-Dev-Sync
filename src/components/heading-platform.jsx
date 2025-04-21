@@ -26,7 +26,7 @@ export function HeadingPlatform() {
                   {state === "collapsed" ? (
                     <img
                       src={
-                        "https://i.ibb.co.com/3mt4Nzb5/Screenshot-2025-04-21-145618.png"
+                        "https://i.ibb.co.com/zh3rXyD3/favicon-care-matrix.png"
                       }
                       alt="Care Matrix Logo"
                       className="absolute -top-0.5"
