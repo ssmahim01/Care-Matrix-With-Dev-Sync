@@ -2,6 +2,7 @@ import DashboardLoader from "@/components/Loader/DashboardLoader";
 import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { Navigate } from "react-router";
 import useRole from "@/hooks/useRole";
+import toast from "react-hot-toast";
 
 const AdminRoute = ({ children }) => {
   const loading = useAuthLoading();
@@ -26,7 +27,9 @@ const AdminRoute = ({ children }) => {
           ? "/dashboard/receptionist-overview"
           : "/"
       }
-    />
+    >
+      {toast.error("You're not allowed to visit Admin routes!")}
+    </Navigate>
   );
 };
 
