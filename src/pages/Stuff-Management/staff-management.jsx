@@ -1,21 +1,24 @@
-
-import { useState, useEffect } from "react"
-import { Search, Filter, RefreshCw } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { StaffTable } from "./staff-table"
-import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
-import { StaffFilters } from "./staff-filters"
-import { delay } from "@/lib/stuff"
+import { useState, useEffect } from "react";
+import { Search, Filter, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { StaffTable } from "./staff-table";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { StaffFilters } from "./staff-filters";
+import { delay } from "@/lib/stuff";
 
 // Move the main component content here
 export function StaffManagement() {
-  const [showFilters, setShowFilters] = useState(false)
-  const [activeFilters, setActiveFilters] = useState({role: []})
+  const [showFilters, setShowFilters] = useState(false);
+  const [activeFilters, setActiveFilters] = useState({ role: [] });
 
-  const { data = [],isLoading,refetch} = useQuery({
+  const {
+    data = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["user-requests"],
     queryFn: async () => {
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/user-requests`)
@@ -23,23 +26,23 @@ export function StaffManagement() {
         setStaff(newStaff)
         return newStaff
     },
-  })
+  });
 
-  const [staff, setStaff] = useState(data)
-  const [filteredStaff, setFilteredStaff] = useState(staff)
+  const [staff, setStaff] = useState(data);
+  const [filteredStaff, setFilteredStaff] = useState(staff);
 
   // Update staff when data changes
   useEffect(() => {
     if (data && data.length > 0) {
-      setStaff(data)
+      setStaff(data);
     }
-  }, [data])
+  }, [data]);
 
   // Update filtered staff when data or filters change
   useEffect(() => {
     if (!staff) {
-      setFilteredStaff(null)
-      return
+      setFilteredStaff(null);
+      return;
     }
 
     if (!staff || !Array.isArray(staff)) {
@@ -51,18 +54,20 @@ export function StaffManagement() {
 
     // Apply role filters
     if (activeFilters.role.length > 0) {
-      result = result.filter((member) => activeFilters.role.includes(member.role))
+      result = result.filter((member) =>
+        activeFilters.role.includes(member.role)
+      );
     }
 
-    setFilteredStaff(result)
-  }, [staff, activeFilters])
+    setFilteredStaff(result);
+  }, [staff, activeFilters]);
 
   const handleSearch = async (e) => {
-    const search = e.target.value.toLowerCase()
+    const search = e.target.value.toLowerCase();
 
     if (search.trim() === "") {
-      refetch()
-      return
+      refetch();
+      return;
     }
 
     try {
@@ -72,9 +77,12 @@ export function StaffManagement() {
       const newStaff = response.data.filter(dat=> dat.requestedRole !== "Doctor")
       setStaff(newStaff)
     } catch (error) {
-      console.error("Error searching staff, falling back to client-side search:", error)
+      console.error(
+        "Error searching staff, falling back to client-side search:",
+        error
+      );
       // Fallback to client-side filtering if the search endpoint fails
-      const filtered = (staff).filter(
+      const filtered = staff.filter(
         (member) =>
           member?.name.toLowerCase().includes(search) ||
           member?.email.toLowerCase().includes(search) ||
@@ -82,11 +90,11 @@ export function StaffManagement() {
       )
       setStaff(filtered)
     }
-  }
+  };
 
   const handleFilterChange = (filters) => {
-    setActiveFilters(filters)
-  }
+    setActiveFilters(filters);
+  };
 
   return (
     <div className="space-y-6">
@@ -111,16 +119,20 @@ export function StaffManagement() {
               className={activeFilters.role.length > 0 ? "bg-primary/10" : ""}
               aria-expanded={showFilters}
             >
-              <Filter className={`h-4 w-4 ${activeFilters.role.length > 0 ? "text-primary" : ""}`} />
+              <Filter
+                className={`h-4 w-4 ${
+                  activeFilters.role.length > 0 ? "text-primary" : ""
+                }`}
+              />
               <span className="sr-only">Toggle filters</span>
             </Button>
             <Button
               variant="outline"
               size="icon"
               onClick={async () => {
-                setStaff(null)
-                await delay(500)
-                refetch()
+                setStaff(null);
+                await delay(500);
+                refetch();
               }}
               disabled={isLoading}
             >
@@ -145,10 +157,13 @@ export function StaffManagement() {
         </div>
 
         <TabsContent className="mt-6">
-          <StaffTable staff={filteredStaff} isLoading={isLoading && !staff} refetch={refetch} />
+          <StaffTable
+            staff={filteredStaff}
+            isLoading={isLoading && !staff}
+            refetch={refetch}
+          />
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
-

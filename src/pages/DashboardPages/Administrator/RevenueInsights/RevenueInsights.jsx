@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import PatientInsights from "./PatientInsights";
 import DoctorInsights from "./DoctorInsights";
 import DoctorChart from "./DoctorChart";
+import toast from "react-hot-toast";
+import RevenueInsightsSkeleton from "./RevenueInsightsSkeleton";
 
 const RevenueInsights = () => {
   const axiosPublic = useAxiosPublic();
@@ -26,8 +28,8 @@ const RevenueInsights = () => {
     },
   });
 
-  if (isLoading) return "Loading....";
-  if (error) return "Error....";
+  if (isLoading) return <RevenueInsightsSkeleton />;
+  if (error) return toast.error("Error While Fetching Data!");
 
   return (
     <div className="px-7">
@@ -90,7 +92,7 @@ const RevenueInsights = () => {
         <TabsContent value="doctor-insights">
           <DoctorChart
             doctorData={revenueInsights?.doctorPerformance
-              .sort(() => 0.5 - Math.random())
+              ?.sort(() => 0.5 - Math.random())
               .slice(0, 3)}
           />
           <DoctorInsights doctorInsights={revenueInsights?.doctorPerformance} />

@@ -27,7 +27,6 @@ const MyAppointmentDoctor = () => {
     const [openModal, setOpenModal] = useState(false)
     const axiosSecure = useAxiosSecure()
 
-
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowSkeleton(false);

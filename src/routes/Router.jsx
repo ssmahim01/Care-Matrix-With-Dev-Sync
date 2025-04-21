@@ -64,7 +64,10 @@ import AllDoctors from "@/pages/DashboardPages/Administrator/AllDoctors";
 import Departments from "@/pages/Departments/Departments";
 import RevenueInsights from "@/pages/DashboardPages/Administrator/RevenueInsights/RevenueInsights";
 import MyAppointmentDoctor from "@/pages/Doctors/MyAppointmentDoctor";
+import ManagePrescription from "@/pages/Doctors/ManagePrescription";
 import AssignUsers from "@/pages/DashboardPages/Administrator/AssignUsers/AssignUsers";
+import DoctorOverview from "@/pages/Doctors/DoctorOverview/DoctorOverview";
+import DoctorBillingHistory from "@/pages/Doctors/DoctorBillingHistory/DoctorBillingHistory";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -274,10 +277,18 @@ const Router = () => {
         />
 
         {/* Doctors Routes */}
-        <Route path="/dashboard/my-appointments"
-        element={
-          <MyAppointmentDoctor />
-        }
+        <Route path="/dashboard/doctor-overview" element={<DoctorOverview />} />
+        <Route
+          path="/dashboard/doctor/billing-history"
+          element={<DoctorBillingHistory />}
+        />
+        <Route
+          path="/dashboard/my-appointments"
+          element={<MyAppointmentDoctor />}
+        />
+        <Route
+          path="/dashboard/doctor/manage-prescription"
+          element={<ManagePrescription />}
         />
 
         {/* Receptionist Routes */}

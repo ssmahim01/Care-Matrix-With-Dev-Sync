@@ -13,6 +13,8 @@ import WhyChooseUs from "./WhyChooseUs";
 import Chat from "@/components/Home/Chat";
 import EidGreetingSection from "./EidGreetingSection";
 import { Profiler } from "react";
+import Blogs from "./Blogs_and_News/Blogs";
+
 
 function onRenderCallback(
   id,
@@ -93,6 +95,10 @@ const Home = () => {
       {/* FAQ */}
       <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
         <Faq />
+      </div>
+      {/* blog  */}
+      <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
+        <Blogs />
       </div>
     </section>
   );

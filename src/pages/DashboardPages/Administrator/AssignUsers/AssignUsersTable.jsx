@@ -211,19 +211,19 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                         <>
                           <DropdownMenuItem
                             className="cursor-pointer"
-                            onSelect={(e) => {
-                              e.preventDefault();
-                              setDialogOpen(true);
-                            }}
+                            // onSelect={(e) => {
+                            //   e.preventDefault();
+                            //   setDialogOpen(true);
+                            // }}
                           >
                             <Eye className="w-4 h-4 mr-2" />
                             Doctor Profile
                           </DropdownMenuItem>
-                          <DoctorProfileDialog
+                          {/* <DoctorProfileDialog
                             open={dialogOpen}
                             setOpen={setDialogOpen}
                             doctor={user?.email}
-                          />
+                          /> */}
                         </>
                       )}
                       {user?.role !== "doctor" && (
