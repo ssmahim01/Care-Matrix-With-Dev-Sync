@@ -68,6 +68,7 @@ import ManagePrescription from "@/pages/Doctors/ManagePrescription";
 import AssignUsers from "@/pages/DashboardPages/Administrator/AssignUsers/AssignUsers";
 import DoctorOverview from "@/pages/Doctors/DoctorOverview/DoctorOverview";
 import DoctorBillingHistory from "@/pages/Doctors/DoctorBillingHistory/DoctorBillingHistory";
+import PatientChat from "@/pages/Patient/PatientChat/PatientChat";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -331,6 +332,7 @@ const Router = () => {
           element={<PatientOverview />}
         />
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
+        <Route path="/dashboard/patient-chat" element={<PatientChat />} />
         <Route
           path="/dashboard/patient/rewards"
           element={<RewardsDashboard />}
