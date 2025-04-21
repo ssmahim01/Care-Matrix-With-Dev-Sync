@@ -3,15 +3,17 @@ import useDoctors from "@/hooks/useDoctors";
 import SectionHeader from "@/shared/Section/SectionHeader";
 import { easeIn, motion } from "framer-motion";
 
-import React from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import DoctorCardSkeleton from "../Doctors/DoctorCardSkeleton";
 
 const Doctors = () => {
-  const [doctors, isLoading] = useDoctors();
-
+  const [search, setSearch] = useState("")
+  const [selectedSort, setSelectedSort] = useState("")
+  const [doctors, isLoading] = useDoctors(search, selectedSort);
+  
   let settings = {
     dots: false,
     infinite: true,
