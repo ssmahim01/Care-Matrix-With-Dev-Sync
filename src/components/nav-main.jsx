@@ -168,11 +168,11 @@ export function NavMain() {
           {/* Doctor Dashboard Menu */}
           {role === "doctor" && (
             <>
-              <NavLink to="/dashboard/administrator-overview">
+              <NavLink to="/dashboard/doctor-overview">
                 <h3 className="flex gap-2 items-center">
                   <LayoutDashboard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Overview{" "}
+                    Doctor Overview{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -183,23 +183,7 @@ export function NavMain() {
                     Patient Appointments{" "}
                   </span>
                 </h3>
-              </NavLink>
-              <NavLink to="/dashboard/billing-history">
-                <h3 className="flex gap-2 items-center">
-                  <History className="text-base" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Billing History{" "}
-                  </span>
-                </h3>
-              </NavLink>
-              <NavLink to="/dashboard/medical-records">
-                <h3 className="flex gap-2 items-center">
-                  <Hospital className="text-base" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Medical Records{" "}
-                  </span>
-                </h3>
-              </NavLink>
+              </NavLink>{" "}
               <NavLink to="/dashboard/doctor/manage-prescription">
                 <h3 className="flex gap-2 items-center">
                   <ClipboardPlus className="text-base" />
@@ -209,6 +193,22 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
+              <NavLink to="/dashboard/doctor/billing-history">
+                <h3 className="flex gap-2 items-center">
+                  <History className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    My Billing History{" "}
+                  </span>
+                </h3>
+              </NavLink>
+              {/* <NavLink to="/dashboard/medical-records">
+                <h3 className="flex gap-2 items-center">
+                  <Hospital className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Medical Records{" "}
+                  </span>
+                </h3>
+              </NavLink> */}
               <div className="divider"></div>
             </>
           )}

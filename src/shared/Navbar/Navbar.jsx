@@ -1,11 +1,5 @@
 import { BiLogInCircle, BiLogOutCircle } from "react-icons/bi";
-import {
-  FaHome,
-  FaInfoCircle,
-  FaMapMarkerAlt,
-  FaPager,
-  FaShoppingCart,
-} from "react-icons/fa";
+import { FaHome, FaInfoCircle, FaMapMarkerAlt, FaPager } from "react-icons/fa";
 
 import {
   MdDashboard,
@@ -15,7 +9,7 @@ import {
 
 import useRole from "@/hooks/useRole";
 import { logOut, useAuthLoading } from "@/redux/auth/authActions";
-import { Award, BedIcon, Contact, Moon, Siren, X } from "lucide-react";
+import { Award, BedIcon, Moon, Siren, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CiMenuFries } from "react-icons/ci";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -26,9 +20,8 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import toast from "react-hot-toast";
-import "./Navbar.css";
-import useCart from "@/hooks/useCart";
 import CartDropdown from "./CartDropdown";
+import "./Navbar.css";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -40,7 +33,6 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.auth);
   const loading = useAuthLoading();
   const [role, isLoading] = useRole();
-  const [cart] = useCart();
 
   const [showImage, setShowImage] = useState(true);
 
@@ -105,16 +97,17 @@ const Navbar = () => {
       <div className="fixed z-20 w-full bg-[#f3f6f9] shadow-sm border-b border-[#f3f6f9]">
         {location.pathname === "/" && (
           <div
-            className={`top-0 left-1/2 z-50 transition-all duration-300 w-full ${
-              showImage
-                ? "opacity-100 translate-y-0 pointer-events-auto h-auto"
-                : "opacity-0 -translate-y-full pointer-events-none h-0 overflow-hidden"
-            }`}
+            // className={`top-0 left-1/2 z-50 w-full transition-all duration-300 ease-in-out transform ${
+            //   showImage
+            //     ? "visible translate-y-0 max-h-[200px] pointer-events-auto"
+            //     : "hidden -translate-y-full max-h-0 pointer-events-none"
+            // } overflow-hidden`}
+            className="w-full"
           >
             <img
               src="https://zenui.net/palestine-banner.svg"
               alt="Free Palestine"
-              className="w-full"
+              className="w-full max-h-[60px] object-cover"
             />
           </div>
         )}
@@ -383,7 +376,7 @@ const Navbar = () => {
                           role === "administrator"
                             ? "/dashboard/administrator-overview"
                             : role === "doctor"
-                            ? "/dashboard"
+                            ? "/dashboard/doctor-overview"
                             : role === "pharmacist"
                             ? "/dashboard/pharmacist-overview"
                             : role === "patient"

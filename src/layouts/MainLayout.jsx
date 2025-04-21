@@ -1,8 +1,13 @@
-import Footer from "@/shared/Footer/Footer";
-import Navbar from "@/shared/Navbar/Navbar";
-import { useEffect } from "react";
-import { Outlet, ScrollRestoration, useLocation } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
+
+// Lazy load components
+const Navbar = lazy(() => import("@/shared/Navbar/Navbar"));
+const Footer = lazy(() => import("@/shared/Footer/Footer"));
+const MainLayoutLoader = lazy(() =>
+  import("@/components/Loader/MainLayoutLoader")
+);
 
 const MainLayout = () => {
   const { pathname } = useLocation();
@@ -12,17 +17,16 @@ const MainLayout = () => {
   }, [pathname]);
 
   return (
-    <div>
-      {/* Shared Navbar component */}
-      <Navbar />
-      {/* All contents wrapping inside of the outlet*/}
-      <div className="min-h-[calc(100vh-313px)] py-8">
-        <Outlet />
+    <Suspense fallback={<MainLayoutLoader />}>
+      <div>
+        <Navbar />
+        <div className="min-h-[calc(100vh-313px)] py-8">
+          <Outlet />
+        </div>
+        <Footer />
+        <Toaster />
       </div>
-      {/* Shared Footer component */}
-      <Footer />
-      <Toaster />
-    </div>
+    </Suspense>
   );
 };
 

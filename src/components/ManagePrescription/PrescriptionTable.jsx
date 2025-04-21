@@ -154,7 +154,7 @@ export function PrescriptionTable() {
   // const [appointments, isLoading, refetch] = useDoctorsAppointment(search);
   // console.log(appointments);
   const axiosSecure = useAxiosSecure();
-  const { data: approvedPatient = [] } = useQuery({
+  const { data: approvedPatient = [], refetch } = useQuery({
     queryKey: ["approvedPatient", user.email, search],
     enabled: !!user,
     queryFn: async () => {
@@ -164,7 +164,7 @@ export function PrescriptionTable() {
       return data;
     },
   });
-  console.log(approvedPatient);
+  // console.log(approvedPatient);
 
   const handleViewPrescription = async (patient) => {
     setSelectedPatient(patient);
@@ -214,8 +214,9 @@ export function PrescriptionTable() {
       success: <b>Prescription Given</b>,
       error: <b>Unable to prescribe</b>,
     });
+    refetch();
     setIsPrescriptionModalOpen(false);
-  };
+};
 
   return (
     <div className="space-y-4">
@@ -258,11 +259,13 @@ export function PrescriptionTable() {
                 </TableCell>
               </TableRow>
             ) : (
-              currentPatients.map((patient) => (
+              currentPatients?.reverse().map((patient) => (
                 <TableRow key={patient._id}>
                   <TableCell className="font-medium">{patient.name}</TableCell>
                   <TableCell>{patient.age}</TableCell>
-                  <TableCell>{patient.reason}</TableCell>
+                  <TableCell className={"max-w-28 overflow-x-auto"}>
+                    {patient.reason}
+                  </TableCell>
                   <TableCell>
                     <div className="flex flex-col">
                       <span>{patient.date}</span>
@@ -316,12 +319,12 @@ export function PrescriptionTable() {
                           <Pill className="mr-2 h-4 w-4" />
                           Give Prescription
                         </DropdownMenuItem>
-                        <DropdownMenuItem
+                        {/* <DropdownMenuItem
                           onClick={() => handleDeletePatient(patient)}
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
                           Delete
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

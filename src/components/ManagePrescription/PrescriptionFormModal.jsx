@@ -70,7 +70,7 @@ export function PrescriptionFormModal({ patient, isOpen, onClose, onSubmit }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-teal-700">
+          <DialogTitle className="text-xl font-semibold ">
             Create Prescription
           </DialogTitle>
           <DialogDescription>
