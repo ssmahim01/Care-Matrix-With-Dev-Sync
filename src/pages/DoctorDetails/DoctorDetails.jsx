@@ -17,7 +17,9 @@ import { BsCurrencyDollar } from 'react-icons/bs';
 
 const DoctorDetails = () => {
     const { user } = useSelector((state) => state.auth);
-    const [doctors] = useDoctors();
+      const [search, setSearch] = useState("")
+      const [selectedSort, setSelectedSort] = useState("")
+    const [doctors] = useDoctors(search, selectedSort);
     const axiosSecure = useAxiosSecure();
     const location = useLocation();
 
