@@ -37,7 +37,7 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl py-16 lg:py-20">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
