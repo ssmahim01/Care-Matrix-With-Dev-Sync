@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 
@@ -11,11 +11,6 @@ const MainLayoutLoader = lazy(() =>
 
 const MainLayout = () => {
   const { pathname } = useLocation();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
