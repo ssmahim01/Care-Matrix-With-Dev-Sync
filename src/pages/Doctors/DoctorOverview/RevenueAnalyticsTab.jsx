@@ -9,6 +9,9 @@ import {
 import {
   Bar,
   BarChart,
+  Cell,
+  Pie,
+  PieChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -38,6 +41,22 @@ const formatDate = (dateString) => {
     day: "numeric",
   });
 };
+const pieColors = [
+  "#10b981",
+  "#34d399",
+  "#6ee7b7",
+  "#a7f3d0",
+  "#d1fae5",
+  "#99f6e4",
+  "#5eead4",
+  "#2dd4bf",
+  "#14b8a6",
+  "#0d9488",
+];
+
+function getColor(index) {
+  return pieColors[index % pieColors.length];
+}
 
 const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
   const appointmentChartData = Object.entries(appointmentsPerDay).map(
@@ -119,32 +138,47 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
           </CardContent>
         </Card>
 
-        <Card
-          className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
-        >
+        <Card className="border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
           <CardHeader>
-            <CardTitle>Appointments</CardTitle>
-            <CardDescription>Daily appointment count</CardDescription>
+            <CardTitle className="text-lg font-semibold text-primary">
+              Appointments
+            </CardTitle>
+            <CardDescription>Appointment distribution by date</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-80">
+            <div className="h-80 flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={appointmentChartData}>
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Bar
-                    dataKey="appointments"
-                    fill="#10b981"
-                    radius={[4, 4, 0, 0]}
+                <PieChart>
+                  <Tooltip
+                    content={
+                      <CustomTooltip label="Date" valueLabel="Appointments" />
+                    }
                   />
-                </BarChart>
+                  <Pie
+                    data={appointmentChartData.map((item) => ({
+                      name: formatDate(item.date, "MM/dd"),
+                      value: item.appointments,
+                    }))}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    fill="#10b981"
+                    label={({ name }) => name}
+                  >
+                    {appointmentChartData.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={getColor(index)} />
+                    ))}
+                  </Pie>
+                </PieChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>
       </div>
 
+      {/* Revenue Details */}
       <Card
         className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
       >
