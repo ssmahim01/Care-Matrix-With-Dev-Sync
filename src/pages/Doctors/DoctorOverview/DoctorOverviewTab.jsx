@@ -44,11 +44,10 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
         >
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
-              Recent Appointments
+              <Calendar className="h-5 w-5" />5 Recent Appointments
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className={"-mt-4"}>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -100,14 +99,15 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
           </CardContent>
         </Card>
         {/* Prescriptions */}
-        <Card className="border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
+        <Card
+          className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+        >
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              Recent Prescriptions
+              <FileText className="h-5 w-5" />5 Recent Prescriptions
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className={"-mt-4"}>
             <Table>
               <TableHeader>
                 <TableRow>

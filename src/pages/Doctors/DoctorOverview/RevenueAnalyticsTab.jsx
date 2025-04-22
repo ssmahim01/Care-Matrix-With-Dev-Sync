@@ -68,6 +68,7 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
 
   return (
     <div className="space-y-6">
+      {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card
           className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
@@ -111,7 +112,9 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
         </Card>
       </div>
 
+      {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Revenue */}
         <Card
           className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
         >
@@ -120,24 +123,34 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
             <CardDescription>Daily revenue breakdown</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={revenueByDates.map((item) => ({
-                    date: formatDate(item.date),
-                    revenue: item.totalRevenue,
-                  }))}
-                >
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip content={<CustomTooltip valuePrefix="$" />} />
-                  <Bar dataKey="revenue" fill="#4f46e5" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="h-80 flex items-center justify-center">
+              {revenueByDates && revenueByDates.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={revenueByDates.map((item) => ({
+                      date: formatDate(item.date),
+                      revenue: item.totalRevenue,
+                    }))}
+                  >
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip content={<CustomTooltip valuePrefix="$" />} />
+                    <Bar
+                      dataKey="revenue"
+                      fill="#4f46e5"
+                      radius={[4, 4, 0, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="text-center text-gray-500">
+                  No revenue data available.
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
-
+        {/* Appointments */}
         <Card className="border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-primary">
@@ -147,32 +160,38 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
           </CardHeader>
           <CardContent>
             <div className="h-80 flex items-center justify-center">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Tooltip
-                    content={
-                      <CustomTooltip label="Date" valueLabel="Appointments" />
-                    }
-                  />
-                  <Pie
-                    data={appointmentChartData.map((item) => ({
-                      name: formatDate(item.date, "MM/dd"),
-                      value: item.appointments,
-                    }))}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    fill="#10b981"
-                    label={({ name }) => name}
-                  >
-                    {appointmentChartData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={getColor(index)} />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
+              {appointmentChartData && appointmentChartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Tooltip
+                      content={
+                        <CustomTooltip label="Date" valueLabel="Appointments" />
+                      }
+                    />
+                    <Pie
+                      data={appointmentChartData.map((item) => ({
+                        name: formatDate(item.date, "MM/dd"),
+                        value: item.appointments,
+                      }))}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#10b981"
+                      label={({ name }) => name}
+                    >
+                      {appointmentChartData.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={getColor(index)} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="text-center text-gray-500">
+                  No Appointments Data Available!
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
