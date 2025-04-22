@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import DoctorProfile from "./DoctorProfile";
 import DoctorOverviewTab from "./DoctorOverviewTab";
 import RevenueAnalyticsTab from "./RevenueAnalyticsTab";
+import DoctorOverviewSkeleton from "./DoctorOverviewSkeleton";
 
 const DoctorOverview = () => {
   const user = useAuthUser();
@@ -25,7 +26,7 @@ const DoctorOverview = () => {
     },
   });
 
-  if (isLoading) return "Loading Doctor Overview...";
+  if (isLoading) return <DoctorOverviewSkeleton />;
   if (error) return toast.error("Error While Fetching Data!");
 
   return (
