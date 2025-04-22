@@ -7,6 +7,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import useRole from "@/hooks/useRole";
+import "../shared/Navbar/Navbar.css";
 import { useAuthLoading } from "@/redux/auth/authActions";
 import {
   Award,
@@ -276,7 +277,7 @@ export function NavMain() {
                   <LayoutDashboard className="text-base" /> Overview
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/patient-chat">
+              <NavLink to="/dashboard/patient/patient-chat">
                 <h3 className="flex gap-2 items-center">
                   <MessageSquareText className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>

@@ -332,7 +332,7 @@ const Router = () => {
           element={<PatientOverview />}
         />
         <Route path="/dashboard/patient/manage-cart" element={<Cart />} />
-        <Route path="/dashboard/patient-chat" element={<PatientChat />} />
+        <Route path="/dashboard/patient/patient-chat" element={<PatientChat />} />
         <Route
           path="/dashboard/patient/rewards"
           element={<RewardsDashboard />}

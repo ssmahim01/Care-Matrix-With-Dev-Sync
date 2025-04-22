@@ -1,30 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import ChatDashboard from "@/pages/ChatDashboard/ChatDashboard";
 import { useAuthUser } from "@/redux/auth/authActions";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { CalendarIcon, MessagesSquare, TrendingUp } from "lucide-react";
+import { format } from "date-fns";
+import { Badge } from "@/components/ui/badge";
 
 const PatientChat = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuthUser();
+  const currentDate = format(new Date(), "MMMM d, yyyy");
 
   // Fetch patient details
-  const {
-    data: patient,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["patient", user?.uid],
+  const { data: patient, isLoading, error } = useQuery({
+    queryKey: ["patient", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users/me/${user?.uid}`);
+      const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
+      // console.log("Patient data response:", res.data);
       return res.data.data;
     },
+    retry: 1,
+    staleTime: 1000 * 60 * 5,
   });
 
   if (isLoading) {
-    return <div className="flex justify-center items-center py-20">
+    return (
+      <div className="flex justify-center items-center py-20">
         <span className="text-gray-600 font-semibold">Loading...</span>
-    </div>;
+      </div>
+    );
   }
 
   if (error || !patient) {
@@ -33,18 +38,27 @@ const PatientChat = () => {
 
   return (
     <div className="space-y-2">
-      <Card>
-        <CardHeader>
-          <h1 className="text-2xl font-bold">Welcome, {patient.name}</h1>
-        </CardHeader>
-        <CardContent>
-          <p>
-            Manage your appointments and consult with doctors and pharmacists.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border">
+        <div>
+          <DashboardPagesHeader
+            title={`Welcome, ${patient.name}`}
+            subtitle=" Manage your appointments and consult with doctors and pharmacists."
+            icon={MessagesSquare}
+          />
+          <div className="flex items-center gap-2 mt-2">
+            <Badge variant="outline" className="text-muted-foreground">
+              <CalendarIcon className="mr-1 h-3 w-3" />
+              {currentDate}
+            </Badge>
+            <Badge variant="outline" className="text-muted-foreground">
+              <TrendingUp className="mr-1 h-3 w-3" />
+              Last 30 days
+            </Badge>
+          </div>
+        </div>
+      </div>
 
-      <ChatDashboard userId={patient._id} userRole="patient" />
+      <ChatDashboard userEmail={patient.email} userRole="patient" />
     </div>
   );
 };
