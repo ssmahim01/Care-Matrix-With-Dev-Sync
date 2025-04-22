@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import DoctorProfile from "./DoctorProfile";
 import DoctorOverviewTab from "./DoctorOverviewTab";
+import RevenueAnalyticsTab from "./RevenueAnalyticsTab";
 
 const DoctorOverview = () => {
   const user = useAuthUser();
@@ -33,7 +34,11 @@ const DoctorOverview = () => {
       {/* Tab Container */}
       <Tabs defaultValue="overview" className="mt-8 space-y-4">
         {/* All Tablist */}
-        <TabsList className="border w-full md:w-9/12 lg:w-7/12 flex flex-col lg:flex-row ">
+        <TabsList
+          className="border w-full 
+          :::md:w-9/12 :::lg:w-7/12 flex flex-col lg:flex-row 
+          "
+        >
           <TabsTrigger
             value="overview"
             className={"cursor-pointer py-2 px-4 w-full "}
@@ -41,7 +46,7 @@ const DoctorOverview = () => {
             Overview
           </TabsTrigger>
           <TabsTrigger
-            value="Revenue"
+            value="revenue"
             className={"cursor-pointer py-2 px-4 w-full "}
           >
             Revenue Analytics
@@ -54,6 +59,13 @@ const DoctorOverview = () => {
             appointments={doctorData.appointments}
             prescriptions={doctorData.prescriptions}
           />
+        </TabsContent>
+        <TabsContent value="revenue" className="space-y-6">
+        <RevenueAnalyticsTab
+              stats={doctorData.stats}
+              revenueByDates={doctorData.revenueByDates}
+              appointmentsPerDay={doctorData.appointmentsPerDay}
+            />
         </TabsContent>
       </Tabs>
     </div>

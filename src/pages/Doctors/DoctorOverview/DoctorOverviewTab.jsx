@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 
 const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
   return (
-    <div className="space-y-6 mt-6">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Patients"
@@ -37,7 +37,7 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
+        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <Calendar className="h-5 w-5" />
@@ -85,7 +85,7 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <FileText className="h-5 w-5" />
@@ -130,7 +130,7 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Rating
@@ -149,7 +149,7 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Avg. Revenue Per Appointment
@@ -162,7 +162,7 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Unique Patients
@@ -183,7 +183,9 @@ export default DoctorOverviewTab;
 
 const StatCard = ({ title, value, icon }) => {
   return (
-    <Card>
+    <Card
+      className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
@@ -192,7 +194,7 @@ const StatCard = ({ title, value, icon }) => {
           {icon}
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="-mt-6">
         <div className="text-2xl font-bold">{value}</div>
       </CardContent>
     </Card>
