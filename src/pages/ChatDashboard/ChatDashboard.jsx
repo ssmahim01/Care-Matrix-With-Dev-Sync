@@ -1,11 +1,33 @@
-"use client";
 import { useState } from "react";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SkeletonChatDashboard from "./SkeletonChatDashboard";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import {
+  CircleUser,
+  ContactRound,
+  EllipsisVertical,
+  Mail,
+  MessageCircle,
+  ShieldPlus,
+  Trash,
+} from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 const ChatDashboard = ({ userEmail, userRole }) => {
   const axiosSecure = useAxiosSecure();
@@ -18,20 +40,21 @@ const ChatDashboard = ({ userEmail, userRole }) => {
     queryKey: ["chatPartners", userEmail],
     queryFn: async () => {
       const res = await axiosSecure.get(`/chat/messages/chats/${userEmail}`);
-      console.log("Chat partners:", res.data.data);
+      // console.log("Chat partners:", res.data.data);
       return res.data.data;
     },
   });
 
-  // Fetch all doctors (for inviting)
-  const { data: doctors = [], isLoading: loadingDoctors } = useQuery({
-    queryKey: ["doctors"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/chat/doctors");
-      console.log("Doctors:", res.data.data);
-      return res.data.data;
-    },
-  });
+  // Fetch all doctors and pharmacists (for inviting)
+  const { data: professionals = [], isLoading: loadingProfessionals } =
+    useQuery({
+      queryKey: ["professionals"],
+      queryFn: async () => {
+        const res = await axiosSecure.get("/chat/professionals");
+        // console.log("Professionals:", res.data.data);
+        return res.data.data;
+      },
+    });
 
   // Fetch messages for the selected partner with polling
   const { data: messages = [], isLoading: loadingMessages } = useQuery({
@@ -41,11 +64,11 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       const res = await axiosSecure.get(
         `/chat/messages/${userEmail}/${selectedPartner.email}`
       );
-      console.log("Messages:", res.data.data);
+      // console.log("Messages:", res.data.data);
       return res.data.data.messages || res.data.data;
     },
     enabled: !!selectedPartner,
-    refetchInterval: 5000,
+    refetchInterval: 2000,
   });
 
   // Mutation for sending a message
@@ -66,9 +89,6 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       );
       setNewMessage("");
     },
-    onError: (error) => {
-      console.error("Error sending message:", error);
-    },
   });
 
   // Handle sending a message
@@ -84,70 +104,65 @@ const ChatDashboard = ({ userEmail, userRole }) => {
     });
   };
 
-  // Filter doctors who are not already in chatPartners
-  const potentialDoctorsToInvite = doctors.filter(
-    (doctor) =>
-      !chatPartners.some((partner) => partner.email === doctor.email)
+  // Filter doctors and pharmacists who are not already in chatPartners
+  const potentialProfessionalsToInvite = professionals.filter(
+    (professional) =>
+      !chatPartners.some((partner) => partner.email === professional.email)
   );
 
-  if (loadingPartners || loadingDoctors) {
-    // return <SkeletonChatDashboard />;
-    <div>Loading...</div>
-  }
+  // if (loadingPartners || loadingProfessionals) {
+  //   return <SkeletonChatDashboard />;
+  // }
 
   return (
     <Card className="shadow-lg">
       <CardHeader>
         <h2 className="text-xl font-semibold">Chat Dashboard</h2>
         <p className="text-sm text-muted-foreground">
-          Communicate with {userRole === "patient" ? "doctors and pharmacists" : "patients"}
+          Communicate with{" "}
+          {userRole === "patient" ? "doctors and pharmacists" : "patients"}
         </p>
       </CardHeader>
       <CardContent className="flex flex-col lg:flex-row gap-4">
         {/* Chat Partners List */}
         <div className="w-full lg:w-1/4 border-r">
-          {/* <h3 className="text-lg font-medium mb-2">Conversations</h3> */}
-          {/* {chatPartners.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No conversations yet.</p>
+          {/* Invite Doctors and Pharmacists */}
+          <h3 className="text-lg font-medium mb-2">
+            Invite Doctors and Pharmacists
+          </h3>
+          {potentialProfessionalsToInvite.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No new doctors and pharmacists to invite.
+            </p>
           ) : (
-            <ul className="space-y-2">
-              {chatPartners.map((partner) => (
+            <ul className="space-y-2 overflow-y-scroll h-[600px] py-4">
+              {potentialProfessionalsToInvite.map((professional) => (
                 <li
-                  key={partner.email}
-                  className={`p-2 rounded cursor-pointer ${
-                    selectedPartner?.email === partner.email ? "bg-gray-200" : "hover:bg-gray-100"
-                  }`}
+                  key={professional.email}
                   onClick={() => {
-                    console.log("Selected partner:", partner);
-                    setSelectedPartner(partner);
+                    setSelectedPartner(professional);
                   }}
-                >
-                  {partner.name} ({partner.role})
-                </li>
-              ))}
-            </ul>
-          )} */}
-
-           {/* Invite Doctors Section */}
-           <h3 className="text-lg font-medium mb-2">Message Doctors</h3>
-          {potentialDoctorsToInvite.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No new doctors to invite.</p>
-          ) : (
-            <ul className="space-y-2">
-              {potentialDoctorsToInvite.map((doctor) => (
-                <li
-                  key={doctor.email}
                   className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
                 >
-                  <span>{doctor.name} ({doctor.role})</span>
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      setSelectedPartner(doctor);
-                    }}
-                  >
-                    Chat
-                  </Button>
+                  <div className="flex gap-2 items-center">
+                    <figure>
+                      <img
+                        className="w-14 h-14 rounded-full object-cover"
+                        referrerPolicy="no-referrer"
+                        src={professional?.photo}
+                        alt={professional?.name}
+                      />
+                    </figure>
+                   <p className="flex flex-col">
+                   <span className="font-medium text-sm">
+                      {professional.name}
+                    </span>
+
+                    <span className="font-medium text-cyan-500 text-sm">
+                      {professional.role}
+                    </span>
+                   </p>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -158,10 +173,95 @@ const ChatDashboard = ({ userEmail, userRole }) => {
         <div className="flex-1 flex flex-col">
           {selectedPartner ? (
             <>
-              <div className="border-b p-2">
-                <h3 className="text-lg font-medium">
-                  Chat with {selectedPartner.name} ({selectedPartner.role})
-                </h3>
+              <div className="border-b p-2 flex justify-between items-center">
+                <div className="flex gap-2 items-center">
+                  <figure>
+                    <img
+                      className="w-14 h-14 rounded-full object-cover"
+                      referrerPolicy="no-referrer"
+                      src={selectedPartner?.photo}
+                      alt={selectedPartner?.name}
+                    />
+                  </figure>
+                  <div className="flex flex-col">
+                    {" "}
+                    <p className="text-base font-semibold">
+                      {selectedPartner.name}{" "}
+                    </p>
+                    <p className="text-sm text-gray-500 font-medium">
+                      {selectedPartner?.email}
+                    </p>
+                  </div>
+                </div>
+
+                <DropdownMenu>
+                  {/* Trigger Button */}
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="cursor-pointer rounded-full p-2 bg-blue-500 hover:bg-blue-700"
+                      size="icon"
+                    >
+                      <EllipsisVertical className="w-5 text-white h-10" />
+                    </Button>
+                  </DropdownMenuTrigger>
+
+                  {/* User Info */}
+                  <DropdownMenuContent
+                    className="w-64 p-0 shadow-none rounded-lg border-t border-b-0 bg-base-200"
+                    align="end"
+                  >
+                    <Card>
+                      <figure className="p-2 h-48">
+                        <img
+                          className="w-full h-full rounded-md object-cover"
+                          referrerPolicy="no-referrer"
+                          src={selectedPartner?.photo}
+                          alt={selectedPartner?.name}
+                        />
+                      </figure>
+
+                      <DropdownMenuLabel className={"-mt-6 px-2 -mb-5"}>
+                        <div className="flex flex-col">
+                          <p className="flex gap-2 items-center">
+                            <CircleUser className="w-5 h-5" />
+                            <span className="text-lg font-semibold">
+                              {selectedPartner?.name}
+                            </span>
+                          </p>
+                          <p className="flex gap-2 items-center">
+                            <Mail className="w-4 h-4" />
+                            <span className="text-sm text-gray-700 font-medium">
+                              {selectedPartner?.email}
+                            </span>
+                          </p>
+                        </div>
+                      </DropdownMenuLabel>
+
+                      <Separator />
+
+                      <CardContent className="p-2 -mt-5 shadow-none">
+                        <ScrollArea className="max-h-48 h-fit overflow-y-auto pb-0 shadow-none">
+                          <p className="flex gap-2 items-center">
+                            <ShieldPlus className="w-4 h-4" />{" "}
+                            <span className="font-bold">Role: </span>
+                            <span className="text-sm text-gray-800 font-medium">
+                              {selectedPartner?.role}
+                            </span>
+                          </p>
+
+                          <p className="flex gap-2 items-center">
+                            <ContactRound className="w-4 h-4" />
+                            <span className="font-bold">Contact: </span>
+                            <span className="text-sm text-gray-800 font-medium">
+                              {selectedPartner?.phoneNumber ? selectedPartner?.phoneNumber : "N/A"}
+                            </span>
+                          </p>
+                        </ScrollArea>
+                      </CardContent>
+                    </Card>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               <div className="flex-1 p-4 overflow-y-auto">
                 {loadingMessages ? (
@@ -171,25 +271,57 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                     No messages yet. Start the conversation!
                   </div>
                 ) : (
-                  messages.map((msg, index) => (
-                    <div
-                      key={index}
-                      className={`mb-2 ${
-                        msg.senderEmail === userEmail ? "text-right" : "text-left"
-                      }`}
-                    >
-                      <span
-                        className={`inline-block p-2 rounded ${
-                          msg.senderEmail === userEmail ? "bg-blue-200" : "bg-gray-200"
-                        }`}
-                      >
-                        {msg.message}
-                      </span>
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(msg.timestamp).toLocaleTimeString()}
-                      </p>
-                    </div>
-                  ))
+                  messages.map((msg, index) => {
+                    // Get the current message's date
+                    const currentDate = new Date(msg.timestamp).toDateString(
+                      "en-UK"
+                    );
+                    // Get the previous message's date
+                    const prevDate =
+                      index > 0
+                        ? new Date(messages[index - 1].timestamp).toDateString(
+                            "en-UK"
+                          )
+                        : null;
+
+                    // Show date divider if this is the first message or the date has changed
+                    const showDateDivider =
+                      index === 0 || currentDate !== prevDate;
+
+                    return (
+                      <div key={index}>
+                        {showDateDivider && (
+                          <div className="flex items-center my-4">
+                            <div className="flex-1 h-px bg-gray-300"></div>
+                            <span className="text-xs text-muted-foreground mx-2">
+                              {currentDate}
+                            </span>
+                            <div className="flex-1 h-px bg-gray-300"></div>
+                          </div>
+                        )}
+                        <div
+                          className={`mb-2 ${
+                            msg.senderEmail === userEmail
+                              ? "text-right"
+                              : "text-left"
+                          }`}
+                        >
+                          <span
+                            className={`inline-block p-2 rounded-t-md rounded-br-xl ${
+                              msg.senderEmail === userEmail
+                                ? "bg-blue-200"
+                                : "bg-gray-200"
+                            }`}
+                          >
+                            {msg.message}
+                          </span>
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(msg.timestamp).toLocaleTimeString()}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })
                 )}
               </div>
               <div className="border-t p-2 flex gap-2">
@@ -202,14 +334,17 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                 <Button
                   onClick={handleSendMessage}
                   disabled={sendMessageMutation.isLoading}
+                  className={"bg-cyan-600 hover:bg-cyan-700 cursor-pointer flex gap-1 items-center"}
                 >
-                  {sendMessageMutation.isLoading ? "Sending..." : "Send"}
+                  <MessageCircle className="w-4 h-4" /> <span>{sendMessageMutation.isLoading ? "Sending..." : "Send"}</span>
                 </Button>
               </div>
             </>
           ) : (
             <div className="flex-1 flex items-center justify-center">
-              <p className="text-muted-foreground">Select a conversation to start chatting.</p>
+              <p className="text-muted-foreground">
+                Select a conversation to start chatting.
+              </p>
             </div>
           )}
         </div>
