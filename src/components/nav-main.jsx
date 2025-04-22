@@ -7,6 +7,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import useRole from "@/hooks/useRole";
+import "../shared/Navbar/Navbar.css";
 import { useAuthLoading } from "@/redux/auth/authActions";
 import {
   Award,
@@ -27,6 +28,7 @@ import {
   LayoutDashboardIcon,
   LucideBedSingle,
   MailIcon,
+  MessageSquareText,
   ShoppingCart,
   Sparkles,
   Stethoscope,
@@ -89,6 +91,14 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
+              <NavLink to="/dashboard/administrator/revenue-insights">
+                <h3 className="flex gap-2 items-center">
+                  <CircleDollarSign className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Revenue Insights{" "}
+                  </span>
+                </h3>
+              </NavLink>
               <NavLink to="/dashboard/administrator/manage-users">
                 <h3 className="flex gap-2 items-center">
                   <Users className="text-base" />
@@ -146,14 +156,6 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/administrator/revenue-insights">
-                <h3 className="flex gap-2 items-center">
-                  <CircleDollarSign className="text-base" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Revenue Insights{" "}
-                  </span>
-                </h3>
-              </NavLink>
               <NavLink to="/dashboard/administrator/contact-message">
                 <h3 className="flex gap-2 items-center">
                   <MailIcon className="text-base" />
@@ -173,6 +175,14 @@ export function NavMain() {
                   <LayoutDashboard className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Doctor Overview{" "}
+                  </span>
+                </h3>
+              </NavLink>
+              <NavLink to="/dashboard/doctor-chat">
+                <h3 className="flex gap-2 items-center">
+                  <MessageSquareText className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Chat{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -265,6 +275,14 @@ export function NavMain() {
               <NavLink to="/dashboard/patient-overview">
                 <h3 className="flex gap-2 items-center">
                   <LayoutDashboard className="text-base" /> Overview
+                </h3>
+              </NavLink>
+              <NavLink to="/dashboard/patient/patient-chat">
+                <h3 className="flex gap-2 items-center">
+                  <MessageSquareText className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Chat{" "}
+                  </span>
                 </h3>
               </NavLink>
               <NavLink

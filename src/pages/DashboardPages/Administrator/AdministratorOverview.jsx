@@ -65,7 +65,7 @@ const AdministratorOverview = () => {
   } = useQuery({
     queryKey: ["adminStats"],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await axiosSecure.get("/adminStats");
       return res.data.data;
     },
@@ -170,9 +170,9 @@ const AdministratorOverview = () => {
   const activities = activitiesData?.recentActivities || [];
 
   return (
-    <div className="space-y-4 w-11/12 mx-auto">
+    <div className="space-y-4 lg:w-full w-11/12 mx-auto">
       {/* Dashboard Summary Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
         {/* Total Doctors Card */}
         <Card className="border shadow-none border-[#e5e7eb] w-full py-6">
           <CardHeader className="flex flex-row-reverse justify-end items-center space-y-0 relative">
