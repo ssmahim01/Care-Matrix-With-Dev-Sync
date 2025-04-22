@@ -30,7 +30,8 @@ const DoctorOverview = () => {
 
   return (
     <div className="px-7">
-      <DoctorProfile doctor={doctorData.doctor} />
+      {/* Profile */}
+      <DoctorProfile doctor={doctorData?.doctor} />
       {/* Tab Container */}
       <Tabs defaultValue="overview" className="mt-8 space-y-4">
         {/* All Tablist */}
@@ -55,16 +56,16 @@ const DoctorOverview = () => {
         {/* 1st Tab Content */}
         <TabsContent value="overview" className="space-y-6">
           <DoctorOverviewTab
-            stats={doctorData.stats}
-            appointments={doctorData.appointments}
-            prescriptions={doctorData.prescriptions}
+            stats={doctorData?.stats}
+            appointments={doctorData?.appointments}
+            prescriptions={doctorData?.prescriptions}
           />
         </TabsContent>
         <TabsContent value="revenue" className="space-y-6">
           <RevenueAnalyticsTab
-            stats={doctorData.stats}
-            revenueByDates={doctorData.revenueByDates}
-            appointmentsPerDay={doctorData.appointmentsPerDay}
+            stats={doctorData?.stats}
+            revenueByDates={doctorData?.revenueByDates}
+            appointmentsPerDay={doctorData?.appointmentsPerDay}
           />
         </TabsContent>
       </Tabs>

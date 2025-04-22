@@ -16,22 +16,22 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Revenue"
-          value={`$${stats.totalRevenue}`}
+          value={`$${stats?.totalRevenue}`}
           icon={<DollarSign className="h-4 w-4" />}
         />
         <StatCard
           title="Total Appointments"
-          value={stats.totalAppointments}
+          value={stats?.totalAppointments}
           icon={<Calendar className="h-4 w-4" />}
         />
         <StatCard
           title="Total Prescriptions"
-          value={stats.totalPrescriptions}
+          value={stats?.totalPrescriptions}
           icon={<FileText className="h-4 w-4" />}
         />
         <StatCard
           title={"Treated \n Patients"}
-          value={stats.totalTreatedPatients}
+          value={stats?.totalTreatedPatients}
           icon={<Users className="h-4 w-4" />}
         />
       </div>
@@ -58,8 +58,8 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {appointments && appointments.length > 0 ? (
-                  appointments.map((appointment) => (
+                {appointments && appointments?.length > 0 ? (
+                  appointments?.map((appointment) => (
                     <TableRow key={appointment?._id}>
                       <TableCell className="font-medium">
                         {appointment?.name}
@@ -117,8 +117,8 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {prescriptions && prescriptions.length > 0 ? (
-                  prescriptions.map((prescription) => (
+                {prescriptions && prescriptions?.length > 0 ? (
+                  prescriptions?.map((prescription) => (
                     <TableRow key={prescription._id}>
                       <TableCell className="font-medium">
                         {prescription.patientName}
@@ -169,10 +169,10 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
             <div className="flex items-center gap-2">
               <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
               <span className="text-2xl font-bold">
-                {stats.averageRating.toFixed(1)}
+                {stats?.averageRating.toFixed(1)}
               </span>
               <span className="text-sm text-muted-foreground">
-                ({stats.totalVote} reviews)
+                ({stats?.totalVote} reviews)
               </span>
             </div>
           </CardContent>
@@ -188,7 +188,7 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
           </CardHeader>
           <CardContent className={"-mt-6"}>
             <div className="text-2xl font-bold">
-              ${stats.avgRevenuePerAppointment.toFixed(2)}
+              ${stats?.avgRevenuePerAppointment.toFixed(2)}
             </div>
           </CardContent>
         </Card>
@@ -203,7 +203,7 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
           </CardHeader>
           <CardContent className={"-mt-6"}>
             <div className="text-2xl font-bold">
-              {stats.uniquePatientsTreated}
+              {stats?.uniquePatientsTreated}
             </div>
           </CardContent>
         </Card>

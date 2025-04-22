@@ -59,7 +59,7 @@ function getColor(index) {
 }
 
 const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
-  const appointmentChartData = Object.entries(appointmentsPerDay).map(
+  const appointmentChartData = Object.entries(appointmentsPerDay)?.map(
     ([date, count]) => ({
       date: formatDate(date),
       appointments: count,
@@ -79,7 +79,7 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className={"-mt-6"}>
-            <div className="text-2xl font-bold">${stats.totalRevenue}</div>
+            <div className="text-2xl font-bold">${stats?.totalRevenue}</div>
           </CardContent>
         </Card>
 
@@ -92,7 +92,7 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className={"-mt-6"}>
-            <div className="text-2xl font-bold">{stats.totalAppointments}</div>
+            <div className="text-2xl font-bold">{stats?.totalAppointments}</div>
           </CardContent>
         </Card>
 
@@ -106,7 +106,7 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
           </CardHeader>
           <CardContent className={"-mt-6"}>
             <div className="text-2xl font-bold">
-              ${stats.avgRevenuePerAppointment.toFixed(2)}
+              ${stats?.avgRevenuePerAppointment.toFixed(2)}
             </div>
           </CardContent>
         </Card>
@@ -124,10 +124,10 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
           </CardHeader>
           <CardContent>
             <div className="h-80 flex items-center justify-center">
-              {revenueByDates && revenueByDates.length > 0 ? (
+              {revenueByDates && revenueByDates?.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={revenueByDates.map((item) => ({
+                    data={revenueByDates?.map((item) => ({
                       date: formatDate(item.date),
                       revenue: item.totalRevenue,
                     }))}
@@ -156,20 +156,20 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
             <CardTitle className="text-lg font-semibold text-primary">
               Appointments
             </CardTitle>
-            <CardDescription>Appointment distribution by date</CardDescription>
+            <CardDescription>Appointment count by date</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-80 flex items-center justify-center">
-              {appointmentChartData && appointmentChartData.length > 0 ? (
+              {appointmentChartData && appointmentChartData?.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Tooltip
                       content={
-                        <CustomTooltip label="Date" valueLabel="Appointments" />
+                        <CustomTooltip label="Date" valueSuffix="Appointments" />
                       }
                     />
                     <Pie
-                      data={appointmentChartData.map((item) => ({
+                      data={appointmentChartData?.map((item) => ({
                         name: formatDate(item.date, "MM/dd"),
                         value: item.appointments,
                       }))}
@@ -224,11 +224,11 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {revenueByDates && revenueByDates.length > 0 ? (
-                revenueByDates.map((item, index) => {
-                  const current = item.totalRevenue;
+              {revenueByDates && revenueByDates?.length > 0 ? (
+                revenueByDates?.map((item, index) => {
+                  const current = item?.totalRevenue;
                   const prev =
-                    index < revenueByDates.length - 1
+                    index < revenueByDates?.length - 1
                       ? revenueByDates[index + 1].totalRevenue
                       : null;
                   const change =
@@ -251,14 +251,14 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
                     ? "Revenue dropped"
                     : "No change";
 
-                  const day = new Date(item.date).toLocaleDateString("en-US", {
+                  const day = new Date(item?.date).toLocaleDateString("en-US", {
                     weekday: "long",
                   });
 
                   const status =
-                    current > 250
+                    current > 150
                       ? { label: "High", color: "bg-green-100 text-green-800" }
-                      : current > 150
+                      : current > 100
                       ? {
                           label: "Medium",
                           color: "bg-yellow-100 text-yellow-800",
@@ -267,11 +267,11 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
 
                   return (
                     <TableRow
-                      key={item.date}
+                      key={item?.date}
                       className="hover:bg-muted/50 transition-colors"
                     >
                       <TableCell className="px-6 py-4 font-medium">
-                        {item.date}
+                        {item?.date}
                       </TableCell>
                       <TableCell className="px-6 py-4">{day}</TableCell>
                       <TableCell className="px-6 py-4 text-right">
@@ -305,9 +305,9 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
                       </TableCell>
                       <TableCell className="px-6 py-4">
                         <span
-                          className={`text-sm px-3 py-1 rounded-full font-medium ${status.color}`}
+                          className={`text-sm px-3 py-1 rounded-full font-medium ${status?.color}`}
                         >
-                          {status.label}
+                          {status?.label}
                         </span>
                       </TableCell>
                     </TableRow>
