@@ -7,17 +7,17 @@ import { CalendarIcon, MessagesSquare } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 
-const PatientChat = () => {
+const DoctorChat = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuthUser();
   const currentDate = format(new Date(), "MMMM d, yyyy");
 
-  // Fetch patient details
-  const { data: patient, isLoading, error } = useQuery({
-    queryKey: ["patient", user?.email],
+  // Fetch doctor details
+  const { data: doctor, isLoading, error } = useQuery({
+    queryKey: ["doctor", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
-      // console.log("Patient data response:", res.data);
+      // console.log("Doctor data response:", res.data);
       return res.data.data;
     },
     retry: 1,
@@ -32,8 +32,8 @@ const PatientChat = () => {
     );
   }
 
-  if (error || !patient) {
-    return <div>Error: Could not load patient details.</div>;
+  if (error || !doctor) {
+    return <div>Error: Could not load doctor details.</div>;
   }
 
   return (
@@ -41,7 +41,7 @@ const PatientChat = () => {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border">
         <div>
           <DashboardPagesHeader
-            title={`Welcome, ${patient.name}`}
+            title={`Welcome, ${doctor.name}`}
             subtitle=" Manage your appointments and consult with doctors and pharmacists."
             icon={MessagesSquare}
           />
@@ -54,9 +54,9 @@ const PatientChat = () => {
         </div>
       </div>
 
-      <ChatDashboard userEmail={patient.email} userRole="patient" />
+      <ChatDashboard userEmail={doctor.email} userRole="doctor" />
     </div>
   );
 };
 
-export default PatientChat;
+export default DoctorChat;

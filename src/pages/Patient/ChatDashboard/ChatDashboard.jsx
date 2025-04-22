@@ -110,9 +110,9 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       !chatPartners.some((partner) => partner.email === professional.email)
   );
 
-  // if (loadingPartners || loadingProfessionals) {
-  //   return <SkeletonChatDashboard />;
-  // }
+  if (loadingPartners || loadingProfessionals) {
+    return <SkeletonChatDashboard />;
+  }
 
   return (
     <Card className="shadow-lg">
