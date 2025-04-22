@@ -61,11 +61,11 @@ const DoctorOverview = () => {
           />
         </TabsContent>
         <TabsContent value="revenue" className="space-y-6">
-        <RevenueAnalyticsTab
-              stats={doctorData.stats}
-              revenueByDates={doctorData.revenueByDates}
-              appointmentsPerDay={doctorData.appointmentsPerDay}
-            />
+          <RevenueAnalyticsTab
+            stats={doctorData.stats}
+            revenueByDates={doctorData.revenueByDates}
+            appointmentsPerDay={doctorData.appointmentsPerDay}
+          />
         </TabsContent>
       </Tabs>
     </div>

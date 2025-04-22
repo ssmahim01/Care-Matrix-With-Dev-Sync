@@ -37,7 +37,9 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
+        <Card
+          className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+        >
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <Calendar className="h-5 w-5" />
@@ -85,7 +87,9 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
           </CardContent>
         </Card>
 
-        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
+        <Card
+          className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+        >
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <FileText className="h-5 w-5" />
@@ -130,13 +134,15 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
+        <Card
+          className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+        >
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Rating
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className={"-mt-6"}>
             <div className="flex items-center gap-2">
               <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
               <span className="text-2xl font-bold">
@@ -149,26 +155,30 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
           </CardContent>
         </Card>
 
-        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
+        <Card
+          className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+        >
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Avg. Revenue Per Appointment
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className={"-mt-6"}>
             <div className="text-2xl font-bold">
               ${stats.avgRevenuePerAppointment.toFixed(2)}
             </div>
           </CardContent>
         </Card>
 
-        <Card className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}>
+        <Card
+          className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+        >
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Unique Patients
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className={"-mt-6"}>
             <div className="text-2xl font-bold">
               {stats.uniquePatientsTreated}
             </div>

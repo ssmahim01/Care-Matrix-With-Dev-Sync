@@ -13,6 +13,7 @@ export default function DoctorProfile({ doctor }) {
               <AvatarImage
                 src={doctor?.image || "/placeholder.svg"}
                 alt={doctor?.name}
+                className={"object-cover"}
               />
               <AvatarFallback className="rounded-md text-xl">
                 {doctor?.name
