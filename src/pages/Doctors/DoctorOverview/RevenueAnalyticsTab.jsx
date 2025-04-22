@@ -179,9 +179,7 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
       </div>
 
       {/* Revenue Details */}
-      <Card
-        className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
-      >
+      <Card className="border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
         <CardHeader>
           <CardTitle>Revenue Details</CardTitle>
           <CardDescription>Breakdown Of Revenue By Date</CardDescription>
@@ -207,94 +205,105 @@ const RevenueAnalyticsTab = ({ stats, revenueByDates, appointmentsPerDay }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {revenueByDates.map((item, index) => {
-                const current = item.totalRevenue;
-                const prev =
-                  index < revenueByDates.length - 1
-                    ? revenueByDates[index + 1].totalRevenue
-                    : null;
-                const change =
-                  prev !== null ? ((current - prev) / prev) * 100 : null;
-                const trendIcon = !prev ? (
-                  <Minus className="w-4 h-4 text-muted-foreground" />
-                ) : current > prev ? (
-                  <ArrowUpRight className="w-4 h-4 text-green-500" />
-                ) : current < prev ? (
-                  <ArrowDownRight className="w-4 h-4 text-red-500" />
-                ) : (
-                  <Minus className="w-4 h-4 text-muted-foreground" />
-                );
+              {revenueByDates && revenueByDates.length > 0 ? (
+                revenueByDates.map((item, index) => {
+                  const current = item.totalRevenue;
+                  const prev =
+                    index < revenueByDates.length - 1
+                      ? revenueByDates[index + 1].totalRevenue
+                      : null;
+                  const change =
+                    prev !== null ? ((current - prev) / prev) * 100 : null;
+                  const trendIcon = !prev ? (
+                    <Minus className="w-4 h-4 text-muted-foreground" />
+                  ) : current > prev ? (
+                    <ArrowUpRight className="w-4 h-4 text-green-500" />
+                  ) : current < prev ? (
+                    <ArrowDownRight className="w-4 h-4 text-red-500" />
+                  ) : (
+                    <Minus className="w-4 h-4 text-muted-foreground" />
+                  );
 
-                const trendText = !prev
-                  ? "No data"
-                  : current > prev
-                  ? "Revenue increased"
-                  : current < prev
-                  ? "Revenue dropped"
-                  : "No change";
+                  const trendText = !prev
+                    ? "No data"
+                    : current > prev
+                    ? "Revenue increased"
+                    : current < prev
+                    ? "Revenue dropped"
+                    : "No change";
 
-                const day = new Date(item.date).toLocaleDateString("en-US", {
-                  weekday: "long",
-                });
+                  const day = new Date(item.date).toLocaleDateString("en-US", {
+                    weekday: "long",
+                  });
 
-                const status =
-                  current > 250
-                    ? { label: "High", color: "bg-green-100 text-green-800" }
-                    : current > 150
-                    ? {
-                        label: "Medium",
-                        color: "bg-yellow-100 text-yellow-800",
-                      }
-                    : { label: "Low", color: "bg-red-100 text-red-800" };
+                  const status =
+                    current > 250
+                      ? { label: "High", color: "bg-green-100 text-green-800" }
+                      : current > 150
+                      ? {
+                          label: "Medium",
+                          color: "bg-yellow-100 text-yellow-800",
+                        }
+                      : { label: "Low", color: "bg-red-100 text-red-800" };
 
-                return (
-                  <TableRow
-                    key={item.date}
-                    className="hover:bg-muted/50 transition-colors"
-                  >
-                    <TableCell className="px-6 py-4 font-medium">
-                      {item.date}
-                    </TableCell>
-                    <TableCell className="px-6 py-4">{day}</TableCell>
-                    <TableCell className="px-6 py-4 text-right">
-                      ${current}
-                    </TableCell>
-                    <TableCell className="px-6 py-4">
-                      <div className="flex items-center gap-1">
-                        {trendIcon}
-                        <span className="text-sm text-muted-foreground">
-                          {trendText}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="px-6 py-4">
-                      {change !== null ? (
+                  return (
+                    <TableRow
+                      key={item.date}
+                      className="hover:bg-muted/50 transition-colors"
+                    >
+                      <TableCell className="px-6 py-4 font-medium">
+                        {item.date}
+                      </TableCell>
+                      <TableCell className="px-6 py-4">{day}</TableCell>
+                      <TableCell className="px-6 py-4 text-right">
+                        ${current}
+                      </TableCell>
+                      <TableCell className="px-6 py-4">
+                        <div className="flex items-center gap-1">
+                          {trendIcon}
+                          <span className="text-sm text-muted-foreground">
+                            {trendText}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-6 py-4">
+                        {change !== null ? (
+                          <span
+                            className={`text-sm font-medium ${
+                              change > 0
+                                ? "text-green-600"
+                                : change < 0
+                                ? "text-red-600"
+                                : "text-muted-foreground"
+                            }`}
+                          >
+                            {change > 0 ? "+" : ""}
+                            {change.toFixed(2)}%
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="px-6 py-4">
                         <span
-                          className={`text-sm font-medium ${
-                            change > 0
-                              ? "text-green-600"
-                              : change < 0
-                              ? "text-red-600"
-                              : "text-muted-foreground"
-                          }`}
+                          className={`text-sm px-3 py-1 rounded-full font-medium ${status.color}`}
                         >
-                          {change > 0 ? "+" : ""}
-                          {change.toFixed(2)}%
+                          {status.label}
                         </span>
-                      ) : (
-                        <span className="text-muted-foreground">—</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="px-6 py-4">
-                      <span
-                        className={`text-sm px-3 py-1 rounded-full font-medium ${status.color}`}
-                      >
-                        {status.label}
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center text-muted-foreground py-4"
+                  >
+                    No Revenue Data Available!
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </CardContent>

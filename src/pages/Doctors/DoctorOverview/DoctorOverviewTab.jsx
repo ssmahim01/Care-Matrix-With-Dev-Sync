@@ -15,9 +15,9 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Total Patients"
-          value={stats.totalTreatedPatients}
-          icon={<Users className="h-4 w-4" />}
+          title="Total Revenue"
+          value={`$${stats.totalRevenue}`}
+          icon={<DollarSign className="h-4 w-4" />}
         />
         <StatCard
           title="Total Appointments"
@@ -30,13 +30,15 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
           icon={<FileText className="h-4 w-4" />}
         />
         <StatCard
-          title="Total Revenue"
-          value={`$${stats.totalRevenue}`}
-          icon={<DollarSign className="h-4 w-4" />}
+          title={"Treated \n Patients"}
+          value={stats.totalTreatedPatients}
+          icon={<Users className="h-4 w-4" />}
         />
       </div>
 
+      {/* Tables */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Appointments */}
         <Card
           className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
         >
@@ -57,39 +59,48 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {appointments.map((appointment) => (
-                  <TableRow key={appointment._id}>
-                    <TableCell className="font-medium">
-                      {appointment.name}
-                    </TableCell>
-                    <TableCell>{appointment.date}</TableCell>
-                    <TableCell>{appointment.time}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          appointment.status === "Prescribed"
-                            ? "default"
-                            : "outline"
-                        }
-                        className={
-                          appointment.status === "Prescribed"
-                            ? "bg-green-100 text-green-800 hover:bg-green-100"
-                            : ""
-                        }
-                      >
-                        {appointment.status}
-                      </Badge>
+                {appointments && appointments.length > 0 ? (
+                  appointments.map((appointment) => (
+                    <TableRow key={appointment?._id}>
+                      <TableCell className="font-medium">
+                        {appointment?.name}
+                      </TableCell>
+                      <TableCell>{appointment?.date}</TableCell>
+                      <TableCell>{appointment?.time}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            appointment?.status === "Prescribed"
+                              ? "default"
+                              : "outline"
+                          }
+                          className={
+                            appointment?.status === "Prescribed"
+                              ? "bg-green-100 text-green-800 hover:bg-green-100"
+                              : ""
+                          }
+                        >
+                          {appointment?.status}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={4}
+                      className="text-center text-muted-foreground py-4"
+                    >
+                      No Appointments Data Found!
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </CardContent>
         </Card>
-
-        <Card
-          className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
-        >
+        {/* Prescriptions */}
+        <Card className="border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <FileText className="h-5 w-5" />
@@ -106,33 +117,45 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {prescriptions.map((prescription) => (
-                  <TableRow key={prescription._id}>
-                    <TableCell className="font-medium">
-                      {prescription.patientName}
-                    </TableCell>
-                    <TableCell>{prescription.date}</TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {prescription.medicines.map((medicine, index) => (
-                          <Badge
-                            key={index}
-                            variant="outline"
-                            className="bg-blue-50"
-                          >
-                            {medicine}
-                          </Badge>
-                        ))}
-                      </div>
+                {prescriptions && prescriptions.length > 0 ? (
+                  prescriptions.map((prescription) => (
+                    <TableRow key={prescription._id}>
+                      <TableCell className="font-medium">
+                        {prescription.patientName}
+                      </TableCell>
+                      <TableCell>{prescription.date}</TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1">
+                          {prescription.medicines.map((medicine, index) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="bg-blue-50"
+                            >
+                              {medicine}
+                            </Badge>
+                          ))}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={3}
+                      className="text-center text-muted-foreground py-4"
+                    >
+                      No Prescriptions Data Found!
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </CardContent>
         </Card>
       </div>
 
+      {/* Bottom Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card
           className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}

@@ -44,7 +44,7 @@ export default function DoctorProfile({ doctor }) {
               {doctor?.bio}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 w-full md:w-11/12 lg:w-10/12 xl:w-9/12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 w-full md:w-11/12 lg:w-10/12">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">
