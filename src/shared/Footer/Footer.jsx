@@ -134,10 +134,10 @@ const Footer = () => {
 
               <li>
                 <Link
-                  to={"/services"}
+                  to={"/pharmacy"}
                   className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Our Services
+                  Our Pharmacy
                 </Link>
               </li>
             </ul>
@@ -148,91 +148,96 @@ const Footer = () => {
 
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={`/departments/Dental Department`}
+                  state={"Dental Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Dental Department
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={`/departments/Baby Care Department`}
+                  state={" Baby Care Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Baby Care Department
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={`/departments/Neurology Department`}
+                  state={"Neurology Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Neurology Department
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/emergency"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={`/departments/Emergency Department`}
+                  state={"Emergency Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Emergency Department
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={`/departments/Surgery Department`}
+                  state={"Surgery Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Surgery Department
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
-          {/* Services */}
+          {/* Features */}
           <div>
-            <p className="font-medium text-gray-900">Services</p>
+            <p className="font-medium text-gray-900">Features</p>
 
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={`/our-available-beds`}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Orthopedic
-                </a>
+                  Our Available Beds
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={`/doctors`}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Hematology
-                </a>
-              </li>{" "}
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
-                  Pharmacology
-                </a>
+                  Book Appointment
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={`/patient-rewards`}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Neurology
-                </a>
+                  How To Get Rewards
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to={`/emergency`}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Cardiology
-                </a>
+                  Emergency Facilities
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={`/pharmacy`}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
+                >
+                  Discount Medicines
+                </Link>
               </li>
             </ul>
           </div>
