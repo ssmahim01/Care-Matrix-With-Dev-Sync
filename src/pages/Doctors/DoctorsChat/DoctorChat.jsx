@@ -21,7 +21,7 @@ const DoctorChat = () => {
       return res.data.data;
     },
     retry: 1,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 2,
   });
 
   if (isLoading) {
@@ -33,7 +33,7 @@ const DoctorChat = () => {
   }
 
   if (error || !doctor) {
-    return <div>Error: Could not load doctor details.</div>;
+    return <div>Error: Could not load doctor details</div>;
   }
 
   return (
@@ -41,8 +41,8 @@ const DoctorChat = () => {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border">
         <div>
           <DashboardPagesHeader
-            title={`Welcome, ${doctor.name}`}
-            subtitle=" Manage your appointments and consult with doctors and pharmacists."
+            title={`Welcome, Dr. ${doctor.name}`}
+            subtitle="Communicate with patients"
             icon={MessagesSquare}
           />
           <div className="flex items-center gap-2 mt-2">

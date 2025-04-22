@@ -56,6 +56,16 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       },
     });
 
+  // Fetch all patients (for inviting)
+  const { data: patients = [], isLoading: loadingPatients } = useQuery({
+    queryKey: ["patients"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/chat/patients");
+      // console.log("Patients:", res.data.data);
+      return res.data.data;
+    },
+  });
+
   // Fetch messages for the selected partner with polling
   const { data: messages = [], isLoading: loadingMessages } = useQuery({
     queryKey: ["messages", userEmail, selectedPartner?.email],
@@ -110,62 +120,110 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       !chatPartners.some((partner) => partner.email === professional.email)
   );
 
-  if (loadingPartners || loadingProfessionals) {
+  // Filter doctors and pharmacists who are not already in chatPartners
+  const potentialPatientsToInvite = patients.filter(
+    (patient) =>
+      !chatPartners.some((partner) => partner.email === patient.email)
+  );
+
+  if (loadingPartners || loadingProfessionals || loadingPatients) {
     return <SkeletonChatDashboard />;
   }
 
   return (
     <Card className="shadow-lg">
-      <CardHeader>
-        <h2 className="text-xl font-semibold">Chat Dashboard</h2>
-        <p className="text-sm text-muted-foreground">
-          Communicate with{" "}
-          {userRole === "patient" ? "doctors and pharmacists" : "patients"}
-        </p>
+      <CardHeader className={"mt-3 -mb-4"}>
+         {/* Invite Professionals and patients */}
+         <h3 className="text-lg font-medium -mb-2">
+            {patients ? "Invite Patients" : "Invite Doctors and Pharmacists"}
+          </h3>
+         <p className="text-sm font-medium text-gray-600">
+            {patients ? "Select a patient then communicate" : "Select a pharmacist or doctor then communicate"}
+          </p>
       </CardHeader>
       <CardContent className="flex flex-col lg:flex-row gap-4">
         {/* Chat Partners List */}
         <div className="w-full lg:w-1/4 border-r">
-          {/* Invite Doctors and Pharmacists */}
-          <h3 className="text-lg font-medium mb-2">
-            Invite Doctors and Pharmacists
-          </h3>
-          {potentialProfessionalsToInvite.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
-              No new doctors and pharmacists to invite.
-            </p>
-          ) : (
-            <ul className="space-y-2 overflow-y-scroll h-[600px] py-4">
-              {potentialProfessionalsToInvite.map((professional) => (
-                <li
-                  key={professional.email}
-                  onClick={() => {
-                    setSelectedPartner(professional);
-                  }}
-                  className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
-                >
-                  <div className="flex gap-2 items-center">
-                    <figure>
-                      <img
-                        className="w-14 h-14 rounded-full object-cover"
-                        referrerPolicy="no-referrer"
-                        src={professional?.photo}
-                        alt={professional?.name}
-                      />
-                    </figure>
-                   <p className="flex flex-col">
-                   <span className="font-medium text-sm">
-                      {professional.name}
-                    </span>
+          {professionals && userRole === "patient" ? (
+            <>
+              {potentialProfessionalsToInvite.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No new doctors and pharmacists to invite.
+                </p>
+              ) : (
+                <ul className="space-y-2 overflow-y-scroll h-[600px] py-4">
+                  {potentialProfessionalsToInvite.map((professional) => (
+                    <li
+                      key={professional.email}
+                      onClick={() => {
+                        setSelectedPartner(professional);
+                      }}
+                      className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                    >
+                      <div className="flex gap-2 items-center">
+                        <figure>
+                          <img
+                            className="w-14 h-14 rounded-full object-cover"
+                            referrerPolicy="no-referrer"
+                            src={professional?.photo}
+                            alt={professional?.name}
+                          />
+                        </figure>
+                        <p className="flex flex-col">
+                          <span className="font-medium text-sm">
+                            {professional.name}
+                          </span>
 
-                    <span className="font-medium text-cyan-500 text-sm">
-                      {professional.role}
-                    </span>
-                   </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                          <span className="font-medium text-cyan-500 text-sm">
+                            {professional.role}
+                          </span>
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          ) : (
+            <>
+              {potentialPatientsToInvite.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No new patients to invite.
+                </p>
+              ) : (
+                <ul className="space-y-2 overflow-y-scroll h-[600px] py-4">
+                  {potentialPatientsToInvite.map((patient) => (
+                    <li
+                      key={patient.email}
+                      onClick={() => {
+                        setSelectedPartner(patient);
+                      }}
+                      className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                    >
+                      <div className="flex gap-2 items-center">
+                        <figure>
+                          <img
+                            className="w-14 h-14 rounded-full object-cover"
+                            referrerPolicy="no-referrer"
+                            src={patient?.photo}
+                            alt={patient?.name}
+                          />
+                        </figure>
+                        <p className="flex flex-col">
+                          <span className="font-medium text-sm">
+                            {patient.name}
+                          </span>
+
+                          <span className="font-medium text-cyan-500 text-sm">
+                            {patient.role}
+                          </span>
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
           )}
         </div>
 
@@ -254,7 +312,9 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                             <ContactRound className="w-4 h-4" />
                             <span className="font-bold">Contact: </span>
                             <span className="text-sm text-gray-800 font-medium">
-                              {selectedPartner?.phoneNumber ? selectedPartner?.phoneNumber : "N/A"}
+                              {selectedPartner?.phoneNumber
+                                ? selectedPartner?.phoneNumber
+                                : "N/A"}
                             </span>
                           </p>
                         </ScrollArea>
@@ -334,9 +394,14 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                 <Button
                   onClick={handleSendMessage}
                   disabled={sendMessageMutation.isLoading}
-                  className={"bg-cyan-600 hover:bg-cyan-700 cursor-pointer flex gap-1 items-center"}
+                  className={
+                    "bg-cyan-600 hover:bg-cyan-700 cursor-pointer flex gap-1 items-center"
+                  }
                 >
-                  <MessageCircle className="w-4 h-4" /> <span>{sendMessageMutation.isLoading ? "Sending..." : "Send"}</span>
+                  <MessageCircle className="w-4 h-4" />{" "}
+                  <span>
+                    {sendMessageMutation.isLoading ? "Sending..." : "Send"}
+                  </span>
                 </Button>
               </div>
             </>
