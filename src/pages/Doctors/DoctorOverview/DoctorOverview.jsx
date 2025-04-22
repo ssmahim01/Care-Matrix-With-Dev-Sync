@@ -49,7 +49,11 @@ const DoctorOverview = () => {
         </TabsList>
         {/* 1st Tab Content */}
         <TabsContent value="overview" className="space-y-6">
-       
+          <DoctorOverviewTab
+            stats={doctorData.stats}
+            appointments={doctorData.appointments}
+            prescriptions={doctorData.prescriptions}
+          />
         </TabsContent>
       </Tabs>
     </div>
