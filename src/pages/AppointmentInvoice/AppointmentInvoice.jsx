@@ -46,6 +46,12 @@ const styles = StyleSheet.create({
   },
 });
 
+// Register the custom font
+Font.register({
+  family: "NotoSansBengali",
+  src: "/fonts/NotoSansBengali-Regular.ttf",
+});
+
 const AppointmentInvoice = ({ paymentInfo, rewardInfo }) => (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -73,7 +79,7 @@ const AppointmentInvoice = ({ paymentInfo, rewardInfo }) => (
       </View>
       <View style={styles.fieldRow}>
         <Text style={styles.label}>Amount:</Text>
-        <Text style={styles.value}>${paymentInfo.amount}</Text>
+        <Text style={styles.value}>Tk {paymentInfo.amount}</Text>
       </View>
       <View style={styles.fieldRow}>
         <Text style={styles.label}>Payment Date:</Text>

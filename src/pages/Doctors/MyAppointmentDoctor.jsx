@@ -143,8 +143,19 @@ const MyAppointmentDoctor = () => {
                                 ))}
                             </TableRow>
                         ))
-                    ) : (
-                        appointments?.map((appointment, index) => (
+                    ) : 
+                        appointments.length === 0 ? (
+                        <TableRow>
+                          <TableCell
+                            colSpan={12}
+                            className="text-center py-8 text-gray-500"
+                          >
+                            No appointments found
+                          </TableCell>
+                        </TableRow>
+                      )
+                    : (
+                        appointments.reverse()?.map((appointment, index) => (
                             <TableRow key={appointment._id} className="hover:bg-gray-50">
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{appointment.name}</TableCell>
