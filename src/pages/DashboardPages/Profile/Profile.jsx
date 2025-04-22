@@ -247,9 +247,9 @@ const Profile = () => {
       />
 
       {/* Main Section */}
-      <div className="grid grid-cols-1 md:grid-cols-5 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 xl:grid-cols-4 gap-8">
         {/* Left Column - Profile Image & Quick Info */}
-        <div className="md:col-span-2 xl:col-span-1 space-y-6">
+        <div className="lg:col-span-2 xl:col-span-1 space-y-6">
           {/* Profile Card */}
           <Card className="border shadow-none border-[#e5e7eb]">
             <div className="h-28 bg-gradient-to-r skeleton rounded-b-none rounded-t-[12.8px]" />
@@ -416,9 +416,9 @@ const Profile = () => {
           </Card>
         </div>
         {/* Right Column - Progress, & Profile Details & Edit Profile */}
-        <div className="md:col-span-3 xl:col-span-2">
+        <div className="lg:col-span-3 xl:col-span-2">
           {/* Profile Complete Progress */}
-          <Card className="border shadow-none border-[#e5e7eb]">
+          <Card className="hidden lg:flex border shadow-none border-[#e5e7eb]">
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
                 <div className="flex items-center gap-3">
@@ -426,11 +426,11 @@ const Profile = () => {
                   <div>
                     <h3 className="font-medium">Complete your profile</h3>
                     <p className="text-sm text-muted-foreground">
-                      {69}% of your profile is complete
+                      {98}% of your profile is complete
                     </p>
                   </div>
                 </div>
-                <Progress value={69} className="h-2 flex-1" />
+                <Progress value={98} className="h-2 flex-1" />
                 <Button
                   variant="outline"
                   size="sm"

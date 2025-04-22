@@ -40,7 +40,7 @@ const MyAppointmentDoctor = () => {
     };
 
     const handleSortByDate = (value) => {
-        console.log(value);
+        // console.log(value);
         setSortDate(value)
     }
 
@@ -56,15 +56,15 @@ const MyAppointmentDoctor = () => {
             })
 
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 toast.error("Something went wrong try again.")
 
             })
     }
 
-    console.log("Doctors appointments are ", appointments);
+    // console.log("Doctors appointments are ", appointments);
     return (
-        <div className='p-7'>
+        <div className='px-7'>
             <div className='flex flex-col md:flex-row justify-between'>
                 <DashboardPagesHeader
                     title={"My Appointments"}
