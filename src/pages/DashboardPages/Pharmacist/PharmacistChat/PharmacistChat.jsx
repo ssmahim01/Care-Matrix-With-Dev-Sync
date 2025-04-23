@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import ChatDashboard from "@/pages/Patient/ChatDashboard/ChatDashboard";
+import ChatDashboard from "@/components/ChatDashboard/ChatDashboard";
 import { useAuthUser } from "@/redux/auth/authActions";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { CalendarIcon, MessagesSquare } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import SkeletonChatDashboard from "@/pages/Patient/ChatDashboard/SkeletonChatDashboard";
+import SkeletonChatDashboard from "@/components/ChatDashboard/SkeletonChatDashboard";
 
 const PharmacistChat = () => {
   const axiosSecure = useAxiosSecure();
@@ -14,7 +14,11 @@ const PharmacistChat = () => {
   const currentDate = format(new Date(), "MMMM d, yyyy");
 
   // Fetch pharmacist details
-  const { data: pharmacist, isLoading, error } = useQuery({
+  const {
+    data: pharmacist,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["pharmacist", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
@@ -26,15 +30,17 @@ const PharmacistChat = () => {
   });
 
   if (isLoading) {
-    return (
-      <SkeletonChatDashboard />
-    );
+    return <SkeletonChatDashboard />;
   }
 
   if (error || !pharmacist) {
-    return <div className="flex justify-center items-center py-20">
-      <span className="text-gray-700 font-semibold">Error: Could not load pharmacist details</span>
-    </div>;
+    return (
+      <div className="flex justify-center items-center py-20">
+        <span className="text-gray-700 font-semibold">
+          Error: Could not load pharmacist details
+        </span>
+      </div>
+    );
   }
 
   return (

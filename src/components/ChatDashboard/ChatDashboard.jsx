@@ -24,10 +24,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
-import { useAuthUser } from "@/redux/auth/authActions";
 
 const ChatDashboard = ({ userEmail, userRole }) => {
-  const user = useAuthUser();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [selectedPartner, setSelectedPartner] = useState(null);
