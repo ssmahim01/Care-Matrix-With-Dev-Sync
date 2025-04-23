@@ -70,6 +70,7 @@ import DoctorOverview from "@/pages/Doctors/DoctorOverview/DoctorOverview";
 import DoctorBillingHistory from "@/pages/Doctors/DoctorBillingHistory/DoctorBillingHistory";
 import PatientChat from "@/pages/Patient/PatientChat/PatientChat";
 import DoctorChat from "@/pages/Doctors/DoctorsChat/DoctorChat";
+import PharmacistChat from "@/pages/DashboardPages/Pharmacist/PharmacistChat/PharmacistChat";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -246,6 +247,14 @@ const Router = () => {
           }
         />
         <Route
+          path="/dashboard/pharmacist/pharmacist-chat"
+          element={
+            <PharmacistRoute>
+              <PharmacistChat />
+            </PharmacistRoute>
+          }
+        />
+        <Route
           path="/dashboard/pharmacist/sales-report"
           element={
             <PharmacistRoute>
@@ -285,7 +294,7 @@ const Router = () => {
           element={<DoctorBillingHistory />}
         />
         <Route
-          path="/dashboard/doctor-chat"
+          path="/dashboard/doctor/doctor-chat"
           element={<DoctorChat />}
         />
         <Route

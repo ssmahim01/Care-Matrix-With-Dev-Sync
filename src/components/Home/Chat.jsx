@@ -30,11 +30,11 @@ const Chat = () => {
 
           <div className="flex gap-6 mt-4">
             <div className="flex flex-col items-center">
-              <FaUserMd className="lg:text-3xl text-2xl text-yellow-300" />
+              <FaUserMd className="lg:text-3xl text-2xl text-cyan-500" />
               <span className="text-sm mt-1">Doctor</span>
             </div>
             <div className="flex flex-col items-center">
-              <FaPills className="lg:text-3xl text-2xl text-pink-300" />
+              <FaPills className="lg:text-3xl text-2xl text-rose-400" />
               <span className="text-sm mt-1">Pharmacist</span>
             </div>
             <div className="flex flex-col items-center">
@@ -42,23 +42,37 @@ const Chat = () => {
               <span className="text-sm mt-1">Patient</span>
             </div>
           </div>
-          <button className="mt-7 group w-max bg-[#4c61d5] text-white py-2.5 rounded-md hover:bg-[#4859b7] transition-all duration-300 px-8 justify-center font-semibold cursor-pointer">
-            <Link
-              to={`${
+         {
                 role === "patient"
                   ? "/dashboard/patient/patient-chat"
                   : role === "doctor"
                   ? "/dashboard/doctor-chat"
                   : role === "pharmacist"
                   ? "/dashboard/pharmacist-chat"
-                  : "/dashboard"
-              }`}
-              className="flex items-center gap-[10px]"
-            >
-              Explore Chat Dashboard
-              <BsArrowRight className="group-hover:ml-1 transition-all duration-300" />
-            </Link>
-          </button>
+                  : "" ? (
+                    <button className="mt-7 group w-max bg-[#4c61d5] text-white py-2.5 rounded-md hover:bg-[#4859b7] transition-all duration-300 px-8 justify-center font-semibold cursor-pointer">
+                    <Link
+                      to={`${
+                        role === "patient"
+                          ? "/dashboard/patient/patient-chat"
+                          : role === "doctor"
+                          ? "/dashboard/doctor/doctor-chat"
+                          : role === "pharmacist"
+                          ? "/dashboard/pharmacist/pharmacist-chat"
+                          : ""
+                      }`}
+                      className="flex items-center gap-[10px]"
+                    >
+                      Explore Chat Dashboard
+                      <BsArrowRight className="group-hover:ml-1 transition-all duration-300" />
+                    </Link>
+                  </button>
+                  ) : (
+                    <>
+                    
+                    </>
+                  )
+              }
         </div>
         <div className="w-full mx-auto md:w-[50%] md:h-80 h-60">
           <img

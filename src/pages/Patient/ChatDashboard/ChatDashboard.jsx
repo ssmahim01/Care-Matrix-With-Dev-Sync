@@ -58,16 +58,6 @@ const ChatDashboard = ({ userEmail, userRole }) => {
     },
   });
 
-  // Fetch all pharmacists (for inviting)
-  const { data: pharmacists = [] } = useQuery({
-    queryKey: ["pharmacists"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/chat/pharmacists");
-      // console.log("Pharmacists:", res.data.data);
-      return res.data.data;
-    },
-  });
-
   // Fetch messages for the selected partner with polling
   const { data: messages = [], isLoading: loadingMessages } = useQuery({
     queryKey: ["messages", userEmail, selectedPartner?.email],
@@ -128,23 +118,15 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       !chatPartners.some((partner) => partner.email === patient.email)
   );
 
-  // Filter patients who are not already in chatPartners
-  const potentialPharmacistsToInvite = pharmacists.filter(
-    (pharmacist) =>
-      !chatPartners.some((partner) => partner.email === pharmacist.email)
-  );
-
   return (
     <Card className="shadow-lg">
       <CardHeader className={"mt-3 -mb-4"}>
         {/* Invite Professionals and patients */}
         <h3 className="text-lg font-medium -mb-2">
-          {!patients ? "Invite Patients" : "Invite Doctors and Pharmacists"}
+          Invite
         </h3>
         <p className="w-full lg:w-1/4 text-sm font-medium text-gray-600">
-          {!patients
-            ? "Select a patient then communicate"
-            : "Select a pharmacist or doctor then communicate"}
+          Select an user then start the conversation
         </p>
       </CardHeader>
       <CardContent className="flex flex-col lg:flex-row gap-4">
@@ -190,7 +172,8 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                 </ul>
               )}
             </>
-          ) : professionals && userRole === "doctor" ? (
+          ) : (professionals && userRole === "doctor") ||
+            (professionals && userRole === "pharmacist") ? (
             <>
               {potentialPatientsToInvite.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
@@ -231,48 +214,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
               )}
             </>
           ) : (
-            professionals &&
-            userRole === "pharmacist" && (
-              <>
-                {potentialPharmacistsToInvite.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">
-                    No new patients to invite.
-                  </p>
-                ) : (
-                  <ul className="space-y-2 overflow-y-scroll h-[600px] py-4">
-                    {potentialPharmacistsToInvite.map((pharmacist) => (
-                      <li
-                        key={pharmacist.email}
-                        onClick={() => {
-                          setSelectedPartner(pharmacist);
-                        }}
-                        className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
-                      >
-                        <div className="flex gap-2 items-center">
-                          <figure>
-                            <img
-                              className="w-14 h-14 rounded-full object-cover"
-                              referrerPolicy="no-referrer"
-                              src={pharmacist?.photo}
-                              alt={pharmacist?.name}
-                            />
-                          </figure>
-                          <p className="flex flex-col">
-                            <span className="font-medium text-sm">
-                              {pharmacist.name}
-                            </span>
-
-                            <span className="font-medium text-cyan-500 text-sm">
-                              {pharmacist.role}
-                            </span>
-                          </p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </>
-            )
+            <></>
           )}
         </div>
 
@@ -443,6 +385,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   placeholder="Type your message..."
                   onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                 />
+               
                 <Button
                   onClick={handleSendMessage}
                   disabled={sendMessageMutation.isLoading}

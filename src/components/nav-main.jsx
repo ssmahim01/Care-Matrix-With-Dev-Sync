@@ -178,11 +178,11 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/doctor-chat">
+              <NavLink to="/dashboard/doctor/doctor-chat">
                 <h3 className="flex gap-2 items-center">
                   <MessageSquareText className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Chat{" "}
+                    Conversation{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -228,6 +228,14 @@ export function NavMain() {
               <NavLink to="/dashboard/pharmacist-overview">
                 <h3 className="flex gap-2 items-center">
                   <LayoutDashboard className="text-base" /> Overview
+                </h3>
+              </NavLink>
+              <NavLink to="/dashboard/pharmacist/pharmacist-chat">
+                <h3 className="flex gap-2 items-center">
+                  <MessageSquareText className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Conversation{" "}
+                  </span>
                 </h3>
               </NavLink>
               <NavLink to="/dashboard/pharmacist/sales-report">
@@ -281,7 +289,7 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <MessageSquareText className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Chat{" "}
+                    Conversation{" "}
                   </span>
                 </h3>
               </NavLink>
