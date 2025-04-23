@@ -34,8 +34,7 @@ import axios from "axios";
 import DoctorProfileDialog from "./DoctorProfileDialog";
 
 const AssignUsersTable = ({ users, isLoading, refetch }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-
+  const [openDialog, setOpenDialog] = useState(false);
   const handleUserDelete = (email) => {
     Swal.fire({
       title: "Are you sure?",
@@ -211,19 +210,19 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                         <>
                           <DropdownMenuItem
                             className="cursor-pointer"
-                            // onSelect={(e) => {
-                            //   e.preventDefault();
-                            //   setDialogOpen(true);
-                            // }}
+                            onSelect={(e) => {
+                              e.preventDefault();
+                              setOpenDialog(true);
+                            }}
                           >
                             <Eye className="w-4 h-4 mr-2" />
                             Doctor Profile
                           </DropdownMenuItem>
-                          {/* <DoctorProfileDialog
-                            open={dialogOpen}
-                            setOpen={setDialogOpen}
+                          <DoctorProfileDialog
+                            openDialog={openDialog}
+                            setOpenDialog={setOpenDialog}
                             doctor={user?.email}
-                          /> */}
+                          />
                         </>
                       )}
                       {user?.role !== "doctor" && (
