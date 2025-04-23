@@ -6,6 +6,7 @@ import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { CalendarIcon, MessagesSquare } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import SkeletonChatDashboard from "@/pages/Patient/ChatDashboard/SkeletonChatDashboard";
 
 const DoctorChat = () => {
   const axiosSecure = useAxiosSecure();
@@ -21,19 +22,19 @@ const DoctorChat = () => {
       return res.data.data;
     },
     retry: 1,
-    staleTime: 1000 * 60 * 2,
+    staleTime: 1000 * 60 * 5,
   });
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-20">
-        <span className="text-gray-600 font-semibold">Loading...</span>
-      </div>
+      <SkeletonChatDashboard />
     );
   }
 
   if (error || !doctor) {
-    return <div>Error: Could not load doctor details</div>;
+    return <div className="flex justify-center items-center py-20">
+      <span className="text-gray-700 font-semibold">Error: Could not load doctor details</span>
+    </div>;
   }
 
   return (
@@ -41,7 +42,7 @@ const DoctorChat = () => {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border">
         <div>
           <DashboardPagesHeader
-            title={`Welcome, Dr. ${doctor.name}`}
+            title={`Welcome, ${doctor.name}`}
             subtitle="Communicate with patients"
             icon={MessagesSquare}
           />

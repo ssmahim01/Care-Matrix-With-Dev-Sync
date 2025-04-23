@@ -3,19 +3,16 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import SkeletonChatDashboard from "./SkeletonChatDashboard";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import {
   CircleUser,
@@ -24,10 +21,10 @@ import {
   Mail,
   MessageCircle,
   ShieldPlus,
-  Trash,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { format } from "date-fns";
 
 const ChatDashboard = ({ userEmail, userRole }) => {
   const axiosSecure = useAxiosSecure();
@@ -36,7 +33,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
   const [newMessage, setNewMessage] = useState("");
 
   // Fetch chat partners
-  const { data: chatPartners = [], isLoading: loadingPartners } = useQuery({
+  const { data: chatPartners = [] } = useQuery({
     queryKey: ["chatPartners", userEmail],
     queryFn: async () => {
       const res = await axiosSecure.get(`/chat/messages/chats/${userEmail}`);
@@ -46,7 +43,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
   });
 
   // Fetch all doctors and pharmacists (for inviting)
-  const { data: professionals = [], isLoading: loadingProfessionals } =
+  const { data: professionals = [] } =
     useQuery({
       queryKey: ["professionals"],
       queryFn: async () => {
@@ -57,7 +54,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
     });
 
   // Fetch all patients (for inviting)
-  const { data: patients = [], isLoading: loadingPatients } = useQuery({
+  const { data: patients = [] } = useQuery({
     queryKey: ["patients"],
     queryFn: async () => {
       const res = await axiosSecure.get("/chat/patients");
@@ -77,8 +74,8 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       // console.log("Messages:", res.data.data);
       return res.data.data.messages || res.data.data;
     },
-    enabled: !!selectedPartner,
-    refetchInterval: 2000,
+    enabled: !!selectedPartner && !!userEmail && !!userRole,
+    refetchInterval: 1000,
   });
 
   // Mutation for sending a message
@@ -125,10 +122,6 @@ const ChatDashboard = ({ userEmail, userRole }) => {
     (patient) =>
       !chatPartners.some((partner) => partner.email === patient.email)
   );
-
-  if (loadingPartners || loadingProfessionals || loadingPatients) {
-    return <SkeletonChatDashboard />;
-  }
 
   return (
     <Card className="shadow-lg">
@@ -231,7 +224,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
         <div className="flex-1 flex flex-col">
           {selectedPartner ? (
             <>
-              <div className="border-b p-2 flex justify-between items-center">
+              <div className="p-2 flex justify-between items-center">
                 <div className="flex gap-2 items-center">
                   <figure>
                     <img
@@ -323,7 +316,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div className="flex-1 p-4 overflow-y-auto">
+              <div className="flex-1 py-2 px-4 overflow-y-auto">
                 {loadingMessages ? (
                   <div className="text-center">Loading messages...</div>
                 ) : messages.length === 0 ? (
@@ -333,15 +326,12 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                 ) : (
                   messages.map((msg, index) => {
                     // Get the current message's date
-                    const currentDate = new Date(msg.timestamp).toDateString(
-                      "en-UK"
-                    );
+                    const currentDate = format(new Date(msg.timestamp), "MMMM d, yyyy");
+                  
                     // Get the previous message's date
                     const prevDate =
                       index > 0
-                        ? new Date(messages[index - 1].timestamp).toDateString(
-                            "en-UK"
-                          )
+                        ? format(new Date(messages[index - 1].timestamp), "MMMM d, yyyy")
                         : null;
 
                     // Show date divider if this is the first message or the date has changed
@@ -367,7 +357,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                           }`}
                         >
                           <span
-                            className={`inline-block p-2 rounded-t-md rounded-br-xl ${
+                            className={`inline-block p-2 rounded-t-md rounded-br-lg ${
                               msg.senderEmail === userEmail
                                 ? "bg-blue-200"
                                 : "bg-gray-200"
@@ -384,7 +374,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   })
                 )}
               </div>
-              <div className="border-t p-2 flex gap-2">
+              <div className="border-t py-3 flex gap-2">
                 <Input
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
