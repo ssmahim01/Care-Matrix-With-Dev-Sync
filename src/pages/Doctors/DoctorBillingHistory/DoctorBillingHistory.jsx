@@ -52,7 +52,7 @@ function DoctorBillingHistory() {
   }
 
   return (
-    <div className="p-7">
+    <div className="px-4 md:px-7">
      <div className="flex flex-col md:flex-row items-center justify-between mb-4">
      <DashboardPagesHeader
         title="My All Time Billing History"
