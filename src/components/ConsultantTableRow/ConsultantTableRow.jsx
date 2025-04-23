@@ -129,7 +129,7 @@ const ConsultantTableRow = ({
               }}
             >
               <FileUser className="w-4 h-4" />
-              <span>View Info</span>
+              <span>Doctor Profile</span>
             </DropdownMenuItem>
 
             <InfoModal
@@ -150,7 +150,7 @@ const ConsultantTableRow = ({
               onClick={() => handleRemove(consultant?._id)}
             >
               <Trash2 className="h-4 w-4" />
-              <span>Remove</span>
+              <span>Delete Doctor</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
