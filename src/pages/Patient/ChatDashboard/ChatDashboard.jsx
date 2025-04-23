@@ -221,7 +221,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
         </div>
 
         {/* Chat Window */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col h-[600px] overflow-y-auto">
           {selectedPartner ? (
             <>
               <div className="p-2 flex justify-between items-center">
@@ -316,7 +316,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div className="flex-1 py-2 px-4 overflow-y-auto">
+              <div className="flex-1 py-2 px-4">
                 {loadingMessages ? (
                   <div className="text-center">Loading messages...</div>
                 ) : messages.length === 0 ? (
