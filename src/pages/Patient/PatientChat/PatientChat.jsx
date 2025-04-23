@@ -42,7 +42,7 @@ const PatientChat = () => {
         <div>
           <DashboardPagesHeader
             title={`Welcome, ${patient.name}`}
-            subtitle=" Manage your appointments and consult with doctors and pharmacists."
+            subtitle="Consult with doctors and pharmacists"
             icon={MessagesSquare}
           />
           <div className="flex items-center gap-2 mt-2">

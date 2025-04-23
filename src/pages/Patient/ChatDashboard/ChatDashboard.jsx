@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,15 +39,14 @@ const ChatDashboard = ({ userEmail, userRole }) => {
   });
 
   // Fetch all doctors and pharmacists (for inviting)
-  const { data: professionals = [] } =
-    useQuery({
-      queryKey: ["professionals"],
-      queryFn: async () => {
-        const res = await axiosSecure.get("/chat/professionals");
-        // console.log("Professionals:", res.data.data);
-        return res.data.data;
-      },
-    });
+  const { data: professionals = [] } = useQuery({
+    queryKey: ["professionals"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/chat/professionals");
+      // console.log("Professionals:", res.data.data);
+      return res.data.data;
+    },
+  });
 
   // Fetch all patients (for inviting)
   const { data: patients = [] } = useQuery({
@@ -59,6 +54,16 @@ const ChatDashboard = ({ userEmail, userRole }) => {
     queryFn: async () => {
       const res = await axiosSecure.get("/chat/patients");
       // console.log("Patients:", res.data.data);
+      return res.data.data;
+    },
+  });
+
+  // Fetch all pharmacists (for inviting)
+  const { data: pharmacists = [] } = useQuery({
+    queryKey: ["pharmacists"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/chat/pharmacists");
+      // console.log("Pharmacists:", res.data.data);
       return res.data.data;
     },
   });
@@ -117,22 +122,30 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       !chatPartners.some((partner) => partner.email === professional.email)
   );
 
-  // Filter doctors and pharmacists who are not already in chatPartners
+  // Filter patients who are not already in chatPartners
   const potentialPatientsToInvite = patients.filter(
     (patient) =>
       !chatPartners.some((partner) => partner.email === patient.email)
   );
 
+  // Filter patients who are not already in chatPartners
+  const potentialPharmacistsToInvite = pharmacists.filter(
+    (pharmacist) =>
+      !chatPartners.some((partner) => partner.email === pharmacist.email)
+  );
+
   return (
     <Card className="shadow-lg">
       <CardHeader className={"mt-3 -mb-4"}>
-         {/* Invite Professionals and patients */}
-         <h3 className="text-lg font-medium -mb-2">
-            {patients ? "Invite Patients" : "Invite Doctors and Pharmacists"}
-          </h3>
-         <p className="text-sm font-medium text-gray-600">
-            {patients ? "Select a patient then communicate" : "Select a pharmacist or doctor then communicate"}
-          </p>
+        {/* Invite Professionals and patients */}
+        <h3 className="text-lg font-medium -mb-2">
+          {!patients ? "Invite Patients" : "Invite Doctors and Pharmacists"}
+        </h3>
+        <p className="w-full lg:w-1/4 text-sm font-medium text-gray-600">
+          {!patients
+            ? "Select a patient then communicate"
+            : "Select a pharmacist or doctor then communicate"}
+        </p>
       </CardHeader>
       <CardContent className="flex flex-col lg:flex-row gap-4">
         {/* Chat Partners List */}
@@ -177,7 +190,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                 </ul>
               )}
             </>
-          ) : (
+          ) : professionals && userRole === "doctor" ? (
             <>
               {potentialPatientsToInvite.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
@@ -217,6 +230,49 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                 </ul>
               )}
             </>
+          ) : (
+            professionals &&
+            userRole === "pharmacist" && (
+              <>
+                {potentialPharmacistsToInvite.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    No new patients to invite.
+                  </p>
+                ) : (
+                  <ul className="space-y-2 overflow-y-scroll h-[600px] py-4">
+                    {potentialPharmacistsToInvite.map((pharmacist) => (
+                      <li
+                        key={pharmacist.email}
+                        onClick={() => {
+                          setSelectedPartner(pharmacist);
+                        }}
+                        className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                      >
+                        <div className="flex gap-2 items-center">
+                          <figure>
+                            <img
+                              className="w-14 h-14 rounded-full object-cover"
+                              referrerPolicy="no-referrer"
+                              src={pharmacist?.photo}
+                              alt={pharmacist?.name}
+                            />
+                          </figure>
+                          <p className="flex flex-col">
+                            <span className="font-medium text-sm">
+                              {pharmacist.name}
+                            </span>
+
+                            <span className="font-medium text-cyan-500 text-sm">
+                              {pharmacist.role}
+                            </span>
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            )
           )}
         </div>
 
@@ -326,12 +382,18 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                 ) : (
                   messages.map((msg, index) => {
                     // Get the current message's date
-                    const currentDate = format(new Date(msg.timestamp), "d MMMM yyyy");
-                  
+                    const currentDate = format(
+                      new Date(msg.timestamp),
+                      "d MMMM yyyy"
+                    );
+
                     // Get the previous message's date
                     const prevDate =
                       index > 0
-                        ? format(new Date(messages[index - 1].timestamp), "d MMMM yyyy")
+                        ? format(
+                            new Date(messages[index - 1].timestamp),
+                            "d MMMM yyyy"
+                          )
                         : null;
 
                     // Show date divider if this is the first message or the date has changed
