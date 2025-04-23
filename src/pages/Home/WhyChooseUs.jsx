@@ -8,6 +8,8 @@ const WhyChooseUs = () => {
       initial={{y:20, opacity: 0}}
       whileInView={{y:0, opacity: 1}}
       transition={{duration: 0.8, ease: easeIn}}
+      viewport={{ once: true }}
+
       >
 
      
