@@ -97,7 +97,7 @@ export function NavUser() {
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className={"border"} />
             <DropdownMenuGroup className="flex flex-col gap-1">
               <NavLink
                 to="/dashboard/profile"
@@ -128,7 +128,7 @@ export function NavUser() {
                 </NavLink>
               )}
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className={"border"} />
             <div>
               <button
                 className={

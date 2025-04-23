@@ -1,5 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,9 +29,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import axios from "axios";
 import { format } from "date-fns";
 import {
-  Eye,
+  AlertCircle,
+  Loader,
   MoreVertical,
   Phone,
   ShieldCheck,
@@ -31,9 +41,45 @@ import {
   Trash,
   User,
 } from "lucide-react";
+import { useState } from "react";
 import { FaCapsules } from "react-icons/fa";
+import { toast } from "sonner";
 
 export function StaffTable({ users, isLoading, refetch, totalUsers }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [selectedEmail, setSelectedEmail] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleUserDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/firebase/delete-user/${selectedEmail}`
+      );
+
+      if (data?.result?.deletedCount) {
+        refetch();
+        setIsOpen(false);
+        setErrorMessage("");
+        toast("User Deleted", {
+          description: `${selectedEmail} Was Successfully Deleted!`,
+          duration: 3000,
+          position: "top-right",
+        });
+      } else {
+        setErrorMessage("User could not be deleted, Please try again!");
+      }
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        "Something went wrong while deleting the user!";
+      setErrorMessage(message);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
   return (
     <Table className={"mt-6"}>
       <TableCaption>A List Of {totalUsers} Users</TableCaption>
@@ -55,7 +101,7 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
       </TableHeader>
       <TableBody>
         {isLoading
-          ? Array.from({ length: 8 }).map((_, i) => (
+          ? Array.from({ length: 10 }).map((_, i) => (
               <TableRow key={i}>
                 {Array.from({ length: 8 }).map((_, j) => (
                   <TableCell key={j}>
@@ -213,10 +259,10 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem
-                        // onClick={() => {
-                        //   setSelectedEmail(user?.email);
-                        //   setIsOpen(true);
-                        // }}
+                        onClick={() => {
+                          setSelectedEmail(user?.email);
+                          setIsOpen(true);
+                        }}
                         className="cursor-pointer"
                       >
                         <Trash className="w-4 h-4 mt-[0.9px] text-red-500" />
@@ -228,6 +274,63 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
               </TableRow>
             ))}
       </TableBody>
+      {/* Delete User Modal */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-md [&_[data-dialog-close]]:hidden">
+          <DialogHeader>
+            {!errorMessage && (
+              <>
+                <DialogTitle>Are you sure?</DialogTitle>
+                <p className="text-sm text-gray-600">
+                  This will permanently delete{" "}
+                  <span className="font-semibold text-gray-700">
+                    {selectedEmail}
+                  </span>{" "}
+                  from Firebase and DB
+                </p>
+              </>
+            )}
+          </DialogHeader>
+
+          {errorMessage && (
+            <div className="flex items-center gap-2 text-red-500 mt-2">
+              <AlertCircle className="w-4 h-4" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
+          <DialogFooter className="flex justify-end gap-2 pt-4">
+            <Button
+              variant="destructive"
+              className="cursor-pointer"
+              onClick={handleUserDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <>
+                  <Loader className="w-4 h-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : errorMessage ? (
+                "Try Again!"
+              ) : (
+                "Yes, Delete"
+              )}
+            </Button>
+            <Button
+              variant="outline"
+              className={"cursor-pointer"}
+              onClick={() => {
+                setIsOpen(false);
+                setSelectedEmail("");
+                setErrorMessage("");
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Table>
   );
 }

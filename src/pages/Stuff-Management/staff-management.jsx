@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Toaster } from "sonner";
 
 export function StaffManagement() {
   const [page, setPage] = useState(1);
@@ -62,6 +63,7 @@ export function StaffManagement() {
 
   return (
     <div>
+      <Toaster />
       <div>
         {/* Searchbar & Select & Reset button */}
         <div className="flex justify-between gap-2 items-center flex-wrap">
@@ -171,29 +173,17 @@ export function StaffManagement() {
         </div>
       </div>
 
-      {/* <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            showFilters ? "max-h-96 opacity-100 mb-6" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="transform transition-transform duration-300 ease-in-out">
-            <StaffFilters
-              staff={staff}
-              activeFilters={activeFilters}
-              onFilterChange={handleFilterChange}
-            />
-          </div>
-        </div> */}
-
+      {/* Table */}
       <StaffTable
         users={data?.users}
         isLoading={isLoading}
         refetch={refetch}
         totalUsers={data?.totalItems}
       />
+
       {/* Pagination */}
       <Pagination className="mt-4">
-        <PaginationContent>
+        <PaginationContent className={"flex flex-wrap justify-center"}>
           {/* Previous */}
           <PaginationItem>
             <PaginationPrevious

@@ -66,8 +66,8 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
         setIsOpen(false);
         setErrorMessage("");
         toast("User Deleted", {
-          description: `${selectedEmail} Was Successfully Removed!`,
-          duration: 2000,
+          description: `${selectedEmail} Was Successfully Deleted!`,
+          duration: 3000,
           position: "top-right",
         });
       } else {
