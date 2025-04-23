@@ -1,9 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Filter, Search } from "lucide-react";
 import { useState } from "react";
 import { StaffTable } from "./staff-table";
 
@@ -16,12 +13,22 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { IoIosSearch } from "react-icons/io";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function StaffManagement() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("createdAt-desc");
   const [selectedRole, setSelectedRole] = useState("");
+  const [provider, setProvider] = useState("");
 
   const sortOptions = {
     "createdAt-desc": "Created At (Newest)",
@@ -35,12 +42,12 @@ export function StaffManagement() {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["all-users", page, search],
+    queryKey: ["all-users", page, search, sort, selectedRole, provider],
     queryFn: async () => {
       const { data } = await axios.get(
         `${
           import.meta.env.VITE_API_URL
-        }/users?page=${page}&search=${search}&role=${selectedRole}`
+        }/users?page=${page}&search=${search}&sort=${sort}&role=${selectedRole}&provider=${provider}`
       );
       return data;
     },
@@ -54,8 +61,8 @@ export function StaffManagement() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
+    <div>
+      <div>
         {/* Searchbar & Select & Reset button */}
         <div className="flex justify-between gap-2 items-center flex-wrap">
           {/* Searchbar */}
@@ -79,22 +86,49 @@ export function StaffManagement() {
             {/* Select Role */}
             <div className="flex flex-1 w-fit">
               <Select
-                className="w-fit"
+                className="w-fit text-xs"
                 value={selectedRole}
                 onValueChange={setSelectedRole}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Filter By Role" />
+                  <SelectValue
+                    className="text-xs"
+                    placeholder="Filter By Role"
+                  />
                 </SelectTrigger>
                 <SelectContent className="w-fit">
-                  <SelectItem value={"administrator"}>
+                  <SelectItem value={"administrator"} className="text-xs">
                     {"Administrator"}
                   </SelectItem>
-                  <SelectItem value={"pharmacist"}>{"Pharmacist"}</SelectItem>
-                  <SelectItem value={"receptionist"}>
+                  <SelectItem value={"pharmacist"} className="text-xs">
+                    {"Pharmacist"}
+                  </SelectItem>
+                  <SelectItem value={"receptionist"} className="text-xs">
                     {"Receptionist"}
                   </SelectItem>
-                  <SelectItem value={"doctor"}>{"Doctor"}</SelectItem>
+                  <SelectItem value={"patient"} className="text-xs">
+                    {"Patient/Users"}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {/* Select Provider */}
+            <div className="flex flex-1 w-fit">
+              <Select
+                className="w-fit text-xs"
+                value={provider}
+                onValueChange={setProvider}
+              >
+                <SelectTrigger>
+                  <SelectValue className="text-xs" placeholder="Provider" />
+                </SelectTrigger>
+                <SelectContent className="w-fit">
+                  <SelectItem value={"google.com"} className="text-xs">
+                    {"Google"}
+                  </SelectItem>
+                  <SelectItem value={"github.com"} className="text-xs">
+                    {"Github"}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -126,6 +160,7 @@ export function StaffManagement() {
                   setSearch("");
                   setSelectedRole("");
                   setSort("createdAt-desc");
+                  setProvider("");
                 }}
                 className={"cursor-pointer"}
               >

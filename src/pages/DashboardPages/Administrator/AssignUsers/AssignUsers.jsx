@@ -77,7 +77,7 @@ const AssignUsers = () => {
         }
         icon={UserPlus}
       />
-      
+
       {/* Searchbar & Select & Add button */}
       <div className="flex justify-between gap-2 items-center flex-wrap">
         {/* Searchbar */}
