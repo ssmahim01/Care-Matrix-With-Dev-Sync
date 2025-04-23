@@ -105,7 +105,7 @@ const Login = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut", delay: 0.1 }}
-            className="flex gap-3 mt-5  justify-center items-center"
+            className="flex gap-3 mt-5  justify-center items-center flex-wrap"
             viewport={{ once: true }}
           >
             <Badge
