@@ -5,6 +5,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { format } from "date-fns";
 import { Calendar, Clock, DollarSign, Mail } from "lucide-react";
 
 export default function DoctorProfileDialog({
@@ -91,6 +92,17 @@ export default function DoctorProfileDialog({
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm">
+                      Schedule:{" "}
+                      {doctorData?.schedule &&
+                        format(
+                          new Date(doctorData?.schedule),
+                          "eeee, MMMM do, yyyy"
+                        )}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm flex flex-wrap">
                       Available: {doctorData?.available_days.join(", ")}
                     </span>
                   </div>

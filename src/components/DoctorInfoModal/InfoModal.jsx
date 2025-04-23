@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Calendar, Clock, DollarSign, Mail } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { format } from "date-fns";
 
 const InfoModal = ({ openDialog, setOpenDialog, consultant }) => {
   return (
@@ -62,6 +63,17 @@ const InfoModal = ({ openDialog, setOpenDialog, consultant }) => {
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm">
                       Fee: {consultant?.consultation_fee}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">
+                      Schedule:{" "}
+                      {consultant?.schedule &&
+                        format(
+                          new Date(consultant?.schedule),
+                          "eeee, MMMM do, yyyy"
+                        )}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">

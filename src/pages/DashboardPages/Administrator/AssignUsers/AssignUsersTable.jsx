@@ -1,10 +1,16 @@
 import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import {
   Table,
   TableBody,
@@ -14,67 +20,55 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, Phone, Stethoscope } from "lucide-react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { Eye, MoreVertical, Trash } from "lucide-react";
-import { FaCapsules } from "react-icons/fa";
 import { format } from "date-fns";
+import {
+  AlertCircle,
+  Eye,
+  MoreVertical,
+  Phone,
+  ShieldCheck,
+  Stethoscope,
+  Trash,
+} from "lucide-react";
 import { useState } from "react";
-import Swal from "sweetalert2";
-import axios from "axios";
+import { FaCapsules } from "react-icons/fa";
 import DoctorProfileDialog from "./DoctorProfileDialog";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 const AssignUsersTable = ({ users, isLoading, refetch }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const handleUserDelete = (email) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: `This will permanently delete ${email} from Firebase and MongoDB.`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#000",
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "Cancel",
-      background: "#fff",
-      color: "#000",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const { data } = await axios.delete(
-            `${import.meta.env.VITE_API_URL}/firebase/delete-user/${email}`
-          );
-          if (data?.result?.deletedCount) {
-            refetch();
-            Swal.fire({
-              title: "Deleted!",
-              text: data.message || `${email} has been deleted successfully.`,
-              icon: "success",
-              confirmButtonColor: "#000",
-              background: "#fff",
-              color: "#000",
-            });
-          }
-        } catch (error) {
-          Swal.fire({
-            title: "Error!",
-            text: error?.response?.data?.message || "Something went wrong.",
-            icon: "error",
-            confirmButtonColor: "#000",
-            background: "#fff",
-            color: "#000",
-          });
-        }
+  const [errorMessage, setErrorMessage] = useState("");
+  const [selectedEmail, setSelectedEmail] = useState("");
+
+  const handleUserDelete = async () => {
+    try {
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/firebase/delete-user/${selectedEmail}`
+      );
+
+      if (data?.result?.deletedCount) {
+        refetch();
+        setIsOpen(false);
+        setErrorMessage("");
+      } else {
+        setErrorMessage("User could not be deleted, Please try again!");
       }
-    });
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        "Something went wrong while deleting the user!";
+      setErrorMessage(message);
+    }
   };
 
   return (
@@ -215,9 +209,10 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                               setOpenDialog(true);
                             }}
                           >
-                            <Eye className="w-4 h-4 mr-2" />
+                            <Eye className="w-4 h-4 mt-[2px]" />
                             Doctor Profile
                           </DropdownMenuItem>
+                          {/* DoctorProfileDialog */}
                           <DoctorProfileDialog
                             openDialog={openDialog}
                             setOpenDialog={setOpenDialog}
@@ -227,11 +222,14 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                       )}
                       {user?.role !== "doctor" && (
                         <DropdownMenuItem
-                          onClick={() => handleUserDelete(user?.email)}
-                          className={"cursor-pointer"}
+                          onClick={() => {
+                            setSelectedEmail(user?.email);
+                            setIsOpen(true);
+                          }}
+                          className="cursor-pointer"
                         >
-                          <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
-                          User
+                          <Trash className="w-4 h-4 mt-[0.9px] text-red-500" />
+                          Delete User
                         </DropdownMenuItem>
                       )}
                     </DropdownMenuContent>
@@ -240,6 +238,53 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
               </TableRow>
             ))}
       </TableBody>
+      {/* Delete User Modal */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            {!errorMessage && (
+              <>
+                <DialogTitle>Are you sure?</DialogTitle>
+                <p className="text-sm text-gray-600">
+                  This will permanently delete{" "}
+                  <span className="font-semibold text-gray-700">
+                    {selectedEmail}
+                  </span>{" "}
+                  from Firebase and DB
+                </p>
+              </>
+            )}
+          </DialogHeader>
+
+          {errorMessage && (
+            <div className="flex items-center gap-2 text-red-500 mt-2">
+              <AlertCircle className="w-4 h-4" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
+          <DialogFooter className="flex justify-end gap-2 pt-4">
+            <Button
+              variant="destructive"
+              className={"cursor-pointer"}
+              onClick={handleUserDelete}
+            >
+              {errorMessage ? "Try Again!" : "Yes, Delete"}
+            </Button>
+            <Button
+              variant="outline"
+              className={"cursor-pointer"}
+              onClick={() => {
+                setIsOpen(false);
+                setSelectedEmail("");
+                setErrorMessage("");
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Table>
   );
 };
