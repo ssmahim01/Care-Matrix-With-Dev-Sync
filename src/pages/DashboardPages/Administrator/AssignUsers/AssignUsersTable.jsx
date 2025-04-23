@@ -32,6 +32,7 @@ import { format } from "date-fns";
 import {
   AlertCircle,
   Eye,
+  Loader,
   MoreVertical,
   Phone,
   ShieldCheck,
@@ -42,6 +43,7 @@ import { useState } from "react";
 import { FaCapsules } from "react-icons/fa";
 import DoctorProfileDialog from "./DoctorProfileDialog";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import axios from "axios";
 
 const AssignUsersTable = ({ users, isLoading, refetch }) => {
@@ -49,8 +51,10 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedEmail, setSelectedEmail] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleUserDelete = async () => {
+    setIsDeleting(true);
     try {
       const { data } = await axios.delete(
         `${import.meta.env.VITE_API_URL}/firebase/delete-user/${selectedEmail}`
@@ -60,6 +64,11 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
         refetch();
         setIsOpen(false);
         setErrorMessage("");
+        toast("User Deleted", {
+          description: `${selectedEmail} Was Successfully Removed!`,
+          duration: 2000,
+          position: "top-right",
+        });
       } else {
         setErrorMessage("User could not be deleted, Please try again!");
       }
@@ -68,6 +77,8 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
         error?.response?.data?.message ||
         "Something went wrong while deleting the user!";
       setErrorMessage(message);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -240,7 +251,7 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
       </TableBody>
       {/* Delete User Modal */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md [&_[data-dialog-close]]:hidden">
           <DialogHeader>
             {!errorMessage && (
               <>
@@ -266,10 +277,20 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
           <DialogFooter className="flex justify-end gap-2 pt-4">
             <Button
               variant="destructive"
-              className={"cursor-pointer"}
+              className="cursor-pointer"
               onClick={handleUserDelete}
+              disabled={isDeleting}
             >
-              {errorMessage ? "Try Again!" : "Yes, Delete"}
+              {isDeleting ? (
+                <>
+                  <Loader className="w-4 h-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : errorMessage ? (
+                "Try Again!"
+              ) : (
+                "Yes, Delete"
+              )}
             </Button>
             <Button
               variant="outline"
