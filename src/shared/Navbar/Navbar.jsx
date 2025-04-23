@@ -368,7 +368,7 @@ const Navbar = () => {
                         </p>
                       </div>
 
-                      <Separator />
+                      <Separator className={"border-[1px]"} />
 
                       <NavLink
                         className="flex gap-1 items-center text-lg bg-[#f1f1f1] hover:bg-[#eaeaea] transition-all duration-300 ease-in-out py-1 px-2 rounded-md mb-1"
@@ -392,7 +392,7 @@ const Navbar = () => {
                           Dashboard
                         </span>
                       </NavLink>
-                      <Separator />
+                      <Separator className={"border-[1px]"} />
                       {/* Logout Button */}
                       <div className="my-1">
                         <button

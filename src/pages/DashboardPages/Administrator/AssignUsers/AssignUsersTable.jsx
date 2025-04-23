@@ -45,6 +45,7 @@ import DoctorProfileDialog from "./DoctorProfileDialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import axios from "axios";
+import { AvatarFallback } from "@/components/ui/avatar";
 
 const AssignUsersTable = ({ users, isLoading, refetch }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -119,9 +120,18 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                     <Avatar>
                       <AvatarImage
                         src={user?.photo}
-                        alt="user Image"
+                        alt="User Image"
                         className="min-w-10 max-w-10 rounded-full h-10 object-cover"
                       />
+                      <AvatarFallback className="min-w-10 max-w-10 rounded-full h-10 object-cover">
+                        {user?.name
+                          ? user.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                              .toUpperCase()
+                          : "NA"}
+                      </AvatarFallback>
                     </Avatar>
                     <span>{user?.name}</span>
                   </div>
@@ -249,6 +259,7 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
               </TableRow>
             ))}
       </TableBody>
+
       {/* Delete User Modal */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md [&_[data-dialog-close]]:hidden">
