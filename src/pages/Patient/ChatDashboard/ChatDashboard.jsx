@@ -326,12 +326,12 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                 ) : (
                   messages.map((msg, index) => {
                     // Get the current message's date
-                    const currentDate = format(new Date(msg.timestamp), "MMMM d, yyyy");
+                    const currentDate = format(new Date(msg.timestamp), "d MMMM yyyy");
                   
                     // Get the previous message's date
                     const prevDate =
                       index > 0
-                        ? format(new Date(messages[index - 1].timestamp), "MMMM d, yyyy")
+                        ? format(new Date(messages[index - 1].timestamp), "d MMMM yyyy")
                         : null;
 
                     // Show date divider if this is the first message or the date has changed
