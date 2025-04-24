@@ -15,7 +15,6 @@ import EidGreetingSection from "./EidGreetingSection";
 import { Profiler } from "react";
 import Blogs from "./Blogs_and_News/Blogs";
 
-
 function onRenderCallback(
   id,
   phase,
@@ -70,7 +69,7 @@ const Home = () => {
       {/* Our Departments */}
       <div className="lg:-mb-3 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         {/* <Profiler id="Department" onRender={onRenderCallback}> */}
-          <OurDepartments />
+        <OurDepartments />
         {/* </Profiler> */}
       </div>
 
