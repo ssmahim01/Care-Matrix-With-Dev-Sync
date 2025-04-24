@@ -27,7 +27,7 @@ import {
   TableRow,
 } from "../ui/table";
 import { Badge } from "../ui/badge";
-import { PatientDetailsModal } from "./PatientDetailsModal";
+
 import { PrescriptionFormModal } from "./PrescriptionFormModal";
 import { DeleteConfirmationModal } from "./DeleteConfirmationModal";
 import useDoctorsAppointment from "@/hooks/useDoctorsAppointment";
@@ -37,6 +37,7 @@ import { useAuthUser } from "@/redux/auth/authActions";
 import toast from "react-hot-toast";
 import { PrescriptionViewModal } from "./PrescriptionViewModal";
 import { FileDown } from "lucide-react";
+import PatientDetailsModal from "./PatientDetailsModal";
 
 export function PrescriptionTable() {
   const user = useAuthUser();
@@ -49,7 +50,7 @@ export function PrescriptionTable() {
   const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const filter = ["Approved", "Prescribed"];
   // const [appointments, isLoading, refetch] = useDoctorsAppointment(search);
   // console.log(appointments);
