@@ -156,14 +156,14 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/administrator/contact-message">
+              {/* <NavLink to="/dashboard/administrator/contact-message">
                 <h3 className="flex gap-2 items-center">
                   <MailIcon className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Contact Message{" "}
                   </span>
                 </h3>
-              </NavLink>
+              </NavLink> */}
               <div className="divider mt-2"></div>
             </>
           )}

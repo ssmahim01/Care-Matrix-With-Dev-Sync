@@ -6,6 +6,7 @@ import {
   ChevronsRight,
   CreditCard,
   LogOut,
+  Mail,
   Sparkles,
   User,
 } from "lucide-react";
@@ -112,6 +113,21 @@ export function NavUser() {
                 <User size={20} />
                 View Profile
               </NavLink>
+              {role === "administrator" && (
+                <NavLink
+                  to="/dashboard/administrator/contact-message"
+                  className={({ isActive }) =>
+                    `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
+                      isActive
+                        ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
+                        : "hover:bg-[#f1f5f9] transition-all duration-300 ease-in-out py-[6px] rounded-md"
+                    }`
+                  }
+                >
+                  <Mail size={20} />
+                  Contact Messages
+                </NavLink>
+              )}
               {role === "patient" && (
                 <NavLink
                   to="/dashboard/patient/request-form"
