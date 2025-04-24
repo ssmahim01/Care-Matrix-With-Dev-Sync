@@ -1,5 +1,6 @@
 import useAppointment from '@/hooks/useAppointment';
 import useDoctors from '@/hooks/useDoctors';
+import useRewardUsers from '@/hooks/useRewardUsers';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaStar, FaPhoneAlt, FaCalendarAlt, FaClock, FaUser } from 'react-icons/fa';
@@ -8,16 +9,30 @@ import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 
 const BookAppointment = () => {
-      const [search, setSearch] = useState("")
-      const [selectedSort, setSelectedSort] = useState("")
+    const [search, setSearch] = useState("")
+    const [selectedSort, setSelectedSort] = useState("")
     const [doctors] = useDoctors(search, selectedSort);
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [appointments] = useAppointment();
-
+    const [rewardUser, isPending, isLoading, refetch] = useRewardUsers()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const location = useLocation();
+
     const doctorInfo = doctors.find((doctor) => doctor._id === location.state);
+    const reward = rewardUser?.find(reward => reward?.userEmail === user?.email)
+
+    let consultationFee = doctorInfo.consultation_fee;
+    let rewardInfo;
+
+    if (reward) {
+        consultationFee = parseInt(consultationFee - (consultationFee * reward.redeemDiscount / 100))
+        rewardInfo = {
+            discount : reward.redeemDiscount,
+            rewardId : reward._id
+        }
+    }
+
 
     const onSubmit = (data) => {
         const appointmentInfo = {
@@ -26,8 +41,10 @@ const BookAppointment = () => {
             doctorId: doctorInfo._id,
             doctorName: doctorInfo.name,
             doctorTitle: doctorInfo.title,
-            consultationFee: doctorInfo.consultation_fee
+            consultationFee: consultationFee,
+            rewardInfo: rewardInfo
         };
+        // console.log(appointmentInfo);
         navigate('/book-appointment/payment', { state: { appointmentInfo } });
     };
 

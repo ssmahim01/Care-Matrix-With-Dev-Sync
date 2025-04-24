@@ -4,7 +4,6 @@ import useAxiosSecure from './useAxiosSecure';
 import { useSelector } from 'react-redux';
 
 const useAppointment = (sortDate) => {
-    console.log("sort date from ", sortDate);
 
     const axiosSecure = useAxiosSecure();
     const { user } = useSelector((state) => state.auth);
