@@ -11,7 +11,7 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 const Payment = () => {
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
-  const consultationFee = parseFloat(location?.state?.appointmentInfo?.consultationFee?.replace('$', '')) || 0;
+  const consultationFee = parseFloat(location?.state?.appointmentInfo?.consultationFee) || 0;
 
   const [clientSecret, setClientSecret] = useState('');
 
@@ -42,7 +42,7 @@ const Payment = () => {
         <Elements stripe={stripePromise} options={options}>
           <CheckoutForm
             consultationFee={consultationFee}
-            appointmentInfo={location.state.appointmentInfo}
+            appointmentInfo={location?.state?.appointmentInfo}
             clientSecret={clientSecret}
           />
         </Elements>
