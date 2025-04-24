@@ -178,7 +178,7 @@ const ManageAppointments = () => {
                             </TableRow>
                         ))
                     ) : (
-                        appointments.reverse()?.map((appointment, index) => (
+                        appointments?.map((appointment, index) => (
                             <TableRow
                                 key={appointment._id}
                                 className="hover:bg-muted/50 border-b"
