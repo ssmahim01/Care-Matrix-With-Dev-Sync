@@ -22,7 +22,7 @@ const DashboardLayout = () => {
             <SidebarTrigger className="-ml-1 bg-[#e2ebee] mb-0" />
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 lg:px-4 pt-16">
+        <div className="flex flex-1 flex-col gap-4 lg:px-4 pt-16 pb-12">
           <Outlet />
         </div>
       </SidebarInset>
