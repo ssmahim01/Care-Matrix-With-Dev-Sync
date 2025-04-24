@@ -17,7 +17,7 @@ export function AppSidebar({ ...props }) {
       <SidebarHeader>
         <HeadingPlatform />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent >
         <NavMain />
       </SidebarContent>
       <SidebarFooter>

@@ -60,6 +60,7 @@ const HeroSearch = () => {
         placeholder="Search Doctors..."
         onChange={(e) => setSearch(e.target.value)}
         onClick={() => setKeyPressOpen(true)}
+        onTouchStart={() => setKeyPressOpen(true)}
       />
       <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
 

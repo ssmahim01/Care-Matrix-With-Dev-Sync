@@ -63,7 +63,7 @@ const Navbar = () => {
   return (
     <>
       <div className="fixed z-20 w-full bg-[#f3f6f9] shadow-sm border-b border-[#f3f6f9]">
-        {location.pathname === "/" && (
+        {location.pathname === "/" && showImage && (
           <div className="w-full h-[60px] overflow-hidden">
             <img
               src="https://zenui.net/palestine-banner.svg"
@@ -474,13 +474,12 @@ const Navbar = () => {
                     <Siren className="text-base" />
                   </Button>
                 </Link>
-                
               </div>
               {user && role === "patient" && (
-                  <div className="mx-4 ">
-                    <CartDropdown />
-                  </div>
-                )}
+                <div className="mx-4 ">
+                  <CartDropdown />
+                </div>
+              )}
 
               {loading || isLoading ? (
                 <div className="flex justify-center items-center">

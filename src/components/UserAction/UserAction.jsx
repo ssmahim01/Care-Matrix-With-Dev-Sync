@@ -23,7 +23,7 @@ const UserAction = () => {
   };
 
   return (
-    <div className="mb-20">
+    <div className="mb-20 ">
       <div className={`lg:w-[1270px] mx-auto w-full bg-base-200 ${state === "collapsed" && "lg:w-[1470px]"} border-b shadow-sm fixed z-50 flex justify-between items-center py-1 md:pr-6 pr-2`}>
         <header className="flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
