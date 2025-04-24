@@ -63,7 +63,7 @@ export function StaffManagement() {
 
   return (
     <div>
-      <Toaster />
+      {/* <Toaster /> */}
       <div>
         {/* Searchbar & Select & Reset button */}
         <div className="flex justify-between gap-2 items-center flex-wrap">
