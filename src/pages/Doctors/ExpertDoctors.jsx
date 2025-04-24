@@ -30,7 +30,7 @@ const ExpertDoctors = () => {
   // const [category, setCategory] = useState("")
   const [doctors, isLoading] = useDoctors(search, selectedSort);
 
-  console.log(doctors);
+  // console.log(doctors);
   // Skeleton loader component inside the same file
   const SkeletonCard = () => (
     <div className="animate-pulse bg-white p-4 rounded-xl shadow">

@@ -218,7 +218,7 @@ export default function EmergencyContactsList() {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/emergency/search?name=${value}`)
       setContacts(res.data)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 

@@ -24,7 +24,7 @@ const Payment = () => {
     axiosSecure.post(`/payments/create-payment-intent`, { fee: consultationFee })
       .then((res) => {
         setClientSecret(res?.data?.clientSecret);
-        console.log("Payment intent success");
+        // console.log("Payment intent success");
       })
       .catch((err) => {
         console.error('Payment intent creation failed:', err);

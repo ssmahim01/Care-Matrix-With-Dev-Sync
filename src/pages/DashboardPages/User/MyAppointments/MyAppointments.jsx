@@ -72,12 +72,12 @@ const MyAppointments = () => {
     };
 
     const handleSortByDate = (value) => {
-        console.log("sort by ", value);
+        // console.log("sort by ", value);
         setSortDate(value)
 
     }
 
-    console.log("Sort by ", sortDate);
+    // console.log("Sort by ", sortDate);
 
     return (
         <div className='p-7'>

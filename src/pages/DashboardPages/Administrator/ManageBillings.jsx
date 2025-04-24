@@ -13,7 +13,7 @@ function ManageBillings() {
   const axiosSecure = useAxiosSecure();
   const [search, setSearch] = useState("");
 
-  console.log("search", search);
+  // console.log("search", search);
   
 
   // Fetch payment data
