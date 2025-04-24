@@ -98,8 +98,8 @@ const MyAppointments = () => {
                             <SelectValue placeholder="Sort By" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="asc">Date (Ascending)</SelectItem>
-                            <SelectItem value="desc">Date (Descending)</SelectItem>
+                            <SelectItem value="desc">Date (Ascending)</SelectItem>
+                            <SelectItem value="asc">Date (Descending)</SelectItem>
                         </SelectContent>
                     </Select>
 

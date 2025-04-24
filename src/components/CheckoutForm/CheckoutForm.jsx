@@ -17,6 +17,8 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  console.log("appointment info is ", appointmentInfo)
+  
   if (!clientSecret) {
     console.error("No client secret provided!");
     toast.error("Payment configuration error. Please try again.");
@@ -72,6 +74,17 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
             appointmentInfo
           );
           if (appointmentResponse?.data.insertedId) {
+
+
+          //  delete reward user from reward-user collection 
+          if(appointmentInfo?.rewardInfo?.rewardId){
+            const rewardUserResponse = await axiosSecure.delete(`/reward-users/${appointmentInfo?.rewardInfo?.rewardId}`)
+            console.log("reward user collection response for delete ",rewardUserResponse);
+
+          }
+
+
+
             // Award points for completed appointment
             const rewardInfo = {
               userEmail: appointmentInfo.email,

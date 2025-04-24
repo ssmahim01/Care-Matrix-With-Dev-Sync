@@ -81,6 +81,15 @@ const AppointmentInvoice = ({ paymentInfo, rewardInfo }) => (
         <Text style={styles.label}>Amount:</Text>
         <Text style={styles.value}>Tk {paymentInfo.amount}</Text>
       </View>
+
+      {
+        paymentInfo?.appointmentInfo?.rewardInfo?.discount > 0 &&
+        <View style={styles.fieldRow}>
+          <Text style={styles.label}>Reward Discount:</Text>
+          <Text style={styles.value}>{paymentInfo?.appointmentInfo?.rewardInfo?.discount}%</Text>
+        </View>
+      }
+
       <View style={styles.fieldRow}>
         <Text style={styles.label}>Payment Date:</Text>
         <Text style={styles.value}>
