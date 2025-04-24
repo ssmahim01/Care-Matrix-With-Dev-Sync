@@ -1,20 +1,15 @@
-"use client";
-
 import {
-  BadgeCheck,
   Bell,
-  ChevronsRight,
-  CreditCard,
   LogOut,
+  Mail,
   Sparkles,
-  User,
+  User
 } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -23,20 +18,21 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
+
+import { useIsMobile } from "@/hooks/use-mobile";
+import useRole from "@/hooks/useRole";
 import { logOut, useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router";
-import useRole from "@/hooks/useRole";
+import { NavLink } from "react-router";
 
 export function NavUser() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const loading = useAuthLoading();
-  const { isMobile } = useSidebar();
   const user = useAuthUser();
   const [role] = useRole();
+  const isMobile = useIsMobile();
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -71,7 +67,6 @@ export function NavUser() {
                   </span>
                   <span className="truncate text-xs">{user?.email}</span>
                 </div>
-                <ChevronsRight className="ml-auto size-4" />
               </SidebarMenuButton>
             )}
           </DropdownMenuTrigger>
@@ -97,7 +92,7 @@ export function NavUser() {
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className={"border"} />
             <DropdownMenuGroup className="flex flex-col gap-1">
               <NavLink
                 to="/dashboard/profile"
@@ -112,6 +107,40 @@ export function NavUser() {
                 <User size={20} />
                 View Profile
               </NavLink>
+              {role === "patient" ||
+              role === "doctor" ||
+              role === "pharmacist" ? (
+                <NavLink
+                  to="/dashboard/notifications"
+                  className={({ isActive }) =>
+                    `inline-flex gap-x-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
+                      isActive
+                        ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
+                        : "hover:bg-[#f1f5f9] transition-all duration-300 ease-in-out py-[6px] rounded-md"
+                    }`
+                  }
+                >
+                  <Bell size={20} />
+                 <span className="-mt-[1.6px]">Notifications</span>  
+                </NavLink>
+              ) : (
+                <></>
+              )}
+              {role === "administrator" && (
+                <NavLink
+                  to="/dashboard/administrator/contact-message"
+                  className={({ isActive }) =>
+                    `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
+                      isActive
+                        ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
+                        : "hover:bg-[#f1f5f9] transition-all duration-300 ease-in-out py-[6px] rounded-md"
+                    }`
+                  }
+                >
+                  <Mail size={20} />
+                  Contact Messages
+                </NavLink>
+              )}
               {role === "patient" && (
                 <NavLink
                   to="/dashboard/patient/request-form"
@@ -128,7 +157,7 @@ export function NavUser() {
                 </NavLink>
               )}
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className={"border"} />
             <div>
               <button
                 className={

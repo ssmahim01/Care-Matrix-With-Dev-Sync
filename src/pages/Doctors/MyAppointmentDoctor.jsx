@@ -35,12 +35,13 @@ const MyAppointmentDoctor = () => {
     }, []);
 
     const handleDetails = (appointment) => {
+        console.log(appointment);
         setSelectedAppointment(appointment);
         setOpenModal(true);
     };
 
     const handleSortByDate = (value) => {
-        console.log(value);
+        // console.log(value);
         setSortDate(value)
     }
 
@@ -56,15 +57,15 @@ const MyAppointmentDoctor = () => {
             })
 
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 toast.error("Something went wrong try again.")
 
             })
     }
 
-    console.log("Doctors appointments are ", appointments);
+    // console.log("Doctors appointments are ", appointments);
     return (
-        <div className='p-7'>
+        <div className='px-7'>
             <div className='flex flex-col md:flex-row justify-between'>
                 <DashboardPagesHeader
                     title={"My Appointments"}
@@ -108,8 +109,8 @@ const MyAppointmentDoctor = () => {
                         <SelectValue placeholder="Sort By " />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="asc">Date (Ascending)</SelectItem>
-                        <SelectItem value="desc">Date (Descending)</SelectItem>
+                        <SelectItem value="desc">Date (Ascending)</SelectItem>
+                        <SelectItem value="asc">Date (Descending)</SelectItem>
                     </SelectContent>
                 </Select>
 
@@ -143,8 +144,19 @@ const MyAppointmentDoctor = () => {
                                 ))}
                             </TableRow>
                         ))
-                    ) : (
-                        appointments?.map((appointment, index) => (
+                    ) : 
+                        appointments.length === 0 ? (
+                        <TableRow>
+                          <TableCell
+                            colSpan={12}
+                            className="text-center py-8 text-gray-500"
+                          >
+                            No appointments found
+                          </TableCell>
+                        </TableRow>
+                      )
+                    : (
+                        appointments.reverse()?.map((appointment, index) => (
                             <TableRow key={appointment._id} className="hover:bg-gray-50">
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{appointment.name}</TableCell>

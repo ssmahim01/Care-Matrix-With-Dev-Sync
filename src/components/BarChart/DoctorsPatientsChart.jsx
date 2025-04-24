@@ -41,19 +41,19 @@ export default function DoctorsPatientsChart({counts}) {
     : [];
 
   return (
-    <Card>
+    <Card className={"border shadow-sm border-[#e5e7eb] py-4 w-full rounded-lg"}>
       <CardHeader className={"border-b"}>
         <CardTitle>Doctors and Patients</CardTitle>
         <CardDescription>Patient Distribution by Doctor</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className={"h-[300px]"}>
+        <ChartContainer config={chartConfig} className={"w-full h-[320px]"}>
           <BarChart
             accessibilityLayer
             data={chartData}
             layout="vertical"
             margin={{
-              left: 0,
+              left: 15,
             }}
           >
             <YAxis
@@ -70,7 +70,7 @@ export default function DoctorsPatientsChart({counts}) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col pb-5 items-start gap-2 text-sm">
+      <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
           Patient distribution across doctors <TrendingUp className="h-4 w-4" />
         </div>

@@ -1,4 +1,8 @@
 import DoctorsTableRow from "@/components/DoctorsTableRow/DoctorsTableRow";
+import DetailsModal from "@/components/RequestModals/DetailsModal";
+import NoteModal from "@/components/RequestModals/NoteModal";
+import { Button } from "@/components/ui/button";
+
 import {
   Select,
   SelectContent,
@@ -7,21 +11,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 import {
   fetchDoctors,
   setSearch,
   setSort,
   updateDoctor,
 } from "@/redux/doctors/doctorSlice";
-import { BriefcaseMedical } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { useDispatch, useSelector } from "react-redux";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { BriefcaseMedical } from "lucide-react";
+import { IoIosSearch } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import NoteModal from "@/components/RequestModals/NoteModal";
-import DetailsModal from "@/components/RequestModals/DetailsModal";
 
 const DoctorsManagement = () => {
   const dispatch = useDispatch();
@@ -132,29 +147,30 @@ const DoctorsManagement = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="px-7">
         {!isFormOpen ? (
-          <div className="w-full flex justify-between items-center md:flex-row flex-col flex-wrap">
-            <div className="flex flex-col">
-              {/* Heading */}
-              <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
-                <BriefcaseMedical className="text-3xl text-gray-800" />
-                <span>Manage Doctor Requests</span>
-              </h2>
-              <p className="text-gray-600 text-base ml-8 font-medium whitespace-pre-line">
-                View requests for doctor and modify
-              </p>
-            </div>
-            <div className="flex gap-4 md:flex-row flex-col items-center">
+          <div className="w-full flex flex-col">
+            <DashboardPagesHeader
+              title={"Manage Doctor Requests"}
+              subtitle={
+                "View users requests for doctor role and assign users as doctors"
+              }
+              icon={BriefcaseMedical}
+            />
+            <div className="flex gap-4 md:flex-row-reverse flex-col-reverse w-full lg:w-9/12 xl:w-8/12 ">
+              {/* Reset */}
+              <div>
+                <Button className={"cursor-pointer"}>Reset</Button>
+              </div>{" "}
+              {/* Department */}
               <Select onValueChange={handleFilterChange}>
                 <SelectTrigger className="w-[200px]">
                   <SelectValue placeholder="Filter By" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {/* <SelectLabel>Department</SelectLabel> */}
                     <SelectItem
-                      className={"font-bold"}
+                      className={"font-semibold"}
                       value={doctors?.department}
                     >
                       {" "}
@@ -177,32 +193,23 @@ const DoctorsManagement = () => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-
-              <label className="input border">
-                <svg
-                  className="h-[1em] opacity-50"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <g
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    strokeWidth="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.3-4.3"></path>
-                  </g>
-                </svg>
+              {/* Search */}
+              <div className="relative w-full flex xl:flex-1">
                 <input
+                  className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
+                  placeholder="Search By Email..."
                   value={search}
                   onChange={handleSearchChange}
-                  type="search"
-                  required
-                  placeholder="Search by email..."
                 />
-              </label>
+                <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
+                {/* shortcut hint */}
+                <button
+                  onClick={() => dispatch(setSearch(""))}
+                  className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[6px] rounded-md text-gray-500 cursor-pointer"
+                >
+                  Clear
+                </button>
+              </div>
             </div>
           </div>
         ) : (
@@ -218,82 +225,56 @@ const DoctorsManagement = () => {
         </h2>
       )}
 
-      <div className="rounded-sm overflow-x-auto w-full">
-        <table className="table border border-gray-200 border-collapse">
-          <thead>
-            <tr className="bg-gray-50 border border-gray-200 *:text-gray-800 *:font-semibold">
-              <th className="p-4">No.</th>
-              <th className="p-4">Image</th>
-              <th className="p-4">Name</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">Contact Number</th>
-              <th className="p-4">Role</th>
-              <th className="p-4">Department</th>
-              <th className="p-4">Request Moment</th>
-              <th className="p-4">Shift</th>
-              <th className="p-4">Status</th>
-              <th className="p-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="px-7 mt-4 overflow-x-auto w-full">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-gray-50 hover:bg-gray-50">
+              <TableHead className="px-4"></TableHead>
+              <TableHead className="px-4">Image</TableHead>
+              <TableHead className="px-4">Name</TableHead>
+              <TableHead className="px-4">Email</TableHead>
+              <TableHead className="px-4 text-xs">
+                Contact <br /> Number
+              </TableHead>
+              <TableHead className="px-4">Role</TableHead>
+              <TableHead className="px-4">Department</TableHead>
+              <TableHead className="px-4 text-xs">
+                Request <br /> Moment
+              </TableHead>
+              <TableHead className="px-4">Shift</TableHead>
+              <TableHead className="px-4">Status</TableHead>
+              <TableHead className="px-4">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {status === "loading"
-              ? [...Array(5)].map((_, index) => (
-                  <tr key={index} className="border-t border-gray-200">
-                    <td className="p-4">
-                      <div className="skeleton h-6 w-4" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-10 w-10 rounded-md" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-24" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-32" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-24" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-20" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-28" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-20" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-16" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-4 w-20" />
-                    </td>
-                    <td className="p-4">
-                      <div className="skeleton h-8 w-8 rounded-md" />
-                    </td>
-                  </tr>
+              ? Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({ length: 11 }).map((_, j) => (
+                      <TableCell key={j}>
+                        <div className="skeleton h-8 rounded w-full"></div>
+                      </TableCell>
+                    ))}
+                  </TableRow>
                 ))
-              : doctors.map((doctor, index) => (
-                  <DoctorsTableRow
-                    key={doctor?._id}
-                    doctor={doctor}
-                    dispatch={dispatch}
-                    index={index}
-                    handleAddNote={handleAddNote}
-                    handleDoctorDetails={handleDoctorDetails}
-                  />
-                ))}
-          </tbody>
-        </table>
+              : [...doctors]
+                  ?.reverse()
+                  ?.map((doctor, index) => (
+                    <DoctorsTableRow
+                      key={doctor?._id}
+                      doctor={doctor}
+                      dispatch={dispatch}
+                      index={index}
+                      handleAddNote={handleAddNote}
+                      handleDoctorDetails={handleDoctorDetails}
+                    />
+                  ))}
+          </TableBody>
+        </Table>
       </div>
 
       <NoteModal form2={form2} noteModal={noteModal} onSubmit={onSubmit} />
-
-      <DetailsModal
-        form={form}
-        detailsModal={detailsModal}
-      />
+      <DetailsModal form={form} detailsModal={detailsModal} />
     </>
   );
 };

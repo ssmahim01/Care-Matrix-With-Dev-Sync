@@ -112,10 +112,10 @@ export default function Hero() {
             className="lg:w-1/2 relative z-10"
           >
             <div className="relative">
-              <div className="absolute -top-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-              <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+              <div className="absolute -top-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl hidden md:block"></div>
+              <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl hidden md:block"></div>
 
-              <div className="relative rounded-xl overflow-hidden shadow shadow-blue-600/80 lg:mt-12">
+              <motion.div className="relative rounded-xl overflow-hidden shadow shadow-blue-600/80 lg:mt-12">
                 <img
                   src="https://i.ibb.co.com/LDPwN7dJ/expert-doctors.png"
                   alt="Expert Medical Team"
@@ -156,7 +156,7 @@ export default function Hero() {
                     </div>
                   </div>
                 </motion.div>
-              </div>
+              </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, x: -20 }}

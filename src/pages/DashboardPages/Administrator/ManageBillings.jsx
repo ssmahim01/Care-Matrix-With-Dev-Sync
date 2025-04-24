@@ -7,9 +7,13 @@ import { CreditCard } from "lucide-react";
 import PaymentsTable from "./Billing&Payments/PaymentsTable";
 import Swal from "sweetalert2";
 import { IoIosSearch } from "react-icons/io";
+import { useState } from "react";
 
 function ManageBillings() {
   const axiosSecure = useAxiosSecure();
+  const [search, setSearch] = useState("");
+
+  console.log("search", search);
   
 
   // Fetch payment data
@@ -20,9 +24,9 @@ function ManageBillings() {
     isError,
     error,
   } = useQuery({
-    queryKey: ["payments"],
+    queryKey: ["payments",search],
     queryFn: async () => {
-      const { data } = await axiosSecure.get("/payments/all");
+      const { data } = await axiosSecure.get(`/payments/all?search=${search}`);
       return data;
     },
   });
@@ -90,22 +94,17 @@ function ManageBillings() {
         icon={CreditCard}
       />
 
-
         {/* search options  */}
 
         <div className="relative md:w-2/5 flex ">
           <input
-            className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
+            className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring  ring-gray-500"
             placeholder="Search Patient by name or number..."
-            // onChange={(e) => setSearch(e.target.value)}
-            // value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
           />
           <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
 
-          {/* shortcut hint */}
-          {/* <div className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-100 p-[6px] rounded-md text-gray-500">
-            Ctrl + E
-          </div> */}
         </div>
 
 

@@ -263,7 +263,7 @@ export function PrescriptionTable() {
                 <TableRow key={patient._id}>
                   <TableCell className="font-medium">{patient.name}</TableCell>
                   <TableCell>{patient.age}</TableCell>
-                  <TableCell className={"max-w-28 overflow-x-auto"}>
+                  <TableCell className={"max-w-28 overflow-x-auto  text-wrap"}>
                     {patient.reason}
                   </TableCell>
                   <TableCell>

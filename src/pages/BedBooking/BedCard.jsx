@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 const BedCard = ({
   title,
   price,
@@ -25,27 +27,27 @@ const BedCard = ({
         />
         <div className="flex justify-between w-full space-x-2 my-1">
           {status === "requested" ? (
-            <button
+            <Button
               disabled={true} // Disable button if status is requested
               onClick={() => onRequestBooking(bed)}
               className="bg-blue-400 text-white px-4 py-2 rounded-md hover:bg-blue-300"
             >
               Requested for Booking
-            </button>
+            </Button>
           ) : (
-            <button
+            <Button
               onClick={() => onRequestBooking(bed)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              className="bg-blue-600 text-white  rounded-md hover:bg-blue-700"
             >
               Request for Booking
-            </button>
+            </Button>
           )}
-          <button
+          <Button variant={"outline"}
             onClick={() => onShowDetails(bed)}
-            className="border border-blue-600 text-blue-600 px-3 py-1 sm:px-4 sm:py-2 rounded-md hover:bg-blue-100 flex items-center justify-center text-sm sm:text-base w-full sm:w-auto"
+            className="border border-blue-600 hover:bg-blue-100"
           >
             More Details
-          </button>
+          </Button>
         </div>
       </div>
     </div>

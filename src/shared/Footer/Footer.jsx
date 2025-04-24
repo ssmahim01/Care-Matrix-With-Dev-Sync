@@ -3,8 +3,40 @@ import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className="bg-white">
-      <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-8">
+    <footer className="bg-white relative overflow-hidden">
+      {/* SVG Background */}
+      <div className="absolute inset-0 z-0">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+          className="w-full h-full"
+        >
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop
+                offset="0%"
+                style={{ stopColor: "#E0F7FA", stopOpacity: 1 }}
+              />
+              <stop
+                offset="100%"
+                style={{ stopColor: "#4FC3F7", stopOpacity: 0.8 }}
+              />
+            </linearGradient>
+          </defs>
+          <path
+            fill="url(#gradient)"
+            fillOpacity="0.3"
+            d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,133.3C672,117,768,139,864,165.3C960,192,1056,224,1152,213.3C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          ></path>
+          <path
+            fill="url(#gradient)"
+            fillOpacity="0.2"
+            d="M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,229.3C672,235,768,213,864,181.3C960,149,1056,107,1152,122.7C1248,139,1344,213,1392,250.7L1440,288L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          ></path>
+        </svg>
+      </div>
+      <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-8 relative z-10">
         <div className="flex flex-col sm:flex-row flex-wrap gap-12 justify-between items-stretch">
           {/* Logo DIV */}
           <div>
@@ -30,7 +62,6 @@ const Footer = () => {
                   className="text-gray-700 transition hover:opacity-75"
                 >
                   <span className="sr-only">Facebook</span>
-
                   <svg
                     className="size-6"
                     fill="currentColor"
@@ -54,7 +85,6 @@ const Footer = () => {
                   className="text-gray-700 transition hover:opacity-75"
                 >
                   <span className="sr-only">Twitter</span>
-
                   <svg
                     className="size-6"
                     fill="currentColor"
@@ -74,7 +104,6 @@ const Footer = () => {
                   className="text-gray-700 transition hover:opacity-75"
                 >
                   <span className="sr-only">GitHub</span>
-
                   <svg
                     className="size-6"
                     fill="currentColor"
@@ -94,7 +123,6 @@ const Footer = () => {
           {/* Quick Links */}
           <div>
             <p className="font-medium text-gray-900">Quick Links</p>
-
             <ul className="mt-6 space-y-4 text-sm">
               <li>
                 <Link
@@ -104,7 +132,6 @@ const Footer = () => {
                   About Us
                 </Link>
               </li>
-
               <li>
                 <Link
                   to={"/contact-us"}
@@ -113,7 +140,6 @@ const Footer = () => {
                   Contact Us
                 </Link>
               </li>
-
               <li>
                 <Link
                   to={"/doctors"}
@@ -122,7 +148,6 @@ const Footer = () => {
                   Expert Doctors
                 </Link>
               </li>
-
               <li>
                 <Link
                   to={"/"}
@@ -131,13 +156,12 @@ const Footer = () => {
                   Our Department
                 </Link>
               </li>
-
               <li>
                 <Link
-                  to={"/services"}
+                  to={"/pharmacy"}
                   className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Our Services
+                  Our Pharmacy
                 </Link>
               </li>
             </ul>
@@ -145,109 +169,110 @@ const Footer = () => {
           {/* Departments */}
           <div>
             <p className="font-medium text-gray-900">Departments</p>
-
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to="/departments/Dental Department"
+                  state={"Dental Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Dental Department
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to="/departments/Baby Care Department"
+                  state={"Baby Care Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Baby Care Department
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to="/departments/Neurology Department"
+                  state={"Neurology Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Neurology Department
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/emergency"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to="/departments/Emergency Department"
+                  state={"Emergency Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Emergency Department
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to="/departments/Surgery Department"
+                  state={"Surgery Department"}
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
                   Surgery Department
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
-          {/* Services */}
+          {/* Features */}
           <div>
-            <p className="font-medium text-gray-900">Services</p>
-
+            <p className="font-medium text-gray-900">Features</p>
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to="/our-available-beds"
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Orthopedic
-                </a>
+                  Our Available Beds
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to="/doctors"
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Hematology
-                </a>
-              </li>{" "}
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
-                  Pharmacology
-                </a>
+                  Book Appointment
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to="/patient-rewards"
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Neurology
-                </a>
+                  How To Get Rewards
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
+                <Link
+                  to="/emergency"
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
                 >
-                  Cardiology
-                </a>
+                  Emergency Facilities
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/pharmacy"
+                  className="text-gray-700 transition hover:opacity-90 hover:underline underline-offset-1"
+                >
+                  Discount Medicines
+                </Link>
               </li>
             </ul>
           </div>
           {/* Legal */}
           <div>
             <p className="font-medium text-gray-900">Legal</p>
-
             <ul className="mt-6 space-y-4 text-sm">
               <li>
                 <a
                   href="#"
                   className="text-gray-700 transition hover:opacity-75"
                 >
-                  {" "}
-                  Accessibility{" "}
+                  Accessibility
                 </a>
               </li>
               <li>
@@ -287,8 +312,7 @@ const Footer = () => {
         </div>
         {/* Copy Rights */}
         <p className="mt-6 text-base text-gray-500">
-          &copy; {new Date().getFullYear()} DEVSYNC-Care-Matrix. All rights
-          reserved.
+          © {new Date().getFullYear()} DEVSYNC-Care-Matrix. All rights reserved.
         </p>
       </div>
     </footer>

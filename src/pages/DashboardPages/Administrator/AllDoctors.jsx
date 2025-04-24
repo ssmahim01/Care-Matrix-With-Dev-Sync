@@ -30,17 +30,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import AvailabilityModal from "@/components/AvailabilityModal/AvailabilityModal";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { IoIosSearch } from "react-icons/io";
 
 const AllDoctors = () => {
   const dispatch = useDispatch();
   const { consultants, status } = useSelector((state) => state.consultants);
-  //   console.log(consultants);
   const search = useSelector((state) => state.consultants.search);
+  const sort = useSelector((state) => state.consultants.sort);
+  
   const [availabilityModal, setAvailabilityModal] = useState({});
   const [availableDate, setAvailableDate] = useState("");
-  const sort = useSelector((state) => state.consultants.sort);
-  // console.log(search);
-  
+
   // Schema for availability modal (form3)
   const AvailabilityFormSchema = z.object({
     schedule: z
@@ -97,50 +98,42 @@ const AllDoctors = () => {
   }, [availabilityModal, form]);
 
   return (
-    <div className="lg:w-full md:w-[95%] w-11/12 mx-auto">
-      <div className="flex md:flex-row flex-col flex-wrap justify-between items-center">
+    <div className="px-7">
+      <div className="flex flex-col">
         {/* Heading of the Table */}
-        <div className="space-y-2">
-          <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
-            <FaUserDoctor className="text-2xl text-gray-800" />
-            Manage Doctors
-          </h2>
-          <p className="text-gray-600 text-base ml-9 font-medium whitespace-pre-line">
-            Show information of doctors
-          </p>
-        </div>
+        <DashboardPagesHeader
+          title={"Manage Doctors"}
+          subtitle={
+            "View and manage doctor profiles and manage their schedules or fee"
+          }
+          icon={FaUserDoctor}
+        />
 
+        {/* Main Content */}
         <div className="flex gap-4 md:flex-row flex-col items-center">
           {/* Search Input */}
-          <label className="input border">
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </g>
-            </svg>
+          <div className="relative w-full flex xl:flex-1">
             <input
+              className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
               value={search}
               onChange={handleSearch}
-              type="search"
+              type="text"
               required
               placeholder="Search by name or title"
             />
-          </label>
+            <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
+            {/* shortcut hint */}
+            <button
+              onClick={() => dispatch(setSearch(""))}
+              className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[6px] rounded-md text-gray-500 cursor-pointer"
+            >
+              Clear
+            </button>
+          </div>
 
-          {/* Sort Dropdown */}
+          {/* Fee Sort */}
           <Select onValueChange={handleSortChange}>
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="w-[205px]">
               <SelectValue placeholder="Sort By" />
             </SelectTrigger>
             <SelectContent>
@@ -150,74 +143,49 @@ const AllDoctors = () => {
                   value={consultants?.consultation_fee}
                 >
                   {" "}
-                  Fee
+                  Consultation Fee
                 </SelectItem>
-                <SelectItem value="asc">Lowest to Highest</SelectItem>
-                <SelectItem value="desc">Highest to Lowest</SelectItem>
+                <SelectItem value="asc">Lowest To Highest</SelectItem>
+                <SelectItem value="desc">Highest To Lowest</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
+          {/* Title Filter */}
         </div>
       </div>
 
       {/* Request Table Data */}
       <div className="md:py-6 py-8 rounded-xl">
-        <Table
-          className={
-            "*:w-full *:rounded-xl border border-gray-200 dark:border-gray-700"
-          }
-        >
-          <TableCaption>A list of all doctors.</TableCaption>
+        <Table className={"*:w-full *:rounded-xl"}>
+          <TableCaption>A List Of All Doctors</TableCaption>
           <TableHeader>
-            <TableRow>
-              <TableHead>No.</TableHead>
+            <TableRow className={"bg-gray-50 hover:bg-gray-50"}>
+              <TableHead></TableHead>
               <TableHead>Photo</TableHead>
-              <TableHead>Name</TableHead>
+              <TableHead>Doctor</TableHead>
               <TableHead>Title</TableHead>
               <TableHead>Experience</TableHead>
               <TableHead>Schedule</TableHead>
-              <TableHead>Consultation Fee</TableHead>
+              <TableHead>Shift</TableHead>
+              <TableHead className={"text-xs"}>
+                Consultation <br /> Fee
+              </TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {status === "loading"
-              ? Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow
-                    key={index}
-                    className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    <TableCell>
-                      <div className="skeleton h-6 w-5 rounded" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-12 w-12 rounded" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-32 rounded" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-48 rounded" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-24 rounded" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-20 rounded" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-28 rounded" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-32 rounded" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-8 w-8 rounded" />
-                    </TableCell>
+              ? Array.from({ length: 10 }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({ length: 10 }).map((_, j) => (
+                      <TableCell key={j}>
+                        <div className="skeleton h-8 rounded w-full"></div>
+                      </TableCell>
+                    ))}
                   </TableRow>
                 ))
-              : consultants.map((consultant, index) => (
+              : consultants?.map((consultant, index) => (
                   <ConsultantTableRow
                     key={consultant?._id || index}
                     consultant={consultant}
@@ -228,9 +196,9 @@ const AllDoctors = () => {
                 ))}
           </TableBody>
           <TableFooter>
-            <TableRow>
-              <TableCell colSpan={2}>Total Doctors:</TableCell>
-              <TableCell>
+            <TableRow className={"bg-gray-50 hover:bg-gray-50"}>
+              <TableCell colSpan={10}>
+                Total Doctors:{" "}
                 {status === "loading" ? (
                   <div className="skeleton w-8 h-4"></div>
                 ) : (
@@ -241,8 +209,8 @@ const AllDoctors = () => {
           </TableFooter>
         </Table>
       </div>
-
-     <AvailabilityModal form={form} availabilityModal={availabilityModal} />
+      {/* AvailabilityModal */}
+      <AvailabilityModal form={form} availabilityModal={availabilityModal} />
     </div>
   );
 };
