@@ -1,18 +1,17 @@
-"use client";
-
 import {
-  BadgeCheck,
   Bell,
-  ChevronsRight,
-  CreditCard,
   LogOut,
   Mail,
   Sparkles,
-  User,
+  User
 } from "lucide-react";
 
 import {
   DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -20,11 +19,19 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
+
+import { useIsMobile } from "@/hooks/use-mobile";
+import useRole from "@/hooks/useRole";
+import { logOut, useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
+import { useDispatch } from "react-redux";
+import { NavLink } from "react-router";
 
 export function NavUser() {
+  const dispatch = useDispatch();
   const loading = useAuthLoading();
   const user = useAuthUser();
+  const [role] = useRole();
+  const isMobile = useIsMobile();
 
   return (
     <SidebarMenu>
@@ -100,6 +107,25 @@ export function NavUser() {
                 <User size={20} />
                 View Profile
               </NavLink>
+              {role === "patient" ||
+              role === "doctor" ||
+              role === "pharmacist" ? (
+                <NavLink
+                  to="/dashboard/notifications"
+                  className={({ isActive }) =>
+                    `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
+                      isActive
+                        ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
+                        : "hover:bg-[#f1f5f9] transition-all duration-300 ease-in-out py-[6px] rounded-md"
+                    }`
+                  }
+                >
+                  <Bell size={20} />
+                  Notifications 
+                </NavLink>
+              ) : (
+                <></>
+              )}
               {role === "administrator" && (
                 <NavLink
                   to="/dashboard/administrator/contact-message"

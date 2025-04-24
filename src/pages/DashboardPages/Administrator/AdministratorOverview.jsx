@@ -170,7 +170,7 @@ const AdministratorOverview = () => {
   const activities = activitiesData?.recentActivities || [];
 
   return (
-    <div className="space-y-4 lg:w-full w-11/12 mx-auto">
+    <div className="px-7">
       {/* Dashboard Summary Cards */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
         {/* Total Doctors Card */}
@@ -248,12 +248,12 @@ const AdministratorOverview = () => {
 
      <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-5">
        {/* Charts & Analytics */}
-       <div className="my-6 lg:w-1/2 h-full">
+       <div className="my-6 lg:w-2/3 w-full h-full flex">
         <AdministratorAnalytics chartData={chartData} />
       </div>
 
       {/* Bar Chart for Doctors & Patients */}
-      <div className="my-6 lg:w-1/2 h-full">
+      <div className="my-6 lg:w-1/3 w-full h-full flex">
         <DoctorsPatientsChart counts={counts} />
       </div>
      </div>
