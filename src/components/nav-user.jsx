@@ -1,6 +1,7 @@
 "use client";
 
 import {
+<<<<<<< HEAD
   BadgeCheck,
   Bell,
   ChevronsRight,
@@ -12,32 +13,22 @@ import {
 } from "lucide-react";
 
 import {
+=======
+>>>>>>> 462fb9b6deef6d7a666139dcf11fa7cdefa6b5b6
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
-import { logOut, useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
-import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router";
-import useRole from "@/hooks/useRole";
+import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 
 export function NavUser() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const loading = useAuthLoading();
-  const { isMobile } = useSidebar();
   const user = useAuthUser();
-  const [role] = useRole();
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -72,10 +63,10 @@ export function NavUser() {
                   </span>
                   <span className="truncate text-xs">{user?.email}</span>
                 </div>
-                <ChevronsRight className="ml-auto size-4" />
               </SidebarMenuButton>
             )}
           </DropdownMenuTrigger>
+<<<<<<< HEAD
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
@@ -160,6 +151,8 @@ export function NavUser() {
               </button>
             </div>
           </DropdownMenuContent>
+=======
+>>>>>>> 462fb9b6deef6d7a666139dcf11fa7cdefa6b5b6
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
