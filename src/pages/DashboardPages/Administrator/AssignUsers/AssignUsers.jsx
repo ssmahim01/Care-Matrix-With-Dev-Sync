@@ -27,6 +27,7 @@ import AssignUserForm from "./AssignUserForm";
 import { useQuery } from "@tanstack/react-query";
 import AssignDoctorForm from "./AssignDoctorForm";
 import axios from "axios";
+import { Toaster } from "sonner";
 
 const AssignUsers = () => {
   const [page, setPage] = useState(1);
@@ -67,6 +68,8 @@ const AssignUsers = () => {
 
   return (
     <div className="px-7">
+      <Toaster />
+
       <DashboardPagesHeader
         title={"Assign New Users"}
         subtitle={
@@ -74,6 +77,7 @@ const AssignUsers = () => {
         }
         icon={UserPlus}
       />
+
       {/* Searchbar & Select & Add button */}
       <div className="flex justify-between gap-2 items-center flex-wrap">
         {/* Searchbar */}
@@ -180,7 +184,11 @@ const AssignUsers = () => {
         </div>
       )}
       {/* User Table */}
-      <AssignUsersTable users={data?.users} isLoading={isLoading} refetch={refetch} />
+      <AssignUsersTable
+        users={data?.users}
+        isLoading={isLoading}
+        refetch={refetch}
+      />
       {/* Pagination */}
       <Pagination className="mt-4">
         <PaginationContent>

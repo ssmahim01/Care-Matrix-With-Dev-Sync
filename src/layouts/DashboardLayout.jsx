@@ -2,15 +2,14 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const DashboardLayout = () => {
+  const { pathname } = useLocation();
+
   useEffect(() => {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
-  });
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <SidebarProvider>

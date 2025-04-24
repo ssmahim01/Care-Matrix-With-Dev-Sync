@@ -120,7 +120,7 @@ const Login = () => {
             <Badge
               className="cursor-pointer bg-purple-600"
               onClick={() =>
-                handleBadgeClick("doctor@carematrix.com", "Doctor123@")
+                handleBadgeClick("ayesha.rahman@carematrix.com", "Ayesha@Password0")
               }
             >
               Doctor

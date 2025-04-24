@@ -38,22 +38,22 @@ export default function Hero() {
 
       <div className="relative mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl py-16 lg:py-20">
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
-          <div
-            // initial={{ opacity: 0, y: 30 }}
-            // whileInView={{ opacity: 1, y: 0 }}
-            // transition={{ duration: 0.6, ease: "easeOut" }}
-            // viewport={{ once: true }}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: true }}
             className="lg:w-1/2 space-y-6 z-10"
           >
-            <div
-              // initial={{ opacity: 0, y: 10 }}
-              // whileInView={{ opacity: 1, y: 0 }}
-              // transition={{ duration: 0.4, delay: 0.1 }}
-              // viewport={{ once: true }}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              viewport={{ once: true }}
               className="inline-flex items-center px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-2"
             >
               Trusted by 500+ Healthcare Facilities
-            </div>
+            </motion.div>
 
             <h1 className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white tracking-tight">
               Streamline Healthcare{" "}
@@ -67,11 +67,11 @@ export default function Hero() {
               operations. Experience the future of hospital management today!
             </p>
 
-            <div
-              // initial={{ opacity: 0 }}
-              // whileInView={{ opacity: 1 }}
-              // transition={{ duration: 0.8, delay: 0.4 }}
-              // viewport={{ once: true }}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
               className="grid grid-cols-3 gap-4 mt-6"
             >
               {[
@@ -91,31 +91,31 @@ export default function Hero() {
                   </div>
                 </div>
               ))}
-            </div>
+            </motion.div>
 
-            <div
-              // initial={{ opacity: 0, y: 20 }}
-              // whileInView={{ opacity: 1, y: 0 }}
-              // transition={{ duration: 0.6, delay: 0.3 }}
-              // viewport={{ once: true }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
               className="relative mt-8 max-w-xl"
             >
               <HeroSearch />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div
-            // initial={{ opacity: 0, scale: 0.95 }}
-            // whileInView={{ opacity: 1, scale: 1 }}
-            // transition={{ duration: 0.8, delay: 0.2 }}
-            // viewport={{ once: true }}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
             className="lg:w-1/2 relative z-10"
           >
             <div className="relative">
               <div className="absolute -top-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl hidden md:block"></div>
               <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl hidden md:block"></div>
 
-              <div className="relative rounded-xl overflow-hidden shadow shadow-blue-600/80 lg:mt-12">
+              <motion.div className="relative rounded-xl overflow-hidden shadow shadow-blue-600/80 lg:mt-12">
                 <img
                   src="https://i.ibb.co.com/LDPwN7dJ/expert-doctors.png"
                   alt="Expert Medical Team"
@@ -123,10 +123,10 @@ export default function Hero() {
                 />
 
                 <motion.div
-                  // initial={{ opacity: 0, y: 20 }}
-                  // whileInView={{ opacity: 1, y: 0 }}
-                  // transition={{ duration: 0.5, delay: 0.6 }}
-                  // viewport={{ once: true }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                  viewport={{ once: true }}
                   className="absolute -bottom-5 -right-5 bg-white rounded-lg shadow-xl p-4 max-w-xs"
                 >
                   <div className="flex items-center space-x-3">
@@ -156,13 +156,13 @@ export default function Hero() {
                     </div>
                   </div>
                 </motion.div>
-              </div>
+              </motion.div>
 
               <motion.div
-                // initial={{ opacity: 0, x: -20 }}
-                // whileInView={{ opacity: 1, x: 0 }}
-                // transition={{ duration: 0.5, delay: 0.7 }}
-                // viewport={{ once: true }}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+                viewport={{ once: true }}
                 className="absolute -left-4 top-1 bg-white rounded-lg shadow-lg p-4"
               >
                 <div className="flex items-center space-x-2">
@@ -188,7 +188,7 @@ export default function Hero() {
                 </div>
               </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

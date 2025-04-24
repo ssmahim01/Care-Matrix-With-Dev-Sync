@@ -67,43 +67,43 @@ export function AdministratorAnalytics({ chartData }) {
   });
 
   return (
-    <Card>
+    <Card
+      className={"border shadow-sm border-[#e5e7eb] w-full py-1 rounded-lg"}
+    >
       <CardHeader className="space-y-0 py-3 border-b">
         <div className="grid flex-1 gap-1 text-left">
           <CardTitle className="text-2xl font-bold text-gray-800">
             Patient Growth & Earnings
           </CardTitle>
           <CardDescription className="text-gray-600">
-            Showing total patients and earnings.
+            Insights into total patient visits and overall revenue trends.
           </CardDescription>
         </div>
-        
       </CardHeader>
       <CardContent className="px-4 pt-6 sm:px-8 sm:pt-8">
         {filteredData.length === 0 ? (
-          <div className="flex justify-center items-center h-[320px]">
+          <div className="flex justify-center items-center h-[340px]">
             <p className="text-gray-500 text-lg">
               No data available for the selected time range.
             </p>
           </div>
         ) : (
-          <ChartContainer className="aspect-auto w-full h-[320px]">
-            <AreaChart data={filteredData}>
+          <ChartContainer className="aspect-auto w-full h-[340px]">
+            <AreaChart
+              data={filteredData}
+              margin={{
+                left: 15,
+                right: 15,
+                bottom: 15,
+              }}
+            >
               <defs>
                 <linearGradient id="fillEarnings" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="#8884d8"
-                    stopOpacity={0.6}
-                  />
+                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.6} />
                   <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1} />
                 </linearGradient>
                 <linearGradient id="fillPatients" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="#82ca9d"
-                    stopOpacity={0.7}
-                  />
+                  <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.7} />
                   <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.1} />
                 </linearGradient>
               </defs>
