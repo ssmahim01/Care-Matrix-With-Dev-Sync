@@ -1,32 +1,38 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import {
   deleteDoctor,
   deleteSpecificDoctor,
 } from "@/redux/doctors/doctorSlice";
+
 import {
   BookmarkX,
   EllipsisVertical,
   NotebookPen,
   NotebookTabs,
 } from "lucide-react";
+
+import moment from "moment";
 import toast from "react-hot-toast";
+import { Button } from "../ui/button";
 import Swal from "sweetalert2";
-import { TableCell } from "../ui/table";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import moment from "moment";
-// import {
-//   Table,
-//   TableHeader,
-//   TableBody,
-//   TableRow,
-//   TableHead,
-//   TableCell,
-// } from "@/components/ui/table";
+
 const DoctorsTableRow = ({
   doctor,
   index,
@@ -56,79 +62,125 @@ const DoctorsTableRow = ({
 
   return (
     <>
-      <tr
-        className={`${
-          index % 2 === 0 ? "bg-white" : "bg-gray-50"
-        } hover:shadow-lg hover:bg-gray-100 transition duration-200 text-gray-700 font-semibold border border-gray-200`}
+      <TableRow
+        key={doctor?._id}
+        className="hover:bg-gray-50 transition-colors"
       >
-        <th>{index + 1}</th>
-        <td>
-          <img
-            className="w-14 h-14 rounded-md object-cover"
-            src={doctor?.userPhoto}
-            alt={doctor?.userName}
-          />
-        </td>
-        <td>{doctor?.userName}</td>
-        <td>{doctor?.userEmail}</td>
-        <td>{doctor?.contactNumber}</td>
-        <td>
-          <p className="flex gap-2 items-center">
+        <TableCell className="px-4 py-3 font-medium">{index + 1}</TableCell>
+        <TableCell className="px-4 py-3">
+          <Avatar className="w-12 h-12 rounded-md">
+            <AvatarImage
+              src={doctor?.userPhoto}
+              alt={doctor?.userName}
+              className="object-cover"
+            />
+            <AvatarFallback className="text-gray-700 font-semibold rounded-md">
+              {doctor?.userName?.charAt(0).toUpperCase() || "D"}
+            </AvatarFallback>
+          </Avatar>
+        </TableCell>
+        <TableCell className="px-4 max-w-[130px] truncate">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild className="cursor-pointer">
+                <span>{doctor?.userName}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{doctor?.userName}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </TableCell>
+        <TableCell className="px-4 max-w-[150px] truncate">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild className="cursor-pointer">
+                <span>{doctor?.userEmail}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{doctor?.userEmail}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </TableCell>
+        <TableCell className="px-4 py-3">{doctor?.contactNumber}</TableCell>
+        <TableCell className="px-4 py-3">
+          <div className="flex items-center gap-2">
             <span
-              className={`rounded-full w-2 h-2 shadow-md ${
-                doctor?.status === "Pending" && "bg-amber-500"
-              } ${doctor?.status === "Assign" && "bg-sky-500"} ${
-                doctor?.status === "Reject" && "bg-rose-500"
+              className={`w-2.5 h-2.5 rounded-full shadow-sm ${
+                doctor?.status === "Pending"
+                  ? "bg-yellow-400"
+                  : doctor?.status === "Assign"
+                  ? "bg-blue-400"
+                  : doctor?.status === "Reject"
+                  ? "bg-red-400"
+                  : "bg-gray-400"
               }`}
-            ></span>
-            <span>{doctor?.requestedRole}</span>
-          </p>
-        </td>
-        <td>{doctor?.department}</td>
-        <td>{moment(doctor?.requestDate).fromNow()}</td>
-        <td>{doctor?.shift}</td>
-        <td>
-          <p
-            className={`w-full border p-2 ${
-              doctor?.status === "Pending" && "badge text-amber-500"
-            } ${doctor?.status === "Reject" && "badge text-error"} ${
-              doctor?.status === "Assign" && "badge text-success"
+            />
+            <span className="text-gray-700 font-medium">
+              {doctor?.requestedRole}
+            </span>
+          </div>
+        </TableCell>
+        <TableCell className="px-4 py-3">{doctor?.department}</TableCell>
+        <TableCell className="px-4 py-3 text-sm">
+          {moment(doctor?.requestDate).fromNow()}
+        </TableCell>
+        <TableCell className="px-4 py-3">{doctor?.shift}</TableCell>
+        <TableCell className="px-4 py-3">
+          <Badge
+            className={`px-3 py-1 font-semibold rounded-full ${
+              doctor?.status === "Pending"
+                ? "bg-yellow-100 text-yellow-700 border border-yellow-300"
+                : doctor?.status === "Assign"
+                ? "bg-blue-100 text-blue-700 border border-blue-300"
+                : doctor?.status === "Reject"
+                ? "bg-red-100 text-red-700 border border-red-300"
+                : "bg-gray-100 text-gray-700"
             }`}
           >
-            {(doctor?.status === "Pending" && "Pending") ||
-              (doctor?.status === "Reject" && "Rejected") ||
-              (doctor?.status === "Assign" && "Assigned")}
-          </p>
-        </td>
-        <TableCell className={"lg:py-4 py-10"}>
+            {doctor?.status === "Pending"
+              ? "Pending"
+              : doctor?.status === "Assign"
+              ? "Assigned"
+              : doctor?.status === "Reject"
+              ? "Rejected"
+              : "Unknown"}
+          </Badge>
+        </TableCell>
+        <TableCell className="px-4 py-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="cursor-pointer border p-2"
+                className="cursor-pointer p-2 rounded-full hover:bg-gray-200 transition-colors"
                 size="icon"
               >
-                <EllipsisVertical className="w-5 h-10" />
+                <EllipsisVertical className="w-5 h-5 text-gray-600" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent
+              align="end"
+              className="bg-white shadow-lg rounded-lg p-1"
+            >
               <DropdownMenuItem
-                className="cursor-pointer disabled:cursor-not-allowed focus:text-destructive flex gap-2 items-center"
-                onClick={() => handleDeleteDoctor(doctor?._id, doctor?.userEmail)}
+                className="cursor-pointer hover:bg-red-50 text-red-600 font-medium flex gap-2 items-center rounded-md px-3 py-2"
+                onClick={() =>
+                  handleDeleteDoctor(doctor?._id, doctor?.userEmail)
+                }
               >
                 <BookmarkX className="w-4 h-4" />
                 <span>Remove</span>
               </DropdownMenuItem>
-
               <DropdownMenuItem
-                className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
+                className="cursor-pointer hover:bg-gray-100 font-medium flex gap-2 items-center  rounded-md px-3 py-2"
                 onClick={() => handleAddNote(doctor)}
               >
                 <NotebookPen className="w-4 h-4" />
                 <span>Add Note</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
+                className="cursor-pointer hover:bg-gray-100 font-medium flex gap-2 items-center rounded-md px-3 py-2"
                 onClick={() => handleDoctorDetails(doctor)}
               >
                 <NotebookTabs className="w-4 h-4" />
@@ -137,7 +189,7 @@ const DoctorsTableRow = ({
             </DropdownMenuContent>
           </DropdownMenu>
         </TableCell>
-      </tr>
+      </TableRow>
     </>
   );
 };

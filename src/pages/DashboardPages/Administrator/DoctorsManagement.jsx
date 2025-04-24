@@ -1,6 +1,8 @@
+import DoctorsTableRow from "@/components/DoctorsTableRow/DoctorsTableRow";
 import DetailsModal from "@/components/RequestModals/DetailsModal";
 import NoteModal from "@/components/RequestModals/NoteModal";
 import { Button } from "@/components/ui/button";
+
 import {
   Select,
   SelectContent,
@@ -9,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import {
   Table,
   TableBody,
@@ -17,34 +20,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import {
   fetchDoctors,
   setSearch,
   setSort,
   updateDoctor,
 } from "@/redux/doctors/doctorSlice";
+
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { useDispatch, useSelector } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  BookmarkX,
-  BriefcaseMedical,
-  EllipsisVertical,
-  NotebookPen,
-  NotebookTabs,
-} from "lucide-react";
-import moment from "moment";
+import { BriefcaseMedical } from "lucide-react";
+import { IoIosSearch } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { IoIosSearch } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const DoctorsManagement = () => {
   const dispatch = useDispatch();
@@ -233,24 +225,27 @@ const DoctorsManagement = () => {
         </h2>
       )}
 
-      <div className="px-7 overflow-x-auto w-full">
+      <div className="px-7 mt-4 overflow-x-auto w-full">
         <Table>
           <TableHeader>
             <TableRow className="bg-gray-50 hover:bg-gray-50">
-              <TableHead className="p-4">No.</TableHead>
-              <TableHead className="p-4">Image</TableHead>
-              <TableHead className="p-4">Name</TableHead>
-              <TableHead className="p-4">Email</TableHead>
-              <TableHead className="p-4">Contact Number</TableHead>
-              <TableHead className="p-4">Role</TableHead>
-              <TableHead className="p-4">Department</TableHead>
-              <TableHead className="p-4">Request Moment</TableHead>
-              <TableHead className="p-4">Shift</TableHead>
-              <TableHead className="p-4">Status</TableHead>
-              <TableHead className="p-4">Actions</TableHead>
+              <TableHead className="px-4"></TableHead>
+              <TableHead className="px-4">Image</TableHead>
+              <TableHead className="px-4">Name</TableHead>
+              <TableHead className="px-4">Email</TableHead>
+              <TableHead className="px-4 text-xs">
+                Contact <br /> Number
+              </TableHead>
+              <TableHead className="px-4">Role</TableHead>
+              <TableHead className="px-4">Department</TableHead>
+              <TableHead className="px-4 text-xs">
+                Request <br /> Moment
+              </TableHead>
+              <TableHead className="px-4">Shift</TableHead>
+              <TableHead className="px-4">Status</TableHead>
+              <TableHead className="px-4">Actions</TableHead>
             </TableRow>
           </TableHeader>
-
           <TableBody>
             {status === "loading"
               ? Array.from({ length: 8 }).map((_, i) => (
@@ -262,91 +257,18 @@ const DoctorsManagement = () => {
                     ))}
                   </TableRow>
                 ))
-              : doctors.map((doctor, index) => (
-                  <TableRow key={doctor?._id}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>
-                      <img
-                        className="w-14 h-14 rounded-md object-cover"
-                        src={doctor?.userPhoto}
-                        alt={doctor?.userName}
-                      />
-                    </TableCell>
-                    <TableCell>{doctor?.userName}</TableCell>
-                    <TableCell>{doctor?.userEmail}</TableCell>
-                    <TableCell>{doctor?.contactNumber}</TableCell>
-                    <TableCell>
-                      <p className="flex gap-2 items-center">
-                        <span
-                          className={`rounded-full w-2 h-2 shadow-md ${
-                            doctor?.status === "Pending" && "bg-amber-500"
-                          } ${doctor?.status === "Assign" && "bg-sky-500"} ${
-                            doctor?.status === "Reject" && "bg-rose-500"
-                          }`}
-                        />
-                        <span>{doctor?.requestedRole}</span>
-                      </p>
-                    </TableCell>
-                    <TableCell>{doctor?.department}</TableCell>
-                    <TableCell>
-                      {moment(doctor?.requestDate).fromNow()}
-                    </TableCell>
-                    <TableCell>{doctor?.shift}</TableCell>
-                    <TableCell>
-                      <p
-                        className={`w-full border p-2 ${
-                          doctor?.status === "Pending" && "badge text-amber-500"
-                        } ${
-                          doctor?.status === "Reject" && "badge text-error"
-                        } ${
-                          doctor?.status === "Assign" && "badge text-success"
-                        }`}
-                      >
-                        {(doctor?.status === "Pending" && "Pending") ||
-                          (doctor?.status === "Reject" && "Rejected") ||
-                          (doctor?.status === "Assign" && "Assigned")}
-                      </p>
-                    </TableCell>
-                    <TableCell className="lg:py-4 py-10">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            className="cursor-pointer border p-2"
-                            size="icon"
-                          >
-                            <EllipsisVertical className="w-5 h-10" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            className="cursor-pointer disabled:cursor-not-allowed focus:text-destructive flex gap-2 items-center"
-                            onClick={() =>
-                              handleDeleteDoctor(doctor?._id, doctor?.userEmail)
-                            }
-                          >
-                            <BookmarkX className="w-4 h-4" />
-                            <span>Remove</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
-                            onClick={() => handleAddNote(doctor)}
-                          >
-                            <NotebookPen className="w-4 h-4" />
-                            <span>Add Note</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="cursor-pointer disabled:cursor-not-allowed flex gap-2 items-center"
-                            onClick={() => handleDoctorDetails(doctor)}
-                          >
-                            <NotebookTabs className="w-4 h-4" />
-                            <span>View Details</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
+              : [...doctors]
+                  ?.reverse()
+                  ?.map((doctor, index) => (
+                    <DoctorsTableRow
+                      key={doctor?._id}
+                      doctor={doctor}
+                      dispatch={dispatch}
+                      index={index}
+                      handleAddNote={handleAddNote}
+                      handleDoctorDetails={handleDoctorDetails}
+                    />
+                  ))}
           </TableBody>
         </Table>
       </div>
