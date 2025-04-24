@@ -113,7 +113,7 @@ export function NavUser() {
                 <NavLink
                   to="/dashboard/notifications"
                   className={({ isActive }) =>
-                    `inline-flex gap-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
+                    `inline-flex gap-x-2 px-2 items-center text-xs font-medium transition-all duration-300 ease-in-out ${
                       isActive
                         ? "bg-blue-50 rounded-md py-[6px] w-full text-blue-500"
                         : "hover:bg-[#f1f5f9] transition-all duration-300 ease-in-out py-[6px] rounded-md"
@@ -121,7 +121,7 @@ export function NavUser() {
                   }
                 >
                   <Bell size={20} />
-                  Notifications 
+                 <span className="-mt-[1.6px]">Notifications</span>  
                 </NavLink>
               ) : (
                 <></>

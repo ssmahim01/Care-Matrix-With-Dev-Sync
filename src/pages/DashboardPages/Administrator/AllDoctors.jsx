@@ -117,7 +117,7 @@ const AllDoctors = () => {
               className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
               value={search}
               onChange={handleSearch}
-              type="search"
+              type="text"
               required
               placeholder="Search by name or title"
             />

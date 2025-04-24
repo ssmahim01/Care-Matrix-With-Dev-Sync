@@ -153,7 +153,7 @@ const DoctorsTableRow = ({
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="cursor-pointer p-2 rounded-full hover:bg-gray-200 transition-colors"
+                className="cursor-pointer p-2 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors"
                 size="icon"
               >
                 <EllipsisVertical className="w-5 h-5 text-gray-600" />
