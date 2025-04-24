@@ -47,7 +47,7 @@ export default function DoctorsPatientsChart({counts}) {
         <CardDescription>Patient Distribution by Doctor</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className={"h-[300px]"}>
+        <ChartContainer config={chartConfig} className={"w-full h-[300px]"}>
           <BarChart
             accessibilityLayer
             data={chartData}

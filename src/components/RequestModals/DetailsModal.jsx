@@ -1,6 +1,7 @@
 import {
   Ban,
   BriefcaseMedical,
+  Calendar,
   CalendarCheck,
   CalendarSearch,
   CircleCheckBig,
@@ -46,6 +47,8 @@ import { Textarea } from "../ui/textarea";
 const DetailsModal = ({ form, detailsModal }) => {
   const [serviceValue, setServiceValue] = useState("");
   const [services, setServices] = useState([]);
+  const [availableDays, setAvailableDays] = useState([]);
+  const [availableValue, setAvailableValue] = useState("");
   const dispatch = useDispatch();
 
   // Services handlers
@@ -62,6 +65,27 @@ const DetailsModal = ({ form, detailsModal }) => {
         setServiceValue("");
       }
     }
+  };
+  // Available Days handlers
+  const handleAvailableDaysChange = (e) => {
+    setAvailableValue(e.target.value);
+  };
+
+  const handleAvailableKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const trimmedValue = availableValue.trim();
+      if (trimmedValue && !availableDays.includes(trimmedValue)) {
+        setAvailableDays([...availableDays, trimmedValue]);
+        setAvailableValue("");
+      }
+    }
+  };
+
+  const removeAvailability = (availableToRemove) => {
+    setAvailableDays(
+      availableDays.filter((available) => available !== availableToRemove)
+    );
   };
 
   const removeServices = (serviceToRemove) => {
@@ -108,27 +132,6 @@ const DetailsModal = ({ form, detailsModal }) => {
     if (!email) {
       toast.error("User email is missing");
       return;
-    }
-
-    const selectedDate = new Date(data.schedule);
-    const dayOfWeek = selectedDate.toLocaleString("en-US", { weekday: "long" });
-    let availableDays = [];
-
-    if (data.shift === "Rotating") {
-      const daysOfWeek = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-      ];
-      const selectedDayIndex = daysOfWeek.indexOf(dayOfWeek);
-      availableDays = daysOfWeek.slice(
-        Math.max(0, selectedDayIndex - 1),
-        Math.min(daysOfWeek.length, selectedDayIndex + 2)
-      );
-    } else {
-      availableDays = [dayOfWeek];
     }
 
     const doctorData = {
@@ -366,6 +369,48 @@ const DetailsModal = ({ form, detailsModal }) => {
                     )}
                   />
 
+                  {/* Availability Field */}
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2 text-gray-700 font-semibold">
+                      <Calendar className="w-5 h-5 text-blue-600" />
+                      Available Days
+                    </FormLabel>
+                    <div className="w-full">
+                      <div className="p-4 border rounded w-full">
+                        <label className="block mb-2">
+                          Enter Available Days (Press Enter or , to add){" "}
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <div className="flex flex-wrap gap-2 border p-2 rounded">
+                          {availableDays.map((available, index) => (
+                            <span
+                              key={index}
+                              className="px-2 py-1 bg-[#1d2026] text-white font-medium rounded flex items-center gap-1"
+                            >
+                              {available}
+                              <button
+                                type="button"
+                                className="ml-2 text-white/90 font-bold hover:cursor-pointer hover:text-rose-500"
+                                onClick={() => removeAvailability(available)}
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </span>
+                          ))}
+                          <input
+                            type="text"
+                            className="outline-none flex-1"
+                            value={availableValue}
+                            onChange={handleAvailableDaysChange}
+                            onKeyDown={handleAvailableKeyDown}
+                            placeholder="Add Available Days..."
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <FormMessage className="text-rose-500 text-sm mt-1" />
+                  </FormItem>
+
                   {/* Services Field */}
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 text-gray-700 font-semibold">
@@ -382,12 +427,12 @@ const DetailsModal = ({ form, detailsModal }) => {
                           {services.map((service, index) => (
                             <span
                               key={index}
-                              className="px-2 py-1 bg-[#3794da] text-white rounded flex items-center gap-1"
+                              className="px-2 py-1 bg-[#1d2026] text-white font-medium rounded flex items-center gap-1"
                             >
                               {service}
                               <button
                                 type="button"
-                                className="ml-2 text-gray-600 font-bold hover:cursor-pointer hover:text-rose-500"
+                                className="ml-2 text-white/90 font-bold hover:cursor-pointer hover:text-rose-500"
                                 onClick={() => removeServices(service)}
                               >
                                 <X className="w-4 h-4" />

@@ -38,7 +38,7 @@ const PatientChat = () => {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 lg:w-full w-11/12 mx-auto">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border">
         <div>
           <DashboardPagesHeader

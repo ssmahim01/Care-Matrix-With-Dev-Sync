@@ -24,6 +24,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const ChatDashboard = ({ userEmail, userRole }) => {
   const axiosSecure = useAxiosSecure();
@@ -56,7 +57,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
     formData.append("key", apiKey);
     formData.append("image", base64Image);
 
-    const response = await axiosSecure.post(
+    const response = await axios.post(
       "https://api.imgbb.com/1/upload",
       formData,
       {
@@ -69,11 +70,6 @@ const ChatDashboard = ({ userEmail, userRole }) => {
     if (response.data.success) {
       setIsUploading(false);
       return response.data.data.url;
-    } else {
-      console.error(
-        "ImgBB upload failed: " +
-          (response.data.error?.message || "Unknown error")
-      );
     }
   };
 
@@ -250,7 +246,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                       <div className="flex gap-2 items-center">
                         <figure>
                           <img
-                            className="w-14 h-14 rounded-full object-cover"
+                            className="w-14 h-14 rounded-full object-cover border-4 avatar border-cyan-500 hover:border-cyan-600"
                             referrerPolicy="no-referrer"
                             src={professional?.photo}
                             alt={professional?.name}
@@ -321,7 +317,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
         <div className="flex-1 flex flex-col h-[600px] overflow-y-auto">
           {selectedPartner ? (
             <>
-              <div className="py-2 flex justify-between border-b items-center">
+              <div className="py-2 flex sticky top-0 bg-base-200 justify-between border-b items-center">
                 <div className="flex gap-2 items-center">
                   <figure>
                     <img
