@@ -14,6 +14,7 @@ import { HiOutlineCheckBadge } from 'react-icons/hi2';
 import { IoLocationOutline } from 'react-icons/io5';
 import { FiCalendar } from 'react-icons/fi';
 import { BsCurrencyDollar } from 'react-icons/bs';
+import { TbCurrencyTaka } from 'react-icons/tb';
 
 const DoctorDetails = () => {
     const { user } = useSelector((state) => state.auth);
@@ -177,11 +178,11 @@ console.log("doctor data is ,", doctorInfo);
 
                         <div className="flex items-center gap-2 py-1 rounded-full">
                             <div className='text-gray-500'>
-                                <BsCurrencyDollar size={20} />
+                                <TbCurrencyTaka size={20} />
                             </div>
                             <div className='flex flex-col text-lg'>
                                 <span className=' text-base font-medium text-gray-500'>Consultation Fee</span>
-                                <span className='font-semibold text-gray-900'>{doctorInfo?.consultation_fee.replace("$", "")}</span>
+                                <span className='font-semibold text-gray-900'>{doctorInfo?.consultation_fee}</span>
                             </div>
                         </div>
 
