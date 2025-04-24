@@ -177,7 +177,7 @@ const RewardsDashboard = () => {
 
 
   // Fetch patient’s rewards data
-  const { data: rewardsData, isLoading: rewardsLoading } = useQuery({
+  const { data: rewardsData, isLoading: rewardsLoading, refetch } = useQuery({
     queryKey: ["rewards", user?.email],
     queryFn: async () => {
       const res = await axios.get(
@@ -187,29 +187,24 @@ const RewardsDashboard = () => {
     },
   });
 
-  // Fetch available rewards
-  // const { data: availableRewards, isLoading: rewardsListLoading } = useQuery({
-  //   queryKey: ["available-rewards"],
-  //   queryFn: async () => {
-  //     const res = await axios.get(
-  //       `${import.meta.env.VITE_API_URL}/rewards/available-rewards`
-  //     );
-  //     return res.data;
-  //   },
-  // });
 
   console.log(user);
   console.log("reward data ", rewardsData);
+
   const handleRedeem = (redeem) => {
     console.log("Clicked on redeem", redeem);
     let discount = 0;
+    let decreasePoint = 0;
 
-    if(redeem === "silver"){
+    if (redeem === "silver") {
       discount = 5;
-    }else if(redeem === "titanium"){
+      decreasePoint = 50;
+    } else if (redeem === "titanium") {
       discount = 8;
-    }else{
+      decreasePoint = 75;
+    } else {
       discount = 10;
+      decreasePoint = 100;
     }
 
     console.log(discount);
@@ -218,19 +213,31 @@ const RewardsDashboard = () => {
       redeemReward: redeem,
       redeemDiscount: discount
     }
-    
+
     axiosSecure.post(`/reward-users`, redeemInfo)
-    .then(res => {
-      console.log(res );
-      if(res.data.insertedId){
-        toast.success("Redeem activated for you next appointments.")
-      }
-    })
-    .catch(error => {
-      console.log(error);
-      toast.error("Something went wrong! Please try again.")
-    })
-    
+      .then(res => {
+        console.log(res);
+        if (res.data.insertedId) {
+
+          axiosSecure.patch(`/rewards/${user?.email}`, {decreasePoint})
+            .then(res => {
+              console.log(res);
+              if (res.data.modifiedCount > 0) {
+                 refetch()
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            })
+            
+            toast.success("Redeem activated for you next appointments.")
+
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        toast.error("Something went wrong! Please try again.")
+      })
   }
 
   return (
@@ -253,8 +260,7 @@ const RewardsDashboard = () => {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-semibold text-blue-600">
-              {/* {rewardsData?.totalPoints || 0} Points */}
-              150 Points
+              {rewardsData?.history[0].points || 0} Points
             </p>
             <p className="text-gray-600 mt-2">
               Earned from your booked appointments!
@@ -278,38 +284,10 @@ const RewardsDashboard = () => {
             </p>
           </CardHeader>
           <CardContent>
-            {/* {availableRewards?.rewards.length > 0 ? (
-              <ul className="space-y-3">
-                {availableRewards.rewards.map((reward) => (
-                  <li
-                    key={reward._id}
-                    className="flex justify-between items-center"
-                  >
-                    <div>
-                      <p className="font-medium">Get 5% reward for your next appointment</p>
-                      <p className="text-sm text-gray-600">
-                        {reward.pointsRequired} Points
-                      </p>
-                    </div>
-                    <Button
-                      onClick={() => handleRedeem(reward._id)}
-                      disabled={
-                        rewardsData?.totalPoints < reward.pointsRequired
-                      }
-                      className="bg-blue-600 text-white hover:bg-blue-700"
-                    >
-                      Redeem
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No rewards available yet.</p>
-            )} */}
-
+          
             <div className="flex justify-between gap-4 ">
               <div className="space-y-1">
-              <span className="font-semibold bg-gray-200 mb-1 inline-block px-4 py-1 min-w-24 rounded-md">Silver</span>
+                <span className="font-semibold bg-gray-200 mb-1 inline-block px-4 py-1 min-w-24 rounded-md">Silver</span>
                 <p className="font-medium">Get 5% discount for your next appointment</p>
                 <p className="text-sm text-gray-600">
                   50 Points
@@ -317,15 +295,15 @@ const RewardsDashboard = () => {
               </div>
               <Button
                 className="bg-blue-600 text-white hover:bg-blue-700"
-                // disabled={rewardsData?.totalPoints < 50}
-                onClick={()=>handleRedeem("silver")}
+                disabled={rewardsData?.history[0].points < 50}
+                onClick={() => handleRedeem("silver")}
               >
                 Redeem
               </Button>
             </div>
             <div className="flex justify-between gap-4 my-4">
               <div>
-              <span className="font-semibold bg-green-200 mb-1 inline-block px-4 py-1 min-w-24 rounded-md">Titanium</span>
+                <span className="font-semibold bg-green-200 mb-1 inline-block px-4 py-1 min-w-24 rounded-md">Titanium</span>
                 <p className="font-medium">Get 8% discount for your next appointment</p>
                 <p className="text-sm text-gray-600">
                   75 Points
@@ -333,15 +311,15 @@ const RewardsDashboard = () => {
               </div>
               <Button
                 className="bg-blue-600 text-white hover:bg-blue-700"
-                // disabled={rewardsData?.totalPoints < 75}
-                onClick={()=>handleRedeem("titanium")}
+                disabled={rewardsData?.history[0].points < 75}
+                onClick={() => handleRedeem("titanium")}
               >
                 Redeem
               </Button>
             </div>
             <div className="flex justify-between gap-4 ">
               <div>
-              <span className="font-semibold bg-yellow-400 mb-1 inline-block px-4 py-1 min-w-24 rounded-md">Gold</span>
+                <span className="font-semibold bg-yellow-400 mb-1 inline-block px-4 py-1 min-w-24 rounded-md">Gold</span>
                 <p className="font-medium">Get 10% discount for your next appointment</p>
                 <p className="text-sm text-gray-600">
                   100 Points
@@ -349,8 +327,8 @@ const RewardsDashboard = () => {
               </div>
               <Button
                 className="bg-blue-600 text-white hover:bg-blue-700"
-                // disabled={rewardsData?.totalPoints < 100}
-                onClick={()=>handleRedeem("gold")}
+                disabled={rewardsData?.history[0].points < 100}
+                onClick={() => handleRedeem("gold")}
               >
                 Redeem
               </Button>
