@@ -38,106 +38,6 @@ import toast from "react-hot-toast";
 import { PrescriptionViewModal } from "./PrescriptionViewModal";
 import { FileDown } from "lucide-react";
 
-// Sample patient data
-// const approvedPatient = [
-//   {
-//     _id: "6802196aaa85b8c937058b8d",
-//     name: "Bangla Rugii",
-//     age: "21",
-//     phone: "01835353634",
-//     email: "patient@carematrix.com",
-//     date: "2025-04-18",
-//     time: "11:00am - 11:29am",
-//     reason: "Acidity problem",
-//     status: "approved",
-//     doctorId: "680215f8aa85b8c937058b8b",
-//     doctorName: "Doctor Bapparaj",
-//     doctorTitle: "Cardiology",
-//     consultationFee: "$20",
-//     prescriptions: [],
-//   },
-//   {
-//     _id: "6802196aaa85b8c937058b8e",
-//     name: "Sarah Johnson",
-//     age: "35",
-//     phone: "01712345678",
-//     email: "sarah@example.com",
-//     date: "2025-04-19",
-//     time: "09:30am - 10:00am",
-//     reason: "Migraine headaches",
-//     status: "approved",
-//     doctorId: "680215f8aa85b8c937058b8c",
-//     doctorName: "Doctor Anika Rahman",
-//     doctorTitle: "Neurology",
-//     consultationFee: "$25",
-//     prescriptions: [],
-//   },
-//   {
-//     _id: "6802196aaa85b8c937058b8f",
-//     name: "Mohammed Ali",
-//     age: "45",
-//     phone: "01898765432",
-//     email: "mali@example.com",
-//     date: "2025-04-19",
-//     time: "02:00pm - 02:30pm",
-//     reason: "Joint pain",
-//     status: "approved",
-//     doctorId: "680215f8aa85b8c937058b8d",
-//     doctorName: "Doctor Kamal Hossain",
-//     doctorTitle: "Orthopedics",
-//     consultationFee: "$30",
-//     prescriptions: [],
-//   },
-//   {
-//     _id: "6802196aaa85b8c937058b90",
-//     name: "Fatima Begum",
-//     age: "62",
-//     phone: "01756789012",
-//     email: "fatima@example.com",
-//     date: "2025-04-20",
-//     time: "10:30am - 11:00am",
-//     reason: "Diabetes checkup",
-//     status: "approved",
-//     doctorId: "680215f8aa85b8c937058b8e",
-//     doctorName: "Doctor Nasreen Akter",
-//     doctorTitle: "Endocrinology",
-//     consultationFee: "$35",
-//     prescriptions: [],
-//   },
-//   {
-//     _id: "6802196aaa85b8c937058b91",
-//     name: "Rahul Das",
-//     age: "28",
-//     phone: "01634567890",
-//     email: "rahul@example.com",
-//     date: "2025-04-20",
-//     time: "03:30pm - 04:00pm",
-//     reason: "Skin rash",
-//     status: "approved",
-//     doctorId: "680215f8aa85b8c937058b8f",
-//     doctorName: "Doctor Farhana Islam",
-//     doctorTitle: "Dermatology",
-//     consultationFee: "$22",
-//     prescriptions: [],
-//   },
-//   {
-//     _id: "6802196aaa85b8c937058b91",
-//     name: "Rahul Das",
-//     age: "28",
-//     phone: "01634567890",
-//     email: "rahul@example.com",
-//     date: "2025-04-20",
-//     time: "03:30pm - 04:00pm",
-//     reason: "Skin rash",
-//     status: "approved",
-//     doctorId: "680215f8aa85b8c937058b8f",
-//     doctorName: "Doctor Farhana Islam",
-//     doctorTitle: "Dermatology",
-//     consultationFee: "$22",
-//     prescriptions: [],
-//   },
-// ];
-
 export function PrescriptionTable() {
   const user = useAuthUser();
   const [search, setSearchTerm] = useState("");
@@ -216,7 +116,7 @@ export function PrescriptionTable() {
     });
     refetch();
     setIsPrescriptionModalOpen(false);
-};
+  };
 
   return (
     <div className="space-y-4">
@@ -259,7 +159,7 @@ export function PrescriptionTable() {
                 </TableCell>
               </TableRow>
             ) : (
-              currentPatients?.reverse().map((patient) => (
+              currentPatients?.map((patient) => (
                 <TableRow key={patient._id}>
                   <TableCell className="font-medium">{patient.name}</TableCell>
                   <TableCell>{patient.age}</TableCell>
