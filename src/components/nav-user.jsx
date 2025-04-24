@@ -1,7 +1,6 @@
 "use client";
 
 import {
-<<<<<<< HEAD
   BadgeCheck,
   Bell,
   ChevronsRight,
@@ -13,8 +12,6 @@ import {
 } from "lucide-react";
 
 import {
-=======
->>>>>>> 462fb9b6deef6d7a666139dcf11fa7cdefa6b5b6
   DropdownMenu,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -66,7 +63,6 @@ export function NavUser() {
               </SidebarMenuButton>
             )}
           </DropdownMenuTrigger>
-<<<<<<< HEAD
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
@@ -151,8 +147,6 @@ export function NavUser() {
               </button>
             </div>
           </DropdownMenuContent>
-=======
->>>>>>> 462fb9b6deef6d7a666139dcf11fa7cdefa6b5b6
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
