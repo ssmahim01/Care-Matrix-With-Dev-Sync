@@ -8,21 +8,21 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import SkeletonChatDashboard from "@/components/ChatDashboard/SkeletonChatDashboard";
 
-const PatientChat = () => {
+const PharmacistChat = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuthUser();
   const currentDate = format(new Date(), "MMMM d, yyyy");
 
-  // Fetch patient details
+  // Fetch pharmacist details
   const {
-    data: patient,
+    data: pharmacist,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["patient", user?.email],
+    queryKey: ["pharmacist", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
-      // console.log("Patient data response:", res.data);
+      // console.log("Pharmacist data response:", res.data);
       return res.data.data;
     },
     retry: 1,
@@ -33,8 +33,14 @@ const PatientChat = () => {
     return <SkeletonChatDashboard />;
   }
 
-  if (error || !patient) {
-    return <div>Error: Could not load patient details.</div>;
+  if (error || !pharmacist) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <span className="text-gray-700 font-semibold">
+          Error: Could not load pharmacist details
+        </span>
+      </div>
+    );
   }
 
   return (
@@ -42,8 +48,8 @@ const PatientChat = () => {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border">
         <div>
           <DashboardPagesHeader
-            title={`Welcome, ${patient.name}`}
-            subtitle="Consult with doctors and pharmacists"
+            title={`Welcome, ${pharmacist.name}`}
+            subtitle="Communicate with patients"
             icon={MessagesSquare}
           />
           <div className="flex items-center gap-2 mt-2">
@@ -55,9 +61,9 @@ const PatientChat = () => {
         </div>
       </div>
 
-      <ChatDashboard userEmail={patient.email} userRole="patient" />
+      <ChatDashboard userEmail={pharmacist.email} userRole="pharmacist" />
     </div>
   );
 };
 
-export default PatientChat;
+export default PharmacistChat;

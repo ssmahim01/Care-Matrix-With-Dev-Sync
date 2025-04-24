@@ -10,10 +10,10 @@ import "slick-carousel/slick/slick.css";
 import DoctorCardSkeleton from "../Doctors/DoctorCardSkeleton";
 
 const Doctors = () => {
-  const [search, setSearch] = useState("")
-  const [selectedSort, setSelectedSort] = useState("")
+  const [search, setSearch] = useState("");
+  const [selectedSort, setSelectedSort] = useState("");
   const [doctors, isLoading] = useDoctors(search, selectedSort);
-  
+
   let settings = {
     dots: false,
     infinite: true,
@@ -55,6 +55,7 @@ const Doctors = () => {
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: easeIn }}
+        viewport={{ once: true }}
       >
         {/* section inner */}
         <div className="mx-auto px-4 py-10 md:py-14 lg:py-16">
