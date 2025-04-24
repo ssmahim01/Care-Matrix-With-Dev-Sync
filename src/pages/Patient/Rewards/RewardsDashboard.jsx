@@ -175,7 +175,6 @@ const RewardsDashboard = () => {
   const [selectedReward, setSelectedReward] = useState(null);
   const axiosSecure = useAxiosSecure();
 
-
   // Fetch patient’s rewards data
   const { data: rewardsData, isLoading: rewardsLoading, refetch } = useQuery({
     queryKey: ["rewards", user?.email],
@@ -188,11 +187,9 @@ const RewardsDashboard = () => {
   });
 
 
-  console.log(user);
-  console.log("reward data ", rewardsData);
+
 
   const handleRedeem = (redeem) => {
-    console.log("Clicked on redeem", redeem);
     let discount = 0;
     let decreasePoint = 0;
 
@@ -207,7 +204,6 @@ const RewardsDashboard = () => {
       decreasePoint = 100;
     }
 
-    console.log(discount);
     const redeemInfo = {
       userEmail: user?.email,
       redeemReward: redeem,
@@ -216,18 +212,18 @@ const RewardsDashboard = () => {
 
     axiosSecure.post(`/reward-users`, redeemInfo)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.data.insertedId) {
 
           axiosSecure.patch(`/rewards/${user?.email}`, {decreasePoint})
             .then(res => {
-              console.log(res);
+              // console.log(res);
               if (res.data.modifiedCount > 0) {
                  refetch()
               }
             })
             .catch(err => {
-              console.log(err);
+              // console.log(err);
             })
             
             toast.success("Redeem activated for you next appointments.")
@@ -235,7 +231,7 @@ const RewardsDashboard = () => {
         }
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
         toast.error("Something went wrong! Please try again.")
       })
   }

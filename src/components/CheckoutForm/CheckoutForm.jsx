@@ -79,7 +79,6 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
           //  delete reward user from reward-user collection 
           if(appointmentInfo?.rewardInfo?.rewardId){
             const rewardUserResponse = await axiosSecure.delete(`/reward-users/${appointmentInfo?.rewardInfo?.rewardId}`)
-            console.log("reward user collection response for delete ",rewardUserResponse);
 
           }
 
@@ -115,7 +114,7 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
         toast.error("Payment failed. Please try again.");
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       setErrorMessage(error.message || "Payment failed. Please try again.");
       toast.error(error.message || "Payment failed. Please try again.");
     } finally {

@@ -44,7 +44,7 @@ const BookAppointment = () => {
             consultationFee: consultationFee,
             rewardInfo: rewardInfo
         };
-        console.log(appointmentInfo);
+        // console.log(appointmentInfo);
         navigate('/book-appointment/payment', { state: { appointmentInfo } });
     };
 
