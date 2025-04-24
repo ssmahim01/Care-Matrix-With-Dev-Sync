@@ -87,7 +87,7 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
     <Table className={"mt-6"}>
       <TableCaption>A List Of All Assigned Users</TableCaption>
       <TableHeader>
-        <TableRow className={"bg-base-200 hover:bg-base-200"}>
+        <TableRow className={"bg-gray-50 hover:bg-gray-50"}>
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Role</TableHead>

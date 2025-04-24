@@ -89,6 +89,7 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
           <TableHead>Email</TableHead>
           <TableHead>Role</TableHead>
           <TableHead>Phone Number</TableHead>
+          <TableHead>ProviderId</TableHead>
           <TableHead>UID</TableHead>
           <TableHead className="text-xs">
             Last <br /> Login At
@@ -103,7 +104,7 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
         {isLoading
           ? Array.from({ length: 10 }).map((_, i) => (
               <TableRow key={i}>
-                {Array.from({ length: 8 }).map((_, j) => (
+                {Array.from({ length: 9 }).map((_, j) => (
                   <TableCell key={j}>
                     <div className="skeleton h-8 rounded w-full"></div>
                   </TableCell>
@@ -192,7 +193,10 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
                   )}
                 </TableCell>
                 <TableCell>
-                  {user?.phoneNumber ? user?.phoneNumber : user?.providerId}
+                  {user?.phoneNumber ? user?.phoneNumber : "Unavailable"}
+                </TableCell>
+                <TableCell>
+                  {user?.providerId ? user?.providerId : "password"}
                 </TableCell>
                 <TableCell className="max-w-[100px] truncate">
                   <TooltipProvider>

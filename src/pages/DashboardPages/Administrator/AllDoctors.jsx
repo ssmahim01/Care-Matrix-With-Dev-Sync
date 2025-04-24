@@ -159,8 +159,8 @@ const AllDoctors = () => {
         <Table className={"*:w-full *:rounded-xl"}>
           <TableCaption>A List Of All Doctors</TableCaption>
           <TableHeader>
-            <TableRow className={"bg-base-200 hover:bg-base-200"}>
-              <TableHead>#</TableHead>
+            <TableRow className={"bg-gray-50 hover:bg-gray-50"}>
+              <TableHead></TableHead>
               <TableHead>Photo</TableHead>
               <TableHead>Doctor</TableHead>
               <TableHead>Title</TableHead>
@@ -196,7 +196,7 @@ const AllDoctors = () => {
                 ))}
           </TableBody>
           <TableFooter>
-            <TableRow>
+            <TableRow className={"bg-gray-50 hover:bg-gray-50"}>
               <TableCell colSpan={10}>
                 Total Doctors:{" "}
                 {status === "loading" ? (

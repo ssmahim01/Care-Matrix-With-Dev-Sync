@@ -19,7 +19,14 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import moment from "moment";
-
+// import {
+//   Table,
+//   TableHeader,
+//   TableBody,
+//   TableRow,
+//   TableHead,
+//   TableCell,
+// } from "@/components/ui/table";
 const DoctorsTableRow = ({
   doctor,
   index,

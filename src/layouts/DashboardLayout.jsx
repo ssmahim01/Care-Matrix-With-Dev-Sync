@@ -1,25 +1,21 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import UserAction from "@/components/UserAction/UserAction";
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const DashboardLayout = () => {
+  const { pathname } = useLocation();
+
   useEffect(() => {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
-  });
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-       <UserAction />
+        <UserAction />
         <div className="flex flex-1 flex-col gap-4 lg:p-4 pt-0">
           <Outlet />
         </div>
