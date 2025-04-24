@@ -3,11 +3,12 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import AppointmentInvoice from "../AppointmentInvoice/AppointmentInvoice";
+import { TbCurrencyTaka } from "react-icons/tb";
 
 const SuccessPayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const {paymentData, rewardInfo} = location?.state || {};
+  const { paymentData, rewardInfo } = location?.state || {};
 
   const paymentInfo = paymentData;
 
@@ -58,8 +59,18 @@ const SuccessPayment = () => {
           </div>
           <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Amount:</span>
-            <span className="text-gray-800">${paymentInfo.amount}</span>
+            <span className="text-gray-800 flex items-center"> <TbCurrencyTaka></TbCurrencyTaka> {paymentInfo.amount}</span>
           </div>
+
+          {
+            paymentInfo?.appointmentInfo?.rewardInfo?.discount > 0 &&
+            <div className="flex gap-6 border-b py-2">
+              <span className="text-gray-500 w-32">Reward Discount:</span>
+              <span className="text-gray-800 ">
+                {paymentInfo?.appointmentInfo?.rewardInfo?.discount}%
+              </span>
+            </div>
+          }
           <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Payment Date:</span>
             <span className="text-gray-800 ">

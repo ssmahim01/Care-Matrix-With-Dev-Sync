@@ -98,7 +98,7 @@ const AllDoctors = () => {
   }, [availabilityModal, form]);
 
   return (
-    <div className="lg:w-full md:w-[95%] w-11/12 mx-auto">
+    <div className="px-7">
       <div className="flex md:flex-row flex-col flex-wrap justify-between items-center">
         {/* Heading of the Table */}
         <DashboardPagesHeader
@@ -173,7 +173,9 @@ const AllDoctors = () => {
               <TableHead>Experience</TableHead>
               <TableHead>Schedule</TableHead>
               <TableHead>Shift</TableHead>
-              <TableHead className={"text-xs"}>Consultation <br /> Fee</TableHead>
+              <TableHead className={"text-xs"}>
+                Consultation <br /> Fee
+              </TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
