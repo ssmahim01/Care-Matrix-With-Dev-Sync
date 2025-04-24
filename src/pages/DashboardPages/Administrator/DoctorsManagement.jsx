@@ -131,7 +131,7 @@ const DoctorsManagement = () => {
   }, [dispatch, search, sort]);
 
   return (
-    <>
+    <div className="px-7">
       <div className="flex justify-between items-center">
         {!isFormOpen ? (
           <div className="w-full flex justify-between items-center md:flex-row flex-col flex-wrap">
@@ -294,7 +294,7 @@ const DoctorsManagement = () => {
         form={form}
         detailsModal={detailsModal}
       />
-    </>
+    </div>
   );
 };
 
