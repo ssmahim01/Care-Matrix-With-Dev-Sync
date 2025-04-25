@@ -1,10 +1,16 @@
 import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import {
   Table,
   TableBody,
@@ -14,75 +20,74 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, Phone, Stethoscope } from "lucide-react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { Eye, MoreVertical, Trash } from "lucide-react";
-import { FaCapsules } from "react-icons/fa";
 import { format } from "date-fns";
+import {
+  AlertCircle,
+  Eye,
+  Loader,
+  MoreVertical,
+  Phone,
+  ShieldCheck,
+  Stethoscope,
+  Trash,
+} from "lucide-react";
 import { useState } from "react";
-import Swal from "sweetalert2";
-import axios from "axios";
+import { FaCapsules } from "react-icons/fa";
 import DoctorProfileDialog from "./DoctorProfileDialog";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import axios from "axios";
+import { AvatarFallback } from "@/components/ui/avatar";
 
 const AssignUsersTable = ({ users, isLoading, refetch }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [selectedEmail, setSelectedEmail] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleUserDelete = (email) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: `This will permanently delete ${email} from Firebase and MongoDB.`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#000",
-      confirmButtonText: "Yes, delete",
-      cancelButtonText: "Cancel",
-      background: "#fff",
-      color: "#000",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const { data } = await axios.delete(
-            `${import.meta.env.VITE_API_URL}/firebase/delete-user/${email}`
-          );
-          if (data?.result?.deletedCount) {
-            refetch();
-            Swal.fire({
-              title: "Deleted!",
-              text: data.message || `${email} has been deleted successfully.`,
-              icon: "success",
-              confirmButtonColor: "#000",
-              background: "#fff",
-              color: "#000",
-            });
-          }
-        } catch (error) {
-          Swal.fire({
-            title: "Error!",
-            text: error?.response?.data?.message || "Something went wrong.",
-            icon: "error",
-            confirmButtonColor: "#000",
-            background: "#fff",
-            color: "#000",
-          });
-        }
+  const handleUserDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/firebase/delete-user/${selectedEmail}`
+      );
+
+      if (data?.result?.deletedCount) {
+        refetch();
+        setIsOpen(false);
+        setErrorMessage("");
+        toast("User Deleted", {
+          description: `${selectedEmail} Was Successfully Deleted!`,
+          duration: 3000,
+          position: "top-right",
+        });
+      } else {
+        setErrorMessage("User could not be deleted, Please try again!");
       }
-    });
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        "Something went wrong while deleting the user!";
+      setErrorMessage(message);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
     <Table className={"mt-6"}>
       <TableCaption>A List Of All Assigned Users</TableCaption>
       <TableHeader>
-        <TableRow className={"bg-base-200 hover:bg-base-200"}>
+        <TableRow className={"bg-gray-50 hover:bg-gray-50"}>
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Role</TableHead>
@@ -115,9 +120,18 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                     <Avatar>
                       <AvatarImage
                         src={user?.photo}
-                        alt="user Image"
+                        alt="User Image"
                         className="min-w-10 max-w-10 rounded-full h-10 object-cover"
                       />
+                      <AvatarFallback className="min-w-10 max-w-10 rounded-full h-10 object-cover">
+                        {user?.name
+                          ? user.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                              .toUpperCase()
+                          : "NA"}
+                      </AvatarFallback>
                     </Avatar>
                     <span>{user?.name}</span>
                   </div>
@@ -211,28 +225,32 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                         <>
                           <DropdownMenuItem
                             className="cursor-pointer"
-                            // onSelect={(e) => {
-                            //   e.preventDefault();
-                            //   setDialogOpen(true);
-                            // }}
+                            onSelect={(e) => {
+                              e.preventDefault();
+                              setOpenDialog(true);
+                            }}
                           >
-                            <Eye className="w-4 h-4 mr-2" />
+                            <Eye className="w-4 h-4 mt-[2px]" />
                             Doctor Profile
                           </DropdownMenuItem>
-                          {/* <DoctorProfileDialog
-                            open={dialogOpen}
-                            setOpen={setDialogOpen}
+                          {/* DoctorProfileDialog */}
+                          <DoctorProfileDialog
+                            openDialog={openDialog}
+                            setOpenDialog={setOpenDialog}
                             doctor={user?.email}
-                          /> */}
+                          />
                         </>
                       )}
                       {user?.role !== "doctor" && (
                         <DropdownMenuItem
-                          onClick={() => handleUserDelete(user?.email)}
-                          className={"cursor-pointer"}
+                          onClick={() => {
+                            setSelectedEmail(user?.email);
+                            setIsOpen(true);
+                          }}
+                          className="cursor-pointer"
                         >
-                          <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
-                          User
+                          <Trash className="w-4 h-4 mt-[0.9px] text-red-500" />
+                          Delete User
                         </DropdownMenuItem>
                       )}
                     </DropdownMenuContent>
@@ -241,6 +259,64 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
               </TableRow>
             ))}
       </TableBody>
+
+      {/* Delete User Modal */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-md [&_[data-dialog-close]]:hidden">
+          <DialogHeader>
+            {!errorMessage && (
+              <>
+                <DialogTitle>Are you sure?</DialogTitle>
+                <p className="text-sm text-gray-600">
+                  This will permanently delete{" "}
+                  <span className="font-semibold text-gray-700">
+                    {selectedEmail}
+                  </span>{" "}
+                  from Firebase and DB
+                </p>
+              </>
+            )}
+          </DialogHeader>
+
+          {errorMessage && (
+            <div className="flex items-center gap-2 text-red-500 mt-2">
+              <AlertCircle className="w-4 h-4" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
+          <DialogFooter className="flex justify-end gap-2 pt-4">
+            <Button
+              variant="destructive"
+              className="cursor-pointer"
+              onClick={handleUserDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <>
+                  <Loader className="w-4 h-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : errorMessage ? (
+                "Try Again!"
+              ) : (
+                "Yes, Delete"
+              )}
+            </Button>
+            <Button
+              variant="outline"
+              className={"cursor-pointer"}
+              onClick={() => {
+                setIsOpen(false);
+                setSelectedEmail("");
+                setErrorMessage("");
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Table>
   );
 };

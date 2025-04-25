@@ -25,7 +25,7 @@ const BlogCard = ({
           <img
             src={image}
             alt={title}
-            className="w-full h-[180px] object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-500
+            className="w-full h-[180px] object-cover rounded-t-lg 
             sm:h-[200px] md:h-[220px] lg:h-[250px]"
           />
           {/* Date */}

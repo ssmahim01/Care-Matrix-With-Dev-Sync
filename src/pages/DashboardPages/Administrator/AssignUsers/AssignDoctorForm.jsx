@@ -371,7 +371,7 @@ const AssignDoctorForm = ({ refetch, setIsDoctorFormOpen }) => {
       available_days: availability,
       schedule: schedule,
       shift: selectedShift,
-      consultation_fee: "$" + consultationFee,
+      consultation_fee: consultationFee,
 
       rating: 4.0,
       vote: 10,

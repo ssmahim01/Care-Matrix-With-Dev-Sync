@@ -61,7 +61,7 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
                 {appointments && appointments?.length > 0 ? (
                   appointments?.map((appointment) => (
                     <TableRow key={appointment?._id}>
-                      <TableCell className="font-medium">
+                      <TableCell className="font-medium max-w-20 truncate">
                         {appointment?.name}
                       </TableCell>
                       <TableCell>{appointment?.date}</TableCell>
@@ -120,13 +120,13 @@ const DoctorOverviewTab = ({ stats, appointments, prescriptions }) => {
                 {prescriptions && prescriptions?.length > 0 ? (
                   prescriptions?.map((prescription) => (
                     <TableRow key={prescription._id}>
-                      <TableCell className="font-medium">
-                        {prescription.patientName}
+                      <TableCell className="font-medium max-w-20 truncate">
+                        {prescription?.patientName}
                       </TableCell>
-                      <TableCell>{prescription.date}</TableCell>
+                      <TableCell>{prescription?.date}</TableCell>
                       <TableCell>
                         <div className="flex flex-wrap gap-1">
-                          {prescription.medicines.map((medicine, index) => (
+                          {prescription?.medicines.map((medicine, index) => (
                             <Badge
                               key={index}
                               variant="outline"

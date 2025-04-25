@@ -8,17 +8,20 @@ import "./index.css";
 
 const queryClient = new QueryClient();
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "react-hot-toast";
-
+// import { Toaster } from "react-hot-toast";
+// import { Toaster } from "@/components/ui/sonner"
+import { Toaster as HotToaster } from "react-hot-toast";
+import { Toaster as ShadToaster } from "@/components/ui/sonner";
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Router />
-        </BrowserRouter>
-        <Toaster />
-      </QueryClientProvider>
-    </Provider>
+  <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+      <HotToaster />
+      <ShadToaster />
+    </QueryClientProvider>
+  </Provider>
   // </StrictMode>
 );
