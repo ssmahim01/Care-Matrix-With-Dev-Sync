@@ -1,24 +1,25 @@
-import { useState, useEffect } from "react";
-import {
-  Search,
-  UserCheck,
-  CalendarCheck,
-  HeartPulse,
-  ClipboardList,
-  Bell,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle2,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+import {
+  Bell,
+  CalendarCheck,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardList,
+  HeartPulse,
+  Search,
+  UserCheck,
+} from "lucide-react";
+import SectionHeader from "@/shared/Section/SectionHeader";
 
 const HowItWorks = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  // Enhanced data structure with more detailed information
   const services = [
     {
       icon: <Search size={60} />,
@@ -82,7 +83,6 @@ const HowItWorks = () => {
     },
   ];
 
-  // Auto-play functionality
   useEffect(() => {
     let interval;
 
@@ -112,23 +112,18 @@ const HowItWorks = () => {
 
   return (
     <section className="py-16 px-4 md:px-8 bg-gradient-to-b from-white to-blue-50">
-      <div className="max-w-7xl mx-auto">
+      <div className="w-11/12 mx-auto">
         {/* Header */}
-        <div className="text-center mb-12 space-y-4">
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide">
-            HOW{" "}
-            <span className="text-[#0E82FD] tracking-wider underline underline-offset-4 decoration-2">
-              IT
-            </span>{" "}
-            WORKS
-          </h2>
-          <p className="text-xl text-gray-600 font-medium tracking-wider max-w-2xl mx-auto">
-            Your healthcare journey simplified in 6 easy steps
-          </p>
+        <div className="pb-6">
+          <SectionHeader
+            title_1st_slice={"HOW"}
+            title_2nd_slice={"IT"}
+            title_3rd_slice={"WORK"}
+            subTitle={"Your healthcare journey simplified in 6 easy steps"}
+          />
         </div>
-
         {/* Progress Indicators */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mt-4 mb-8">
           <div className="flex items-center space-x-2">
             {services.map((_, index) => (
               <button
@@ -273,11 +268,11 @@ const HowItWorks = () => {
                   </p>
                 </div>
               </div>
-              <img
-                src={services[activeStep].image || "/placeholder.svg"}
+              {/* <img
+                src={services[activeStep].image || "/placeholder.svg?height=400&width=600"}
                 alt={services[activeStep].title}
                 className="w-full h-full object-cover"
-              />
+              /> */}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -288,7 +283,7 @@ const HowItWorks = () => {
             onClick={handlePrev}
             variant="outline"
             size="lg"
-            className="rounded-full w-12 h-12 p-0 border-[#0E82FD] text-[#0E82FD] hover:bg-[#0E82FD] hover:text-white"
+            className="rounded-full cursor-pointer w-12 h-12 p-0 border-[#0E82FD] text-[#0E82FD] hover:bg-[#0E82FD] hover:text-white"
           >
             <ChevronLeft className="h-6 w-6" />
             <span className="sr-only">Previous step</span>
@@ -298,7 +293,7 @@ const HowItWorks = () => {
             onClick={handleNext}
             variant="outline"
             size="lg"
-            className="rounded-full w-12 h-12 p-0 border-[#0E82FD] text-[#0E82FD] hover:bg-[#0E82FD] hover:text-white"
+            className="rounded-full cursor-pointer w-12 h-12 p-0 border-[#0E82FD] text-[#0E82FD] hover:bg-[#0E82FD] hover:text-white"
           >
             <ChevronRight className="h-6 w-6" />
             <span className="sr-only">Next step</span>
@@ -315,7 +310,7 @@ const HowItWorks = () => {
                 "p-4 rounded-xl transition-all duration-300 text-center flex flex-col items-center gap-2",
                 activeStep === index
                   ? "bg-[#0E82FD] text-white shadow-lg scale-105"
-                  : "bg-white hover:bg-blue-50 border border-gray-100"
+                  : "bg-white hover:bg-blue-50 border border-blue-100 cursor-pointer"
               )}
             >
               <div
