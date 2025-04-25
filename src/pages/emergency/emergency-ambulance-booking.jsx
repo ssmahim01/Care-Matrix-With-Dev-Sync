@@ -129,7 +129,7 @@ export default function AmbulanceBooking() {
       ...formData,
       patientEmail: user?.email || formData.patientEmail
     };
-    console.log(submissionData)
+    // console.log(submissionData)
     if (!submissionData.patientName || !submissionData.patientEmail || !submissionData.patientPhone || !submissionData.patientAddress) {
       toast.error("Please fill in all required patient details");
       return;

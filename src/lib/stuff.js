@@ -237,5 +237,5 @@ export async function sendStaffMessage(staffId, messageData) {
 
   // In a real implementation, you would store the message and send it to the staff
   // For now, we'll just log it
-  console.log(`Message sent to ${mockStaff[staffIndex].name}: ${messageData.subject}`)
+  // console.log(`Message sent to ${mockStaff[staffIndex].name}: ${messageData.subject}`)
 }

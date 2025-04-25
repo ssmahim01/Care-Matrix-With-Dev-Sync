@@ -104,7 +104,7 @@ const UsersTable = () => {
   );
 
   const handleBulkDelete = () => {
-    console.log("Deleting selected rows:", Array.from(selectedRows));
+    // console.log("Deleting selected rows:", Array.from(selectedRows));
   };
 
   const handleOptionClick = (value) => {

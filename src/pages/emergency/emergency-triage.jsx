@@ -136,7 +136,7 @@ export default function EmergencyTriage() {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/triage/add`, patient)
       toast.success(res.data.message)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       toast.error(error.error)
     } finally {
       refetch()
@@ -160,7 +160,7 @@ export default function EmergencyTriage() {
         if (bedRes.data) bedRefetch()
         toast.success(res.data?.message)
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       } finally {
         refetch()
         setIsAssignDialogOpen(false)
