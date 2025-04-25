@@ -142,7 +142,7 @@ export default function PatientReviews() {
 
 
   return (
-    <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl my-10">
+    <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl pt-10 my-10">
       {isLoading ? (
         <Loader />
       ) : (

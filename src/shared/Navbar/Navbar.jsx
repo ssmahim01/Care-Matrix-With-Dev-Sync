@@ -22,6 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import toast from "react-hot-toast";
 import CartDropdown from "./CartDropdown";
 import "./Navbar.css";
+import { Star } from "lucide-react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -213,6 +214,7 @@ const Navbar = () => {
                                 </p>
                               </div>
                             </NavLink>
+
                             <NavLink
                               to="/available-beds"
                               className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
@@ -252,6 +254,7 @@ const Navbar = () => {
                                 </p>
                               </div>
                             </NavLink>
+
                             <NavLink
                               to="/contact-us"
                               className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
@@ -307,6 +310,25 @@ const Navbar = () => {
                                 <p className="text-sm text-gray-600">
                                   Spreading joy and heartfelt wishes through
                                   festive Eid greetings.
+                                </p>
+                              </div>
+                            </NavLink>
+                          </ul>
+
+                          <ul className="flex flex-col gap-4 text-gray-800">
+                            <NavLink
+                              to="/patient-reviews"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <Star size={20} className="text-gray-800" />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                Patient Reviews
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                Bringing smiles and trust to life through honest patient feedback.
                                 </p>
                               </div>
                             </NavLink>
