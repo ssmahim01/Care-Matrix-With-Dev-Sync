@@ -127,10 +127,10 @@ export default function Hero() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
                   viewport={{ once: true }}
-                  className="absolute -bottom-5 -right-5 bg-white rounded-lg shadow-xl p-4 max-w-xs"
+                  className="absolute -bottom-1 md:-bottom-5 right-0 md:-right-5 bg-white rounded-lg shadow-xl p-2 md:p-4 max-w-xs"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <div className="h-4 w-4 md:h-10 md:w-10 rounded-full bg-blue-100 flex items-center justify-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6 text-blue-600"
@@ -146,12 +146,13 @@ export default function Hero() {
                         />
                       </svg>
                     </div>
-                    <div className="py-4">
+                    <div className="py-1 md:py-4">
                       <h3 className="font-medium text-gray-900">
                         Expert Medical Team
                       </h3>
-                      <p className="text-sm text-gray-500">
-                        Board-certified specialists available 24/7
+                      <p className="text-xs md:text-sm text-gray-500">
+                        Board-certified <br className="flex md:hidden" />{" "}
+                        specialists available 24/7
                       </p>
                     </div>
                   </div>
@@ -163,10 +164,10 @@ export default function Hero() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
                 viewport={{ once: true }}
-                className="absolute -left-4 top-1 bg-white rounded-lg shadow-lg p-4"
+                className="absolute md:-left-4 top-0 bg-white rounded-lg shadow-lg p-4"
               >
                 <div className="flex items-center space-x-2">
-                  <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <div className="h-4 w-4 md:h-8 md:w-8 rounded-full bg-blue-100 flex items-center justify-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5 text-blue-600"
@@ -182,8 +183,8 @@ export default function Hero() {
                       />
                     </svg>
                   </div>
-                  <div className="text-sm font-medium text-gray-900">
-                    Easy Scheduling
+                  <div className="text-xs md:text-sm font-medium text-gray-900">
+                    Easy Booking System
                   </div>
                 </div>
               </motion.div>

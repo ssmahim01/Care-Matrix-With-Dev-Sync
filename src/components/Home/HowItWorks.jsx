@@ -58,7 +58,7 @@ const HowItWorks = () => {
           WORKS
         </h1>
         <h3 className="text-lg text-[#464646] font-medium tracking-wider">
-          4 easy steps to get your solution
+          6 easy steps to get your solution
         </h3>
       </div>
       {/* Left Side Contents */}
