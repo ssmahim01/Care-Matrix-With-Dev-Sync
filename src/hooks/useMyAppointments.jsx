@@ -13,7 +13,7 @@ const useMyAppointments = (sortDate) => {
     enabled: !!user,
     queryFn: async()=>{
         const {data} = await axiosSecure.get(`/appointments/patients/${user?.email}?sort=${sortDate}`)
-        console.log(data);
+        // console.log(data);
         return data;
     }
 
