@@ -73,10 +73,10 @@ const ManageAppointments = () => {
     };
 
     const handleChangeAppointmentStatus = (appointment) => {
-        console.log(appointment);
+        // console.log(appointment);
         axiosSecure.patch(`appointments/${appointment._id}`)
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res.data.result.modifiedCount > 0) {
                     refetch()
                     if (res.data.result.message === "approved") {
@@ -89,7 +89,7 @@ const ManageAppointments = () => {
             })
 
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 toast.err("Something went wrong try again.")
 
             })

@@ -35,7 +35,7 @@ const MyAppointmentDoctor = () => {
     }, []);
 
     const handleDetails = (appointment) => {
-        console.log(appointment);
+        // console.log(appointment);
         setSelectedAppointment(appointment);
         setOpenModal(true);
     };
@@ -46,7 +46,7 @@ const MyAppointmentDoctor = () => {
     }
 
     const handleCancelAppointment = (appointment) => {
-        console.log(appointment);
+        // console.log(appointment);
         axiosSecure.patch(`appointments/${appointment._id}`)
             .then(res => {
                 console.log(res);

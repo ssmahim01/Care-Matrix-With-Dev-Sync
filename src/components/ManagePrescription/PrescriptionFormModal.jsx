@@ -1,12 +1,4 @@
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -24,11 +16,15 @@ export function PrescriptionFormModal({ patient, isOpen, onClose, onSubmit }) {
     { id: 1, name: "", frequency: "", instructions: "" },
   ]);
 
+  const generateUniqueId = () => {
+    return Date.now() + Math.random().toString(36).substring(2, 9);
+  };
+
   const handleAddMedicine = () => {
-    setMedicines([
-      ...medicines,
+    setMedicines((prev) => [
+      ...prev,
       {
-        id: medicines.length + 1,
+        id: generateUniqueId(),
         name: "",
         frequency: "",
         instructions: "",
@@ -38,16 +34,21 @@ export function PrescriptionFormModal({ patient, isOpen, onClose, onSubmit }) {
 
   const handleRemoveMedicine = (id) => {
     if (medicines.length > 1) {
-      setMedicines(medicines.filter((medicine) => medicine.id !== id));
+      setMedicines((prev) => prev.filter((medicine) => medicine.id !== id));
     }
   };
 
   const handleMedicineChange = (id, field, value) => {
-    setMedicines(
-      medicines.map((medicine) =>
+    setMedicines((prev) =>
+      prev.map((medicine) =>
         medicine.id === id ? { ...medicine, [field]: value } : medicine
       )
     );
+  };
+
+  const handleClose = () => {
+    setMedicines([{ id: 1, name: "", frequency: "", instructions: "" }]);
+    onClose();
   };
 
   const handleSubmit = (e) => {
@@ -61,24 +62,31 @@ export function PrescriptionFormModal({ patient, isOpen, onClose, onSubmit }) {
     };
 
     onSubmit(prescription);
-    setMedicines([
-      { id: 1, name: "", frequency: "", instructions: "" },
-    ]);
+    setMedicines([{ id: 1, name: "", frequency: "", instructions: "" }]);
+    onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold ">
-            Create Prescription
-          </DialogTitle>
-          <DialogDescription>
-            Prescribe medication for {patient.name}
-          </DialogDescription>
-        </DialogHeader>
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 bg-opacity-50 ${
+        isOpen ? "block" : "hidden"
+      }`}
+    >
+      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative max-h-[80vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-semibold">Create Prescription</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            ✕
+          </button>
+        </div>
+        <p className="text-sm text-gray-500 mb-4">
+          Prescribe medication for {patient?.name}
+        </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4 py-2">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
             <div className="flex justify-between items-center mb-2">
               <Label className="text-base">Medications</Label>
@@ -87,13 +95,13 @@ export function PrescriptionFormModal({ patient, isOpen, onClose, onSubmit }) {
                 variant="outline"
                 size="sm"
                 onClick={handleAddMedicine}
-                className={"cursor-pointer"}
+                className="cursor-pointer"
               >
                 Add Medicine
               </Button>
             </div>
 
-            {medicines.map((medicine, index) => (
+            {medicines.map((medicine) => (
               <div
                 key={medicine.id}
                 className="space-y-3 p-3 border rounded-md"
@@ -172,14 +180,14 @@ export function PrescriptionFormModal({ patient, isOpen, onClose, onSubmit }) {
             ))}
           </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
             <Button type="submit">Save Prescription</Button>
-          </DialogFooter>
+          </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }

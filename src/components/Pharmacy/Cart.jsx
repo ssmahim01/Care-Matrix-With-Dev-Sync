@@ -56,7 +56,7 @@ const Cart = () => {
   const totalWithDiscount = subtotal - discountAmount + shippingCost; // Apply discount to total
 
   // Log for debugging
-  console.log("Discount:", discount);
+  // console.log("Discount:", discount);
 
   // Form values
   const [name, setName] = useState(user?.displayName || "");
