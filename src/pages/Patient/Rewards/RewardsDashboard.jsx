@@ -186,9 +186,6 @@ const RewardsDashboard = () => {
     },
   });
 
-  console.log("reward data ", rewardsData);
-
-
 
   const handleRedeem = (redeem) => {
     let discount = 0;

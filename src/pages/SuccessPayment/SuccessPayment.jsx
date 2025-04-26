@@ -99,6 +99,12 @@ const SuccessPayment = () => {
             </span>
           </div>
           <div className="flex gap-6 border-b py-2">
+            <span className="text-gray-500 w-32">Serial Number:</span>
+            <span className="text-gray-800 ">
+              {paymentInfo?.appointmentInfo?.serialNumber}
+            </span>
+          </div>
+          <div className="flex gap-6 border-b py-2">
             <span className="text-gray-500 w-32">Age:</span>
             <span className="text-gray-800 ">
               {paymentInfo?.appointmentInfo?.age}
