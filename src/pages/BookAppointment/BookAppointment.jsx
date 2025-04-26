@@ -22,7 +22,7 @@ const BookAppointment = () => {
     const doctorInfo = doctors.find((doctor) => doctor._id === location.state);
     const reward = rewardUser?.find(reward => reward?.userEmail === user?.email)
     console.log("doctor info ", doctorInfo);
-    let consultationFee = doctorInfo.consultation_fee;
+    let consultationFee = doctorInfo?.consultation_fee;
     let rewardInfo;
 
     if (reward) {
@@ -32,9 +32,6 @@ const BookAppointment = () => {
             rewardId: reward._id
         }
     }
-
-
-
 
     const onSubmit = (data) => {
         // const appointmentInfo = {
@@ -171,8 +168,8 @@ const BookAppointment = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1">Appointment Reason*</label>
-                        <textarea {...register("reason", { required: true })} className="w-full border rounded-md p-2" rows="3" placeholder="Briefly describe the reason"></textarea>
+                        <label className="block text-sm font-medium mb-1">Appointment Reason <span>(optional)</span></label>
+                        <textarea {...register("reason", { required: false })} className="w-full border rounded-md p-2" rows="3" placeholder="Briefly describe the reason"></textarea>
                         {errors.reason && <p className="text-xs text-red-500 mt-1">Appointment reason is required</p>}
                     </div>
 
