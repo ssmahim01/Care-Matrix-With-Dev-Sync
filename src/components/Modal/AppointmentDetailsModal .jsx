@@ -1,43 +1,36 @@
-// src/components/Modal/AppointmentDetailsModal.jsx
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription
-  } from "@/components/ui/dialog";
-  import { Button } from "@/components/ui/button";
-  
-  const AppointmentDetailsModal = ({ open, onOpenChange, appointment }) => {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Appointment Details</DialogTitle>
-            <DialogDescription>
-              More information about this appointment.
-            </DialogDescription>
-          </DialogHeader>
-  
-          <div className="space-y-2 text-sm">
-            <p><strong>Patient:</strong> {appointment?.name}</p>
-            <p><strong>Doctor:</strong> {appointment?.doctorName}</p>
-            <p><strong>Age:</strong> {appointment?.age}</p>
-            <p><strong>Phone:</strong> {appointment?.phone}</p>
-            <p><strong>Email:</strong> {appointment?.email}</p>
-            <p><strong>Status:</strong> {appointment?.status.charAt(0).toUpperCase() + appointment?.status.slice(1)}</p>
-            <p><strong>Date:</strong> {appointment?.date}</p>
-            <p><strong>Time:</strong> {appointment?.time}</p>
-            <p><strong>Reason:</strong> {appointment?.reason}</p>
-          </div>
-  
-          <div className="flex justify-end">
-            <Button className="cursor-pointer" onClick={() => onOpenChange(false)}>Close</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  };
-  
-  export default AppointmentDetailsModal;
-  
+import { Button } from "@/components/ui/button";
+
+const AppointmentDetailsModal = ({ open, onOpenChange, appointment }) => {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 bg-opacity-10">
+      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative max-h-[80vh] overflow-y-auto">
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold">Appointment Details</h2>
+          <p className="text-sm text-gray-500">
+            More information about this appointment.
+          </p>
+        </div>
+
+        <div className="space-y-2 text-sm">
+          <p><strong>Patient:</strong> {appointment?.name}</p>
+          <p><strong>Doctor:</strong> {appointment?.doctorName}</p>
+          <p><strong>Age:</strong> {appointment?.age}</p>
+          <p><strong>Phone:</strong> {appointment?.phone}</p>
+          <p><strong>Email:</strong> {appointment?.email}</p>
+          <p><strong>Status:</strong> {appointment?.status?.charAt(0).toUpperCase() + appointment?.status?.slice(1)}</p>
+          <p><strong>Date:</strong> {appointment?.date}</p>
+          <p><strong>Time:</strong> {appointment?.time}</p>
+          <p><strong>Reason:</strong> {appointment?.reason}</p>
+        </div>
+
+        <div className="flex justify-end mt-4">
+          <Button onClick={() => onOpenChange(false)}>Close</Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AppointmentDetailsModal;

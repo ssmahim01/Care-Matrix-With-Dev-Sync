@@ -80,7 +80,7 @@ export function StaffForm({ staffData, onSuccess }) {
       if (profileImage) {
         formData.append("profileImage", profileImage);
       }
-      console.log(data)
+      // console.log(data)
 
       const res = await axios.put(
         `${
@@ -88,7 +88,7 @@ export function StaffForm({ staffData, onSuccess }) {
         }/user-requests/update-profile/${staffData.userEmail}`,
         { phoneNumber: data.contactNumber, userName: data.name , profileImage, requestedRole: data.requestedRole }
       );
-      console.log(res.data)
+      // console.log(res.data)
       toast.success("Staff member updated successfully");
 
       onSuccess();
