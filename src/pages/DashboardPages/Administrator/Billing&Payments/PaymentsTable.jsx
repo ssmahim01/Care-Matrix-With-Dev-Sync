@@ -14,20 +14,23 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { MoreVertical, Eye, Trash } from "lucide-react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import Swal from "sweetalert2";
 import { format } from "date-fns";
+import moment from "moment";
 
 const handleViewDetails = (payment) => {
   Swal.fire({
     title: "Payment Details",
     html: `
-       <div classname="flex flex-col gap-2">
+       <div class="flex flex-col gap-2">
         <p><strong>Patient:</strong> ${payment.appointmentInfo.name}</p>
         <p><strong>Doctor:</strong> ${payment.appointmentInfo.doctorName}</p>
         <p><strong>Amount:</strong> $${payment.amount}</p>
@@ -35,19 +38,21 @@ const handleViewDetails = (payment) => {
         <p><strong>Payment Date:</strong> ${moment(payment.paymentDate).format(
           "MMM D, YYYY, h:mm a"
         )}</p>
-       <div/>
+       </div>
       `,
     icon: "info",
   });
 };
 
-const PaymentsTable = ({ paymentsData, isLoading, handlePaymentDelete }) => (
+const PaymentsTable = ({ paymentsData, isLoading, handlePaymentDelete, totalItems }) => (
   <Table aria-label="Payment records table">
-    <TableCaption>A List of All Payment Records</TableCaption>
+    <TableCaption>
+      A List of All - {totalItems} Payment Records
+    </TableCaption>
     <TableHeader>
       <TableRow className="bg-base-200 hover:bg-base-200">
         <TableHead>Patient Info</TableHead>
-        <TableHead>Doctor</TableHead>
+        <TableHead className="md:pr-">Doctor</TableHead>
         <TableHead className={"text-xs"}>
           Paid <br /> Amount
         </TableHead>
@@ -73,7 +78,7 @@ const PaymentsTable = ({ paymentsData, isLoading, handlePaymentDelete }) => (
             ))}
           </TableRow>
         ))
-      ) : paymentsData.length === 0 ? (
+      ) : paymentsData?.length === 0 ? (
         <TableRow>
           <TableCell
             colSpan={12}
@@ -83,7 +88,7 @@ const PaymentsTable = ({ paymentsData, isLoading, handlePaymentDelete }) => (
           </TableCell>
         </TableRow>
       ) : (
-        paymentsData.map((payment, idx) => (
+        paymentsData?.map((payment, idx) => (
           <TableRow key={idx}>
             {/* Patient Info */}
             <TableCell>
@@ -108,7 +113,7 @@ const PaymentsTable = ({ paymentsData, isLoading, handlePaymentDelete }) => (
                 </span>
               </div>
             </TableCell>
-            <TableCell>
+            <TableCell className="md:pr-">
               <div className="flex flex-col">
                 <span className="font-medium">
                   {payment?.appointmentInfo?.doctorName}
@@ -152,20 +157,25 @@ const PaymentsTable = ({ paymentsData, isLoading, handlePaymentDelete }) => (
             </TableCell>
             <TableCell>
               <div className="flex justify-center">
-                <DropdownMenu modal={false}>
+                <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <div className="bg-base-200 p-2 rounded border border-border w-fit">
-                      <MoreVertical className="cursor-pointer" />
+                    <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
+                      <MoreVertical
+                        className="cursor-pointer text-gray-700"
+                        aria-label="More actions"
+                      />
                     </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem
                       onClick={() => handleViewDetails(payment)}
+                      className="cursor-pointer"
                     >
                       <Eye className="w-4 h-4 mr-2" /> View Details
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => handlePaymentDelete(payment?._id)}
+                      className="cursor-pointer"
                     >
                       <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
                     </DropdownMenuItem>

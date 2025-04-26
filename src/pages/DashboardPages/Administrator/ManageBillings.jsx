@@ -1,30 +1,44 @@
-import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 
-import { motion } from "framer-motion";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { CreditCard } from "lucide-react";
 import PaymentsTable from "./Billing&Payments/PaymentsTable";
-import Swal from "sweetalert2";
+import { motion } from "framer-motion";
+import { CreditCard } from "lucide-react";
 import { IoIosSearch } from "react-icons/io";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import Swal from "sweetalert2";
 
 function ManageBillings() {
   const axiosSecure = useAxiosSecure();
+
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
   // Fetch payment data
   const {
-    data: paymentsData = [],
+    data = {},
     refetch,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["payments", search],
+    queryKey: ["payments", page, search],
     queryFn: async () => {
-      const { data } = await axiosSecure.get(`/payments/all?search=${search}`);
+      const { data } = await axiosSecure.get(
+        `/payments/all?page=${page}&search=${search}`
+      );
       return data;
     },
   });
@@ -65,6 +79,13 @@ function ManageBillings() {
     }
   };
 
+  // Pagination Functions
+  const handlePageChange = (pageNumber) => setPage(pageNumber);
+  const handlePrevPage = () => setPage((prev) => Math.max(prev - 1, 1));
+  const handleNextPage = () => {
+    setPage((prev) => (prev < data.totalPages ? prev + 1 : prev));
+  };
+
   if (isError) {
     return (
       <div className="p-7">
@@ -81,8 +102,8 @@ function ManageBillings() {
   }
 
   return (
-    <div className="p-7">
-      <div className="mb-4">
+    <div className="px-7">
+      <div className="">
         <DashboardPagesHeader
           title="Payment Records"
           subtitle="View and Manage All Payment Records"
@@ -90,7 +111,7 @@ function ManageBillings() {
         />
 
         {/* search options  */}
-        <div className="flex justify-end items-center gap-4">
+        <div className="flex justify-end items-center gap-4 mb-6">
           <div className="relative md:w-2/5">
             <input
               className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring  ring-gray-500"
@@ -108,17 +129,72 @@ function ManageBillings() {
         </div>
       </div>
 
+      {/* Table */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       >
         <PaymentsTable
-          paymentsData={paymentsData}
+          paymentsData={data?.payments}
           isLoading={isLoading}
           handlePaymentDelete={handlePaymentDelete}
+          totalItems={data?.totalItems}
         />
       </motion.div>
+      {/* Pagination */}
+      <Pagination className="mt-4 flex flex-wrap">
+        <PaginationContent>
+          {/* Previous */}
+          <PaginationItem>
+            <PaginationPrevious
+              className={"cursor-pointer"}
+              onClick={handlePrevPage}
+            />
+          </PaginationItem>
+
+          {/* Page Numbers */}
+          {isLoading
+            ? // Skeleton Loader
+              Array.from({ length: 5 }).map((_, i) => (
+                <PaginationItem key={i}>
+                  <div className="w-8 h-8 skeleton rounded-md"></div>
+                </PaginationItem>
+              ))
+            : // Page Numbers
+              Array.from({ length: data?.totalPages }, (_, i) => i + 1).map(
+                (pageNumber) => (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      className="cursor-pointer"
+                      isActive={pageNumber === page}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageNumber);
+                      }}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              )}
+
+          {/* Ellipsis */}
+          {data?.totalPages > 5 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+
+          {/* Next */}
+          <PaginationItem>
+            <PaginationNext
+              className={"cursor-pointer"}
+              onClick={handleNextPage}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }
