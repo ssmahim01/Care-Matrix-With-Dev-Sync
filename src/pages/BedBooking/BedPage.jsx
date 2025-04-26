@@ -58,7 +58,7 @@ const BedPage = () => {
   };
 
   return (
-    <div className="mt-16 mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
+    <div className="mt-16 md:mt-20 pb-10 mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
       <SectionHeader
         className="text-center"
         title_1st_slice={"OUR"}
@@ -68,7 +68,7 @@ const BedPage = () => {
           "We are privileged to work with hundreds of future-thinking \n medical industries, ensuring the best services for patients."
         }
       />
-      <div className="mt-6 sm:mt-8 lg:mt-12">
+      <div className="mt-6 sm:mt-8">
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {/* Render skeleton BedCards while loading */}
@@ -99,15 +99,11 @@ const BedPage = () => {
             No available beds at the moment.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            {beds.map((bed) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {beds?.map((bed) => (
               <BedCard
                 key={bed._id}
-                title={bed.title}
-                price={bed.price}
-                image={bed.image}
                 bed={bed}
-                status={bed.status}
                 onRequestBooking={handleRequestBooking}
                 onShowDetails={handleShowDetails}
                 isLoading-={isLoading}

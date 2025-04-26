@@ -13,7 +13,7 @@ const BedDetailsModal = ({ isOpen, onClose, bed }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md md:max-w-lg p-3 sm:p-4 md:p-6">
         <DialogHeader>
-          <DialogTitle className="text-base sm:text-lg md:text-xl font-bold">
+          <DialogTitle className="text-base sm:text-lg md:text-xl font-bold text-gray-800">
             {bed.title}
           </DialogTitle>
         </DialogHeader>
