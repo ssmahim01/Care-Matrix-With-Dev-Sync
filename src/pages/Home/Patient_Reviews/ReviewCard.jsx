@@ -104,6 +104,27 @@ export default function ReviewCard({
 
                             <AnimatePresence>
                                 {showReplyForm && (
+                                    <>
+                                    {review?.replyComments && review.replyComments.length > 0 ? (
+                                        <div className="mt-6">
+                                            <h2 className="text-xl font-semibold mb-4">Comments</h2>
+                                            <ul className="space-y-4">
+                                                {review.replyComments.map((reply, i) => (
+                                                    <li
+                                                        key={i}
+                                                        className="p-4 bg-gray-100 rounded-lg shadow-sm flex flex-col gap-1"
+                                                    >
+                                                        <p className="text-gray-700">{reply.text}</p>
+                                                        <span className="text-xs text-gray-500">
+                                                            {format(new Date(reply.date), "hh:mm a, d MMM")}
+                                                        </span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ) : (
+                                        <p className="text-gray-500 mt-6">No comments yet.</p>
+                                    )}
                                     <motion.div
                                         className="flex gap-2 mt-2"
                                         initial={{ opacity: 0, height: 0 }}
@@ -124,6 +145,7 @@ export default function ReviewCard({
                                             <Send className="w-4 h-4" />
                                         </Button>
                                     </motion.div>
+                                    </>
                                 )}
                             </AnimatePresence>
                         </div>

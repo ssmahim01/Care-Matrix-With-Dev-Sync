@@ -1,6 +1,6 @@
 
 // eslint-disable-next-line no-unused-vars
-import {motion} from "framer-motion"
+import { motion } from "framer-motion"
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, } from '@/components/ui/card'
@@ -10,10 +10,10 @@ import { Calendar, MessageSquare, Send, Star, ThumbsUp } from 'lucide-react'
 import { format } from "date-fns"
 
 
-const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showReplyForm, replyText , setReplyText, handleSubmitReply, featuredReview}) => {
+const FeaturedReview = ({ handleHelpful, helpfulReviews, setShowReplyForm, showReplyForm, replyText, setReplyText, handleSubmitReply, featuredReview }) => {
     return (
         <motion.div variants={itemVariants} whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
-            <Card className="border-sky-100 shadow-md bg-gradient-to-r from-sky-50 to-white overflow-hidden">
+            <Card className="border-sky-100 shadow-md bg-gradient-to-r from-sky-50 to-white overflow-hidden pb-3">
                 <CardContent className="pt-6">
                     <div className="flex flex-col md:flex-row gap-6 items-start">
                         <motion.div
@@ -32,9 +32,9 @@ const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showRep
                                 <div className="flex items-center gap-2 mb-1">
                                     <h3 className="font-bold text-xl text-sky-800">{featuredReview.name}</h3>
                                     <div className="flex">
-                                        {Array.from({ length: featuredReview.rating }).map((star) => (
+                                        {Array.from({ length: featuredReview.rating }).map((star, i) => (
                                             <motion.div
-                                                key={star}
+                                                key={i}
                                                 initial={{ scale: 0 }}
                                                 animate={{ scale: 1 }}
                                                 transition={{ delay: star * 0.1, type: "spring" }}
@@ -59,7 +59,7 @@ const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showRep
                             >
                                 "{featuredReview.comment}"
                             </motion.blockquote>
-                            <div className="flex items-center gap-4 pb-3">
+                            <div className="flex items-center gap-4 ">
                                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                     <Button
                                         variant="outline"
@@ -83,27 +83,53 @@ const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showRep
                                 </motion.div>
                             </div>
 
+
                             {showReplyForm === "featured" && (
-                                <motion.div
-                                    className="flex gap-2 mt-2 pb-2"
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: "auto" }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                >
-                                    <Input
-                                        placeholder="Write a reply..."
-                                        className="flex-1"
-                                        value={replyText}
-                                        onChange={(e) => setReplyText(e.target.value)}
-                                    />
-                                    <Button
-                                        size="sm"
-                                        className="bg-sky-600 hover:bg-sky-700"
-                                        onClick={() => handleSubmitReply("featured")}
+
+                                <>
+                                    {featuredReview?.replyComments && featuredReview.replyComments.length > 0 ? (
+                                        <div className="mt-6">
+                                            <h2 className="text-xl font-semibold mb-4">Comments</h2>
+                                            <ul className="space-y-4">
+                                                {featuredReview.replyComments.map((reply, i) => (
+                                                    <li
+                                                        key={i}
+                                                        className="p-4 bg-gray-100 rounded-lg shadow-sm flex flex-col gap-1"
+                                                    >
+                                                        <p className="text-gray-700">{reply.text}</p>
+                                                        <span className="text-xs text-gray-500">
+                                                            {format(new Date(reply.date), "hh:mm a, d MMM")}
+                                                        </span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ) : (
+                                        <p className="text-gray-500 mt-6">No comments yet.</p>
+                                    )}
+
+                                    <motion.div
+                                        className="flex gap-2 mt-2 pb-2"
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
                                     >
-                                        <Send className="w-4 h-4" />
-                                    </Button>
-                                </motion.div>
+
+                                        <Input
+                                            placeholder="Write a reply..."
+                                            className="flex-1"
+                                            value={replyText}
+                                            onChange={(e) => setReplyText(e.target.value)}
+                                        />
+                                        <Button
+                                            size="sm"
+                                            className="bg-sky-600 hover:bg-sky-700"
+                                            onClick={() => handleSubmitReply(featuredReview._id)}
+                                        >
+                                            <Send className="w-4 h-4" />
+                                        </Button>
+                                    </motion.div>
+                                </>
                             )}
                         </div>
                     </div>

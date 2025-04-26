@@ -17,9 +17,11 @@ import axios from "axios"
 import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"
 import { useAuthUser } from "@/redux/auth/authActions"
+import { useNavigate } from "react-router"
 
 export default function PatientReviews() {
   const user = useAuthUser()
+  const navigate = useNavigate()
   
   const {data: reviews = [], isLoading, refetch } = useQuery({
     queryKey: ["reviews"],
@@ -39,7 +41,7 @@ export default function PatientReviews() {
   const [replyText, setReplyText] = useState("")
   const [helpfulReviews, setHelpfulReviews] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
-  const [reviewsPerPage] = useState(3)
+  const [reviewsPerPage] = useState(6)
   const [showLoadMore, setShowLoadMore] = useState(true)
   const [newReview, setNewReview] = useState({
     name: "",
@@ -88,6 +90,29 @@ export default function PatientReviews() {
   const currentReviews = filteredReviews.slice(indexOfFirstReview, indexOfLastReview)
   const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage)
 
+// Handle marking a review as helpful
+const handleHelpful = async (reviewId) => {
+  
+  try {
+    const res = await axios.patch(`${import.meta.env.VITE_API_URL}/review/increase-helpful/${reviewId}`, {userId : user?.email});
+
+    if (res.data?.message) {
+      toast.success("Thanks for your feedback!");
+
+    } else {
+      console.error("Failed to mark as helpful");
+    }
+  } catch (error) {
+    if(error.response.data) return toast.info(error.response.data.message);
+  } finally {
+    refetch()
+  }
+};
+
+  const featuredReview = filteredReviews.reduce((maxReview, currentReview) => {
+    return (currentReview.helpful > (maxReview?.helpful || 0)) ? currentReview : maxReview;
+  }, null);
+  
 
   // Handle submitting a new review
   const handleSubmitReview = async (e) => {
@@ -133,7 +158,8 @@ export default function PatientReviews() {
       console.error(error);
       toast.error(error.response?.data?.message || "Failed to submit reply");
     } finally {
-      setReplyText(" ")
+      setReplyText("")
+      setShowReplyForm(null)
       refetch();
     }
   };
@@ -161,7 +187,7 @@ export default function PatientReviews() {
       ) : (
         <motion.div className="space-y-6" animate="visible" variants={containerVariants}>
           {/* Header Section */}
-          <PatientReviewHeader />
+          <PatientReviewHeader filteredReviews={filteredReviews} />
 
           {/* Search and Filter */}
           <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6" variants={itemVariants}>
