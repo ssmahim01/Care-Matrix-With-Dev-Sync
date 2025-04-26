@@ -45,7 +45,7 @@ const FilterTabsPatient = ({ setActiveTab, activeTab, currentReviews, handleHelp
                       review={review}
                       onHelpful={handleHelpful}
                       helpfulCount={helpfulReviews[review.id || index] || 0}
-                      showReplyForm={showReplyForm === (review.id || index)}
+                      showReplyForm={showReplyForm === (review._id)}
                       setShowReplyForm={setShowReplyForm}
                       replyText={replyText}
                       setReplyText={setReplyText}

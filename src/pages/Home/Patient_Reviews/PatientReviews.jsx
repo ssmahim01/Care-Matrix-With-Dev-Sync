@@ -88,14 +88,6 @@ export default function PatientReviews() {
   const currentReviews = filteredReviews.slice(indexOfFirstReview, indexOfLastReview)
   const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage)
 
-  // Handle marking a review as helpful
-  const handleHelpful = (reviewId) => {
-    setHelpfulReviews((prev) => {
-      const newState = { ...prev }
-      newState[reviewId] = (newState[reviewId] || 0) + 1
-      return newState
-    })
-  }
 
   // Handle submitting a new review
   const handleSubmitReview = async (e) => {
@@ -106,7 +98,7 @@ export default function PatientReviews() {
     const department = form.department.value;
     const rating = form.rating.value;
     const comment = form.comment.value;
-    const date = new Date().toLocaleDateString()
+    const date = new Date()
 
     const review = { name, department, rating, comment, helpful: 0, date, avatar: user.photoURL };
 
@@ -128,12 +120,23 @@ export default function PatientReviews() {
   }
 
   // Handle submitting a reply
-  const handleSubmitReply = (reviewId) => {
-    setShowReplyForm(null)
-    setReplyText("")
-
-    toast.success(`Reply submitted for review #${reviewId}`)
-  }
+  const handleSubmitReply = async (reviewId) => {
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_API_URL}/review/comment-review/${reviewId}`, {
+        text: replyText, 
+      });
+  
+      if (res.data.message) {
+        toast.success(res.data.message || `Reply submitted for review`);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to submit reply");
+    } finally {
+      setReplyText(" ")
+      refetch();
+    }
+  };
 
   // Handle load more
   const handleLoadMore = () => {
@@ -142,6 +145,12 @@ export default function PatientReviews() {
     } else {
       setShowLoadMore(false)
     }
+  }
+
+
+  const handleSearch = async (value) => {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/review/search?name=${value}`)
+    setFilteredReviews(res.data)
   }
 
 
@@ -160,9 +169,8 @@ export default function PatientReviews() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sky-500 h-4 w-4" />
               <Input
                 placeholder="Search reviews..."
-                className="pl-10 border-sky-200 focus:border-sky-400"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 border-sky-200 focus:border-sky-400" 
+                onChange={(e) => handleSearch(e.target.value)}
               />
               {searchQuery && (
                 <button
@@ -182,11 +190,10 @@ export default function PatientReviews() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Departments</SelectItem>
-                  <SelectItem value="Cardiology">Cardiology</SelectItem>
-                  <SelectItem value="Orthopedics">Orthopedics</SelectItem>
-                  <SelectItem value="Pediatrics">Pediatrics</SelectItem>
-                  <SelectItem value="Obstetrics">Obstetrics</SelectItem>
-                  <SelectItem value="Emergency">Emergency</SelectItem>
+                  <SelectItem value="cardiology">Cardiology</SelectItem>
+                  <SelectItem value="orthopedics">Orthopedics</SelectItem>
+                  <SelectItem value="pediatrics">Pediatrics</SelectItem>
+                  <SelectItem value="emergency">Emergency</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -202,6 +209,7 @@ export default function PatientReviews() {
 
           {/* Featured Review */}
           <FeaturedReview
+            featuredReview={featuredReview}
             handleHelpful={handleHelpful}
             handleSubmitReply={handleSubmitReply}
             helpfulReviews={helpfulReviews}

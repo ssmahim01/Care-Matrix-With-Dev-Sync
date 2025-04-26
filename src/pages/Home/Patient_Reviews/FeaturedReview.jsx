@@ -7,9 +7,10 @@ import { Card, CardContent, } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { itemVariants } from '@/lib/varients'
 import { Calendar, MessageSquare, Send, Star, ThumbsUp } from 'lucide-react'
+import { format } from "date-fns"
 
 
-const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showReplyForm, replyText , setReplyText, handleSubmitReply}) => {
+const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showReplyForm, replyText , setReplyText, handleSubmitReply, featuredReview}) => {
     return (
         <motion.div variants={itemVariants} whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
             <Card className="border-sky-100 shadow-md bg-gradient-to-r from-sky-50 to-white overflow-hidden">
@@ -22,16 +23,16 @@ const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showRep
                             transition={{ type: "spring", stiffness: 200 }}
                         >
                             <Avatar className="w-20 h-20 border-4 border-sky-100">
-                                <AvatarImage src="/placeholder.svg?height=80&width=80" alt="Sarah Johnson" />
-                                <AvatarFallback className="bg-sky-100 text-sky-800 text-xl">SJ</AvatarFallback>
+                                <AvatarImage src={featuredReview?.avatar} alt={featuredReview?.name} />
+                                <AvatarFallback className="bg-sky-100 text-sky-800 text-xl">{featuredReview?.name}</AvatarFallback>
                             </Avatar>
                         </motion.div>
                         <div className="space-y-4">
                             <div>
                                 <div className="flex items-center gap-2 mb-1">
-                                    <h3 className="font-bold text-xl text-sky-800">Sarah Johnson</h3>
+                                    <h3 className="font-bold text-xl text-sky-800">{featuredReview.name}</h3>
                                     <div className="flex">
-                                        {[1, 2, 3, 4, 5].map((star) => (
+                                        {Array.from({ length: featuredReview.rating }).map((star) => (
                                             <motion.div
                                                 key={star}
                                                 initial={{ scale: 0 }}
@@ -45,9 +46,9 @@ const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showRep
                                 </div>
                                 <div className="flex items-center gap-2 text-sm text-sky-600">
                                     <Calendar className="w-4 h-4" />
-                                    <span>March 8, 2025</span>
+                                    <span>{format(featuredReview.date, "MMMM d, Y")}</span>
                                     <span className="px-2">•</span>
-                                    <span>Cardiology Department</span>
+                                    <span className="capitalize">{featuredReview.department} Department</span>
                                 </div>
                             </div>
                             <motion.blockquote
@@ -56,22 +57,18 @@ const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showRep
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.3 }}
                             >
-                                "I cannot express enough gratitude for the exceptional care I received at Horizon Medical Center.
-                                Dr. Williams and his team were not only highly professional but also incredibly compassionate.
-                                They took the time to explain my condition and treatment options thoroughly. The facilities are
-                                state-of-the-art, and the staff made me feel comfortable throughout my stay. I'm now on the road
-                                to recovery and feeling better than I have in years!"
+                                "{featuredReview.comment}"
                             </motion.blockquote>
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4 pb-3">
                                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                     <Button
                                         variant="outline"
                                         size="sm"
                                         className="text-sky-700 border-sky-200 hover:bg-sky-50"
-                                        onClick={() => handleHelpful("featured")}
+                                        onClick={() => handleHelpful(featuredReview._id)}
                                     >
                                         <ThumbsUp className="w-4 h-4 mr-2" />
-                                        Helpful ({42 + (helpfulReviews["featured"] || 0)})
+                                        Helpful {featuredReview.helpful}
                                     </Button>
                                 </motion.div>
                                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -88,7 +85,7 @@ const FeaturedReview = ({handleHelpful, helpfulReviews,setShowReplyForm, showRep
 
                             {showReplyForm === "featured" && (
                                 <motion.div
-                                    className="flex gap-2 mt-2"
+                                    className="flex gap-2 mt-2 pb-2"
                                     initial={{ opacity: 0, height: 0 }}
                                     animate={{ opacity: 1, height: "auto" }}
                                     exit={{ opacity: 0, height: 0 }}
