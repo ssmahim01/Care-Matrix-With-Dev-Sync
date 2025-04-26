@@ -55,22 +55,22 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
   const handleUserDelete = async () => {
     setIsDeleting(true);
     try {
-      // const { data } = await axios.delete(
-      //   `${import.meta.env.VITE_API_URL}/firebase/delete-user/${selectedEmail}`
-      // );
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/firebase/delete-user/${selectedEmail}`
+      );
 
-      // if (data?.result?.deletedCount) {
-      refetch();
-      setIsOpen(false);
-      setErrorMessage("");
-      toast("User Deleted", {
-        description: `${selectedEmail} Was Successfully Deleted!`,
-        duration: 3000,
-        position: "top-right",
-      });
-      // } else {
-      //   setErrorMessage("User could not be deleted, Please try again!");
-      // }
+      if (data?.result?.deletedCount) {
+        refetch();
+        setIsOpen(false);
+        setErrorMessage("");
+        toast("User Deleted", {
+          description: `${selectedEmail} Was Successfully Deleted!`,
+          duration: 3000,
+          position: "top-right",
+        });
+      } else {
+        setErrorMessage("User could not be deleted, Please try again!");
+      }
     } catch (error) {
       const message =
         error?.response?.data?.message ||
