@@ -57,7 +57,7 @@ const Home = () => {
       </div>
 
       {/* Introduction of Chat dashboard */}
-      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Chat />
       </div>
 

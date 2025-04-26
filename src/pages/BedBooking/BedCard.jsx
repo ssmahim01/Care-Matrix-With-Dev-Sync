@@ -7,7 +7,7 @@ const BedCard = ({ bed, onRequestBooking, onShowDetails, isLoading }) => {
   const { title, price, image, status, details } = bed || {};
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-all duration-300 hover:shadow-lg">
+    <div className="overflow-hidden grid place-items-stretch rounded-xl border border-gray-100 bg-white shadow-md transition-all duration-300 hover:shadow-lg">
       <div className="relative">
         <div className="absolute right-3 top-3 z-10">
           <Badge
@@ -84,8 +84,8 @@ const BedCard = ({ bed, onRequestBooking, onShowDetails, isLoading }) => {
             onClick={() => onShowDetails(bed)}
             className="border-blue-200 cursor-pointer text-[#0E82FD] hover:bg-blue-50 hover:text-[#0e6efd]"
           >
-            <Info className="mr-1 h-4 w-4" />
-            Details
+            <Info className="mr-[1px] mt-[1px] h-4 w-4" />
+            View Details
           </Button>
         </div>
       </div>
