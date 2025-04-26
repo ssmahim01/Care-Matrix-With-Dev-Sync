@@ -5,7 +5,7 @@ const DashboardLoader = () => {
       <div className="hidden md:flex w-full md:w-64 bg-base-200 p-4 flex-col">
         <div className="space-y-4">
           {/* Header */}
-          <div className="h-10 w-full skeleton p-2"></div>
+          <div className="h-10 w-full skeleton bg-gray-200 p-2"></div>
 
           {/* Dashboard Menu */}
           <div className="flex flex-col gap-4">
@@ -61,10 +61,10 @@ const DashboardLoader = () => {
 
         {/* User Menu */}
         <div className="flex items-center gap-2 mt-4 absolute bottom-4">
-          <div className="w-10 h-10 rounded-full bg-gray-300 animate-pulse"></div>
+          <div className="w-10 h-10 rounded-full bg-gray-300 skeleton"></div>
           <div>
-            <div className="h-4 w-24 skeleton"></div>
-            <div className="h-3 w-32 bg-gray-200 rounded animate-pulse mt-1"></div>
+            <div className="h-4 w-24 bg-gray-300/50 skeleton"></div>
+            <div className="h-3 w-32 bg-gray-200 rounded skeleton mt-1"></div>
           </div>
         </div>
       </div>

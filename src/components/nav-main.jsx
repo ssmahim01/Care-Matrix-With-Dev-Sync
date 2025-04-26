@@ -79,7 +79,7 @@ export function NavMain() {
           <div className="divider w-3/5 mx-auto"></div>
         </div>
       ) : (
-        <ul className="menu *:font-semibold *:text-gray-700 flex flex-col gap-6">
+        <ul className="pt-2 *:font-semibold *:text-gray-700 flex flex-col gap-6 ">
           {/* Administrator Dashboard Menu*/}
           {role === "administrator" && (
             <>
@@ -156,14 +156,14 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/administrator/contact-message">
+              {/* <NavLink to="/dashboard/administrator/contact-message">
                 <h3 className="flex gap-2 items-center">
                   <MailIcon className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Contact Message{" "}
                   </span>
                 </h3>
-              </NavLink>
+              </NavLink> */}
               <div className="divider mt-2"></div>
             </>
           )}
@@ -227,7 +227,10 @@ export function NavMain() {
             <>
               <NavLink to="/dashboard/pharmacist-overview">
                 <h3 className="flex gap-2 items-center">
-                  <LayoutDashboard className="text-base" /> Overview
+                  <LayoutDashboard className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Overview
+                  </span>
                 </h3>
               </NavLink>
               <NavLink to="/dashboard/pharmacist/pharmacist-chat">
@@ -282,7 +285,10 @@ export function NavMain() {
             <>
               <NavLink to="/dashboard/patient-overview">
                 <h3 className="flex gap-2 items-center">
-                  <LayoutDashboard className="text-base" /> Overview
+                  <LayoutDashboard className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Overview
+                  </span>
                 </h3>
               </NavLink>
               <NavLink to="/dashboard/patient/patient-chat">
@@ -433,15 +439,21 @@ export function NavMain() {
   );
 
   const mainRoutes = (
-    <ul className="menu *:font-semibold *:text-gray-700 flex flex-col gap-6">
+    <ul className="pt-2 *:font-semibold *:text-gray-700 flex flex-col gap-6">
       <NavLink to="/">
         <h3 className="flex gap-2 items-center">
-          <Home /> Home
+          <Home />
+          <span className={`${state === "collapsed" && "md:hidden"}`}>
+            Home
+          </span>
         </h3>
       </NavLink>
       <NavLink to="/pharmacy">
         <h3 className="flex gap-2 items-center">
-          <BriefcaseMedical className="text-lg" /> Pharmacy
+          <BriefcaseMedical className="text-lg" />
+          <span className={`${state === "collapsed" && "md:hidden"}`}>
+            Pharmacy
+          </span>
         </h3>
       </NavLink>
       <NavLink to="/services">
@@ -454,19 +466,25 @@ export function NavMain() {
       </NavLink>
       <NavLink to="/contact-us">
         <h3 className="flex gap-2 items-center">
-          <Contact className="text-lg" /> Contact Us
+          <Contact className="text-lg" />
+          <span className={`${state === "collapsed" && "md:hidden"}`}>
+            Contact Us
+          </span>
         </h3>
       </NavLink>
       <NavLink to="/about-us">
         <h3 className="flex gap-2 items-center">
-          <BadgeInfo className="text-lg" /> About Us
+          <BadgeInfo className="text-lg" />
+          <span className={`${state === "collapsed" && "md:hidden"}`}>
+            About Us
+          </span>
         </h3>
       </NavLink>
     </ul>
   );
 
   return (
-    <SidebarGroup className={"overflow-y-auto"}>
+    <SidebarGroup className={"overflow-y-auto overflow-x-hidden"}>
       <SidebarMenu>
         <Collapsible asChild className="group/collapsible">
           <SidebarMenuItem>

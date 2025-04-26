@@ -1,169 +1,239 @@
-import { useState, useEffect } from "react";
-import { Search, Filter, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { StaffTable } from "./staff-table";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { StaffFilters } from "./staff-filters";
-import { delay } from "@/lib/stuff";
+import { useState } from "react";
+import { StaffTable } from "./staff-table";
 
-// Move the main component content here
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { IoIosSearch } from "react-icons/io";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Toaster } from "sonner";
+
 export function StaffManagement() {
-  const [showFilters, setShowFilters] = useState(false);
-  const [activeFilters, setActiveFilters] = useState({ role: [] });
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("createdAt-desc");
+  const [selectedRole, setSelectedRole] = useState("");
+  const [provider, setProvider] = useState("");
+
+  const sortOptions = {
+    "createdAt-desc": "Created At (Newest)",
+    "createdAt-asc": "Created At (Oldest)",
+    "lastLoginAt-desc": "Login At (Newest)",
+    "lastLoginAt-asc": "Login At (Oldest)",
+  };
 
   const {
     data = [],
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["user-requests"],
+    queryKey: ["all-users", page, search, sort, selectedRole, provider],
     queryFn: async () => {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/user-requests`)
-        const newStaff = data.filter(dat=> dat.requestedRole !== "Doctor")
-        setStaff(newStaff)
-        return newStaff
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_API_URL
+        }/users?page=${page}&search=${search}&sort=${sort}&role=${selectedRole}&provider=${provider}`
+      );
+      return data;
     },
   });
 
-  const [staff, setStaff] = useState(data);
-  const [filteredStaff, setFilteredStaff] = useState(staff);
-
-  // Update staff when data changes
-  useEffect(() => {
-    if (data && data.length > 0) {
-      setStaff(data);
-    }
-  }, [data]);
-
-  // Update filtered staff when data or filters change
-  useEffect(() => {
-    if (!staff) {
-      setFilteredStaff(null);
-      return;
-    }
-
-    if (!staff || !Array.isArray(staff)) {
-      setFilteredStaff([]);
-      return;
-    }
-
-    let result = [...staff]
-
-    // Apply role filters
-    if (activeFilters.role.length > 0) {
-      result = result.filter((member) =>
-        activeFilters.role.includes(member.role)
-      );
-    }
-
-    setFilteredStaff(result);
-  }, [staff, activeFilters]);
-
-  const handleSearch = async (e) => {
-    const search = e.target.value.toLowerCase();
-
-    if (search.trim() === "") {
-      refetch();
-      return;
-    }
-
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/user-requests/search?name=${search}`,
-      )
-      const newStaff = response.data.filter(dat=> dat.requestedRole !== "Doctor")
-      setStaff(newStaff)
-    } catch (error) {
-      console.error(
-        "Error searching staff, falling back to client-side search:",
-        error
-      );
-      // Fallback to client-side filtering if the search endpoint fails
-      const filtered = staff.filter(
-        (member) =>
-          member?.name.toLowerCase().includes(search) ||
-          member?.email.toLowerCase().includes(search) ||
-          member?.role.toLowerCase().includes(search),
-      )
-      setStaff(filtered)
-    }
-  };
-
-  const handleFilterChange = (filters) => {
-    setActiveFilters(filters);
+  // Pagination Functions
+  const handlePageChange = (pageNumber) => setPage(pageNumber);
+  const handlePrevPage = () => setPage((prev) => Math.max(prev - 1, 1));
+  const handleNextPage = () => {
+    setPage((prev) => (prev < data.totalPages ? prev + 1 : prev));
   };
 
   return (
-    <div className="space-y-6">
-      <Tabs>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
-          <section className="shadow-md border px-4 py-2 rounded-2xl">
-            <div className="flex gap-2 items-center">
-              <span className="font-medium">Requested Staff:</span>
-              <span className="text-sm">{staff?.length || 0}</span>
-            </div>
-          </section>
-
-          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <div className="relative w-full sm:w-[300px]">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search staff..." className="pl-8" onChange={handleSearch} />
-            </div>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setShowFilters(!showFilters)}
-              className={activeFilters.role.length > 0 ? "bg-primary/10" : ""}
-              aria-expanded={showFilters}
-            >
-              <Filter
-                className={`h-4 w-4 ${
-                  activeFilters.role.length > 0 ? "text-primary" : ""
-                }`}
-              />
-              <span className="sr-only">Toggle filters</span>
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={async () => {
-                setStaff(null);
-                await delay(500);
-                refetch();
-              }}
-              disabled={isLoading}
-            >
-              <RefreshCw className={`h-4 w-4 ${staff ? "" : "animate-spin"}`} />
-              <span className="sr-only">Refresh</span>
-            </Button>
-          </div>
-        </div>
-
-        <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            showFilters ? "max-h-96 opacity-100 mb-6" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="transform transition-transform duration-300 ease-in-out">
-            <StaffFilters
-              staff={staff}
-              activeFilters={activeFilters}
-              onFilterChange={handleFilterChange}
+    <div>
+      <Toaster />
+      <div>
+        {/* Searchbar & Select & Reset button */}
+        <div className="flex justify-between gap-2 items-center flex-wrap">
+          {/* Searchbar */}
+          <div className="relative w-full flex xl:flex-1">
+            <input
+              className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
+              placeholder="Search Users..."
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
             />
+            <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
+            {/* shortcut hint */}
+            <button
+              onClick={() => setSearch("")}
+              className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[6px] rounded-md text-gray-500 cursor-pointer"
+            >
+              Clear
+            </button>
+          </div>
+          <div className="flex items-center flex-wrap gap-2">
+            {/* Select Role */}
+            <div className="flex flex-1 w-fit">
+              <Select
+                className="w-fit text-xs"
+                value={selectedRole}
+                onValueChange={setSelectedRole}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    className="text-xs"
+                    placeholder="Filter By Role"
+                  />
+                </SelectTrigger>
+                <SelectContent className="w-fit">
+                  <SelectItem value={"administrator"} className="text-xs">
+                    {"Administrator"}
+                  </SelectItem>
+                  <SelectItem value={"pharmacist"} className="text-xs">
+                    {"Pharmacist"}
+                  </SelectItem>
+                  <SelectItem value={"receptionist"} className="text-xs">
+                    {"Receptionist"}
+                  </SelectItem>
+                  <SelectItem value={"patient"} className="text-xs">
+                    {"Patient/Users"}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {/* Select Provider */}
+            <div className="flex flex-1 w-fit">
+              <Select
+                className="w-fit text-xs"
+                value={provider}
+                onValueChange={setProvider}
+              >
+                <SelectTrigger>
+                  <SelectValue className="text-xs" placeholder="Provider" />
+                </SelectTrigger>
+                <SelectContent className="w-fit">
+                  <SelectItem value={"google.com"} className="text-xs">
+                    {"Google"}
+                  </SelectItem>
+                  <SelectItem value={"github.com"} className="text-xs">
+                    {"Github"}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {/* Sort By */}
+            <div className="flex flex-1 w-fit">
+              <Select
+                className="w-fit text-xs"
+                value={sort}
+                onValueChange={setSort}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Sort By" className="text-xs">
+                    {sortOptions[sort] || "Sort By"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent className="w-fit">
+                  {Object.entries(sortOptions).map(([value, label]) => (
+                    <SelectItem key={value} value={value} className={"text-xs"}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {/* Reset & Add Button */}
+            <div className="flex items-center flex-wrap gap-2">
+              <Button
+                onClick={() => {
+                  setSearch("");
+                  setSelectedRole("");
+                  setSort("createdAt-desc");
+                  setProvider("");
+                }}
+                className={"cursor-pointer"}
+              >
+                Reset
+              </Button>
+            </div>
           </div>
         </div>
+      </div>
 
-        <TabsContent className="mt-6">
-          <StaffTable
-            staff={filteredStaff}
-            isLoading={isLoading && !staff}
-            refetch={refetch}
-          />
-        </TabsContent>
-      </Tabs>
+      {/* Table */}
+      <StaffTable
+        users={data?.users}
+        isLoading={isLoading}
+        refetch={refetch}
+        totalUsers={data?.totalItems}
+      />
+
+      {/* Pagination */}
+      <Pagination className="mt-4">
+        <PaginationContent className={"flex flex-wrap justify-center"}>
+          {/* Previous */}
+          <PaginationItem>
+            <PaginationPrevious
+              className={"cursor-pointer"}
+              onClick={handlePrevPage}
+            />
+          </PaginationItem>
+
+          {/* Page Numbers */}
+          {isLoading
+            ? // Skeleton Loader
+              Array.from({ length: 3 }).map((_, i) => (
+                <PaginationItem key={i}>
+                  <div className="w-8 h-8 skeleton rounded-md"></div>
+                </PaginationItem>
+              ))
+            : // Page Numbers
+              Array.from({ length: data?.totalPages }, (_, i) => i + 1).map(
+                (pageNumber) => (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      className="cursor-pointer"
+                      isActive={pageNumber === page}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(pageNumber);
+                      }}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              )}
+
+          {/* Ellipsis */}
+          {data?.totalPages > 5 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+
+          {/* Next */}
+          <PaginationItem>
+            <PaginationNext
+              className={"cursor-pointer"}
+              onClick={handleNextPage}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }

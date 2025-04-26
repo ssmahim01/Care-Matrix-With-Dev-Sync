@@ -135,18 +135,22 @@ const DetailsModal = ({ form, detailsModal }) => {
     }
 
     const doctorData = {
-      id,
       name: detailsModal?.userName,
+      title: detailsModal?.department,
       email: detailsModal?.userEmail,
       image: detailsModal?.userPhoto,
-      schedule: data.schedule,
-      shift: data.shift,
-      title: detailsModal?.department,
       experience: `${data.experience}+ years`,
-      consultation_fee: `$${data.consultation_fee}`,
-      available_days: availableDays,
+      chamber: "CareMatrix",
       services,
       bio: data.bio,
+      available_days: availableDays,
+      schedule: data.schedule,
+      shift: data.shift,
+      consultation_fee: `${data.consultation_fee}`,
+      rating: 4.0,
+      vote: 10,
+      number_of_feedback: 0,
+      treated_patients: 10,
     };
 
     try {
@@ -178,11 +182,11 @@ const DetailsModal = ({ form, detailsModal }) => {
               </button>
             </form>
             <div className="flex flex-col">
-              <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
-                <BriefcaseMedical className="text-3xl text-gray-800" />
+              <h2 className="text-2xl font-bold text-gray-700 flex items-center gap-2">
+                <BriefcaseMedical className="text-2xl text-gray-800" />
                 <span>Details of Doctor</span>
               </h2>
-              <p className="text-gray-600 text-base ml-8 font-medium whitespace-pre-line">
+              <p className="text-gray-600 text-base ml font-medium whitespace-pre-line">
                 The full details of doctor are shown here
               </p>
             </div>

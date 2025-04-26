@@ -74,7 +74,7 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch }) => {
       );
 
       // Step 3: Refetch data
-      console.log("Triggering refetch...");
+      // console.log("Triggering refetch...");
       await refetch(); // Ensure refetch completes
       reset();
       onClose();

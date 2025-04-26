@@ -2,7 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { AdministratorAnalytics } from "@/components/AreaChart/AdministratorAnalytics";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { FaCalendarCheck, FaDollarSign, FaProcedures, FaUserMd } from "react-icons/fa";
+import {
+  FaCalendarCheck,
+  FaDollarSign,
+  FaProcedures,
+  FaUserMd,
+} from "react-icons/fa";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import SkeletonOverview from "@/components/Skeleton/SkeletonOverview";
 import DoctorsPatientsChart from "@/components/BarChart/DoctorsPatientsChart";
@@ -72,7 +77,11 @@ const AdministratorOverview = () => {
   });
 
   // Fetch doctors and patients data
-  const { data: counts, isLoading: isBarChartLoading, error: barChartError } = useQuery({
+  const {
+    data: counts,
+    isLoading: isBarChartLoading,
+    error: barChartError,
+  } = useQuery({
     queryKey: ["doctorsPatients"],
     queryFn: async () => {
       const res = await axiosSecure.get("/adminStats/doctors-patients");
@@ -115,24 +124,29 @@ const AdministratorOverview = () => {
   const chartData = adminStats ? transformStatsData(adminStats) : [];
 
   // Combine loading states
-  const isLoading = isAdminStatsLoading || isActivitiesLoading || isTotalsLoading || isBarChartLoading;
+  const isLoading =
+    isAdminStatsLoading ||
+    isActivitiesLoading ||
+    isTotalsLoading ||
+    isBarChartLoading;
 
   // Combine error states
-  const error = adminStatsError || activitiesError || totalsError || barChartError;
+  const error =
+    adminStatsError || activitiesError || totalsError || barChartError;
 
   // Calculate summary stats with fallback values
   const summary = adminStats
     ? {
         totalDoctors: totals?.totalDoctors ?? 0,
         totalPatients:
-        (adminStats.appointmentsPerDate || []).reduce(
-          (sum, { count = 0 }) => sum + count,
-          0
-        ) +
-        (adminStats.bedBookingsPerAdmissionDate || []).reduce(
-          (sum, { count = 0 }) => sum + count,
-          0
-        ),
+          (adminStats.appointmentsPerDate || []).reduce(
+            (sum, { count = 0 }) => sum + count,
+            0
+          ) +
+          (adminStats.bedBookingsPerAdmissionDate || []).reduce(
+            (sum, { count = 0 }) => sum + count,
+            0
+          ),
         appointmentsToday: (adminStats.appointmentsPerDate || [])
           .filter(({ date }) => date === new Date().toISOString().split("T")[0])
           .reduce((sum, { count = 0 }) => sum + count, 0),
@@ -170,7 +184,7 @@ const AdministratorOverview = () => {
   const activities = activitiesData?.recentActivities || [];
 
   return (
-    <div className="space-y-4 px-7">
+    <div className="px-7">
       {/* Dashboard Summary Cards */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
         {/* Total Doctors Card */}
@@ -246,20 +260,20 @@ const AdministratorOverview = () => {
         </Card>
       </div>
 
-     <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-5">
-       {/* Charts & Analytics */}
-       <div className="my-6 lg:w-1/2 h-full">
-        <AdministratorAnalytics chartData={chartData} />
-      </div>
+      <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-5">
+        {/* Charts & Analytics */}
+        <div className="my-6 lg:w-2/3 w-full h-full flex">
+          <AdministratorAnalytics chartData={chartData} />
+        </div>
 
-      {/* Bar Chart for Doctors & Patients */}
-      <div className="my-6 lg:w-1/2 h-full">
-        <DoctorsPatientsChart counts={counts} />
+        {/* Bar Chart for Doctors & Patients */}
+        <div className="my-6 lg:w-1/3 w-full h-full flex">
+          <DoctorsPatientsChart counts={counts} />
+        </div>
       </div>
-     </div>
 
       {/* Recent Activities */}
-      <div className="bg-white/80 shadow-md p-6 border-b border-gray-300 rounded-lg">
+      <div className="bg-white/80 shadow p-6 border border-border rounded-lg">
         <h3 className="text-lg font-semibold mb-4">Recent Activities</h3>
         {activities.length > 0 ? (
           <ul className="space-y-3">
