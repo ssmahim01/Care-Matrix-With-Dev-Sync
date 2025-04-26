@@ -6,24 +6,35 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, Filter, X } from "lucide-react"
-import { toast } from "sonner"
 import ReviewComment from "./ReviewComment"
-import { reviews } from "@/lib/data"
-import { containerVariants,itemVariants } from "@/lib/varients"
+import { containerVariants, itemVariants } from "@/lib/varients"
 import FeaturedReview from "./FeaturedReview"
 import Loader from "@/shared/Loader"
 import PatientReviewHeader from "./PatientReviewHeader"
 import FilterTabsPatient from "./FilterTabsPatient"
 import ReviewsPagination from "./ReviewsPagination"
+import axios from "axios"
+import { toast } from "sonner"
+import { useQuery } from "@tanstack/react-query"
+import { useAuthUser } from "@/redux/auth/authActions"
 
 export default function PatientReviews() {
+  const user = useAuthUser()
+  
+  const {data: reviews = [], isLoading, refetch } = useQuery({
+    queryKey: ["reviews"],
+    queryFn: async () => {
+      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/review/all`)
+      setFilteredReviews(data)
+      return data
+    }
+  })
 
   // State management
   const [activeTab, setActiveTab] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedDepartment, setSelectedDepartment] = useState("all")
   const [filteredReviews, setFilteredReviews] = useState(reviews)
-  const [isLoading, setIsLoading] = useState(true)
   const [showReplyForm, setShowReplyForm] = useState(null)
   const [replyText, setReplyText] = useState("")
   const [helpfulReviews, setHelpfulReviews] = useState({})
@@ -36,14 +47,8 @@ export default function PatientReviews() {
     rating: 5,
     comment: "",
   })
+  const [reviewDialog, setReviewDialog] = useState(false);
 
-  // Simulate loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
-    return () => clearTimeout(timer)
-  }, [])
 
   // Filter reviews based on search, department, and active tab
   useEffect(() => {
@@ -66,7 +71,9 @@ export default function PatientReviews() {
 
     // Filter by tab
     if (activeTab === "recent") {
-      results = results.filter((review) => new Date(review.date) > new Date("2025-01-01"))
+      results = results
+        .slice() // clone array to avoid mutating original
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
     } else if (activeTab === "highest") {
       results = results.filter((review) => review.rating >= 5)
     }
@@ -91,30 +98,27 @@ export default function PatientReviews() {
   }
 
   // Handle submitting a new review
-  const handleSubmitReview = (e) => {
+  const handleSubmitReview = async (e) => {
     e.preventDefault()
 
-    // Create new review with current date
-    const today = new Date()
-    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`
+    const form = e.target
+    const name = form.name.value;
+    const department = form.department.value;
+    const rating = form.rating.value;
+    const comment = form.comment.value;
+    const date = new Date().toLocaleDateString()
 
-    const newReviewItem = {
-      ...newReview,
-      date: formattedDate,
-      helpful: 0,
-      id: reviews.length + 1,
+    const review = { name, department, rating, comment, helpful: 0, date, avatar: user.photoURL };
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/review/add`, review)
+      if (res.data) return toast.success(res.data.message, { description: "Check the review list" })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      refetch()
+      setReviewDialog(false)
     }
-
-    // Add to reviews array
-    reviews.unshift(newReviewItem)
-
-    // Reset form and refilter
-    setNewReview({
-      name: "",
-      department: "",
-      rating: 5,
-      comment: "",
-    })
 
     // Trigger refiltering
     setActiveTab("all")
@@ -187,10 +191,12 @@ export default function PatientReviews() {
               </Select>
             </div>
 
-            <ReviewComment 
-              handleSubmitReview={handleSubmitReview} 
-              newReview={newReview} 
-              setNewReview={setNewReview} 
+            <ReviewComment
+              handleSubmitReview={handleSubmitReview}
+              newReview={newReview}
+              setNewReview={setNewReview}
+              setReviewDialog={setReviewDialog}
+              reviewDialog={reviewDialog}
             />
           </motion.div>
 
@@ -207,27 +213,27 @@ export default function PatientReviews() {
 
 
           {/* Filter Tabs */}
-          <FilterTabsPatient 
-          activeTab={activeTab}
-          currentReviews={currentReviews}
-          handleHelpful={handleHelpful}
-          handleSubmitReply={handleSubmitReply}
-          helpfulReviews={helpfulReviews}
-          replyText={replyText}
-          setActiveTab={setActiveTab}
-          setReplyText={setReplyText}
-          setShowReplyForm={setShowReplyForm}
-          showReplyForm={showReplyForm}
+          <FilterTabsPatient
+            activeTab={activeTab}
+            currentReviews={currentReviews}
+            handleHelpful={handleHelpful}
+            handleSubmitReply={handleSubmitReply}
+            helpfulReviews={helpfulReviews}
+            replyText={replyText}
+            setActiveTab={setActiveTab}
+            setReplyText={setReplyText}
+            setShowReplyForm={setShowReplyForm}
+            showReplyForm={showReplyForm}
           />
 
           {/* Pagination and Load More */}
-          <ReviewsPagination 
-          filteredReviews={filteredReviews}
-          handleLoadMore={handleLoadMore}
-          setCurrentPage={setCurrentPage}
-          showLoadMore={showLoadMore}
-          totalPages={totalPages}
-          currentPage={currentPage}
+          <ReviewsPagination
+            filteredReviews={filteredReviews}
+            handleLoadMore={handleLoadMore}
+            setCurrentPage={setCurrentPage}
+            showLoadMore={showLoadMore}
+            totalPages={totalPages}
+            currentPage={currentPage}
           />
 
           {/* Call to Action */}

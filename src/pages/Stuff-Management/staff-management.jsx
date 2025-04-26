@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Toaster } from "sonner";
+// import { Toaster } from "sonner";
 
 export function StaffManagement() {
   const [page, setPage] = useState(1);
@@ -63,7 +63,6 @@ export function StaffManagement() {
 
   return (
     <div>
-      <Toaster />
       <div>
         {/* Searchbar & Select & Reset button */}
         <div className="flex justify-between gap-2 items-center flex-wrap">

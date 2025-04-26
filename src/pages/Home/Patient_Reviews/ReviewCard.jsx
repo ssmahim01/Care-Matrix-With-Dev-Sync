@@ -25,7 +25,7 @@ export default function ReviewCard({
             whileHover={{ y: -5 }}
             transition={{ type: "spring", stiffness: 300 }}
         >
-            <Card className="border-sky-100 hover:shadow-md transition-shadow">
+            <Card className="border-sky-100 hover:shadow-md transition-shadow pb-2">
                 <CardContent className="pt-6">
                     <div className="flex gap-4">
                         <motion.div
