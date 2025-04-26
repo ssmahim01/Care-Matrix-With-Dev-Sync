@@ -103,7 +103,7 @@ function ManageBillings() {
 
   return (
     <div className="px-7">
-      <div className="">
+      <div>
         <DashboardPagesHeader
           title="Payment Records"
           subtitle="Track and Manage All Patient Payment Histories & Records"
@@ -115,7 +115,7 @@ function ManageBillings() {
           <div className="relative md:w-2/5">
             <input
               className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring  ring-gray-500"
-              placeholder="Search Patient By Name or number..."
+              placeholder="Search Patient By Name or Number..."
               onChange={(e) => setSearch(e.target.value)}
               value={search}
             />

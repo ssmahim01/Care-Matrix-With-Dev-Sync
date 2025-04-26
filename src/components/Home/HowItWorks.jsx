@@ -113,7 +113,7 @@ const HowItWorks = () => {
 
   return (
     <section className="py-16 px-4 md:px-8 bg-gradient-to-b from-white rounded-xl to-blue-50">
-      <div className="w-[95%] lg:w-11/12 mx-auto">
+      <div className="w-[95%] mx-auto">
         {/* Header */}
         <div className="pb-6">
           <SectionHeader
