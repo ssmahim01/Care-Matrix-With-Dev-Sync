@@ -1,17 +1,17 @@
 import { motion } from "framer-motion";
 
 import {
-    Baby,
-    Bone,
-    Brain,
-    BrainCircuit,
-    ChevronLeft,
-    ChevronRight,
-    Eye,
-    FlaskConical,
-    HeartPulse,
-    Ribbon,
-    Sun,
+  Baby,
+  Bone,
+  Brain,
+  BrainCircuit,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  FlaskConical,
+  HeartPulse,
+  Ribbon,
+  Sun,
 } from "lucide-react";
 
 import React, { useRef } from "react";
@@ -94,7 +94,6 @@ const Specialties = () => {
         </motion.div>
       </motion.div>
 
-      {/* Swiper Carousel */}
       <Swiper
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
@@ -102,6 +101,7 @@ const Specialties = () => {
         modules={[Navigation]}
         spaceBetween={20}
         slidesPerView={2}
+        loop={true} // <-- ADD THIS for infinite loop
         breakpoints={{
           600: { slidesPerView: 3 },
           1200: { slidesPerView: 6 },
