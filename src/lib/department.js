@@ -40,9 +40,9 @@ export const departmentsData = [
       },
     ],
     contact: {
-      phone: "+880 1234 567890",
-      email: "babycare@hospital.com",
-      location: "Ward 3A - Pediatric Wing",
+      phone: "+880 1900 000000",
+      email: "babycare@care-matrix.com",
+      location: "Care Matrix - Dhaka, Bangladesh",
     },
     hours: {
       weekdays: "8:00 AM - 6:00 PM",
@@ -90,9 +90,9 @@ export const departmentsData = [
       },
     ],
     contact: {
-      phone: "+880 1234 567891",
-      email: "dental@hospital.com",
-      location: "2nd Floor - Dental Wing",
+      phone: "+880 1900 000000",
+      email: "dental@care-matrix.com",
+      location: "Care Matrix - Dhaka, Bangladesh",
     },
     hours: {
       weekdays: "9:00 AM - 5:00 PM",
@@ -140,9 +140,9 @@ export const departmentsData = [
       },
     ],
     contact: {
-      phone: "+880 1234 567892",
-      email: "neuro@hospital.com",
-      location: "Neuro Block - Level 4",
+      phone: "+880 1900 000000",
+      email: "neuro@care-matrix.com",
+      location: "Care Matrix - Dhaka, Bangladesh",
     },
     hours: {
       weekdays: "10:00 AM - 7:00 PM",
@@ -190,9 +190,9 @@ export const departmentsData = [
       },
     ],
     contact: {
-      phone: "+880 1234 567893",
-      email: "surgery@hospital.com",
-      location: "Surgical Block - Level 3",
+      phone: "+880 1900 000000",
+      email: "surgery@care-matrix.com",
+      location: "Care Matrix - Dhaka, Bangladesh",
     },
     hours: {
       weekdays: "8:00 AM - 5:00 PM",
@@ -240,9 +240,9 @@ export const departmentsData = [
       },
     ],
     contact: {
-      phone: "+880 1234 567894",
-      email: "emergency@hospital.com",
-      location: "Ground Floor - ER Wing",
+      phone: "+880 1900 000000",
+      email: "emergency@care-matrix.com",
+      location: "Care Matrix - Dhaka, Bangladesh",
     },
     hours: {
       weekdays: "24/7",
@@ -290,9 +290,9 @@ export const departmentsData = [
       },
     ],
     contact: {
-      phone: "+880 1234 567895",
-      email: "gynecology@hospital.com",
-      location: "Maternity Wing - Level 2",
+      phone: "+880 1900 000000",
+      email: "gynecology@care-matrix.com",
+      location: "Care Matrix - Dhaka, Bangladesh",
     },
     hours: {
       weekdays: "9:00 AM - 6:00 PM",
