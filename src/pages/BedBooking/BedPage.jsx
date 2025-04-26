@@ -5,6 +5,7 @@ import BookingModal from "./BookingModal";
 import BedDetailsModal from "./BedDetails";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import BedCardSkeleton from "./BedCardSkeleton";
 
 const BedPage = () => {
   const [selectedBed, setSelectedBed] = useState(null);
@@ -75,23 +76,7 @@ const BedPage = () => {
             {Array(6)
               .fill(0)
               .map((_, index) => (
-                <div
-                  key={index}
-                  className="border rounded-lg shadow-lg p-4 flex flex-col items-center animate-pulse space-y-4"
-                >
-                  <div className="flex justify-between items-center w-full">
-                    <div className="h-5 bg-gray-300 rounded w-1/3" />
-                    <div className="text-end space-y-2">
-                      <div className="h-4 bg-gray-300 rounded w-24" />
-                      <div className="h-6 bg-gray-400 rounded w-20" />
-                    </div>
-                  </div>
-                  <div className="w-full h-60 bg-gray-300 rounded-md" />
-                  <div className="flex justify-between w-full space-x-2">
-                    <div className="bg-gray-300 rounded-md h-10 w-1/2" />
-                    <div className="bg-gray-300 rounded-md h-10 w-1/2" />
-                  </div>
-                </div>
+                <BedCardSkeleton key={index} />
               ))}
           </div>
         ) : beds.length === 0 ? (
