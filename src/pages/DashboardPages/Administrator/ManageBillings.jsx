@@ -106,7 +106,7 @@ function ManageBillings() {
       <div className="">
         <DashboardPagesHeader
           title="Payment Records"
-          subtitle="View and Manage All Payment Records"
+          subtitle="Track and Manage All Patient Payment Histories & Records"
           icon={CreditCard}
         />
 
@@ -133,7 +133,7 @@ function ManageBillings() {
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <PaymentsTable
           paymentsData={data?.payments}
@@ -142,28 +142,55 @@ function ManageBillings() {
           totalItems={data?.totalItems}
         />
       </motion.div>
+
       {/* Pagination */}
       <Pagination className="mt-4 flex flex-wrap">
         <PaginationContent>
           {/* Previous */}
           <PaginationItem>
             <PaginationPrevious
-              className={"cursor-pointer"}
+              className="cursor-pointer"
               onClick={handlePrevPage}
             />
           </PaginationItem>
 
           {/* Page Numbers */}
-          {isLoading
-            ? // Skeleton Loader
-              Array.from({ length: 5 }).map((_, i) => (
-                <PaginationItem key={i}>
-                  <div className="w-8 h-8 skeleton rounded-md"></div>
+          {isLoading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <PaginationItem key={i}>
+                <div className="w-8 h-8 skeleton rounded-md"></div>
+              </PaginationItem>
+            ))
+          ) : (
+            <>
+              {/* Always show page 1 */}
+              <PaginationItem>
+                <PaginationLink
+                  className="cursor-pointer"
+                  isActive={page === 1}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlePageChange(1);
+                  }}
+                >
+                  1
+                </PaginationLink>
+              </PaginationItem>
+
+              {/* Show left ellipsis if needed */}
+              {page > 3 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
                 </PaginationItem>
-              ))
-            : // Page Numbers
-              Array.from({ length: data?.totalPages }, (_, i) => i + 1).map(
-                (pageNumber) => (
+              )}
+
+              {/* Show pages around current */}
+              {Array.from({ length: data.totalPages }, (_, i) => i + 1)
+                .filter(
+                  (p) =>
+                    p !== 1 && p !== data.totalPages && Math.abs(p - page) <= 1
+                )
+                .map((pageNumber) => (
                   <PaginationItem key={pageNumber}>
                     <PaginationLink
                       className="cursor-pointer"
@@ -176,20 +203,37 @@ function ManageBillings() {
                       {pageNumber}
                     </PaginationLink>
                   </PaginationItem>
-                )
+                ))}
+
+              {/* Show right ellipsis if needed */}
+              {page < data.totalPages - 2 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
               )}
 
-          {/* Ellipsis */}
-          {data?.totalPages > 5 && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
+              {/* Always show last page */}
+              {data.totalPages > 1 && (
+                <PaginationItem>
+                  <PaginationLink
+                    className="cursor-pointer"
+                    isActive={page === data.totalPages}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(data.totalPages);
+                    }}
+                  >
+                    {data.totalPages}
+                  </PaginationLink>
+                </PaginationItem>
+              )}
+            </>
           )}
 
           {/* Next */}
           <PaginationItem>
             <PaginationNext
-              className={"cursor-pointer"}
+              className="cursor-pointer"
               onClick={handleNextPage}
             />
           </PaginationItem>
