@@ -274,7 +274,7 @@ const HowItWorks = () => {
         </div>
 
         {/* Navigation Controls */}
-        <div className="flex justify-center mt-10 gap-4">
+        {/* <div className="flex justify-center mt-10 gap-4">
           <Button
             onClick={handlePrev}
             variant="outline"
@@ -294,10 +294,10 @@ const HowItWorks = () => {
             <ChevronRight className="h-6 w-6" />
             <span className="sr-only">Next step</span>
           </Button>
-        </div>
+        </div> */}
 
         {/* Step Overview */}
-        <div className="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="mt-14 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {services.map((service, index) => (
             <button
               key={index}
