@@ -22,11 +22,11 @@ import { useNavigate } from "react-router"
 export default function PatientReviews() {
   const user = useAuthUser()
   const navigate = useNavigate()
-  
-  const {data: reviews = [], isLoading, refetch } = useQuery({
+
+  const { data: reviews = [], isLoading, refetch } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () => {
-      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/review/all`)
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/review/all`)
       setFilteredReviews(data)
       return data
     }
@@ -90,34 +90,34 @@ export default function PatientReviews() {
   const currentReviews = filteredReviews.slice(indexOfFirstReview, indexOfLastReview)
   const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage)
 
-// Handle marking a review as helpful
-const handleHelpful = async (reviewId) => {
-  
-  try {
-    const res = await axios.patch(`${import.meta.env.VITE_API_URL}/review/increase-helpful/${reviewId}`, {userId : user?.email});
+  // Handle marking a review as helpful
+  const handleHelpful = async (reviewId) => {
+    if (!user) return navigate("/login")
+    try {
+      const res = await axios.patch(`${import.meta.env.VITE_API_URL}/review/increase-helpful/${reviewId}`, { userId: user?.email });
 
-    if (res.data?.message) {
-      toast.success("Thanks for your feedback!");
+      if (res.data?.message) {
+        toast.success("Thanks for your feedback!");
 
-    } else {
-      console.error("Failed to mark as helpful");
+      } else {
+        console.error("Failed to mark as helpful");
+      }
+    } catch (error) {
+      if (error.response.data) return toast.info(error.response.data.message);
+    } finally {
+      refetch()
     }
-  } catch (error) {
-    if(error.response.data) return toast.info(error.response.data.message);
-  } finally {
-    refetch()
-  }
-};
+  };
 
   const featuredReview = filteredReviews.reduce((maxReview, currentReview) => {
     return (currentReview.helpful > (maxReview?.helpful || 0)) ? currentReview : maxReview;
   }, null);
-  
+
 
   // Handle submitting a new review
   const handleSubmitReview = async (e) => {
     e.preventDefault()
-
+    if (!user) return navigate("/login")
     const form = e.target
     const name = form.name.value;
     const department = form.department.value;
@@ -146,11 +146,12 @@ const handleHelpful = async (reviewId) => {
 
   // Handle submitting a reply
   const handleSubmitReply = async (reviewId) => {
+    if (!user) return navigate("/login")
     try {
       const res = await axios.put(`${import.meta.env.VITE_API_URL}/review/comment-review/${reviewId}`, {
-        text: replyText, 
+        text: replyText,
       });
-  
+
       if (res.data.message) {
         toast.success(res.data.message || `Reply submitted for review`);
       }
@@ -195,7 +196,7 @@ const handleHelpful = async (reviewId) => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sky-500 h-4 w-4" />
               <Input
                 placeholder="Search reviews..."
-                className="pl-10 border-sky-200 focus:border-sky-400" 
+                className="pl-10 border-sky-200 focus:border-sky-400"
                 onChange={(e) => handleSearch(e.target.value)}
               />
               {searchQuery && (
@@ -280,7 +281,7 @@ const handleHelpful = async (reviewId) => {
                 </CardDescription>
               </CardHeader>
               <CardFooter>
-                <ReviewComment handleSubmitReview={handleSubmitReview} newReview={newReview} setNewReview={setNewReview} />
+                 
               </CardFooter>
             </Card>
           </motion.div>
