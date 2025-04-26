@@ -297,7 +297,7 @@ const HowItWorks = () => {
         </div>
 
         {/* Step Overview */}
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {services.map((service, index) => (
             <button
               key={index}

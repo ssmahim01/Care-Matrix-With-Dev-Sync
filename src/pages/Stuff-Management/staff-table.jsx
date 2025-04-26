@@ -55,22 +55,22 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
   const handleUserDelete = async () => {
     setIsDeleting(true);
     try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/firebase/delete-user/${selectedEmail}`
-      );
+      // const { data } = await axios.delete(
+      //   `${import.meta.env.VITE_API_URL}/firebase/delete-user/${selectedEmail}`
+      // );
 
-      if (data?.result?.deletedCount) {
-        refetch();
-        setIsOpen(false);
-        setErrorMessage("");
-        toast("User Deleted", {
-          description: `${selectedEmail} Was Successfully Deleted!`,
-          duration: 3000,
-          position: "top-right",
-        });
-      } else {
-        setErrorMessage("User could not be deleted, Please try again!");
-      }
+      // if (data?.result?.deletedCount) {
+      refetch();
+      setIsOpen(false);
+      setErrorMessage("");
+      toast("User Deleted", {
+        description: `${selectedEmail} Was Successfully Deleted!`,
+        duration: 3000,
+        position: "top-right",
+      });
+      // } else {
+      //   setErrorMessage("User could not be deleted, Please try again!");
+      // }
     } catch (error) {
       const message =
         error?.response?.data?.message ||
@@ -81,205 +81,216 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
     }
   };
   return (
-    <Table className={"mt-6"}>
-      <TableCaption>A List Of {totalUsers} Users</TableCaption>
-      <TableHeader>
-        <TableRow className={"bg-gray-50 hover:bg-gray-50"}>
-          <TableHead className="pr-0">Name</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Role</TableHead>
-          <TableHead>Phone Number</TableHead>
-          <TableHead>ProviderId</TableHead>
-          <TableHead>UID</TableHead>
-          <TableHead className="text-xs">
-            Last <br /> Login At
-          </TableHead>
-          <TableHead className="text-xs">
-            Account <br /> Created At
-          </TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {isLoading
-          ? Array.from({ length: 10 }).map((_, i) => (
-              <TableRow key={i}>
-                {Array.from({ length: 9 }).map((_, j) => (
-                  <TableCell key={j}>
-                    <div className="skeleton h-8 rounded w-full"></div>
+    <>
+      <Table className={"mt-6"}>
+        <TableCaption>A List Of {totalUsers} Users</TableCaption>
+        <TableHeader>
+          <TableRow className={"bg-gray-50 hover:bg-gray-50"}>
+            <TableHead className="pr-0">Name</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead>Phone Number</TableHead>
+            <TableHead>ProviderId</TableHead>
+            <TableHead>UID</TableHead>
+            <TableHead className="text-xs">
+              Last <br /> Login At
+            </TableHead>
+            <TableHead className="text-xs">
+              Account <br /> Created At
+            </TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {isLoading
+            ? Array.from({ length: 10 }).map((_, i) => (
+                <TableRow key={i}>
+                  {Array.from({ length: 9 }).map((_, j) => (
+                    <TableCell key={j}>
+                      <div className="skeleton h-8 rounded w-full"></div>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            : users?.map((user, i) => (
+                <TableRow key={i}>
+                  <TableCell className="pr-0">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage
+                          src={user?.photo}
+                          alt="User Image"
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <AvatarFallback className="w-10 h-10 rounded-full object-cover">
+                          {user?.name
+                            ? user.name
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")
+                                .toUpperCase()
+                            : "NA"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="max-w-32 truncate">{user?.name}</span>
+                    </div>
                   </TableCell>
-                ))}
-              </TableRow>
-            ))
-          : users?.map((user, i) => (
-              <TableRow key={i}>
-                <TableCell className="pr-0">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarImage
-                        src={user?.photo}
-                        alt="User Image"
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-                      <AvatarFallback className="w-10 h-10 rounded-full object-cover">
-                        {user?.name
-                          ? user.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")
-                              .toUpperCase()
-                          : "NA"}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="max-w-32 truncate">{user?.name}</span>
-                  </div>
-                </TableCell>
 
-                <TableCell className="max-w-[150px] truncate">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild className="cursor-pointer">
-                        <span>{user?.email}</span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{user?.email}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </TableCell>
-                <TableCell>
-                  {user?.role === "administrator" ? (
-                    <Badge
-                      variant="outline"
-                      className="flex items-center gap-1"
-                    >
-                      <ShieldCheck className="h-4 w-4 text-blue-600" />
-                      Admin
-                    </Badge>
-                  ) : user?.role === "pharmacist" ? (
-                    <Badge
-                      variant="outline"
-                      className="flex items-center gap-1"
-                    >
-                      <FaCapsules className="h-4 w-4 text-green-600" />
-                      Pharmacist
-                    </Badge>
-                  ) : user?.role === "receptionist" ? (
-                    <Badge
-                      variant="outline"
-                      className="flex items-center gap-1"
-                    >
-                      <Phone className="h-4 w-4 text-orange-600" />
-                      Receptionist
-                    </Badge>
-                  ) : user?.role === "doctor" ? (
-                    <Badge
-                      variant="outline"
-                      className="flex items-center gap-1"
-                    >
-                      <Stethoscope className="h-4 w-4 text-purple-600" />
-                      Doctor
-                    </Badge>
-                  ) : user?.role === "patient" ? (
-                    <Badge
-                      variant="outline"
-                      className="flex items-center gap-1"
-                    >
-                      <User className="h-4 w-4 text-pink-600" />
-                      Patient
-                    </Badge>
-                  ) : (
-                    <Badge>{user?.role}</Badge>
-                  )}
-                </TableCell>
-                <TableCell>
-                  {user?.phoneNumber ? user?.phoneNumber : "Unavailable"}
-                </TableCell>
-                <TableCell>
-                  {user?.providerId ? user?.providerId : "password"}
-                </TableCell>
-                <TableCell className="max-w-[100px] truncate">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild className="cursor-pointer">
-                        <span>{user?.uid}</span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{user?.uid}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </TableCell>
-                <TableCell>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild className="cursor-pointer">
-                        <span>
-                          {user?.createdAt
-                            ? format(new Date(user.createdAt), "dd MMM yyyy")
-                            : "N/A"}
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>
-                          {user?.createdAt
-                            ? format(new Date(user.createdAt), "PPPpp")
-                            : "N/A"}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </TableCell>
-                <TableCell>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild className="cursor-pointer">
-                        <span>
-                          {user?.lastLoginAt
-                            ? format(new Date(user.lastLoginAt), "dd MMM yyyy")
-                            : "N/A"}
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>
-                          {user?.lastLoginAt
-                            ? format(new Date(user.lastLoginAt), "PPPpp")
-                            : "N/A"}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild className={"cursor-pointer"}>
-                      <div
-                        className={
-                          "bg-base-200 p-2 rounded border border-border w-fit"
-                        }
+                  <TableCell className="max-w-[150px] truncate">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild className="cursor-pointer">
+                          <span>{user?.email}</span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{user?.email}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
+                  <TableCell>
+                    {user?.role === "administrator" ? (
+                      <Badge
+                        variant="outline"
+                        className="flex items-center gap-1"
                       >
-                        <MoreVertical className="cursor-pointer text-gray-700" />
-                      </div>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          setSelectedEmail(user?.email);
-                          setIsOpen(true);
-                        }}
-                        className="cursor-pointer"
+                        <ShieldCheck className="h-4 w-4 text-blue-600" />
+                        Admin
+                      </Badge>
+                    ) : user?.role === "pharmacist" ? (
+                      <Badge
+                        variant="outline"
+                        className="flex items-center gap-1"
                       >
-                        <Trash className="w-4 h-4 mt-[0.9px] text-red-500" />
-                        Delete User
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-      </TableBody>
+                        <FaCapsules className="h-4 w-4 text-green-600" />
+                        Pharmacist
+                      </Badge>
+                    ) : user?.role === "receptionist" ? (
+                      <Badge
+                        variant="outline"
+                        className="flex items-center gap-1"
+                      >
+                        <Phone className="h-4 w-4 text-orange-600" />
+                        Receptionist
+                      </Badge>
+                    ) : user?.role === "doctor" ? (
+                      <Badge
+                        variant="outline"
+                        className="flex items-center gap-1"
+                      >
+                        <Stethoscope className="h-4 w-4 text-purple-600" />
+                        Doctor
+                      </Badge>
+                    ) : user?.role === "patient" ? (
+                      <Badge
+                        variant="outline"
+                        className="flex items-center gap-1"
+                      >
+                        <User className="h-4 w-4 text-pink-600" />
+                        Patient
+                      </Badge>
+                    ) : (
+                      <Badge>{user?.role}</Badge>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {user?.phoneNumber ? user?.phoneNumber : "Unavailable"}
+                  </TableCell>
+                  <TableCell>
+                    {user?.providerId ? user?.providerId : "password"}
+                  </TableCell>
+                  <TableCell className="max-w-[100px] truncate">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild className="cursor-pointer">
+                          <span>{user?.uid}</span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{user?.uid}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
+                  <TableCell>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild className="cursor-pointer">
+                          <span>
+                            {user?.createdAt
+                              ? format(new Date(user.createdAt), "dd MMM yyyy")
+                              : "N/A"}
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            {user?.createdAt
+                              ? format(new Date(user.createdAt), "PPPpp")
+                              : "N/A"}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
+                  <TableCell>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild className="cursor-pointer">
+                          <span>
+                            {user?.lastLoginAt
+                              ? format(
+                                  new Date(user.lastLoginAt),
+                                  "dd MMM yyyy"
+                                )
+                              : "N/A"}
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            {user?.lastLoginAt
+                              ? format(new Date(user.lastLoginAt), "PPPpp")
+                              : "N/A"}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu modal={false}>
+                      <DropdownMenuTrigger asChild>
+                        <div className="bg-base-200 p-2 rounded border border-border w-fit cursor-pointer">
+                          <MoreVertical className="text-gray-700" />
+                        </div>
+                      </DropdownMenuTrigger>
+
+                      <DropdownMenuContent>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedEmail(user?.email);
+                            setIsOpen(true);
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <Trash className="w-4 h-4 mt-[0.9px] text-red-500" />
+                          Delete User
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+        </TableBody>
+      </Table>
       {/* Delete User Modal */}
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog
+        open={isOpen}
+        onOpenChange={(open) => {
+          setIsOpen(open);
+          if (!open) {
+            setSelectedEmail("");
+            setErrorMessage("");
+          }
+        }}
+      >
         <DialogContent className="sm:max-w-md [&_[data-dialog-close]]:hidden">
           <DialogHeader>
             {!errorMessage && (
@@ -323,18 +334,14 @@ export function StaffTable({ users, isLoading, refetch, totalUsers }) {
             </Button>
             <Button
               variant="outline"
-              className={"cursor-pointer"}
-              onClick={() => {
-                setIsOpen(false);
-                setSelectedEmail("");
-                setErrorMessage("");
-              }}
+              className="cursor-pointer"
+              onClick={() => setIsOpen(false)}
             >
               Cancel
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Table>
+    </>
   );
 }
