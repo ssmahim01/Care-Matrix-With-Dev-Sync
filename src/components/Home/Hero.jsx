@@ -37,7 +37,7 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl py-16 lg:py-20">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
+        <div className="mt-6 lg:mt-0 flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -52,15 +52,15 @@ export default function Hero() {
               viewport={{ once: true }}
               className="inline-flex items-center px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-2"
             >
-              Trusted by 500+ Healthcare Facilities
+              Trusted by 100+ Healthcare Facilities
             </motion.div>
 
-            <h1 className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white tracking-tight">
+            <h1 className="text-3xl md:text-3xl xl:text-5xl font-bold text-white tracking-tight">
               Streamline Healthcare{" "}
               <span className="block mt-2">Management With Care Matrix</span>
             </h1>
 
-            <p className="text-base md:text-lg font-medium text-white max-w-[600px]">
+            <p className="text-base lg:text-lg font-medium text-white max-w-[600px]">
               Empower your hospital with an all-in-one management system. From
               patient appointments to medical records and staff coordination,
               Care Matrix ensures efficiency, accuracy, and seamless healthcare
@@ -83,10 +83,10 @@ export default function Hero() {
                   key={index}
                   className="text-center p-3 bg-white/10 backdrop-blur-sm rounded-lg"
                 >
-                  <div className="text-2xl md:text-3xl font-bold text-white">
+                  <div className="text-2xl md:text-1xl xl:text-3xl font-bold text-white">
                     {stat.value}
                   </div>
-                  <div className="text-xs md:text-sm text-white/80">
+                  <div className="text-xs xl:text-sm text-white/80">
                     {stat.label}
                   </div>
                 </div>

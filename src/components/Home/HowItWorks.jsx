@@ -14,6 +14,7 @@ import {
   Search,
   UserCheck,
 } from "lucide-react";
+
 import SectionHeader from "@/shared/Section/SectionHeader";
 
 const HowItWorks = () => {
@@ -22,7 +23,7 @@ const HowItWorks = () => {
 
   const services = [
     {
-      icon: <Search size={60} />,
+      icon: <Search size={40} />,
       title: "Search Doctor",
       description:
         "Search for a doctor based on specialization, location, or availability.",
@@ -32,7 +33,7 @@ const HowItWorks = () => {
       image: "/placeholder.svg?height=400&width=600",
     },
     {
-      icon: <UserCheck size={60} />,
+      icon: <UserCheck size={40} />,
       title: "Check Doctor Profile",
       description:
         "Explore detailed doctor profiles on our platform to make informed healthcare decisions.",
@@ -42,7 +43,7 @@ const HowItWorks = () => {
       image: "/placeholder.svg?height=400&width=600",
     },
     {
-      icon: <CalendarCheck size={60} />,
+      icon: <CalendarCheck size={40} />,
       title: "Schedule Appointment",
       description:
         "Choose your preferred doctor, select a convenient time slot, & confirm your appointment.",
@@ -52,7 +53,7 @@ const HowItWorks = () => {
       image: "/placeholder.svg?height=400&width=600",
     },
     {
-      icon: <HeartPulse size={60} />,
+      icon: <HeartPulse size={40} />,
       title: "Get Your Solution",
       description:
         "Discuss your health concerns with the doctor and receive personalized advice & solutions.",
@@ -62,7 +63,7 @@ const HowItWorks = () => {
       image: "/placeholder.svg?height=400&width=600",
     },
     {
-      icon: <ClipboardList size={60} />,
+      icon: <ClipboardList size={40} />,
       title: "Manage Medical Records",
       description:
         "Access and manage your medical records securely, ensuring all your health data is in one place.",
@@ -72,7 +73,7 @@ const HowItWorks = () => {
       image: "/placeholder.svg?height=400&width=600",
     },
     {
-      icon: <Bell size={60} />,
+      icon: <Bell size={40} />,
       title: "Appointment Reminders",
       description:
         "Receive timely reminders about your upcoming appointments to stay on track with your healthcare.",
@@ -89,7 +90,7 @@ const HowItWorks = () => {
     if (isAutoPlaying) {
       interval = setInterval(() => {
         setActiveStep((prev) => (prev + 1) % services.length);
-      }, 5000);
+      }, 4000);
     }
 
     return () => clearInterval(interval);
@@ -111,8 +112,8 @@ const HowItWorks = () => {
   };
 
   return (
-    <section className="py-16 px-4 md:px-8 bg-gradient-to-b from-white to-blue-50">
-      <div className="w-11/12 mx-auto">
+    <section className="py-16 px-4 md:px-8 bg-gradient-to-b from-white rounded-xl to-blue-50">
+      <div className="w-[95%] lg:w-11/12 mx-auto">
         {/* Header */}
         <div className="pb-6">
           <SectionHeader
@@ -150,7 +151,7 @@ const HowItWorks = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.3 }}
               className="bg-white rounded-2xl shadow-lg p-8 border border-blue-100"
             >
               <div className="flex items-center gap-4 mb-6">
@@ -176,7 +177,7 @@ const HowItWorks = () => {
                 <ul className="space-y-2">
                   {[1, 2, 3].map((item) => (
                     <li key={item} className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-[#0E82FD] mt-0.5 flex-shrink-0" />
+                      <CheckCircle2 className="h-5 w-5 text-[#0E82FD] mt-0.3 flex-shrink-0" />
                       <span className="text-gray-700">
                         {activeStep === 0 &&
                           item === 1 &&
@@ -252,7 +253,7 @@ const HowItWorks = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.3 }}
               className="relative rounded-2xl overflow-hidden shadow-lg aspect-video"
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-[#0E82FD]/80 to-blue-400/50 z-10 flex items-center justify-center">
@@ -263,16 +264,11 @@ const HowItWorks = () => {
                   <h3 className="text-3xl font-bold mb-4">
                     {services[activeStep].title}
                   </h3>
-                  <p className="text-lg opacity-90">
+                  <p className="text-lg font-medium md:px-4">
                     {services[activeStep].description}
                   </p>
                 </div>
               </div>
-              {/* <img
-                src={services[activeStep].image || "/placeholder.svg?height=400&width=600"}
-                alt={services[activeStep].title}
-                className="w-full h-full object-cover"
-              /> */}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -301,7 +297,7 @@ const HowItWorks = () => {
         </div>
 
         {/* Step Overview */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {services.map((service, index) => (
             <button
               key={index}

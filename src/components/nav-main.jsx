@@ -79,7 +79,7 @@ export function NavMain() {
           <div className="divider w-3/5 mx-auto"></div>
         </div>
       ) : (
-        <ul className="pt-2 *:font-semibold *:text-gray-700 flex flex-col gap-6 ">
+        <ul className="pt-2 *:font-semibold *:text-gray-700 flex flex-col gap-6 pl-2">
           {/* Administrator Dashboard Menu*/}
           {role === "administrator" && (
             <>
@@ -439,7 +439,7 @@ export function NavMain() {
   );
 
   const mainRoutes = (
-    <ul className="pt-2 *:font-semibold *:text-gray-700 flex flex-col gap-6">
+    <ul className="pt-2 pl-2 *:font-semibold *:text-gray-700 flex flex-col gap-6">
       <NavLink to="/">
         <h3 className="flex gap-2 items-center">
           <Home />

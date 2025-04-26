@@ -30,7 +30,7 @@ const Home = () => {
   return (
     <section className="w-full space-y-6">
       {/* Hero Section */}
-      <div className="lg:pt-12 pt-10 pb-8">
+      <div className="pt-8 pb-8">
         {/* <Profiler id="Hero" onRender={onRenderCallback}> */}
         <Hero />
         {/* </Profiler> */}
