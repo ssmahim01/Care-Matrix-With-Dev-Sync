@@ -65,45 +65,50 @@ function ManageBeds() {
 
   // Handle bed deletion
   const handleBedDelete = (id) => {
-    toast((t) => (
-      <div className="flex gap-3 items-center">
-        <div>
-          <p>
-            Are you <b>sure?</b>
-          </p>
-        </div>
-        <div className="gap-2 flex">
-          <button
-            className="bg-red-400 text-white px-3 py-1 rounded-md"
-            onClick={async () => {
-              toast.dismiss(t.id);
-              try {
-                toast.loading("Deleting bed...");
-                const { data } = await axiosSecure.delete(`/beds/delete/${id}`);
-                // console.log(data);
-
-                if (data.data.deletedCount) {
-                  refetch();
+    toast(
+      (t) => (
+        <div className="flex gap-3 items-center">
+          <div>
+            <p>
+              Are you <b>sure?</b>
+            </p>
+          </div>
+          <div className="gap-2 flex">
+            <button
+              className="bg-red-400 text-white px-3 py-1 rounded-md"
+              onClick={async () => {
+                toast.dismiss(t.id);
+                try {
+                  toast.loading("Deleting bed...", { position: "top-right" });
+                  const { data } = await axiosSecure.delete(`/beds/delete/${id}`);
+                  
+                  if (data.data.deletedCount) {
+                    refetch();
+                    toast.dismiss();
+                    toast.success("Bed deleted successfully!", { position: "top-right" });
+                  } else {
+                    toast.dismiss();
+                    toast.error("No bed was deleted.", { position: "top-right" });
+                  }
+                } catch (error) {
                   toast.dismiss();
-                  toast.success("Bed deleted successfully!");
+                  toast.error(error.message || "Failed to delete the bed!", { position: "top-right" });
                 }
-              } catch (error) {
-                toast.dismiss();
-                toast.error(error.message || "Failed to delete the bed!");
-              }
-            }}
-          >
-            Yes
-          </button>
-          <button
-            className="bg-green-400 text-white px-3 py-1 rounded-md"
-            onClick={() => toast.dismiss(t.id)}
-          >
-            Cancel
-          </button>
+              }}
+            >
+              Yes
+            </button>
+            <button
+              className="bg-green-400 text-white px-3 py-1 rounded-md"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-      </div>
-    ));
+      ),
+      { position: "top-right" }
+    );
   };
 
 
