@@ -186,6 +186,7 @@ const RewardsDashboard = () => {
     },
   });
 
+  console.log("reward data ", rewardsData);
 
 
 
@@ -256,7 +257,7 @@ const RewardsDashboard = () => {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-semibold text-blue-600">
-              {rewardsData?.history[0].points || 0} Points
+              {rewardsData?.totalPoints || 0} Points
             </p>
             <p className="text-gray-600 mt-2">
               Earned from your booked appointments!
@@ -291,7 +292,7 @@ const RewardsDashboard = () => {
               </div>
               <Button
                 className="bg-blue-600 text-white hover:bg-blue-700"
-                disabled={rewardsData?.history[0].points < 50}
+                disabled={rewardsData?.totalPoints < 50}
                 onClick={() => handleRedeem("silver")}
               >
                 Redeem
@@ -307,7 +308,7 @@ const RewardsDashboard = () => {
               </div>
               <Button
                 className="bg-blue-600 text-white hover:bg-blue-700"
-                disabled={rewardsData?.history[0].points < 75}
+                disabled={rewardsData?.totalPoints < 75}
                 onClick={() => handleRedeem("titanium")}
               >
                 Redeem
@@ -323,7 +324,7 @@ const RewardsDashboard = () => {
               </div>
               <Button
                 className="bg-blue-600 text-white hover:bg-blue-700"
-                disabled={rewardsData?.history[0].points < 100}
+                disabled={rewardsData?.totalPoints < 100}
                 onClick={() => handleRedeem("gold")}
               >
                 Redeem
