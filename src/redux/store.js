@@ -5,6 +5,7 @@ import doctorReducer from "./doctors/doctorSlice";
 import consultantReducer from "./doctors/consultantSlice";
 import bedsReducer from "./bed/bedsSlice";
 import patientReducer from "./patient/patientSlice";
+import cartReducer from "./cartSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     consultants: consultantReducer,
     beds: bedsReducer,
     patientStats: patientReducer,
+    cart: cartReducer,
   },
 });
