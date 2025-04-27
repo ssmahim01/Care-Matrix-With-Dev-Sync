@@ -26,7 +26,13 @@ const BedDetailsModal = ({ isOpen, onClose, bed }) => {
           <div>
             <div className="flex justify-between items-center">
               <h3 className="text-xl sm:text-base font-semibold">Details</h3>
-              <p className="text-xl font-bold">{bed.price}/day</p>
+              <div className="text-right">
+            <p className="text-xs text-gray-500">Room Tariff</p>
+            <p className="text-lg font-bold text-[#0E82FD]">
+              {bed.price}
+              <span className="text-sm font-normal text-gray-500">/day</span>
+            </p>
+          </div>
             </div>
             <ul className="list-none mt-2 text-xs sm:text-sm md:text-base text-gray-700">
               {bed.details.map((detail, index) => (
