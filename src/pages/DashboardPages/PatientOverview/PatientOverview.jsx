@@ -80,7 +80,7 @@ const PatientOverview = () => {
       )}
 
       {/* Main Content Tabs */}
-      <Tabs defaultValue="appointments" className="mt-6 space-y-4">
+      <Tabs defaultValue="appointments" className="mt-8 space-y-4">
         {/* All TabList */}
         <TabsList className="border w-full">
           <TabsTrigger
