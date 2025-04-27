@@ -4,6 +4,7 @@ import menuReducer from "./menuSlice";
 import doctorReducer from "./doctors/doctorSlice";
 import consultantReducer from "./doctors/consultantSlice";
 import patientReducer from "./patient/patientSlice";
+import cartReducer from "./cartSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     doctors: doctorReducer,
     consultants: consultantReducer,
     patientStats: patientReducer,
+    cart: cartReducer,
   },
 });
