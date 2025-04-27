@@ -110,7 +110,7 @@ const ConsultantTableRow = ({
         </div>
       </TableCell>
       <TableCell>
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"

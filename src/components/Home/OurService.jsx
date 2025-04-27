@@ -80,7 +80,7 @@ const OurService = () => {
           {services.map((service) => (
             <div
               key={service.id}
-              className="relative p-6 rounded-xl shadow-md transition bg-white text-[#464646] group overflow-hidden cursor-pointer"
+              className="relative p-6 rounded-xl shadow-md transition bg-white text-[#3c3c3c] group overflow-hidden cursor-pointer"
             >
               {/* Background Image */}
               <div
@@ -96,7 +96,7 @@ const OurService = () => {
                 <h3 className="text-xl font-bold mt-4 group-hover:text-white transition">
                   {service.name}
                 </h3>
-                <p className="text-sm  opacity-75 mt-2 font-semibold group-hover:text-white transition">
+                <p className="text-sm mt-2 font-semibold group-hover:text-white transition">
                   {service.tips}
                 </p>
               </div>
