@@ -1,16 +1,18 @@
 import SectionHeader from "@/shared/Section/SectionHeader";
-import { useState } from "react";
+import { use, useState } from "react";
 import BedCard from "./BedCard";
 import BookingModal from "./BookingModal";
 import BedDetailsModal from "./BedDetails";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 
 const BedPage = () => {
   const [selectedBed, setSelectedBed] = useState(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedBedType, setSelectedBedType] = useState("");
+  const axiosPublic= useAxiosPublic();
 
   // Fetch beds using useQuery
   const {
@@ -20,17 +22,15 @@ const BedPage = () => {
   } = useQuery({
     queryKey: ["beds"],
     queryFn: async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/beds`);
-      // console.log("Raw API Response:", data); // Debug: See all beds
+      const { data } = await axiosPublic.get(`/beds`);
+      // console.log(data)
       // Filter only "available" or "requested" beds
       const filteredBeds = data.filter(
         (bed) => bed.status === "available" || bed.status === "requested"
       );
-      // console.log("Filtered Beds:", filteredBeds); // Debug: See filtered result
+      // console.log(filtered-data)
       return filteredBeds;
     },
-    // Optional: Add polling or refetch interval if needed
-    // refetchInterval: 30000, // Refetch every 30 seconds
   });
 
   // Handle showing bed details
