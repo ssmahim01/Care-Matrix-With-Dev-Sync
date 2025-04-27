@@ -15,18 +15,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingBag, ShoppingCart } from "lucide-react";
 import { Link } from "react-router";
+import EmptyState from "./EmptyState";
 
 const MedicineCartTab = ({ medicineCart, formatCurrency, overviewStats }) => {
   return (
     <Card
       className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
     >
-      <CardHeader>
-        <CardTitle>View Cart</CardTitle>
-        <CardDescription>Items Currently In Your Cart</CardDescription>
-      </CardHeader>
+      {medicineCart && medicineCart.length > 0 && (
+        <CardHeader>
+          <CardTitle>View Cart</CardTitle>
+          <CardDescription>Items Currently In Your Cart</CardDescription>
+        </CardHeader>
+      )}
       <CardContent>
         {medicineCart && medicineCart.length > 0 ? (
           <div className="space-y-4">
@@ -81,13 +84,13 @@ const MedicineCartTab = ({ medicineCart, formatCurrency, overviewStats }) => {
             </div>
           </div>
         ) : (
-          <>
-            <Separator />
-            <p className="text-muted-foreground mt-2">Your Cart Is Empty!</p>
-            <Button className="mt-2 cursor-pointer" variant={"outline"}>
-              Buy Medicines
-            </Button>
-          </>
+          <EmptyState
+            icon={ShoppingBag}
+            title="Your Cart Is Empty"
+            description="You haven't added any medicines to your cart yet. Browse our pharmacy to find what you need."
+            actionLabel="Browse Medicines"
+            actionLink="/pharmacy"
+          />
         )}
       </CardContent>
     </Card>
