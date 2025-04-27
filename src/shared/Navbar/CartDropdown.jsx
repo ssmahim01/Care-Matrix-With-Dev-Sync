@@ -69,7 +69,7 @@ console.log(cart);
                     className="flex items-center justify-between p-1 hover:bg-gray-50 shadow-none"
                   >
                     <Link
-                      to={`/medicine/${item?.productId}`}
+                      to={`/medicine/${item?.medicineId}`}
                       className="flex items-center gap-3"
                     >
                       <img
