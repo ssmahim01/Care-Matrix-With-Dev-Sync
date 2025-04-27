@@ -12,6 +12,7 @@ import SmartWaitTime from "./SmartWaitTime";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPatientStats } from "@/redux/patient/patientSlice";
 import { useEffect } from "react";
+import PatientOverviewSkeleton from "./PatientOverviewSkeleton";
 
 // Tan Stack Query Version
 // const { data: patientStats = [], isLoading } = useQuery({
@@ -25,7 +26,6 @@ import { useEffect } from "react";
 // });
 
 const PatientOverview = () => {
-  // Fetch patient overview data
   const user = useAuthUser();
   const dispatch = useDispatch();
 
@@ -35,11 +35,13 @@ const PatientOverview = () => {
   );
   const patientStats = stats || {};
 
+  // Fetch PatientStats
   useEffect(() => {
     if (user?.email) {
       dispatch(fetchPatientStats(user.email));
     }
   }, [dispatch, user?.email]);
+
 
   // Format date for display
   function formatDate(dateString) {
