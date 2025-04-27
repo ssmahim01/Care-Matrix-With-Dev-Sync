@@ -1,3 +1,4 @@
+import { PrescriptionViewModal } from '@/components/ManagePrescription/PrescriptionViewModal';
 import AppointmentDetailsModal from '@/components/Modal/AppointmentDetailsModal ';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -7,7 +8,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import useDoctorsAppointment from '@/hooks/useDoctorsAppointment';
 import DashboardPagesHeader from '@/shared/Section/DashboardPagesHeader';
-import { ClipboardPlus, MoreVertical, Trash } from 'lucide-react';
+import { ClipboardPlus, FileDown, MoreVertical, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiDetail } from 'react-icons/bi';
@@ -26,6 +27,9 @@ const MyAppointmentDoctor = () => {
     const [selectedAppointment, setSelectedAppointment] = useState(null)
     const [openModal, setOpenModal] = useState(false)
     const axiosSecure = useAxiosSecure()
+    const [selectedPrescription, setSelectedPrescription] = useState(null);
+    const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -45,25 +49,36 @@ const MyAppointmentDoctor = () => {
         setSortDate(value)
     }
 
-    const handleCancelAppointment = (appointment) => {
-        // console.log(appointment);
-        axiosSecure.patch(`appointments/${appointment._id}`)
-            .then(res => {
-                console.log(res);
-                if (res.data.result.modifiedCount > 0) {
-                    refetch()
-                    toast.success("Appointment canceled successful.")
-                }
-            })
+    const handleViewPrescription = async (appointment) => {
+        try {
+            const { data } = await axiosSecure.get(`/prescriptions/${appointment._id}`);
+            setSelectedPrescription(data);
+            setIsPrescriptionModalOpen(true);
+        } catch (error) {
+            toast.error("No prescriptions found for this patient");
+        }
+    };
 
-            .catch(err => {
-                // console.log(err);
-                toast.error("Something went wrong try again.")
+    // const handleCancelAppointment = (appointment) => {
+    //     // console.log(appointment);
+    //     axiosSecure.patch(`appointments/${appointment._id}`)
+    //         .then(res => {
+    //             console.log(res);
+    //             if (res.data.result.modifiedCount > 0) {
+    //                 refetch()
+    //                 toast.success("Appointment canceled successful.")
+    //             }
+    //         })
 
-            })
-    }
+    //         .catch(err => {
+    //             // console.log(err);
+    //             toast.error("Something went wrong try again.")
+
+    //         })
+    // }
 
     // console.log("Doctors appointments are ", appointments);
+
     return (
         <div className='px-7'>
             <div className='flex flex-col md:flex-row justify-between'>
@@ -144,68 +159,76 @@ const MyAppointmentDoctor = () => {
                                 ))}
                             </TableRow>
                         ))
-                    ) : 
+                    ) :
                         appointments.length === 0 ? (
-                        <TableRow>
-                          <TableCell
-                            colSpan={12}
-                            className="text-center py-8 text-gray-500"
-                          >
-                            No appointments found
-                          </TableCell>
-                        </TableRow>
-                      )
-                    : (
-                        appointments.reverse()?.map((appointment, index) => (
-                            <TableRow key={appointment._id} className="hover:bg-gray-50">
-                                <TableCell>{index + 1}</TableCell>
-                                <TableCell>{appointment.name}</TableCell>
-                                <TableCell>{appointment.age}</TableCell>
-                                <TableCell>{appointment.phone}</TableCell>
-                                <TableCell>{appointment.email}</TableCell>
-                                <TableCell>{appointment.date}</TableCell>
-                                <TableCell>
-                                    <div className="flex items-center gap-2">
-                                        <span className={`text-xs p-1 rounded-full ${appointment.status === "pending" ? 'bg-yellow-500' : 'bg-green-600'} text-white`}>
-                                            <FaCircle size={7} />
-                                        </span>
-                                        <span className="capitalize text-sm font-medium text-gray-700">
-                                            {appointment.status}
-                                        </span>
-                                    </div>
+                            <TableRow>
+                                <TableCell
+                                    colSpan={12}
+                                    className="text-center py-8 text-gray-500"
+                                >
+                                    No appointments found
                                 </TableCell>
-                                <TableCell>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button variant="ghost" size="icon" className="cursor-pointer">
-                                                <MoreVertical className="h-5 w-5 text-foreground" />
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuItem
-                                                onClick={() => handleDetails(appointment)}
-                                                className="flex items-center gap-2"
-                                            >
-                                                <BiDetail size={16} />
-                                                View Details
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem
+                            </TableRow>
+                        )
+                            : (
+                                appointments.reverse()?.map((appointment, index) => (
+                                    <TableRow key={appointment._id} className="hover:bg-gray-50">
+                                        <TableCell>{index + 1}</TableCell>
+                                        <TableCell>{appointment.name}</TableCell>
+                                        <TableCell>{appointment.age}</TableCell>
+                                        <TableCell>{appointment.phone}</TableCell>
+                                        <TableCell>{appointment.email}</TableCell>
+                                        <TableCell>{appointment.date}</TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center gap-2">
+                                                <span className={`text-xs p-1 rounded-full ${appointment.status === "pending" ? 'bg-yellow-500' : 'bg-green-600'} text-white`}>
+                                                    <FaCircle size={7} />
+                                                </span>
+                                                <span className="capitalize text-sm font-medium text-gray-700">
+                                                    {appointment.status}
+                                                </span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" size="icon" className="cursor-pointer">
+                                                        <MoreVertical className="h-5 w-5 text-foreground" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end" className="top-0">
+                                                    <DropdownMenuItem
+                                                        onClick={() => handleDetails(appointment)}
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        <BiDetail size={16} />
+                                                        View Details
+                                                    </DropdownMenuItem>
+                                                    {/* <DropdownMenuItem
                                                 onClick={() => handleCancelAppointment(appointment)}
                                                 className="flex items-center gap-2"
                                             >
                                                 <Trash size={16} />
                                                 Cancel Appointment
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                        ))
-                    )}
+                                            </DropdownMenuItem> */}
+                                                    {appointment.status === "Prescribed" && (
+                                                        <DropdownMenuItem
+                                                            onClick={() => handleViewPrescription(appointment)}
+                                                        >
+                                                            <FileDown className="mr-2 h-4 w-4" />
+                                                            View Prescriptions
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
                 </TableBody>
             </Table>
 
-            {/* Modal */}
+            {/* Patient Details Modal */}
             {selectedAppointment && (
                 <AppointmentDetailsModal
                     open={openModal}
@@ -213,6 +236,16 @@ const MyAppointmentDoctor = () => {
                     appointment={selectedAppointment}
                 />
             )}
+
+            {/* Prescription view modal  */}
+            {selectedPrescription && (
+                <PrescriptionViewModal
+                    prescription={selectedPrescription}
+                    isOpen={isPrescriptionModalOpen}
+                    onClose={() => setIsPrescriptionModalOpen(false)}
+                />
+            )}
+
         </div>
     );
 };

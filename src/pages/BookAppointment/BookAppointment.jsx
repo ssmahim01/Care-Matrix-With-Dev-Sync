@@ -126,7 +126,7 @@ const BookAppointment = () => {
                                         const today = new Date();
                                         today.setHours(0, 0, 0, 0);
                                         if(selectedDate <= today ){
-                                            return "Admission date must be today or in the future";
+                                            return "Appointment date must be today or in the future";
                                         }
                                         // return selectedDate >= today || "Appointment date must be today or in the future";
 
@@ -168,7 +168,7 @@ const BookAppointment = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1">Appointment Reason <span>(optional)</span></label>
+                        <label className="block text-sm font-medium mb-1">Appointment Reason <span className='font-normal'>(optional)</span></label>
                         <textarea {...register("reason", { required: false })} className="w-full border rounded-md p-2" rows="3" placeholder="Briefly describe the reason"></textarea>
                         {errors.reason && <p className="text-xs text-red-500 mt-1">Appointment reason is required</p>}
                     </div>
