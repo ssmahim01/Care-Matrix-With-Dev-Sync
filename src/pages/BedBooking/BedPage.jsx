@@ -1,19 +1,26 @@
 import SectionHeader from "@/shared/Section/SectionHeader";
-import { use, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
 import BedCard from "./BedCard";
 import BookingModal from "./BookingModal";
 import BedDetailsModal from "./BedDetails";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import BedCardSkeleton from "./BedCardSkeleton";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
+import {
+  setSelectedBed,
+  setIsBookingModalOpen,
+  setIsDetailsModalOpen,
+  setSelectedBedType,
+  resetBookingModal,
+  resetDetailsModal
+} from "@/redux/bed/bedsSlice";
 
 const BedPage = () => {
-  const [selectedBed, setSelectedBed] = useState(null);
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-  const [selectedBedType, setSelectedBedType] = useState("");
-  const axiosPublic= useAxiosPublic();
+  const dispatch = useDispatch();
+  const { selectedBed, isBookingModalOpen, isDetailsModalOpen, selectedBedType } = useSelector(
+    (state) => state.beds
+  );
+  const axiosPublic = useAxiosPublic();
 
   // Fetch beds using useQuery
   const {
@@ -24,38 +31,34 @@ const BedPage = () => {
     queryKey: ["beds"],
     queryFn: async () => {
       const { data } = await axiosPublic.get(`/beds`);
-      // console.log(data)
       // Filter only "available" or "requested" beds
       const filteredBeds = data.filter(
         (bed) => bed.status === "available" || bed.status === "requested"
       );
-      // console.log(filtered-data)
       return filteredBeds;
     },
   });
 
   // Handle showing bed details
   const handleShowDetails = (bed) => {
-    setSelectedBed(bed);
-    setIsDetailsModalOpen(true);
+    dispatch(setSelectedBed(bed));
+    dispatch(setIsDetailsModalOpen(true));
   };
 
   // Handle booking request
   const handleRequestBooking = (requestedBed) => {
-    setSelectedBedType(requestedBed);
-    setIsBookingModalOpen(true);
+    dispatch(setSelectedBedType(requestedBed));
+    dispatch(setIsBookingModalOpen(true));
   };
 
   // Close booking modal
   const closeBookingModal = () => {
-    setIsBookingModalOpen(false);
-    setSelectedBedType("");
+    dispatch(resetBookingModal());
   };
 
   // Close details modal
   const closeDetailsModal = () => {
-    setIsDetailsModalOpen(false);
-    setSelectedBed(null);
+    dispatch(resetDetailsModal());
   };
 
   return (
@@ -91,7 +94,7 @@ const BedPage = () => {
                 bed={bed}
                 onRequestBooking={handleRequestBooking}
                 onShowDetails={handleShowDetails}
-                isLoading-={isLoading}
+                isLoading={isLoading}
               />
             ))}
           </div>
