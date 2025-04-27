@@ -224,9 +224,9 @@ const ChatDashboard = ({ userEmail, userRole }) => {
           Select an user then start the conversation
         </p>
       </CardHeader>
-      <CardContent className="flex flex-col lg:flex-row gap-4">
+      <CardContent className="flex flex-col lg:flex-row gap-4 p-0">
         {/* Chat Partners List */}
-        <div className="w-full lg:w-1/4 border-r">
+        <div className="w-full lg:w-1/4 border-r pl-4">
           {professionals && userRole === "patient" ? (
             <>
               {potentialProfessionalsToInvite.length === 0 ? (
@@ -314,10 +314,10 @@ const ChatDashboard = ({ userEmail, userRole }) => {
         </div>
 
         {/* Chat Window */}
-        <div className="flex-1 flex flex-col h-[600px] overflow-y-auto">
+        <div className="flex-1 flex flex-col h-[600px] overflow-y-auto px-2">
           {selectedPartner ? (
             <>
-              <div className="py-2 flex sticky top-0 bg-base-200 justify-between border-b items-center">
+              <div className="p-2 flex sticky top-0 bg-base-200 justify-between border-b items-center">
                 <div className="flex gap-2 items-center">
                   <figure>
                     <img
@@ -480,7 +480,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                                   src={msg.image}
                                   alt="Chat image"
                                   referrerPolicy="no-referrer"
-                                  className="w-[200px] h-[200px] max-w-[200px] max-h-[200px] rounded-lg object-cover shadow-sm"
+                                  className="w-[200px] h-[240px] max-w-[200px] max-h-[200px] rounded-lg object-cover shadow-sm"
                                 />
                               </div>
                             )}
@@ -572,7 +572,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   >
                     <MessageCircle className="w-4 h-4" />
                     <span>
-                      {sendMessageMutation.isLoading ? "Sending..." : "Send"}
+                      {sendMessageMutation.isLoading || isUploading ? "Sending..." : "Send"}
                     </span>
                   </Button>
                 </div>
