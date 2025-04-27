@@ -42,6 +42,8 @@ const PatientOverview = () => {
     }
   }, [dispatch, user?.email]);
 
+  if (isLoading) return <PatientOverviewSkeleton />;
+  if (error) return "Error caught while fetching data!";
 
   // Format date for display
   function formatDate(dateString) {
