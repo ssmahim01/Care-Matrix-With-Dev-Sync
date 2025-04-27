@@ -119,8 +119,8 @@ const ManageAppointments = () => {
                             <SelectValue placeholder="Sort By" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="asc">Date (Ascending)</SelectItem>
-                            <SelectItem value="desc">Date (Descending)</SelectItem>
+                            <SelectItem value="desc">Date (Ascending)</SelectItem>
+                            <SelectItem value="asc">Date (Descending)</SelectItem>
                         </SelectContent>
                     </Select>
                     <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); }}>Reset</Button>
@@ -178,7 +178,7 @@ const ManageAppointments = () => {
                             </TableRow>
                         ))
                     ) : (
-                        appointments?.map((appointment, index) => (
+                        appointments.reverse()?.map((appointment, index) => (
                             <TableRow
                                 key={appointment._id}
                                 className="hover:bg-muted/50 border-b"

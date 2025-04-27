@@ -17,6 +17,7 @@ const AppointmentDetailsModal = ({ open, onOpenChange, appointment }) => {
           <p><strong>Patient:</strong> {appointment?.name}</p>
           <p><strong>Doctor:</strong> {appointment?.doctorName}</p>
           <p><strong>Age:</strong> {appointment?.age}</p>
+          <p><strong>Serial Number:</strong> {appointment?.serialNumber}</p>
           <p><strong>Phone:</strong> {appointment?.phone}</p>
           <p><strong>Email:</strong> {appointment?.email}</p>
           <p><strong>Status:</strong> {appointment?.status?.charAt(0).toUpperCase() + appointment?.status?.slice(1)}</p>

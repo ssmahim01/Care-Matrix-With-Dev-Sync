@@ -210,7 +210,7 @@ const AssignUsersTable = ({ users, isLoading, refetch }) => {
                     : "N/A"}
                 </TableCell>
                 <TableCell>
-                  <DropdownMenu>
+                  <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild className={"cursor-pointer"}>
                       <div
                         className={
