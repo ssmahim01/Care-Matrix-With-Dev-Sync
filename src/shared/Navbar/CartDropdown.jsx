@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 
 const CartDropdown = () => {
   const [cart] = useCart();
-console.log(cart);
+  // console.log(cart);
   const totalPrice =
     cart?.reduce((sum, item) => sum + item?.price * item?.quantity, 0) || 0;
 
