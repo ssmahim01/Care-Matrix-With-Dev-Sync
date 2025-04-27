@@ -16,12 +16,12 @@ const DoctorChat = () => {
   const currentDate = format(new Date(), "MMMM d, yyyy");
   const dispatch = useDispatch();
 
-   // Get patient data from Redux store
+   // Get doctor data from Redux store
    const { doctor, doctorStatus, doctorError } = useSelector(
     (state) => state.chats
   );
 
-  // Fetch patient data
+  // Fetch doctor data
   useEffect(() => {
     if (!user?.email) return;
 
@@ -42,13 +42,13 @@ const DoctorChat = () => {
 
   if (doctorStatus === "loading") {
     return <SkeletonChatDashboard />;
-  }
+  };
 
   if (doctorStatus === "failed" || !doctor) {
     return (
       <div>Error: {doctorError || "Could not load doctor data."}</div>
     );
-  }
+  };
 
   return (
     <div className="space-y-2 lg:w-full w-11/12 mx-auto">
