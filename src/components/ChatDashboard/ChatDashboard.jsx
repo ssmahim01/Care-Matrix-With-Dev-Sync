@@ -28,6 +28,7 @@ import { format } from "date-fns";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { MdOutlineMail } from "react-icons/md";
+import ProfessionalsMessageCounts from "./ProfessionalsMessageCounts";
 
 const ChatDashboard = ({ userEmail, userRole }) => {
   const axiosSecure = useAxiosSecure();
@@ -280,54 +281,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   {potentialProfessionalsToInvite.map((professional) => {
                     const messageCount =
                       userMessageCounts[professional?.email] || 0;
-                  return (
-                    <li
-                    key={professional.email}
-                    onClick={() => {
-                      setSelectedPartner(professional);
-                    }}
-                    className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
-                  >
-                    <div className="flex gap-2 items-center">
-                      <figure>
-                        <img
-                          className="w-14 h-14 rounded-full object-cover border-4 avatar border-blue-500 hover:border-blue-600"
-                          referrerPolicy="no-referrer"
-                          src={professional?.photo}
-                          alt={professional?.name}
-                        />
-                      </figure>
-                      <p className="flex flex-col">
-                        <span className="font-medium text-sm">
-                          {professional.name}
-                        </span>
-
-                        <div className="flex gap-2 items-center">
-                        <span className="font-medium text-blue-500 text-sm">
-                          {professional.role === "pharmacist" ? "Pharmacist" : "Doctor" }
-                        </span>
-
-                        {userRole === "patient" && (
-                          <>
-                            {messageCount === 0 ? (
-                              <span className="badge bg-blue-400 text-[10px] text-white/90 font-medium border py-1 px-2 rounded-xl">
-                                New
-                              </span>
-                            ) : (
-                              <div className="relative flex items-center">
-                                <MessageSquare className="w-5 h-5 text-blue-500" />
-                                <span className="absolute -top-1 -right-1 text-xs font-medium text-white bg-blue-500 rounded-full w-[18px] p-1 h-[18px] flex items-center justify-center border-2 border-white/90">
-                                  {messageCount}
-                                </span>
-                              </div>
-                            )}
-                          </>
-                        )}
-                        </div>
-                      </p>
-                    </div>
-                  </li>
-                   );
+                 <ProfessionalsMessageCounts professional={professional} messageCount={messageCount} userRole={userRole} />
                   })}
                 </ul>
               )}
