@@ -191,7 +191,7 @@ const PurchaseHistory = () => {
   });
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       <DashboardPagesHeader
         title="Purchase History"
         subtitle="View all your pending, present and past purchases in one place!"

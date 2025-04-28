@@ -53,6 +53,7 @@ import { medicine_categories } from "@/lib/pharmacy";
 import AddMedicine from "@/components/Modal/AddMedicine";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
+import { AvatarFallback } from "@/components/ui/avatar";
 
 const ManageMedicines = () => {
   useEffect(() => {
@@ -145,7 +146,7 @@ const ManageMedicines = () => {
   };
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       <DashboardPagesHeader
         title={"Manage Medicines"}
         subtitle={"Track And Organize Medicine Inventory Efficiently"}
@@ -268,8 +269,12 @@ const ManageMedicines = () => {
                         alt="Medicine Image"
                         className="min-w-24 h-16 object-cover"
                       />
+                      <AvatarFallback className="min-w-24 h-16 rounded">
+                        {medicine?.brandName?.[0] || "M"}
+                      </AvatarFallback>
                     </Avatar>
                   </TableCell>
+
                   <TableCell>{medicine?.brandName || "N/A"}</TableCell>
                   <TableCell className={"max-w-[100px]"}>
                     <Tooltip>
