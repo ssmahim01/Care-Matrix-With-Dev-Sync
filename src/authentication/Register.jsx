@@ -17,6 +17,8 @@ import { RxCross1 } from "react-icons/rx";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/auth/authSlice";
 import Swal from "sweetalert2";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const Register = () => {
   const user = useAuthUser();
@@ -262,13 +264,11 @@ const Register = () => {
           {/* Name input */}
           <div>
             {/* Label */}
-            <label htmlFor="name" className="text-[16px] text-text font-[600]">
-              Name
-            </label>
+            <Label>Name</Label>
             {/* Input with icon */}
             <div className="w-full mt-2 relative">
-              <RiAccountCircleLine className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-              <input
+              <RiAccountCircleLine className="absolute top-[6.5px] left-3 text-[1.5rem] text-[#777777]" />
+              <Input
                 type="text"
                 name="text"
                 id="text"
@@ -281,7 +281,9 @@ const Register = () => {
             </div>
           </div>
           {/* Photo File */}
-          <div className="w-full">
+          <div className="w-full space-y-2">
+            {/* Label */}
+            <Label>Profile Photo</Label>
             <input
               type="file"
               name="image"
@@ -291,54 +293,54 @@ const Register = () => {
             />
             {preview === "" ? (
               <div
-                className="w-full md:w-[100%] flex items-center justify-center flex-col gap-4 border-blue-200 border rounded-md py-4 cursor-pointer"
+                className="w-full md:w-[100%] flex items-center gap-3 border border-blue-200 py-[5.6px] rounded-lg px-4 cursor-pointer"
                 onClick={handleUploadImage}
               >
-                <FaFileUpload className="text-[2rem] text-[#777777]" />
-                <p className="text-gray-700">
+                <FaFileUpload className="text-[1.5rem] text-gray-500" />
+                <p className="text-gray-700 text-xs">
                   Browse To Upload Ranking Image File
                 </p>
               </div>
             ) : (
-              <div className="relative w-full border border-blue-200 rounded-xl p-4">
-                <img
-                  src={preview}
-                  alt="Selected file preview"
-                  className="mx-auto object-cover rounded-full w-24 h-24"
-                />
+              <div className="w-full border rounded-lg p-0.5 flex justify-between items-center gap-4">
+                <div className="flex items-center gap-2 pl-2">
+                  <img
+                    src={preview}
+                    alt="Selected file preview"
+                    className="mx-auto object-cover rounded-lg w-7 h-7"
+                  />
+                  {image && (
+                    <div>
+                      <p className="text-[10px] font-medium text-gray-700">
+                        {image.name}
+                      </p>
+                      <p className="text-[9px] text-gray-500">
+                        {(image.size / 1024).toFixed(2)} KB | {image.type}
+                      </p>
+                    </div>
+                  )}{" "}
+                </div>
                 <MdDelete
-                  className="text-[2rem] text-white bg-[#000000ad] p-1 absolute top-0 right-0 cursor-pointer rounded-tr-[13px]"
+                  className="text-[2rem] text-white bg-[#000000ad] p-1 rounded-r-lg mr-[1px] cursor-pointer"
                   onClick={() => {
                     setPreview("");
                     setImage(null);
                   }}
                 />
-                {image && (
-                  <div className="mt-4 text-center">
-                    <p className="text-sm font-medium text-gray-700">
-                      {image.name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {(image.size / 1024).toFixed(2)} KB | {image.type}
-                    </p>
-                  </div>
-                )}
               </div>
             )}
           </div>
           {/* Number input */}
           <div>
             {/* Label */}
-            <label
-              htmlFor="number"
-              className="text-[16px] text-text font-[600]"
-            >
-              Phone Number <span className="text-[10px]">(Bangladeshi)</span>
-            </label>
+            <Label>
+              Phone Number{" "}
+              <span className="text-[10px] mt-1 -ml-1">(Bangladeshi)</span>
+            </Label>
             {/* Input with icon */}
             <div className="w-full mt-2 relative">
-              <MdLocalPhone className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-              <input
+              <MdLocalPhone className="absolute top-[6.5px] left-3 text-[1.5rem] text-[#777777]" />
+              <Input
                 type="number"
                 name="phoneNumber"
                 id="phoneNumber"
@@ -355,13 +357,11 @@ const Register = () => {
           {/* Email input */}
           <div>
             {/* Label */}
-            <label htmlFor="email" className="text-[16px] text-text font-[600]">
-              Email
-            </label>
+            <Label>Email</Label>
             {/* Input with icon */}
             <div className="w-full mt-2 relative">
-              <MdOutlineMail className=" absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-              <input
+              <MdOutlineMail className="absolute top-[6.5px] left-3 text-[1.5rem] text-[#777777]" />
+              <Input
                 type="email"
                 name="email"
                 id="email"
@@ -376,16 +376,11 @@ const Register = () => {
           {/* Password input */}
           <div>
             {/* Label */}
-            <label
-              htmlFor="password"
-              className="text-[16px] text-text font-[600]"
-            >
-              Password
-            </label>
+            <Label>Password</Label>
             {/* Input with icon */}
             <div className="w-full mt-2 relative">
-              <RiLockPasswordLine className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-              <input
+              <RiLockPasswordLine className="absolute top-[6.5px] left-3 text-[1.5rem] text-[#777777]" />
+              <Input
                 type={isEyeOpen ? "text" : "password"}
                 id="password"
                 name="password"
@@ -399,12 +394,12 @@ const Register = () => {
 
               {isEyeOpen ? (
                 <IoEyeOutline
-                  className="absolute top-3.5 right-3 text-[1.5rem] text-[#777777] cursor-pointer"
+                  className="absolute top-[6.5px] right-3 text-[1.5rem] text-[#777777] cursor-pointer"
                   onClick={() => setIsEyeOpen(false)}
                 />
               ) : (
                 <IoEyeOffOutline
-                  className="absolute top-3.5 right-3 text-[1.5rem] text-[#777777] cursor-pointer"
+                  className="absolute top-[6.5px] right-3 text-[1.5rem] text-[#777777] cursor-pointer"
                   onClick={() => setIsEyeOpen(true)}
                 />
               )}
