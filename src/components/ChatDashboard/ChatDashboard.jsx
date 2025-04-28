@@ -169,6 +169,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       return messageCounts;
     },
     enabled: !!userEmail && !!userRole,
+    refetchInterval: 1000,
   });
 
   // Mutation for sending a message

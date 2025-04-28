@@ -34,7 +34,7 @@ const ProfessionalsMessageCounts = ({ professional, setSelectedPartner, messageC
                   </span>
                 ) : (
                   <div className="relative flex items-center">
-                    <MessageSquareText className="w-5 h-5 text-blue-500" />
+                    <MessageSquareText className="w-6 h-6 text-blue-500" />
                     <span className="absolute -top-1 -right-1 text-xs font-medium text-white bg-blue-500 rounded-full w-[18px] p-1 h-[18px] flex items-center justify-center border-2 border-white/90">
                       {messageCount}
                     </span>
