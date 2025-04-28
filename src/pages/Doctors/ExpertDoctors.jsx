@@ -44,7 +44,7 @@ const ExpertDoctors = () => {
     <div>
 
         {/* section inner */}
-        <div className="mx-auto container px-4 py-10 md:py-14 lg:py-16">
+        <div className="w-11/12 lg:w-10/12 mt-10 mx-auto max-w-screen-2xl py-12">
           {/* section-header */}
           <SectionHeader
             title_1st_slice={"OUR"}
