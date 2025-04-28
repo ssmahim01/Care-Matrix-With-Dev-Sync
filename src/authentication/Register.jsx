@@ -19,6 +19,8 @@ import { setUser } from "@/redux/auth/authSlice";
 import Swal from "sweetalert2";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast, Toaster } from "sonner";
 
 const Register = () => {
   const user = useAuthUser();
@@ -135,20 +137,35 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Show error is image not selected
-    if (!image) {
-      setLoading(false);
-      setIsError("Please Select An Image For Your Profile!");
-      return;
-    }
 
-    // Upload Image To imgBB
-    const imageUrl = await imgUpload(image);
-    // Show error if image upload failed
-    if (!imageUrl) {
-      setLoading(false);
-      setIsError("Image Upload Failed! Try Again");
-      return;
+    // // Show error is image not selected
+    // if (!image) {
+    //   setLoading(false);
+    //   setIsError("Please Select An Image For Your Profile!");
+    //   return;
+    // }
+
+    let imageUrl = "";
+
+    if (image) {
+      try {
+        // Upload Image To imgBB
+        const imgBbURL = await imgUpload(image);
+
+        if (!imgBbURL) {
+          setLoading(false);
+          setIsError("Image Upload Failed! Try Again");
+          return;
+        }
+
+        imageUrl = imgBbURL;
+      } catch (error) {
+        setLoading(false);
+        setIsError("Image Upload Failed! Try Again");
+        return;
+      }
+    } else {
+      imageUrl = "https://i.ibb.co/4RS0VXvL/default-user-image.png";
     }
 
     // Password Validation
@@ -225,37 +242,48 @@ const Register = () => {
             );
             // Show Success Modal
             if (data.data.insertedId) {
-              Swal.fire({
-                title: "Registration Successful! 🎉",
-                text: "Welcome To The dashboard!",
-                icon: "success",
-                confirmButtonText: "Go To Profile",
-                confirmButtonColor: "#000",
-              }).then(() => {
-                navigate("/dashboard/profile");
+              navigate("/dashboard/profile");
+              toast.success("Registration Complete! 🎉", {
+                description: "Your Account successfully created",
+                action: {
+                  label: "Go to Dashboard",
+                  onClick: () => {
+                    navigate("/dashboard/patient-overview");
+                  },
+                },
+                style: {
+                  background: "white",
+                  color: "black",
+                  fontWeight: "bold",
+                },
+                duration: 5000,
+                position: "top-right",
               });
             }
           })
           .catch((error) => {
+            setLoading(false);
             setIsError(error.message || "Registration Failed!");
           })
           .finally(() => {
             setLoading(false);
           });
       })
-      .catch((error) =>
+      .catch((error) => {
+        setLoading(false);
         setIsError(
           error?.message.includes("Firebase:")
             ? error?.message.split("Firebase:")[1]
             : error?.message || "Registration Failed!"
-        )
-      );
+        );
+      });
   };
 
   if (user && userLoading) return navigate("/");
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
+      {/* <Toaster /> */}
       <div className="max-w-lg lg:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
         {/* Header & Logo */}
         <AuthHeader />
@@ -283,7 +311,10 @@ const Register = () => {
           {/* Photo File */}
           <div className="w-full space-y-2">
             {/* Label */}
-            <Label>Profile Photo</Label>
+            <Label>
+              Profile Photo{" "}
+              <span className="text-[10px] mt-1 -ml-1">(Optional)</span>
+            </Label>
             <input
               type="file"
               name="image"
@@ -437,7 +468,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
+            className="btn btn-sm py-[18px] border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
           >
             {loading ? "Registering..." : "Register"}
           </button>
