@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
 import authReducer from "./auth/authSlice";
 import bedsReducer from "./bed/bedsSlice";
 import cartReducer from "./cartSlice";
@@ -19,7 +20,8 @@ export const store = configureStore({
     cart: cartReducer,
     [doctorStatsApi.reducerPath]: doctorStatsApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => {
-    getDefaultMiddleware().concat(doctorStatsApi.middleware);
-  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(doctorStatsApi.middleware),
 });
+
+setupListeners(store.dispatch);

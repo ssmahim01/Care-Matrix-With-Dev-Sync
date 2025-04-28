@@ -2,35 +2,55 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import DoctorProfile from "./DoctorProfile";
 import DoctorOverviewTab from "./DoctorOverviewTab";
 import RevenueAnalyticsTab from "./RevenueAnalyticsTab";
 import DoctorOverviewSkeleton from "./DoctorOverviewSkeleton";
+import { useGetDoctorStatsQuery } from "@/redux/doctors/doctorStatsApi";
+import { toast } from "sonner";
 
 const DoctorOverview = () => {
   const user = useAuthUser();
   const axiosPublic = useAxiosPublic();
 
-  // Get doctorData
+  // tan stack query version
+  // const {
+  //   data: doctorData = {},
+  //   isLoading,
+  //   error,
+  //   refetch,
+  // } = useQuery({
+  //   queryKey: ["doctor-stats", user?.email],
+  //   queryFn: async () => {
+  //     const { data } = await axiosPublic(`/doctor-stats/${user?.email}`);
+  //     return data;
+  //   },
+  // });
+
+  // rtk query version
   const {
     data: doctorData = {},
     isLoading,
+    isError,
     error,
     refetch,
-  } = useQuery({
-    queryKey: ["doctor-stats", user?.email],
-    queryFn: async () => {
-      const { data } = await axiosPublic(`/doctor-stats/${user?.email}`);
-      return data;
-    },
+  } = useGetDoctorStatsQuery(user?.email, {
+    skip: !user?.email,
   });
 
   if (isLoading) return <DoctorOverviewSkeleton />;
-  if (error) return toast.error("Error While Fetching Data!");
+  if (isError) {
+    const errorMessage =
+      error?.message ||
+      "An unexpected error occurred while fetching the doctor data";
+    return toast.error("Error While Fetching Data!", {
+      description: errorMessage,
+      position: "top-right",
+    });
+  }
 
   return (
-    <div className="px-7">
+    <div className="px-3 md:px-5">
       {/* Profile */}
       <DoctorProfile doctor={doctorData?.doctor} />
       {/* Tab Container */}
