@@ -19,6 +19,7 @@ import useRole from "@/hooks/useRole";
 import { logOut, useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router";
+import { toast } from "sonner";
 
 export function NavUser() {
   const dispatch = useDispatch();
@@ -159,7 +160,15 @@ export function NavUser() {
                 }
                 onClick={() => {
                   dispatch(logOut);
-                  // navigate("/");
+                  toast.success("Logged out successfully", {
+                    description:
+                      "You have been securely logged out. Please log in again to continue.",
+                    style: {
+                      marginTop: "5px",
+                    },
+                    position: "top-right",
+                    duration: 2500,
+                  });
                 }}
               >
                 <LogOut className="hover:text-red-500" size={20} />
