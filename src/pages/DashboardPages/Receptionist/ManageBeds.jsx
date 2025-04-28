@@ -11,12 +11,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import Loader from "@/shared/Loader";
+
 import { motion } from "framer-motion";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { RiAdvertisementFill } from "react-icons/ri";
+
 import { useQuery } from "@tanstack/react-query";
 import AddBeds from "./AddBeds";
 import {
@@ -31,7 +31,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import Swal from "sweetalert2";
+
 
 function ManageBeds() {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,41 +64,55 @@ function ManageBeds() {
   };
 
   // Handle bed deletion
-  const handleBedDelete = async (id) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "This action will permanently delete the bed!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it",
-      cancelButtonText: "No, cancel",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        const { data } = await axiosSecure.delete(`/beds/delete/${id}`);
-        if (data.deletedCount) {
-          refetch();
-          Swal.fire({
-            title: "Deleted!",
-            text: "Bed has been deleted successfully!",
-            icon: "success",
-          });
-        }
-      } catch (error) {
-        Swal.fire({
-          title: "Error!",
-          text: error.message || "Failed to delete the bed!",
-          icon: "error",
-          background: "#ffffff",
-          color: "#000000",
-          confirmButtonColor: "#ef4444",
-        });
-      }
-    }
+  const handleBedDelete = (id) => {
+    toast(
+      (t) => (
+        <div className="flex gap-3 items-center">
+          <div>
+            <p>
+              Are you <b>sure?</b>
+            </p>
+          </div>
+          <div className="gap-2 flex">
+            <button
+              className="bg-red-400 text-white px-3 py-1 rounded-md"
+              onClick={async () => {
+                toast.dismiss(t.id);
+                try {
+                  toast.loading("Deleting bed...", { position: "top-right" });
+                  const { data } = await axiosSecure.delete(`/beds/delete/${id}`);
+                  
+                  if (data.data.deletedCount) {
+                    refetch();
+                    toast.dismiss();
+                    toast.success("Bed deleted successfully!", { position: "top-right" });
+                  } else {
+                    toast.dismiss();
+                    toast.error("No bed was deleted.", { position: "top-right" });
+                  }
+                } catch (error) {
+                  toast.dismiss();
+                  toast.error(error.message || "Failed to delete the bed!", { position: "top-right" });
+                }
+              }}
+            >
+              Yes
+            </button>
+            <button
+              className="bg-green-400 text-white px-3 py-1 rounded-md"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { position: "top-right" }
+    );
   };
 
-  // if (isLoading) return <Loader text={"Loading Beds"} />;
+
+  
 
   return (
     <div className="p-7">
@@ -132,72 +146,76 @@ function ManageBeds() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {
-                isLoading? Array.from({ length: 8 }).map((_, i) => (
-                  <TableRow key={i}>
-                    {Array.from({ length: 8 }).map((_, j) => (
-                      <TableCell key={j}>
-                        <div className="skeleton h-8 rounded w-full"></div>
+              {isLoading
+                ? Array.from({ length: 8 }).map((_, i) => (
+                    <TableRow key={i}>
+                      {Array.from({ length: 8 }).map((_, j) => (
+                        <TableCell key={j}>
+                          <div className="skeleton h-8 rounded w-full"></div>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                : beds?.map((bed, i) => (
+                    <TableRow key={bed._id}>
+                      <TableCell className="font-medium">{i + 1}</TableCell>
+                      <TableCell>
+                        <Avatar>
+                          <AvatarImage
+                            src={bed.image}
+                            className={"object-cover"}
+                          />
+                          <AvatarFallback>{bed.title[0]}</AvatarFallback>
+                        </Avatar>
                       </TableCell>
-                    ))}
-                  </TableRow>
-                )) :
-              
-              beds?.map((bed, i) => (
-                <TableRow key={bed._id}>
-                  <TableCell className="font-medium">{i + 1}</TableCell>
-                  <TableCell>
-                    <Avatar>
-                      <AvatarImage src={bed.image} className={"object-cover"} />
-                      <AvatarFallback>{bed.title[0]}</AvatarFallback>
-                    </Avatar>
-                  </TableCell>
-                  <TableCell>{bed.title}</TableCell>
-                  <TableCell>{bed.price}</TableCell>
-                  <TableCell >
-                    <Tooltip className="cursor-pointer">
-                      <TooltipTrigger>
-                        <Switch
-                          className="cursor-pointer"
-                          checked={bed.status === "available"}
-                          onCheckedChange={(checked) => {
-                            const newStatus = checked ? "available" : "booked";
-                            handleBedStatusChange(bed._id, newStatus);
-                          }}
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <span>
-                          {bed.status === "available"
-                            ? "Mark as Booked"
-                            : "Mark as Available"}
-                        </span>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell className="flex justify-end">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
-                          <MoreVertical className="cursor-pointer text-gray-700" />
-                        </div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem className="cursor-pointer">
-                          <Pencil className="w-4 h-4 mr-2" /> Update
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleBedDelete(bed._id)}
-                          className="cursor-pointer"
-                        >
-                          <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))
-            }
+                      <TableCell>{bed.title}</TableCell>
+                      <TableCell>{bed.price}</TableCell>
+                      <TableCell>
+                        <Tooltip className="cursor-pointer">
+                          <TooltipTrigger>
+                            <Switch
+                              className="cursor-pointer"
+                              checked={bed.status === "available"}
+                              onCheckedChange={(checked) => {
+                                const newStatus = checked
+                                  ? "available"
+                                  : "booked";
+                                handleBedStatusChange(bed._id, newStatus);
+                              }}
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <span>
+                              {bed.status === "available"
+                                ? "Mark as Booked"
+                                : "Mark as Available"}
+                            </span>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableCell>
+                      <TableCell className="flex justify-end">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
+                              <MoreVertical className="cursor-pointer text-gray-700" />
+                            </div>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Pencil className="w-4 h-4 mr-2" /> Update
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleBedDelete(bed._id)}
+                              className="cursor-pointer"
+                            >
+                              <Trash className="w-4 h-4 mr-2 text-red-500" />{" "}
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
           {/* Modal */}

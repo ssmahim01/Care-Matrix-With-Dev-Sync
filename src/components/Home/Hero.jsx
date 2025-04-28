@@ -37,7 +37,7 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl py-16 lg:py-20">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
+        <div className="mt-6 lg:mt-0 flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -52,15 +52,15 @@ export default function Hero() {
               viewport={{ once: true }}
               className="inline-flex items-center px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-2"
             >
-              Trusted by 500+ Healthcare Facilities
+              Trusted by 100+ Healthcare Facilities
             </motion.div>
 
-            <h1 className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white tracking-tight">
+            <h1 className="text-3xl md:text-3xl xl:text-5xl font-bold text-white tracking-tight">
               Streamline Healthcare{" "}
               <span className="block mt-2">Management With Care Matrix</span>
             </h1>
 
-            <p className="text-base md:text-lg font-medium text-white max-w-[600px]">
+            <p className="text-base lg:text-lg font-medium text-white max-w-[600px]">
               Empower your hospital with an all-in-one management system. From
               patient appointments to medical records and staff coordination,
               Care Matrix ensures efficiency, accuracy, and seamless healthcare
@@ -83,10 +83,10 @@ export default function Hero() {
                   key={index}
                   className="text-center p-3 bg-white/10 backdrop-blur-sm rounded-lg"
                 >
-                  <div className="text-2xl md:text-3xl font-bold text-white">
+                  <div className="text-2xl md:text-1xl xl:text-3xl font-bold text-white">
                     {stat.value}
                   </div>
-                  <div className="text-xs md:text-sm text-white/80">
+                  <div className="text-xs xl:text-sm text-white/80">
                     {stat.label}
                   </div>
                 </div>
@@ -127,10 +127,10 @@ export default function Hero() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
                   viewport={{ once: true }}
-                  className="absolute -bottom-5 -right-5 bg-white rounded-lg shadow-xl p-4 max-w-xs"
+                  className="absolute -bottom-1 md:-bottom-5 right-0 md:-right-5 bg-white rounded-lg shadow-xl p-2 md:p-4 max-w-xs"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <div className="h-4 w-4 md:h-10 md:w-10 rounded-full bg-blue-100 flex items-center justify-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6 text-blue-600"
@@ -146,12 +146,13 @@ export default function Hero() {
                         />
                       </svg>
                     </div>
-                    <div className="py-4">
+                    <div className="py-1 md:py-4">
                       <h3 className="font-medium text-gray-900">
                         Expert Medical Team
                       </h3>
-                      <p className="text-sm text-gray-500">
-                        Board-certified specialists available 24/7
+                      <p className="text-xs md:text-sm text-gray-500">
+                        Board-certified <br className="flex md:hidden" />{" "}
+                        specialists available 24/7
                       </p>
                     </div>
                   </div>
@@ -163,10 +164,10 @@ export default function Hero() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
                 viewport={{ once: true }}
-                className="absolute -left-4 top-1 bg-white rounded-lg shadow-lg p-4"
+                className="absolute md:-left-4 top-0 bg-white rounded-lg shadow-lg p-4"
               >
                 <div className="flex items-center space-x-2">
-                  <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <div className="h-4 w-4 md:h-8 md:w-8 rounded-full bg-blue-100 flex items-center justify-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5 text-blue-600"
@@ -182,8 +183,8 @@ export default function Hero() {
                       />
                     </svg>
                   </div>
-                  <div className="text-sm font-medium text-gray-900">
-                    Easy Scheduling
+                  <div className="text-xs md:text-sm font-medium text-gray-900">
+                    Easy Booking System
                   </div>
                 </div>
               </motion.div>

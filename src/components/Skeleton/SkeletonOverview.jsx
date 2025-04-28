@@ -92,7 +92,7 @@ const SkeletonBarChartAnalytics = () => {
 // Skeleton Loader for the Entire Overview Page
 const SkeletonOverview = () => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 px-7">
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, index) => (
@@ -114,12 +114,12 @@ const SkeletonOverview = () => {
 
      <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-5">
        {/* Charts & Analytics (Area Chart) */}
-       <div className="my-6 lg:w-1/2 h-full">
+       <div className="my-6 lg:w-3/5 h-full">
         <SkeletonAnalytics />
       </div>
 
       {/* Bar Chart Analytics (Doctors and Patients) */}
-      <div className="my-6 lg:w-1/2 h-full">
+      <div className="my-6 lg:w-2/5 h-full">
         <SkeletonBarChartAnalytics />
       </div>
      </div>

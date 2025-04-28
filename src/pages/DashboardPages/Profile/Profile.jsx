@@ -172,16 +172,14 @@ const Profile = () => {
     };
     reader.readAsDataURL(file);
 
-    try {
-      toast.loading("Uploading Image...");
-
+    const uploadAndUpdate = async () => {
       // Upload to ImgBB
       const imageUrl = await imgUpload(file);
 
-      // Update Firebase profile
+      // Update Firebase Photo
       await updateProfile(auth.currentUser, { photoURL: imageUrl });
 
-      // Update MongoDB via your API
+      // Update MongoDB Photo
       const { data } = await axios.patch(
         `${import.meta.env.VITE_API_URL}/users/update-user-photo/${
           user?.email
@@ -189,17 +187,29 @@ const Profile = () => {
         { photo: imageUrl }
       );
 
-      // Show Success Toast
       if (data.data.modifiedCount) {
         dispatch(updateUserPhoto(imageUrl));
-        toast.success("Profile Photo Updated!", {
-          duration: 2000,
-        });
       }
+
+      return data.data.modifiedCount;
+    };
+
+    try {
+      await toast.promise(
+        uploadAndUpdate(),
+        {
+          loading: "Uploading Image...",
+          success: (modifiedCount) =>
+            modifiedCount ? "Profile Photo Updated!" : "No changes made!",
+          error: "Something went wrong while updating your photo!",
+        },
+        {
+          position: "top-right",
+          duration: 2000,
+        }
+      );
     } catch (error) {
-      toast.error("Something went wrong while updating your photo.");
-    } finally {
-      toast.dismiss();
+      toast.error("Unexpected error occurred!", { position: "top-right" });
     }
   };
 
@@ -214,22 +224,31 @@ const Profile = () => {
         { name: newName }
       );
       // show success toast and update states
-      await toast.promise(updateUsernamePromise, {
-        loading: "Updating Username...",
-        success: (res) => {
-          if (res.data.data.modifiedCount) {
-            setIsNameEditing(false);
-            dispatch(updateUsername(newName));
-            return "Username Updated Successfully";
-          } else {
-            return "No changes were made";
-          }
+      await toast.promise(
+        updateUsernamePromise,
+        {
+          loading: "Updating Username...",
+          success: (res) => {
+            if (res.data.data.modifiedCount) {
+              setIsNameEditing(false);
+              dispatch(updateUsername(newName));
+              return "Username Updated Successfully";
+            } else {
+              return "No changes were made";
+            }
+          },
+          error: (err) => err.message || "Failed to update username",
         },
-        error: (err) => err.message || "Failed to update username",
-      });
+        {
+          position: "top-right",
+        }
+      );
     } catch (error) {
       toast.error(
-        error.message || "Something went wrong while updating the username"
+        error.message || "Something went wrong while updating the username",
+        {
+          position: "top-right",
+        }
       );
     }
   };
