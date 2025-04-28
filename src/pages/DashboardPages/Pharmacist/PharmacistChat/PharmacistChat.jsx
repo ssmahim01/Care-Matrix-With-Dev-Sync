@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import ChatDashboard from "@/components/ChatDashboard/ChatDashboard";
 import { useAuthUser } from "@/redux/auth/authActions";
@@ -7,41 +6,49 @@ import { CalendarIcon, MessagesSquare } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import SkeletonChatDashboard from "@/components/ChatDashboard/SkeletonChatDashboard";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchPharmacistFailure, fetchPharmacistStart, fetchPharmacistSuccess } from "@/redux/chat/chatSlice";
 
 const PharmacistChat = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuthUser();
   const currentDate = format(new Date(), "MMMM d, yyyy");
+  const dispatch = useDispatch();
 
-  // Fetch pharmacist details
-  const {
-    data: pharmacist,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["pharmacist", user?.email],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
-      // console.log("Pharmacist data response:", res.data);
-      return res.data.data;
-    },
-    retry: 1,
-    staleTime: 1000 * 60 * 5,
-  });
+  // Get pharmacist data from Redux store
+  const { pharmacist, pharmacistStatus, pharmacistError } = useSelector(
+   (state) => state.chats
+ );
 
-  if (isLoading) {
-    return <SkeletonChatDashboard />;
-  }
+ // Fetch pharmacist data
+ useEffect(() => {
+   if (!user?.email) return;
 
-  if (error || !pharmacist) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <span className="text-gray-700 font-semibold">
-          Error: Could not load pharmacist details
-        </span>
-      </div>
-    );
-  }
+   const fetchPharmacistData = async () => {
+     dispatch(fetchPharmacistStart());
+     try {
+       const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
+       dispatch(fetchPharmacistSuccess(res.data.data));
+     } catch (error) {
+       dispatch(
+         fetchPharmacistFailure(error.message || "Failed to fetch pharmacist data")
+       );
+     }
+   };
+
+   fetchPharmacistData();
+ }, [user?.email, dispatch, axiosSecure]);
+
+ if (pharmacistStatus === "loading") {
+   return <SkeletonChatDashboard />;
+ };
+
+ if (pharmacistStatus === "failed" || !pharmacist) {
+   return (
+     <div>Error: {pharmacistError || "Could not load pharmacist data."}</div>
+   );
+ };
 
   return (
     <div className="space-y-2 lg:w-full w-11/12 mx-auto">
