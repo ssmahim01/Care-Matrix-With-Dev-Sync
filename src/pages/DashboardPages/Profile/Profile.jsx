@@ -276,7 +276,7 @@ const Profile = () => {
                     <AvatarImage
                       src={
                         user?.photoURL ||
-                        "https://i.ibb.co.com/XmpwWgv/doctor.jpg"
+                        "https://i.ibb.co/4RS0VXvL/default-user-image.png"
                       }
                       alt={user?.displayName}
                       className="object-cover"

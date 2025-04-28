@@ -1,10 +1,4 @@
-import {
-  Bell,
-  LogOut,
-  Mail,
-  Sparkles,
-  User
-} from "lucide-react";
+import { Bell, LogOut, Mail, Sparkles, User } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -107,7 +101,7 @@ export function NavUser() {
                 <User size={20} />
                 View Profile
               </NavLink>
-              {role === "patient" ||
+              {/* {role === "patient" ||
               role === "doctor" ||
               role === "pharmacist" ? (
                 <NavLink
@@ -125,7 +119,7 @@ export function NavUser() {
                 </NavLink>
               ) : (
                 <></>
-              )}
+              )} */}
               {role === "administrator" && (
                 <NavLink
                   to="/dashboard/administrator/contact-message"
@@ -165,7 +159,7 @@ export function NavUser() {
                 }
                 onClick={() => {
                   dispatch(logOut);
-                  navigate("/");
+                  // navigate("/");
                 }}
               >
                 <LogOut className="hover:text-red-500" size={20} />
