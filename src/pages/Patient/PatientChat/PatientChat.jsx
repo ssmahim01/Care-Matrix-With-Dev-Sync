@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import ChatDashboard from "@/components/ChatDashboard/ChatDashboard";
 import { useAuthUser } from "@/redux/auth/authActions";
@@ -7,34 +6,48 @@ import { CalendarIcon, MessagesSquare } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import SkeletonChatDashboard from "@/components/ChatDashboard/SkeletonChatDashboard";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchPatientFailure, fetchPatientStart, fetchPatientSuccess } from "@/redux/chat/chatSlice";
 
 const PatientChat = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuthUser();
+  const dispatch = useDispatch();
   const currentDate = format(new Date(), "MMMM d, yyyy");
 
-  // Fetch patient details
-  const {
-    data: patient,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["patient", user?.email],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
-      // console.log("Patient data response:", res.data);
-      return res.data.data;
-    },
-    retry: 1,
-    staleTime: 1000 * 60 * 5,
-  });
+  // Get patient data from Redux store
+  const { patient, patientStatus, patientError } = useSelector(
+    (state) => state.chats
+  );
 
-  if (isLoading) {
+  // Fetch patient data
+  useEffect(() => {
+    if (!user?.email) return;
+
+    const fetchPatientData = async () => {
+      dispatch(fetchPatientStart());
+      try {
+        const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
+        dispatch(fetchPatientSuccess(res.data.data));
+      } catch (error) {
+        dispatch(
+          fetchPatientFailure(error.message || "Failed to fetch patient data")
+        );
+      }
+    };
+
+    fetchPatientData();
+  }, [user?.email, dispatch, axiosSecure]);
+
+  if (patientStatus === "loading") {
     return <SkeletonChatDashboard />;
   }
 
-  if (error || !patient) {
-    return <div>Error: Could not load patient details.</div>;
+  if (patientStatus === "failed" || !patient) {
+    return (
+      <div>Error: {patientError || "Could not load patient details."}</div>
+    );
   }
 
   return (

@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 
 const CartDropdown = () => {
   const [cart] = useCart();
-
+  // console.log(cart);
   const totalPrice =
     cart?.reduce((sum, item) => sum + item?.price * item?.quantity, 0) || 0;
 
@@ -69,7 +69,7 @@ const CartDropdown = () => {
                     className="flex items-center justify-between p-1 hover:bg-gray-50 shadow-none"
                   >
                     <Link
-                      to={`/medicine/${item?.productId}`}
+                      to={`/medicine/${item?.medicineId}`}
                       className="flex items-center gap-3"
                     >
                       <img

@@ -114,6 +114,10 @@ const AppointmentInvoice = ({ paymentInfo, rewardInfo }) => (
         <Text style={styles.value}>{paymentInfo?.appointmentInfo?.name}</Text>
       </View>
       <View style={styles.fieldRow}>
+        <Text style={styles.label}>Serial Number:</Text>
+        <Text style={styles.value}>{paymentInfo?.appointmentInfo?.serialNumber}</Text>
+      </View>
+      <View style={styles.fieldRow}>
         <Text style={styles.label}>Age:</Text>
         <Text style={styles.value}>{paymentInfo?.appointmentInfo?.age}</Text>
       </View>

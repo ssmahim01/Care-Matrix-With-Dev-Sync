@@ -13,13 +13,13 @@ import {
 const PatientDetailsModal = ({ patient, isOpen, onClose }) => {
   // Debug render and unmount
   useEffect(() => {
-    console.log("PatientDetailsModal rendered");
+    // console.log("PatientDetailsModal rendered");
     return () => console.log("PatientDetailsModal unmounted");
   }, []);
 
   // Debug close
   const handleClose = () => {
-    console.log("PatientDetailsModal: Closing");
+    // console.log("PatientDetailsModal: Closing");
     onClose();
   };
 

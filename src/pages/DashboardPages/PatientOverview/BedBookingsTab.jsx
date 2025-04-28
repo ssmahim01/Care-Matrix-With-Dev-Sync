@@ -17,18 +17,22 @@ import {
 } from "@/components/ui/table";
 import { Link } from "react-router";
 import { Separator } from "@/components/ui/separator";
+import EmptyState from "./EmptyState";
+import { Bed } from "lucide-react";
 
 const BedBookingsTab = ({ bedBookings, formatDate }) => {
   return (
     <Card
       className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
     >
-      <CardHeader>
-        <CardTitle>Bed Bookings</CardTitle>
-        <CardDescription>
-          Your current and pending bed booking requests
-        </CardDescription>
-      </CardHeader>
+      {bedBookings && bedBookings?.length > 0 && (
+        <CardHeader>
+          <CardTitle>Bed Bookings</CardTitle>
+          <CardDescription>
+            Your current and pending bed booking requests
+          </CardDescription>
+        </CardHeader>
+      )}
       <CardContent>
         {bedBookings && bedBookings?.length > 0 ? (
           <Table>
@@ -79,13 +83,13 @@ const BedBookingsTab = ({ bedBookings, formatDate }) => {
             </TableBody>
           </Table>
         ) : (
-          <>
-            <Separator />
-            <p className="text-muted-foreground mt-2">No Bed Bookings Found!</p>
-            <Button className="mt-2 cursor-pointer" variant={"outline"}>
-              Book A Bed
-            </Button>
-          </>
+          <EmptyState
+            icon={Bed}
+            title="No Bed Bookings"
+            description="You haven't made any bed booking requests yet. Reserve a hospital bed when you need inpatient care."
+            actionLabel="Book A Bed"
+            actionLink="/available-beds"
+          />
         )}
       </CardContent>
     </Card>
