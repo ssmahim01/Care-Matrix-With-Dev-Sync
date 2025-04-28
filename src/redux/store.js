@@ -6,6 +6,7 @@ import consultantReducer from "./doctors/consultantSlice";
 import bedsReducer from "./bed/bedsSlice";
 import patientReducer from "./patient/patientSlice";
 import chatReducer from "./chat/chatSlice";
+import cartReducer from "./cartSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     chats: chatReducer,
     beds: bedsReducer,
     patientStats: patientReducer,
+    cart: cartReducer,
   },
 });

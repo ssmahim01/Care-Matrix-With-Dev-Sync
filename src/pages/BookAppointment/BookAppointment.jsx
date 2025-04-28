@@ -21,7 +21,7 @@ const BookAppointment = () => {
 
     const doctorInfo = doctors.find((doctor) => doctor._id === location.state);
     const reward = rewardUser?.find(reward => reward?.userEmail === user?.email)
-    console.log("doctor info ", doctorInfo);
+    // console.log("doctor info ", doctorInfo);
     let consultationFee = doctorInfo?.consultation_fee;
     let rewardInfo;
 
