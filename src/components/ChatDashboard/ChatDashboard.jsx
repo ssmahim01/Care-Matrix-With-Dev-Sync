@@ -17,6 +17,8 @@ import {
   ImageIcon,
   Mail,
   MessageCircle,
+  MessageSquare,
+  MessageSquareText,
   ShieldPlus,
   Trash2,
 } from "lucide-react";
@@ -25,6 +27,7 @@ import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { MdOutlineMail } from "react-icons/md";
 
 const ChatDashboard = ({ userEmail, userRole }) => {
   const axiosSecure = useAxiosSecure();
@@ -150,6 +153,45 @@ const ChatDashboard = ({ userEmail, userRole }) => {
     refetchInterval: 1000,
   });
 
+  // Fetch message counts for doctors, pharmacists and patients
+  const { data: userMessageCounts } = useQuery({
+    queryKey: ["userMessageCounts", userEmail, userRole],
+    queryFn: async () => {
+      const messageCounts = {};
+
+      // Fetch message counts for doctors and pharmacists
+      if (userRole === "patient") {
+        if (!professionals || professionals.length === 0) return {};
+        await Promise.all(
+          professionals.map(async (professional) => {
+            const res = await axiosSecure.get(
+              `/chat/messages/${userEmail}/${professional?.email}`
+            );
+            const messages = res.data.data.messages || res.data.data || [];
+            messageCounts[professional?.email] = messages.length;
+          })
+        );
+      }
+
+      // Fetch message counts for patients
+      if (userRole === "doctor" || userRole === "pharmacist") {
+        if (!patients || patients.length === 0) return {};
+        await Promise.all(
+          patients.map(async (patient) => {
+            const res = await axiosSecure.get(
+              `/chat/messages/${userEmail}/${patient?.email}`
+            );
+            const messages = res.data.data.messages || res.data.data || [];
+            messageCounts[patient?.email] = messages.length;
+          })
+        );
+      }
+
+      return messageCounts;
+    },
+    enabled: !!userEmail && !!userRole,
+  });
+
   // Mutation for sending a message
   const sendMessageMutation = useMutation({
     mutationFn: async (messageData) => {
@@ -218,16 +260,15 @@ const ChatDashboard = ({ userEmail, userRole }) => {
   return (
     <Card className="shadow-md border border-gray-200 mt-8">
       <CardContent className="flex flex-col lg:flex-row p-0">
-        
         <div className="lg:w-1/4 border-r">
-         {/* Invite Professionals and patients */}
-        <div className="w-full border-b py-3">
-        <h3 className="text-lg font-medium ml-4">Invite</h3>
-        <p className="w-full lg:w-11/12 text-sm font-medium text-gray-600 ml-4">
-          Select an user then start the conversation
-        </p>
-        </div>
-        {/* Chat Partners List */}
+          {/* Invite Professionals and patients */}
+          <div className="w-full border-b py-3 shadow-sm">
+            <h3 className="text-lg font-medium ml-4">Invite</h3>
+            <p className="w-full lg:w-11/12 text-sm font-medium text-gray-600 ml-4">
+              Select an user then start the conversation
+            </p>
+          </div>
+          {/* Chat Partners List */}
           {professionals && userRole === "patient" ? (
             <>
               {potentialProfessionalsToInvite.length === 0 ? (
@@ -235,36 +276,59 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   No new doctors and pharmacists to invite.
                 </p>
               ) : (
-                <ul className="space-y-2 overflow-y-scroll h-[600px] py-4 pl-4">
-                  {potentialProfessionalsToInvite.map((professional) => (
+                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-44 py-4 pl-4">
+                  {potentialProfessionalsToInvite.map((professional) => {
+                    const messageCount =
+                      userMessageCounts[professional?.email] || 0;
+                  return (
                     <li
-                      key={professional.email}
-                      onClick={() => {
-                        setSelectedPartner(professional);
-                      }}
-                      className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
-                    >
-                      <div className="flex gap-2 items-center">
-                        <figure>
-                          <img
-                            className="w-14 h-14 rounded-full object-cover border-4 avatar border-cyan-500 hover:border-cyan-600"
-                            referrerPolicy="no-referrer"
-                            src={professional?.photo}
-                            alt={professional?.name}
-                          />
-                        </figure>
-                        <p className="flex flex-col">
-                          <span className="font-medium text-sm">
-                            {professional.name}
-                          </span>
+                    key={professional.email}
+                    onClick={() => {
+                      setSelectedPartner(professional);
+                    }}
+                    className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                  >
+                    <div className="flex gap-2 items-center">
+                      <figure>
+                        <img
+                          className="w-14 h-14 rounded-full object-cover border-4 avatar border-blue-500 hover:border-blue-600"
+                          referrerPolicy="no-referrer"
+                          src={professional?.photo}
+                          alt={professional?.name}
+                        />
+                      </figure>
+                      <p className="flex flex-col">
+                        <span className="font-medium text-sm">
+                          {professional.name}
+                        </span>
 
-                          <span className="font-medium text-cyan-500 text-sm">
-                            {professional.role}
-                          </span>
-                        </p>
-                      </div>
-                    </li>
-                  ))}
+                        <div className="flex gap-2 items-center">
+                        <span className="font-medium text-blue-500 text-sm">
+                          {professional.role === "pharmacist" ? "Pharmacist" : "Doctor" }
+                        </span>
+
+                        {userRole === "patient" && (
+                          <>
+                            {messageCount === 0 ? (
+                              <span className="badge bg-blue-400 text-[10px] text-white/90 font-medium border py-1 px-2 rounded-xl">
+                                New
+                              </span>
+                            ) : (
+                              <div className="relative flex items-center">
+                                <MessageSquare className="w-5 h-5 text-blue-500" />
+                                <span className="absolute -top-1 -right-1 text-xs font-medium text-white bg-blue-500 rounded-full w-[18px] p-1 h-[18px] flex items-center justify-center border-2 border-white/90">
+                                  {messageCount}
+                                </span>
+                              </div>
+                            )}
+                          </>
+                        )}
+                        </div>
+                      </p>
+                    </div>
+                  </li>
+                   );
+                  })}
                 </ul>
               )}
             </>
@@ -276,36 +340,57 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   No new patients to invite.
                 </p>
               ) : (
-                <ul className="space-y-2 overflow-y-scroll h-[600px] py-4 pl-4">
-                  {potentialPatientsToInvite.map((patient) => (
-                    <li
+                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-44 py-4 pl-4">
+                  {potentialPatientsToInvite.map((patient) => {
+                    const messageCount = userMessageCounts[patient?.email] || 0;
+                   return (<li
                       key={patient.email}
                       onClick={() => {
                         setSelectedPartner(patient);
                       }}
-                      className="p-2 rounded cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                      className="p-2 rounded cursor-pointer hover:bg-blue-100 flex justify-between items-center"
                     >
                       <div className="flex gap-2 items-center">
                         <figure>
                           <img
-                            className="w-14 h-14 rounded-full object-cover border-4 avatar border-cyan-500 hover:border-cyan-600"
+                            className="w-14 h-14 rounded-full object-cover border-4 avatar border-blue-400 hover:border-blue-600"
                             referrerPolicy="no-referrer"
                             src={patient?.photo}
                             alt={patient?.name}
                           />
                         </figure>
-                        <p className="flex flex-col">
+                        <div className="flex flex-col">
                           <span className="font-semibold text-sm">
                             {patient.name}
                           </span>
 
-                          <span className="font-medium text-indigo-600 text-sm">
-                            {patient.role}
+                         <div className="mt-1 flex gap-3 items-center">
+                         <span className="font-medium text-blue-500 text-sm">
+                            {patient.role === "patient" && "Patient"}
                           </span>
-                        </p>
+
+                          {(userRole === "doctor" ||
+                            userRole === "pharmacist") && (
+                              <>
+                                {messageCount === 0 ? (
+                                  <span className="badge bg-blue-400 text-[10px] text-white/90 font-medium border py-1 px-2 rounded-xl">
+                                    New
+                                  </span>
+                                ) : (
+                                  <div className="relative flex items-center">
+                                    <MessageSquare className="w-6 h-6 text-blue-500" />
+                                    <span className="absolute -top-1 -right-1 text-xs font-medium text-white bg-blue-500 rounded-full w-[18px] p-1 h-[18px] flex items-center justify-center border-2 border-white/90">
+                                      {messageCount}
+                                    </span>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                         </div>
+                        </div>
                       </div>
-                    </li>
-                  ))}
+                    </li>);
+                  })}
                 </ul>
               )}
             </>
@@ -315,14 +400,14 @@ const ChatDashboard = ({ userEmail, userRole }) => {
         </div>
 
         {/* Chat Window */}
-        <div className="flex-1 flex flex-col h-[680px] overflow-y-auto">
+        <div className="flex-1 flex flex-col h-[640px] overflow-y-auto">
           {selectedPartner ? (
             <>
-              <div className="p-2 flex sticky top-0 bg-base-200 justify-between border-b items-center rounded-tr-xl">
+              <div className="p-2 flex sticky top-0 bg-base-200 justify-between border-b items-center rounded-tr-xl shadow-sm">
                 <div className="flex gap-2 items-center">
                   <figure>
                     <img
-                      className="w-14 h-14 rounded-full object-cover border-4 border-indigo-500 hover:border-indigo-600"
+                      className="w-14 h-14 rounded-full object-cover border-4 border-blue-400 hover:border-blue-600"
                       referrerPolicy="no-referrer"
                       src={selectedPartner?.photo}
                       alt={selectedPartner?.name}
@@ -344,7 +429,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="cursor-pointer rounded-full p-2 bg-blue-500 hover:bg-blue-700"
+                      className="cursor-pointer rounded-full p-2 bg-blue-400 hover:bg-blue-600"
                       size="icon"
                     >
                       <EllipsisVertical className="w-5 text-white h-10" />
@@ -487,10 +572,10 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                             )}
                             {msg.message && (
                               <span
-                                className={`inline-block p-2 rounded-lg shadow-sm font-medium ${
+                                className={`inline-block p-2 rounded-xl shadow-sm font-medium text-gray-700 ${
                                   isCurrentUser
-                                    ? "bg-blue-200 text-gray-800 rounded-br-none"
-                                    : "bg-gray-200 text-gray-700 rounded-bl-none"
+                                    ? "bg-blue-200 rounded-br-none"
+                                    : "bg-gray-200 rounded-bl-none"
                                 }`}
                               >
                                 {msg.message}
@@ -569,12 +654,14 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                     onClick={handleSendMessage}
                     disabled={isUploading || sendMessageMutation.isLoading}
                     className={
-                      "bg-cyan-600 hover:bg-cyan-700 cursor-pointer flex gap-1 items-center"
+                      "bg-blue-500 hover:bg-blue-600 cursor-pointer flex gap-1 items-center"
                     }
                   >
                     <MessageCircle className="w-4 h-4" />
                     <span>
-                      {sendMessageMutation.isLoading || isUploading ? "Sending..." : "Send"}
+                      {sendMessageMutation.isLoading || isUploading
+                        ? "Sending..."
+                        : "Send"}
                     </span>
                   </Button>
                 </div>
