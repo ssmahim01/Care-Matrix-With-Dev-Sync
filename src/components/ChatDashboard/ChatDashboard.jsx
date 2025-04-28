@@ -216,17 +216,18 @@ const ChatDashboard = ({ userEmail, userRole }) => {
   );
 
   return (
-    <Card className="shadow-lg">
-      <CardHeader className={"mt-3 -mb-4"}>
-        {/* Invite Professionals and patients */}
-        <h3 className="text-lg font-medium -mb-2">Invite</h3>
-        <p className="w-full lg:w-1/4 text-sm font-medium text-gray-600">
+    <Card className="shadow-md border border-gray-200 mt-8">
+      <CardContent className="flex flex-col lg:flex-row p-0">
+        
+        <div className="lg:w-1/4 border-r">
+         {/* Invite Professionals and patients */}
+        <div className="w-full border-b py-3">
+        <h3 className="text-lg font-medium ml-4">Invite</h3>
+        <p className="w-full lg:w-11/12 text-sm font-medium text-gray-600 ml-4">
           Select an user then start the conversation
         </p>
-      </CardHeader>
-      <CardContent className="flex flex-col lg:flex-row gap-4 p-0">
+        </div>
         {/* Chat Partners List */}
-        <div className="w-full lg:w-1/4 border-r pl-4">
           {professionals && userRole === "patient" ? (
             <>
               {potentialProfessionalsToInvite.length === 0 ? (
@@ -234,7 +235,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   No new doctors and pharmacists to invite.
                 </p>
               ) : (
-                <ul className="space-y-2 overflow-y-scroll h-[600px] py-4">
+                <ul className="space-y-2 overflow-y-scroll h-[600px] py-4 pl-4">
                   {potentialProfessionalsToInvite.map((professional) => (
                     <li
                       key={professional.email}
@@ -275,7 +276,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   No new patients to invite.
                 </p>
               ) : (
-                <ul className="space-y-2 overflow-y-scroll h-[600px] py-4">
+                <ul className="space-y-2 overflow-y-scroll h-[600px] py-4 pl-4">
                   {potentialPatientsToInvite.map((patient) => (
                     <li
                       key={patient.email}
@@ -314,10 +315,10 @@ const ChatDashboard = ({ userEmail, userRole }) => {
         </div>
 
         {/* Chat Window */}
-        <div className="flex-1 flex flex-col h-[600px] overflow-y-auto px-2">
+        <div className="flex-1 flex flex-col h-[680px] overflow-y-auto">
           {selectedPartner ? (
             <>
-              <div className="p-2 flex sticky top-0 bg-base-200 justify-between border-b items-center">
+              <div className="p-2 flex sticky top-0 bg-base-200 justify-between border-b items-center rounded-tr-xl">
                 <div className="flex gap-2 items-center">
                   <figure>
                     <img
@@ -518,7 +519,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   })
                 )}
               </div>
-              <div className="border-t py-3">
+              <div className="border-t px-3 sticky bottom-0 bg-base-200 py-3">
                 {imagePreview && (
                   <div className="relative w-[80%] md:w-[150px] h-[150px] rounded-md mb-3">
                     <>
@@ -541,6 +542,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                   <Input
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
+                    className={"shadow-sm"}
                     placeholder="Type your message..."
                     onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                     disabled={isUploading || sendMessageMutation.isLoading}
@@ -550,7 +552,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                     onClick={handleUploadImage}
                     disabled={isUploading || sendMessageMutation.isLoading}
                     variant={"outline"}
-                    className={"cursor-pointer"}
+                    className={"cursor-pointer shadow-sm"}
                   >
                     <input
                       type="file"
