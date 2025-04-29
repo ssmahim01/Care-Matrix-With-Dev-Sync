@@ -124,8 +124,8 @@ const MyAppointmentDoctor = () => {
                         <SelectValue placeholder="Sort By " />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="desc">Date (Ascending)</SelectItem>
-                        <SelectItem value="asc">Date (Descending)</SelectItem>
+                        <SelectItem value="desc">Date (Newest to oldest)</SelectItem>
+                        <SelectItem value="asc">Date (Oldest to newest)</SelectItem>
                     </SelectContent>
                 </Select>
 
