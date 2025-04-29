@@ -106,7 +106,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
   });
 
   // Fetch current user's data
-  const { data: currentUser, isLoading: loadingUser } = useQuery({
+  const { data: currentUser = {}, isLoading: loadingUser } = useQuery({
     queryKey: ["currentUser", userEmail],
     queryFn: async () => {
       const res = await axiosSecure.get("/users/me", {
@@ -133,7 +133,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
   });
 
   // Fetch message counts for doctors, pharmacists and patients
-  const { data: userMessageCounts } = useQuery({
+  const { data: userMessageCounts = {} } = useQuery({
     queryKey: ["userMessageCounts", userEmail, userRole],
     queryFn: async () => {
       const messageCounts = {};
@@ -168,7 +168,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
 
       return messageCounts;
     },
-    enabled: !!userEmail && !!userRole,
+    enabled: !!userEmail && !!userRole && !!patients && !!professionals,
     refetchInterval: 1000,
   });
 
@@ -258,8 +258,8 @@ const ChatDashboard = ({ userEmail, userRole }) => {
               ) : (
                 <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-44 py-4 pl-4">
                   {potentialProfessionalsToInvite.map((professional) => {
-                    const messageCount =
-                      userMessageCounts[professional?.email] || 0;
+                    const messageCount = userMessageCounts && professional?.email ?
+                      userMessageCounts[professional?.email] || 0 : 0;
                     return (
                       <ProfessionalsMessageCounts
                         professional={professional}
@@ -282,7 +282,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
               ) : (
                 <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-44 py-4 pl-4">
                   {potentialPatientsToInvite.map((patient) => {
-                    const messageCount = userMessageCounts[patient?.email] || 0;
+                    const messageCount = userMessageCounts && patient?.email ? userMessageCounts[patient?.email] || 0 : 0;
                     return (
                       <PatientsMessageCounts
                         patient={patient}
