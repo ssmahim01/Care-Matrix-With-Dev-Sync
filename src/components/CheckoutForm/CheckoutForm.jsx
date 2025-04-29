@@ -82,8 +82,6 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
 
           }
 
-
-
             // Award points for completed appointment
             const rewardInfo = {
               userEmail: appointmentInfo.email,

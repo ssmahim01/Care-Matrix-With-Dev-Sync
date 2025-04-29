@@ -1,12 +1,15 @@
 import useAppointment from '@/hooks/useAppointment';
 import useDoctors from '@/hooks/useDoctors';
 import useRewardUsers from '@/hooks/useRewardUsers';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaStar, FaPhoneAlt, FaCalendarAlt, FaClock, FaUser } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAppointments } from '@/redux/appointments/appointmentsSlice';
+import { fetchRewardUser } from '@/redux/rewardUser/rewardUserSlice';
+
 
 const BookAppointment = () => {
     const [search, setSearch] = useState("")
@@ -14,14 +17,25 @@ const BookAppointment = () => {
     const [doctors] = useDoctors(search, selectedSort);
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
-    const [appointments] = useAppointment();
-    const [rewardUser, isPending, isLoading, refetch] = useRewardUsers()
+    // const [rewardUser, isPending, , refetch] = useRewardUsers()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const location = useLocation();
+    const dispatch = useDispatch();
+    const { appointments, isLoading } = useSelector((state) => state.appointments);
+    const { rewardUser } = useSelector((state) => state.rewardUser);
+  
+    useEffect(() => {
+      if (user?.email) {
+        dispatch(fetchAppointments({ email: user?.email, sortDate: '' }));
+        dispatch(fetchRewardUser(user.email));
+      }
+    }, [user, dispatch]);
+
+    
 
     const doctorInfo = doctors.find((doctor) => doctor._id === location.state);
-    const reward = rewardUser?.find(reward => reward?.userEmail === user?.email)
-    // console.log("doctor info ", doctorInfo);
+    const reward = rewardUser.find((reward) => reward?.userEmail === user?.email)
+
     let consultationFee = doctorInfo?.consultation_fee;
     let rewardInfo;
 

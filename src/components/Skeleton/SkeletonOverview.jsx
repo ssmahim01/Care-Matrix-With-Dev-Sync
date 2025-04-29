@@ -114,12 +114,12 @@ const SkeletonOverview = () => {
 
      <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-5">
        {/* Charts & Analytics (Area Chart) */}
-       <div className="my-6 lg:w-1/2 h-full">
+       <div className="my-6 lg:w-3/5 h-full">
         <SkeletonAnalytics />
       </div>
 
       {/* Bar Chart Analytics (Doctors and Patients) */}
-      <div className="my-6 lg:w-1/2 h-full">
+      <div className="my-6 lg:w-2/5 h-full">
         <SkeletonBarChartAnalytics />
       </div>
      </div>

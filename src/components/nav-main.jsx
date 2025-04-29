@@ -30,6 +30,7 @@ import {
   LucideBedSingle,
   MailIcon,
   MessageSquareText,
+  Newspaper,
   ShoppingCart,
   Sparkles,
   Stethoscope,
@@ -140,11 +141,19 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              <NavLink to="/dashboard/administrator/manage-requests">
+              {/* <NavLink to="/dashboard/administrator/manage-requests">
                 <h3 className="flex gap-2 items-center tracking-wide">
                   <ClipboardList size={25} className="text-base " />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Manage Requests{" "}
+                  </span>
+                </h3>
+              </NavLink> */}
+              <NavLink to="/dashboard/administrator/manage-blogs">
+                <h3 className="flex gap-2 items-center tracking-wide">
+                  <Newspaper size={25} className="text-base " />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Manage Blogs{" "}
                   </span>
                 </h3>
               </NavLink>

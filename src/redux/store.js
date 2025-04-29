@@ -4,10 +4,13 @@ import authReducer from "./auth/authSlice";
 import bedsReducer from "./bed/bedsSlice";
 import cartReducer from "./cartSlice";
 import consultantReducer from "./doctors/consultantSlice";
+import appointmentReducer from "./appointments/appointmentsSlice"
+import rewardUserReducer from './rewardUser/rewardUserSlice'; 
 import doctorReducer from "./doctors/doctorSlice";
 import { doctorStatsApi } from "./doctors/doctorStatsApi";
 import menuReducer from "./menuSlice";
 import patientReducer from "./patient/patientSlice";
+import chatReducer from "./chat/chatSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +18,9 @@ export const store = configureStore({
     auth: authReducer,
     doctors: doctorReducer,
     consultants: consultantReducer,
+    appointments: appointmentReducer,
+    rewardUser: rewardUserReducer,
+    chats: chatReducer,
     beds: bedsReducer,
     patientStats: patientReducer,
     cart: cartReducer,
