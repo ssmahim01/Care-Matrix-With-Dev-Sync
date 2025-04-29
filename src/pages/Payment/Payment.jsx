@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import CheckoutForm from '@/components/CheckoutForm/CheckoutForm';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import toast from 'react-hot-toast';
+import { TbCurrencyTaka } from 'react-icons/tb';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -34,10 +35,21 @@ const Payment = () => {
 
   const appearance = { theme: 'stripe' };
   const options = clientSecret ? { clientSecret, appearance } : null;
+  console.log(location?.state?.appointmentInfo);
 
   return (
     <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 border-t pt-24'>
-      <h1 className='text-2xl font-bold mb-6 text-[#3b6df8]'>Complete Your Payment</h1>
+      <div className='mb-6 text-[#3b6df8]'>
+        <h1 className='text-2xl font-bold  text-[#3b6df8]'>Complete Your Payment</h1>
+
+{
+  location?.state?.appointmentInfo?.rewardInfo?.discount > 0 ? 
+  <p className='font-medium flex items-center'>Amount: {location?.state?.appointmentInfo?.consultationFee - parseInt(location?.state?.appointmentInfo?.consultationFee * location?.state?.appointmentInfo?.rewardInfo?.discount / 100)}tk  <span className='ml-1'>(with {location?.state?.appointmentInfo?.rewardInfo?.discount}% reward discount)</span> </p>
+   :
+    <p className='font-medium'>Amount: {location?.state?.appointmentInfo?.consultationFee}tk</p>
+}
+
+      </div>
       {clientSecret ? (
         <Elements stripe={stripePromise} options={options}>
           <CheckoutForm

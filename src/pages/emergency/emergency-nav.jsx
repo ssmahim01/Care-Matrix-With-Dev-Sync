@@ -1,79 +1,109 @@
-import React from 'react'
-import {
-    AlertCircle,
-    Ambulance,
-    ClipboardList,
-    Phone,
-  } from "lucide-react"
-import { Link, useLocation } from 'react-router'
-import { cn } from '@/lib/utils'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { SidebarGroup, SidebarMenu, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
-import { Collapsible } from '@/components/ui/collapsible'
-
+import React, { useState } from 'react';
+import { AlertCircle, Ambulance, ClipboardList, Phone, Home, Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const EmergencyNav = () => {
-    const {pathname} = useLocation()
-    const { state } = useSidebar();
+  const { pathname } = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    const routes = [
-        {
-          label: "Emergency",
-          icon: AlertCircle,
-          href: "/emergency",
-          active: pathname === "/emergency",
-        },
-        {
-          label: "Emergency Contacts",
-          icon: Phone,
-          href: "/emergency/contacts",
-          active: pathname === "/emergency/contacts",
-        },
-        {
-          label: "Ambulance Booking",
-          icon: Ambulance,
-          href: "/emergency/ambulance-booking",
-          active: pathname === "/emergency/ambulance-booking",
-        },
-        {
-          label: "Emergency Triage",
-          icon: ClipboardList,
-          href: "/emergency/triage",
-          active: pathname === "/emergency/triage",
-        },
-      ]
+  const routes = [
+    {
+      label: 'Home',
+      icon: Home,
+      href: '/',
+      active: pathname === '/',
+    },
+    {
+      label: 'Emergency',
+      icon: AlertCircle,
+      href: '/emergency',
+      active: pathname === '/emergency',
+    },
+    {
+      label: 'Contacts',
+      icon: Phone,
+      href: '/emergency/contacts',
+      active: pathname === '/emergency/contacts',
+    },
+    {
+      label: 'Ambulance',
+      icon: Ambulance,
+      href: '/emergency/ambulance-booking',
+      active: pathname === '/emergency/ambulance-booking',
+    },
+    {
+      label: 'Triage',
+      icon: ClipboardList,
+      href: '/emergency/triage',
+      active: pathname === '/emergency/triage',
+    },
+  ];
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
-    <div
-    >
-      <ScrollArea className="flex-1 py-4">
-        <SidebarGroup className="grid gap-1 px-2">
-        <SidebarMenu>
-        <Collapsible asChild className="group/collapsible">
-          <SidebarMenuItem>
-          {routes.map((route, i) => (
+    <nav className="bg-white shadow-lg py-4 px-6 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Logo Section */}
+        <div className="flex items-center">
+          <Link to="/emergency" className="flex items-center space-x-2">
+            <span className="text-2xl font-bold text-red-700">Emergency Hub</span>
+          </Link>
+        </div>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-10">
+          {routes.map((route, index) => (
             <Link
-              key={i}
+              key={index}
               to={route.href}
-              className={cn(
-                `flex items-center gap-3  rounded-md ${state === "collapsed" ? "py-3 px-[5px]" : "px-3 py-2"}  text-muted-foreground hover:bg-muted hover:text-foreground `,
-                route.active && "bg-red-100 hover:bg-red-200 hover:text-red-600 text-red-600 font-medium",
-              )}
+              className={`flex items-center space-x-2 text-gray-700 hover:text-red-600 transition-colors duration-300 ${
+                route.active
+                  ? 'text-red-600 font-semibold border-b-2 border-red-600'
+                  : 'border-b-2 border-transparent'
+              } py-2`}
             >
               <route.icon className="h-5 w-5" />
-              <h2 className={`${state === "collapsed" && "md:hidden"}`}>{route.label}{" "}</h2>
+              <span className="text-sm font-medium">{route.label}</span>
             </Link>
           ))}
-          </SidebarMenuItem>
-        </Collapsible>
-      </SidebarMenu>
-        </SidebarGroup>
-      </ScrollArea>
-    </div>
-  )
-}
+        </div>
 
-export default EmergencyNav
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-gray-700 hover:text-red-600 focus:outline-none"
+          onClick={toggleMobileMenu}
+        >
+          {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </div>
 
+      {/* Mobile Navigation */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-200">
+          <div className="flex flex-col items-start space-y-2 py-4 px-6">
+            {routes.map((route, index) => (
+              <Link
+                key={index}
+                to={route.href}
+                className={`flex items-center space-x-2 w-full text-gray-700 hover:text-red-600 transition-colors duration-300 ${
+                  route.active
+                    ? 'text-red-600 font-semibold border-l-4 border-red-600 pl-2'
+                    : ''
+                } py-2`}
+                onClick={toggleMobileMenu}
+              >
+                <route.icon className="h-5 w-5" />
+                <span className="text-sm font-medium">{route.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+};
 
+export default EmergencyNav;  

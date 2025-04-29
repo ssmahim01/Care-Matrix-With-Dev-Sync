@@ -9,16 +9,17 @@ import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
 import { useNavigate } from "react-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useAuthUser } from "@/redux/auth/authActions";
+import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import auth from "@/firebase/firebase.config";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 const Login = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
+  const authLoading = useAuthLoading();
 
   // states for email & password
   const [email, setEmail] = useState("");
@@ -40,34 +41,56 @@ const Login = () => {
     setLoading(true);
     setIsError("");
 
+    // Show loading toast
+    const loadingToast = toast.loading("Logging in...", {
+      description: "Please wait while we authenticate you",
+      position: "top-right",
+      style: {
+        marginTop: "20px",
+      },
+    });
+
     try {
-      const response = await toast.promise(
-        axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/login`,
+        {
           email,
           password,
-        }),
-        {
-          loading: "Signing in...",
-          success: <b>Sign in Successful!</b>,
         }
       );
 
+      toast.dismiss(loadingToast);
       if (response?.data?.message === "Login successful") {
         signInWithEmailAndPassword(auth, email, password).then(
           async (result) => {
             const user = result.user;
             if (user) {
+              // navigate & show success toast
+              navigate("/");
+              toast.success(<b>Login Successful!</b>, {
+                description:
+                  "Welcome back! You have successfully logged into your account",
+                duration: 3000,
+                position: "top-right",
+                style: {
+                  marginTop: "20px",
+                },
+              });
+
               // Optionally update last login time
               await axios.patch(
                 `${import.meta.env.VITE_API_URL}/users/last-login-at/${email}`,
                 { lastLoginAt: new Date().toISOString() }
               );
+
               setLoading(false);
             }
           }
         );
       }
     } catch (error) {
+      toast.dismiss(loadingToast);
+
       let errorMessage = "Login Failed!";
 
       if (error?.response?.data?.message) {
@@ -88,7 +111,7 @@ const Login = () => {
     }
   };
 
-  if (user) return navigate("/");
+  if (user && authLoading) return navigate("/");
 
   return (
     <div className="bg-blue-100/20">
@@ -120,7 +143,10 @@ const Login = () => {
             <Badge
               className="cursor-pointer bg-purple-600"
               onClick={() =>
-                handleBadgeClick("ayesha.rahman@carematrix.com", "Ayesha@Password0")
+                handleBadgeClick(
+                  "ayesha.rahman@carematrix.com",
+                  "Ayesha@Password0"
+                )
               }
             >
               Doctor
@@ -224,13 +250,17 @@ const Login = () => {
             {/* Error Message */}
             <IsError isError={isError} />
             {/* Register Button */}
-            <button
+            <motion.button
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
               type="submit"
               disabled={loading}
               className="btn border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
             >
               {loading ? "Login in..." : "Login"}
-            </button>
+            </motion.button>
           </form>
 
           {/* SocialLogin */}

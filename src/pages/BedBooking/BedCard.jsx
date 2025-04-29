@@ -7,7 +7,7 @@ const BedCard = ({ bed, onRequestBooking, onShowDetails, isLoading }) => {
   const { title, price, image, status, details } = bed || {};
 
   return (
-    <div className="overflow-hidden grid place-items-stretch rounded-xl border border-gray-100 bg-white shadow-md transition-all duration-300 hover:shadow-lg">
+    <div className="overflow-hidden grid place-items-stretch rounded-xl border border-gray-100 bg-white shadow-md transition-all hover:scale-[1.02] duration-300 hover:shadow-lg">
       <div className="relative">
         <div className="absolute right-3 top-3 z-10">
           <Badge

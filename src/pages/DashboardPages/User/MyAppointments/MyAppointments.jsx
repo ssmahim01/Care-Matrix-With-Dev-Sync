@@ -34,6 +34,7 @@ import {
 import { FileDown } from "lucide-react";
 import { PrescriptionViewModal } from "@/components/ManagePrescription/PrescriptionViewModal";
 import toast from "react-hot-toast";
+import { IoIosSearch } from "react-icons/io";
 
 const MyAppointments = () => {
   const [sortDate, setSortDate] = useState("");
@@ -42,13 +43,15 @@ const MyAppointments = () => {
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
 
+  console.log(category, search);
+
   const [openModal, setOpenModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [isPrescriptionViewModalOpen, setIsPrescriptionViewModalOpen] =
     useState(false);
-  const [selectedPatient, setSelectedPatient] = useState(null)
+  const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedPrescription, setSelectedPrescription] = useState(null);
-// console.log(appointments);
+  // console.log(appointments);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSkeleton(false);
@@ -122,7 +125,7 @@ const MyAppointments = () => {
         />
 
         {/* Sort Controls */}
-        <div className="flex gap-4 mb-6 items-center flex-wrap">
+        {/* <div className="flex gap-4 mb-6 items-center flex-wrap">
           <Select
             value={selectedSort}
             onValueChange={(value) => {
@@ -152,119 +155,123 @@ const MyAppointments = () => {
       </div>
 
       {/* Table */}
-      <Table className="rounded-md  border-gray-300 mt-4">
-        <TableCaption className="mb-2">
-          A list of your appointments.
-        </TableCaption>
-        <TableHeader>
-          <TableRow className="bg-gray-100">
-            <TableHead>Sl.</TableHead>
-            <TableHead>Doctor</TableHead>
-            <TableHead>Patient</TableHead>
-            <TableHead>Age</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Action</TableHead>
-          </TableRow>
-        </TableHeader>
+        <Table className="rounded-md  border-gray-300 mt-4">
+          <TableCaption className="mb-2">
+            A list of your appointments.
+          </TableCaption>
+          <TableHeader>
+            <TableRow className="bg-gray-100">
+              <TableHead>Sl.</TableHead>
+              <TableHead>Doctor</TableHead>
+              <TableHead>Patient</TableHead>
+              <TableHead>Age</TableHead>
+              <TableHead>Phone</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Action</TableHead>
+            </TableRow>
+          </TableHeader>
 
-        <TableBody>
-          {isLoading || showSkeleton
-            ? [...Array(9)].map((_, idx) => (
-                <TableRow key={idx} className="animate-pulse">
-                  {Array(9)
-                    .fill()
-                    .map((_, i) => (
-                      <TableCell key={i}>
-                        <div className="skeleton h-6 w-full max-w-[100px] rounded-md"></div>
-                      </TableCell>
-                    ))}
-                </TableRow>
-              ))
-            : appointments.reverse()?.map((appointment, index) => (
-                <TableRow key={appointment._id} className="hover:bg-gray-50">
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{appointment.doctorName}</TableCell>
-                  <TableCell>{appointment.name}</TableCell>
-                  <TableCell>{appointment.age}</TableCell>
-                  <TableCell>{appointment.phone}</TableCell>
-                  <TableCell>{appointment.email}</TableCell>
-                  <TableCell>{appointment.date}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`text-xs p-1 rounded-full ${
-                          appointment.status === "pending"
-                            ? "bg-yellow-500"
-                            : "bg-green-600"
-                        } text-white`}
-                      >
-                        <FaCircle size={7} />
-                      </span>
-                      <span className="capitalize text-sm font-medium text-gray-700">
-                        {appointment.status}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreVertical className="h-5 w-5 text-foreground" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        {appointment?.status === "Prescribed" && (
+          <TableBody>
+            {isLoading || showSkeleton
+              ? [...Array(9)].map((_, idx) => (
+                  <TableRow key={idx} className="animate-pulse">
+                    {Array(9)
+                      .fill()
+                      .map((_, i) => (
+                        <TableCell key={i}>
+                          <div className="skeleton h-6 w-full max-w-[100px] rounded-md"></div>
+                        </TableCell>
+                      ))}
+                  </TableRow>
+                ))
+              : appointments.reverse()?.map((appointment, index) => (
+                  <TableRow key={appointment._id} className="hover:bg-gray-50">
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{appointment.doctorName}</TableCell>
+                    <TableCell>{appointment.name}</TableCell>
+                    <TableCell>{appointment.age}</TableCell>
+                    <TableCell>{appointment.phone}</TableCell>
+                    <TableCell>{appointment.email}</TableCell>
+                    <TableCell>{appointment.date}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`text-xs p-1 rounded-full ${
+                            appointment.status === "pending"
+                              ? "bg-yellow-500"
+                              : "bg-green-600"
+                          } text-white`}
+                        >
+                          <FaCircle size={7} />
+                        </span>
+                        <span className="capitalize text-sm font-medium text-gray-700">
+                          {appointment.status}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <MoreVertical className="h-5 w-5 text-foreground" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          {appointment?.status === "Prescribed" && (
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleViewPrescription(appointment)
+                              }
+                              className="flex items-center gap-2"
+                            >
+                              <FileDown size={16} />
+                              View Prescription
+                            </DropdownMenuItem>
+                          )}
                           <DropdownMenuItem
-                            onClick={() => handleViewPrescription(appointment)}
+                            onClick={() => handleDetails(appointment)}
                             className="flex items-center gap-2"
                           >
-                            <FileDown size={16} />
-                            View Prescription
+                            <BiDetail size={16} />
+                            View Details
                           </DropdownMenuItem>
-                        )}
-                        <DropdownMenuItem
-                          onClick={() => handleDetails(appointment)}
-                          className="flex items-center gap-2"
-                        >
-                          <BiDetail size={16} />
-                          View Details
-                        </DropdownMenuItem>
-                        {/* <DropdownMenuItem
-                          disabled={appointment.status === "Prescribed"}
-                          onClick={() =>
-                            handleDeleteAppointment(appointment._id)
-                          }
-                          className="flex items-center gap-2"
-                        >
-                          <Trash size={16} />
-                          Cancel Appointment
-                        </DropdownMenuItem> */}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-        </TableBody>
-      </Table>
+                          {appointment?.status !== "Prescribed" && (
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleDeleteAppointment(appointment._id)
+                              }
+                              className="flex items-center gap-2"
+                            >
+                              <Trash size={16} />
+                              Cancel Appointment
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
 
-      {/* Modal */}
-      {selectedAppointment && (
-        <AppointmentDetailsModal
-          open={openModal}
-          onOpenChange={setOpenModal}
-          appointment={selectedAppointment}
-        />
-      )}
-      {selectedPatient && selectedPrescription && (
-        <PrescriptionViewModal
-          prescription={selectedPrescription}
-          isOpen={isPrescriptionViewModalOpen}
-          onClose={() => setIsPrescriptionViewModalOpen(false)}
-        />
-      )}
+        {/* Modal */}
+        {selectedAppointment && (
+          <AppointmentDetailsModal
+            open={openModal}
+            onOpenChange={setOpenModal}
+            appointment={selectedAppointment}
+          />
+        )}
+        {selectedPatient && selectedPrescription && (
+          <PrescriptionViewModal
+            prescription={selectedPrescription}
+            isOpen={isPrescriptionViewModalOpen}
+            onClose={() => setIsPrescriptionViewModalOpen(false)}
+          />
+        )}
+      </div>
     </div>
   );
 };

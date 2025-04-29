@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import ChatDashboard from "@/components/ChatDashboard/ChatDashboard";
 import { useAuthUser } from "@/redux/auth/authActions";
@@ -7,41 +6,49 @@ import { CalendarIcon, MessagesSquare } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import SkeletonChatDashboard from "@/components/ChatDashboard/SkeletonChatDashboard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDoctorFailure, fetchDoctorStart, fetchDoctorSuccess } from "@/redux/chat/chatSlice";
+import { useEffect } from "react";
 
 const DoctorChat = () => {
   const axiosSecure = useAxiosSecure();
   const user = useAuthUser();
   const currentDate = format(new Date(), "MMMM d, yyyy");
+  const dispatch = useDispatch();
 
-  // Fetch doctor details
-  const {
-    data: doctor,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["doctor", user?.email],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
-      // console.log("Doctor data response:", res.data);
-      return res.data.data;
-    },
-    retry: 1,
-    staleTime: 1000 * 60 * 5,
-  });
+   // Get doctor data from Redux store
+   const { doctor, doctorStatus, doctorError } = useSelector(
+    (state) => state.chats
+  );
 
-  if (isLoading) {
+  // Fetch doctor data
+  useEffect(() => {
+    if (!user?.email) return;
+
+    const fetchDoctorData = async () => {
+      dispatch(fetchDoctorStart());
+      try {
+        const res = await axiosSecure.get(`/users/me?email=${user?.email}`);
+        dispatch(fetchDoctorSuccess(res.data.data));
+      } catch (error) {
+        dispatch(
+          fetchDoctorFailure(error.message || "Failed to fetch doctor data")
+        );
+      }
+    };
+
+    fetchDoctorData();
+  }, [user?.email, dispatch, axiosSecure]);
+
+  if (doctorStatus === "loading") {
     return <SkeletonChatDashboard />;
-  }
+  };
 
-  if (error || !doctor) {
+  if (doctorStatus === "failed" || !doctor) {
     return (
-      <div className="flex justify-center items-center py-20">
-        <span className="text-gray-700 font-semibold">
-          Error: Could not load doctor details
-        </span>
-      </div>
+      <div>Error: {doctorError || "Could not load doctor data."}</div>
     );
-  }
+  };
 
   return (
     <div className="space-y-2 lg:w-full w-11/12 mx-auto">
