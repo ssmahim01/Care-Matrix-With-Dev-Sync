@@ -233,7 +233,7 @@ const MyAppointments = () => {
                   ))}
               </TableRow>
             ))
-            : appointments.reverse()?.map((appointment, index) => (
+            : appointments?.map((appointment, index) => (
               <TableRow key={appointment._id} className="hover:bg-gray-50">
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{appointment.doctorName}</TableCell>
@@ -245,7 +245,7 @@ const MyAppointments = () => {
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-xs p-1 rounded-full ${appointment.status === "pending"
+                      className={`text-xs p-1 rounded-full ${appointment.status === "Approved"
                           ? "bg-yellow-500"
                           : "bg-green-600"
                         } text-white`}
