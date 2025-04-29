@@ -253,10 +253,10 @@ Please ensure your code follows the project’s coding standards and includes ap
 ## 🙌 Acknowledgments
 
 - Thanks to the open-source community for providing the tools and libraries that made this project possible.
-- Special thanks to the contributors who helped improve Care Matrix.
+- Special thanks to the contributors of DevSync Hub who helped improve Care Matrix.
 
 ---
 
 <div align="center">
-  <p>Built with ❤️ <a href="https://github.com/ssmahim01">SS Mahim</a></p>
+  <p>Built by ❤️ <a target="_blank" href="https://github.com/ssmahim01/Care-Matrix-With-Dev-Sync">Team DevSync Hub</a></p>
 </div>
