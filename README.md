@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="/public/care-matrix-ui.png" alt="Care Matrix UI" width="100%" height="340"/>
+  <img src="/public/care-matrix-ui.png" alt="Care Matrix UI" width="100%" height="370"/>
   <h1>🏥 Care Matrix</h1>
   <p>A Comprehensive Hospital Management Application</p>
 
@@ -9,9 +9,6 @@
     </a>
     <a href="https://github.com/ssmahim01/Care-Matrix-Backend">
       <img src="https://img.shields.io/badge/Backend%20Repository-Click%20Here-blue" alt="Backend Repository"/>
-    </a>
-    <a href="https://github.com/ssmahim01/Care-Matrix-With-Dev-Sync/blob/main/LICENSE">
-      <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT"/>
     </a>
   </p>
 </div>
@@ -94,35 +91,73 @@ Here’s a list of key dependencies used in the project:
   "dependencies": {
     "@ag-media/react-pdf-table": "^2.0.1",
     "@hookform/resolvers": "^4.1.3",
-    "@radix-ui/react-*": "Various components",
+    "@radix-ui/react-accordion": "^1.2.3",
+    "@radix-ui/react-alert-dialog": "^1.1.10",
+    "@radix-ui/react-avatar": "^1.1.3",
+    "@radix-ui/react-checkbox": "^1.1.4",
+    "@radix-ui/react-collapsible": "^1.1.3",
+    "@radix-ui/react-dialog": "^1.1.11",
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-navigation-menu": "^1.2.5",
+    "@radix-ui/react-popover": "^1.1.6",
+    "@radix-ui/react-progress": "^1.1.2",
+    "@radix-ui/react-radio-group": "^1.2.3",
+    "@radix-ui/react-scroll-area": "^1.2.4",
+    "@radix-ui/react-select": "^2.1.6",
+    "@radix-ui/react-separator": "^1.1.2",
+    "@radix-ui/react-slot": "^1.2.0",
+    "@radix-ui/react-switch": "^1.1.3",
+    "@radix-ui/react-tabs": "^1.1.3",
+    "@radix-ui/react-tooltip": "^1.1.8",
+    "@react-pdf/renderer": "^4.3.0",
     "@reduxjs/toolkit": "^2.6.1",
     "@smastrom/react-rating": "^1.5.0",
     "@stripe/react-stripe-js": "^3.5.1",
     "@stripe/stripe-js": "^6.1.0",
+    "@tailwindcss/vite": "^4.0.12",
     "@tanstack/react-query": "^5.69.0",
     "axios": "^1.8.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
+    "dom-to-image": "^2.6.0",
     "firebase": "^11.4.0",
     "framer-motion": "^12.5.0",
+    "lodash": "^4.17.21",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.483.0",
+    "moment": "^2.30.1",
+    "next-themes": "^0.4.6",
     "react": "^19.0.0",
+    "react-confetti": "^6.4.0",
+    "react-day-picker": "8.10.1",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
+    "react-router": "^7.3.0",
     "react-router-dom": "^7.3.0",
+    "react-slick": "^0.30.3",
+    "react-to-pdf": "^2.0.0",
+    "react-use": "^17.6.0",
     "recharts": "^2.15.1",
+    "redux": "^5.0.1",
+    "slick-carousel": "^1.8.1",
+    "sonner": "^2.0.3",
     "sweetalert2": "^11.6.13",
     "swiper": "^11.2.5",
-    "tailwindcss": "^4.0.12"
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.12",
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^1.1.2",
+    "xlsx": "^0.18.5",
+    "zod": "^3.24.2"
   }
 }
 ```
-
-For the full list, refer to the `package.json` file.
-
 ---
 
 ## 📥 Installation & Setup
