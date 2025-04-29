@@ -165,7 +165,7 @@ export function NavUser() {
                 }
                 onClick={() => {
                   dispatch(logOut);
-                  navigate("/");
+                  // navigate("/");
                 }}
               >
                 <LogOut className="hover:text-red-500" size={20} />
