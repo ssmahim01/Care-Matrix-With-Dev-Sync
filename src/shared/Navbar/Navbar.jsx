@@ -620,11 +620,11 @@ const Navbar = () => {
                             dispatch(logOut);
                             navigate("/");
                             toast.success("Logged out successfully", {
-                              // description:
-                              //   "You have been securely logged out of your account",
-                              style: {
-                                width: "fit-content",
-                              },
+                              description:
+                                "You have been securely logged out of your account",
+                              // style: {
+                              //   width: "fit-content",
+                              // },
                               position: "top-right",
                               duration: 2000,
                             });
