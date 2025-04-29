@@ -6,29 +6,42 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, Filter, X } from "lucide-react"
-import { toast } from "sonner"
 import ReviewComment from "./ReviewComment"
-import { reviews } from "@/lib/data"
-import { containerVariants,itemVariants } from "@/lib/varients"
+import { containerVariants, itemVariants } from "@/lib/varients"
 import FeaturedReview from "./FeaturedReview"
 import Loader from "@/shared/Loader"
 import PatientReviewHeader from "./PatientReviewHeader"
 import FilterTabsPatient from "./FilterTabsPatient"
 import ReviewsPagination from "./ReviewsPagination"
+import axios from "axios"
+import { toast } from "sonner"
+import { useQuery } from "@tanstack/react-query"
+import { useAuthUser } from "@/redux/auth/authActions"
+import { useNavigate } from "react-router"
 
 export default function PatientReviews() {
+  const user = useAuthUser()
+  const navigate = useNavigate()
+
+  const { data: reviews = [], isLoading, refetch } = useQuery({
+    queryKey: ["reviews"],
+    queryFn: async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/review/all`)
+      setFilteredReviews(data)
+      return data
+    }
+  })
 
   // State management
   const [activeTab, setActiveTab] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedDepartment, setSelectedDepartment] = useState("all")
   const [filteredReviews, setFilteredReviews] = useState(reviews)
-  const [isLoading, setIsLoading] = useState(true)
   const [showReplyForm, setShowReplyForm] = useState(null)
   const [replyText, setReplyText] = useState("")
   const [helpfulReviews, setHelpfulReviews] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
-  const [reviewsPerPage] = useState(3)
+  const [reviewsPerPage] = useState(6)
   const [showLoadMore, setShowLoadMore] = useState(true)
   const [newReview, setNewReview] = useState({
     name: "",
@@ -36,14 +49,8 @@ export default function PatientReviews() {
     rating: 5,
     comment: "",
   })
+  const [reviewDialog, setReviewDialog] = useState(false);
 
-  // Simulate loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
-    return () => clearTimeout(timer)
-  }, [])
 
   // Filter reviews based on search, department, and active tab
   useEffect(() => {
@@ -66,7 +73,9 @@ export default function PatientReviews() {
 
     // Filter by tab
     if (activeTab === "recent") {
-      results = results.filter((review) => new Date(review.date) > new Date("2025-01-01"))
+      results = results
+        .slice() // clone array to avoid mutating original
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
     } else if (activeTab === "highest") {
       results = results.filter((review) => review.rating >= 5)
     }
@@ -82,39 +91,51 @@ export default function PatientReviews() {
   const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage)
 
   // Handle marking a review as helpful
-  const handleHelpful = (reviewId) => {
-    setHelpfulReviews((prev) => {
-      const newState = { ...prev }
-      newState[reviewId] = (newState[reviewId] || 0) + 1
-      return newState
-    })
-  }
+  const handleHelpful = async (reviewId) => {
+    if (!user) return navigate("/login")
+    try {
+      const res = await axios.patch(`${import.meta.env.VITE_API_URL}/review/increase-helpful/${reviewId}`, { userId: user?.email });
+
+      if (res.data?.message) {
+        toast.success("Thanks for your feedback!");
+
+      } else {
+        console.error("Failed to mark as helpful");
+      }
+    } catch (error) {
+      if (error.response.data) return toast.info(error.response.data.message);
+    } finally {
+      refetch()
+    }
+  };
+
+  const featuredReview = filteredReviews.reduce((maxReview, currentReview) => {
+    return (currentReview.helpful > (maxReview?.helpful || 0)) ? currentReview : maxReview;
+  }, null);
+
 
   // Handle submitting a new review
-  const handleSubmitReview = (e) => {
+  const handleSubmitReview = async (e) => {
     e.preventDefault()
+    if (!user) return navigate("/login")
+    const form = e.target
+    const name = form.name.value;
+    const department = form.department.value;
+    const rating = form.rating.value;
+    const comment = form.comment.value;
+    const date = new Date()
 
-    // Create new review with current date
-    const today = new Date()
-    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`
+    const review = { name, department, rating, comment, helpful: 0, date, avatar: user.photoURL };
 
-    const newReviewItem = {
-      ...newReview,
-      date: formattedDate,
-      helpful: 0,
-      id: reviews.length + 1,
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/review/add`, review)
+      if (res.data) return toast.success(res.data.message, { description: "Check the review list" })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      refetch()
+      setReviewDialog(false)
     }
-
-    // Add to reviews array
-    reviews.unshift(newReviewItem)
-
-    // Reset form and refilter
-    setNewReview({
-      name: "",
-      department: "",
-      rating: 5,
-      comment: "",
-    })
 
     // Trigger refiltering
     setActiveTab("all")
@@ -124,12 +145,25 @@ export default function PatientReviews() {
   }
 
   // Handle submitting a reply
-  const handleSubmitReply = (reviewId) => {
-    setShowReplyForm(null)
-    setReplyText("")
+  const handleSubmitReply = async (reviewId) => {
+    if (!user) return navigate("/login")
+    try {
+      const res = await axios.put(`${import.meta.env.VITE_API_URL}/review/comment-review/${reviewId}`, {
+        text: replyText,
+      });
 
-    toast.success(`Reply submitted for review #${reviewId}`)
-  }
+      if (res.data.message) {
+        toast.success(res.data.message || `Reply submitted for review`);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to submit reply");
+    } finally {
+      setReplyText("")
+      setShowReplyForm(null)
+      refetch();
+    }
+  };
 
   // Handle load more
   const handleLoadMore = () => {
@@ -141,14 +175,20 @@ export default function PatientReviews() {
   }
 
 
+  const handleSearch = async (value) => {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/review/search?name=${value}`)
+    setFilteredReviews(res.data)
+  }
+
+
   return (
-    <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl my-10">
+    <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl pt-10 my-10">
       {isLoading ? (
         <Loader />
       ) : (
         <motion.div className="space-y-6" animate="visible" variants={containerVariants}>
           {/* Header Section */}
-          <PatientReviewHeader />
+          <PatientReviewHeader filteredReviews={filteredReviews} />
 
           {/* Search and Filter */}
           <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6" variants={itemVariants}>
@@ -157,8 +197,7 @@ export default function PatientReviews() {
               <Input
                 placeholder="Search reviews..."
                 className="pl-10 border-sky-200 focus:border-sky-400"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
               />
               {searchQuery && (
                 <button
@@ -178,24 +217,26 @@ export default function PatientReviews() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Departments</SelectItem>
-                  <SelectItem value="Cardiology">Cardiology</SelectItem>
-                  <SelectItem value="Orthopedics">Orthopedics</SelectItem>
-                  <SelectItem value="Pediatrics">Pediatrics</SelectItem>
-                  <SelectItem value="Obstetrics">Obstetrics</SelectItem>
-                  <SelectItem value="Emergency">Emergency</SelectItem>
+                  <SelectItem value="cardiology">Cardiology</SelectItem>
+                  <SelectItem value="orthopedics">Orthopedics</SelectItem>
+                  <SelectItem value="pediatrics">Pediatrics</SelectItem>
+                  <SelectItem value="emergency">Emergency</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <ReviewComment 
-              handleSubmitReview={handleSubmitReview} 
-              newReview={newReview} 
-              setNewReview={setNewReview} 
+            <ReviewComment
+              handleSubmitReview={handleSubmitReview}
+              newReview={newReview}
+              setNewReview={setNewReview}
+              setReviewDialog={setReviewDialog}
+              reviewDialog={reviewDialog}
             />
           </motion.div>
 
           {/* Featured Review */}
           <FeaturedReview
+            featuredReview={featuredReview}
             handleHelpful={handleHelpful}
             handleSubmitReply={handleSubmitReply}
             helpfulReviews={helpfulReviews}
@@ -207,27 +248,27 @@ export default function PatientReviews() {
 
 
           {/* Filter Tabs */}
-          <FilterTabsPatient 
-          activeTab={activeTab}
-          currentReviews={currentReviews}
-          handleHelpful={handleHelpful}
-          handleSubmitReply={handleSubmitReply}
-          helpfulReviews={helpfulReviews}
-          replyText={replyText}
-          setActiveTab={setActiveTab}
-          setReplyText={setReplyText}
-          setShowReplyForm={setShowReplyForm}
-          showReplyForm={showReplyForm}
+          <FilterTabsPatient
+            activeTab={activeTab}
+            currentReviews={currentReviews}
+            handleHelpful={handleHelpful}
+            handleSubmitReply={handleSubmitReply}
+            helpfulReviews={helpfulReviews}
+            replyText={replyText}
+            setActiveTab={setActiveTab}
+            setReplyText={setReplyText}
+            setShowReplyForm={setShowReplyForm}
+            showReplyForm={showReplyForm}
           />
 
           {/* Pagination and Load More */}
-          <ReviewsPagination 
-          filteredReviews={filteredReviews}
-          handleLoadMore={handleLoadMore}
-          setCurrentPage={setCurrentPage}
-          showLoadMore={showLoadMore}
-          totalPages={totalPages}
-          currentPage={currentPage}
+          <ReviewsPagination
+            filteredReviews={filteredReviews}
+            handleLoadMore={handleLoadMore}
+            setCurrentPage={setCurrentPage}
+            showLoadMore={showLoadMore}
+            totalPages={totalPages}
+            currentPage={currentPage}
           />
 
           {/* Call to Action */}
@@ -240,7 +281,7 @@ export default function PatientReviews() {
                 </CardDescription>
               </CardHeader>
               <CardFooter>
-                <ReviewComment handleSubmitReview={handleSubmitReview} newReview={newReview} setNewReview={setNewReview} />
+                 
               </CardFooter>
             </Card>
           </motion.div>

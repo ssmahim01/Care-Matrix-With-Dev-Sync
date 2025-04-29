@@ -27,7 +27,7 @@ import AssignUserForm from "./AssignUserForm";
 import { useQuery } from "@tanstack/react-query";
 import AssignDoctorForm from "./AssignDoctorForm";
 import axios from "axios";
-import { Toaster } from "sonner";
+// import { Toaster } from "sonner";
 
 const AssignUsers = () => {
   const [page, setPage] = useState(1);
@@ -68,7 +68,7 @@ const AssignUsers = () => {
 
   return (
     <div className="px-5">
-      <Toaster />
+      {/* <Toaster /> */}
 
       <DashboardPagesHeader
         title={"Assign New Users"}

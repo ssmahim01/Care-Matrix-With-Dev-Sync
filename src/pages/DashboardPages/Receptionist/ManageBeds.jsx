@@ -64,7 +64,7 @@ function ManageBeds() {
   };
 
   // Handle bed deletion
-  const handleBedDelete = (id) => {
+  const handleBedDelete = async(id) => {
     toast(
       (t) => (
         <div className="flex gap-3 items-center">
