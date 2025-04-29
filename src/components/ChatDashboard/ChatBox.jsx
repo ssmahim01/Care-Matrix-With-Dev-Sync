@@ -83,7 +83,7 @@ const ChatBox = ({
                 align="end"
               >
                 <Card>
-                  <figure className="p-2 h-52 shadow-sm">
+                  <figure className="p-2 h-44 shadow-sm">
                     <img
                       className="w-full h-full rounded-md object-cover border"
                       referrerPolicy="no-referrer"
