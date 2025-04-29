@@ -204,7 +204,7 @@ const Cart = () => {
   const options = clientSecret ? { clientSecret, appearance } : null;
 
   return (
-    <div className="w-full flex flex-col gap-8 md:gap-0 md:flex-row px-7">
+    <div className="w-full flex flex-col gap-8 md:gap-0 md:flex-row px-5">
       {/* Left Column - Order Summary */}
       <div className="bg-gray-50 rounded-md p-4 md:p-8 flex-1">
         <div>

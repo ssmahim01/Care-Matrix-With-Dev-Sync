@@ -136,7 +136,7 @@ export default function SalesReport() {
 
   return (
     <div>
-      <main className="flex flex-1 flex-col gap-4 px-7 md:gap-8">
+      <main className="flex flex-1 flex-col gap-4 px-5 md:gap-8">
         {/* Sales Report Header */}
         <SalesReportHeader
           handleDownload={handleDownload}

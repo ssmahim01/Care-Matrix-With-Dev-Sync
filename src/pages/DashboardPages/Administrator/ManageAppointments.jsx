@@ -26,74 +26,79 @@ import {
 } from "@/components/ui/dropdown-menu";
 import AppointmentDetailsModal from '@/components/Modal/AppointmentDetailsModal ';
 import toast from 'react-hot-toast';
+import { IoIosSearch } from 'react-icons/io';
 
 const ManageAppointments = () => {
     const axiosSecure = useAxiosSecure();
     const [sortDate, setSortDate] = useState('');
+    const [search, setSearch] = useState("")
+    const [category, setCategory] = useState("")
     const [showSkeleton, setShowSkeleton] = useState(true);
     const [openModal, setOpenModal] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [selectedSort, setSelectedSort] = useState("")
-    const [appointments, refetch, isLoading] = useAppointment(sortDate);
+    const [appointments, refetch, isLoading] = useAppointment(sortDate, search, category);
 
     useEffect(() => {
         const timer = setTimeout(() => setShowSkeleton(false), 2000);
         return () => clearTimeout(timer);
     }, []);
 
-    const handleDeleteAppointment = (_id) => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axiosSecure
-                    .delete(`/appointments/${_id}`)
-                    .then((res) => {
-                        if (res.data.deletedCount > 0) {
-                            refetch();
-                            Swal.fire("Deleted!", "Appointment has been canceled.", "success");
-                        }
-                    })
-                    .catch((err) => {
-                        Swal.fire("Error!", "Appointment has not been canceled.", "error");
-                    });
-            }
-        });
-    };
+     // delete appointment
+    // const handleDeleteAppointment = (_id) => {
+    //     Swal.fire({
+    //         title: "Are you sure?",
+    //         text: "You won't be able to revert this!",
+    //         icon: "warning",
+    //         showCancelButton: true,
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "Yes, delete it!",
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             axiosSecure
+    //                 .delete(`/appointments/${_id}`)
+    //                 .then((res) => {
+    //                     if (res.data.deletedCount > 0) {
+    //                         refetch();
+    //                         Swal.fire("Deleted!", "Appointment has been canceled.", "success");
+    //                     }
+    //                 })
+    //                 .catch((err) => {
+    //                     Swal.fire("Error!", "Appointment has not been canceled.", "error");
+    //                 });
+    //         }
+    //     });
+    // };
 
     const handleDetails = (appointment) => {
         setSelectedAppointment(appointment);
         setOpenModal(true);
     };
 
-    const handleChangeAppointmentStatus = (appointment) => {
-        // console.log(appointment);
-        axiosSecure.patch(`appointments/${appointment._id}`)
-            .then(res => {
-                // console.log(res);
-                if (res.data.result.modifiedCount > 0) {
-                    refetch()
-                    if (res.data.result.message === "approved") {
-                        toast.success("Appointment approved successful.")
-                    } else {
-                        toast.success("Appointment make pending successful.")
-                    }
+    // change status 
+    // const handleChangeAppointmentStatus = (appointment) => {
+    //     // console.log(appointment);
+    //     axiosSecure.patch(`appointments/${appointment._id}`)
+    //         .then(res => {
+    //             // console.log(res);
+    //             if (res.data.result.modifiedCount > 0) {
+    //                 refetch()
+    //                 if (res.data.result.message === "approved") {
+    //                     toast.success("Appointment approved successful.")
+    //                 } else {
+    //                     toast.success("Appointment make pending successful.")
+    //                 }
 
-                }
-            })
+    //             }
+    //         })
 
-            .catch(err => {
-                // console.log(err);
-                toast.err("Something went wrong try again.")
+    //         .catch(err => {
+    //             // console.log(err);
+    //             toast.err("Something went wrong try again.")
 
-            })
-    }
+    //         })
+    // }
 
 
     const handleSortByDate = (value) => {
@@ -109,22 +114,49 @@ const ManageAppointments = () => {
                     icon={ClipboardPlus}
                 />
 
-                {/* Sort Controls */}
-                <div className="flex gap-4 mb-6 items-center flex-wrap">
-                    <Select value={selectedSort} onValueChange={(value) => {
-                        handleSortByDate(value);
-                        setSelectedSort(value);
-                    }}>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Sort By" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="desc">Date (Ascending)</SelectItem>
-                            <SelectItem value="asc">Date (Descending)</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); }}>Reset</Button>
+            </div>
+            <div className="flex gap-4 mb-6 items-center flex-wrap">
+
+                {/* Searchbar */}
+                <div className="relative w-full flex xl:flex-1">
+                    <input
+                        className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
+                        placeholder="Search with patient or doctor name..."
+                        onChange={(e) => setSearch(e.target.value)}
+                        value={search}
+                    />
+                    <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
                 </div>
+
+                {/* Sort category  */}
+                <Select value={category} onValueChange={(value) => {
+                    setCategory(value)
+                }}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Categories " />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All</SelectItem>
+                        <SelectItem value="upcoming">Upcoming</SelectItem>
+                        <SelectItem value="past">Past</SelectItem>
+                    </SelectContent>
+                </Select>
+
+                {/* Sort Controls */}
+                <Select value={selectedSort} onValueChange={(value) => {
+                    handleSortByDate(value)
+                    setSelectedSort(value)
+                }}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Sort By " />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="asc">Date (Newest to oldest)</SelectItem>
+                        <SelectItem value="desc">Date (Oldest to newest)</SelectItem>
+                    </SelectContent>
+                </Select>
+
+                <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); setSearch(""); setCategory("") }}>Reset</Button>
             </div>
 
             {/* Table */}

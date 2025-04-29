@@ -98,7 +98,7 @@ const AllDoctors = () => {
   }, [availabilityModal, form]);
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       <div className="flex flex-col">
         {/* Heading of the Table */}
         <DashboardPagesHeader

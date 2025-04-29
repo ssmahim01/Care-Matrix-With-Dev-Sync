@@ -34,13 +34,18 @@ import {
 import { FileDown } from "lucide-react";
 import { PrescriptionViewModal } from "@/components/ManagePrescription/PrescriptionViewModal";
 import toast from "react-hot-toast";
+import { IoIosSearch } from "react-icons/io";
 
 const MyAppointments = () => {
   const [sortDate, setSortDate] = useState("");
+  const [search, setSearch] = useState("")
+  const [category, setCategory] = useState("")
   const [selectedSort, setSelectedSort] = useState("");
-  const [appointments, refetch, isLoading] = useMyAppointments(sortDate);
+  const [appointments, refetch, isLoading] = useMyAppointments(sortDate, search, category);
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
+
+  console.log(category, search);
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -48,7 +53,7 @@ const MyAppointments = () => {
     useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null)
   const [selectedPrescription, setSelectedPrescription] = useState(null);
-console.log(appointments);
+  console.log(appointments);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSkeleton(false);
@@ -122,7 +127,7 @@ console.log(appointments);
         />
 
         {/* Sort Controls */}
-        <div className="flex gap-4 mb-6 items-center flex-wrap">
+        {/* <div className="flex gap-4 mb-6 items-center flex-wrap">
           <Select
             value={selectedSort}
             onValueChange={(value) => {
@@ -148,7 +153,52 @@ console.log(appointments);
           >
             Reset
           </Button>
+        </div> */}
+
+
+      </div>
+      <div className="flex gap-4 mb-6 items-center flex-wrap">
+
+        {/* Searchbar */}
+        <div className="relative w-full flex xl:flex-1">
+          <input
+            className="px-4 py-[5.3px] border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
+            placeholder="Search with patient or doctor name..."
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
+          />
+          <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
         </div>
+
+        {/* Sort category  */}
+        <Select value={category} onValueChange={(value) => {
+          setCategory(value)
+        }}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Categories " />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="upcoming">Upcoming</SelectItem>
+            <SelectItem value="past">Past</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* Sort Controls */}
+        <Select value={selectedSort} onValueChange={(value) => {
+          handleSortByDate(value)
+          setSelectedSort(value)
+        }}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Sort By " />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="asc">Date (Newest to oldest)</SelectItem>
+            <SelectItem value="desc">Date (Oldest to newest)</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); setSearch(""); setCategory("") }}>Reset</Button>
       </div>
 
       {/* Table */}
@@ -173,80 +223,83 @@ console.log(appointments);
         <TableBody>
           {isLoading || showSkeleton
             ? [...Array(9)].map((_, idx) => (
-                <TableRow key={idx} className="animate-pulse">
-                  {Array(9)
-                    .fill()
-                    .map((_, i) => (
-                      <TableCell key={i}>
-                        <div className="skeleton h-6 w-full max-w-[100px] rounded-md"></div>
-                      </TableCell>
-                    ))}
-                </TableRow>
-              ))
+              <TableRow key={idx} className="animate-pulse">
+                {Array(9)
+                  .fill()
+                  .map((_, i) => (
+                    <TableCell key={i}>
+                      <div className="skeleton h-6 w-full max-w-[100px] rounded-md"></div>
+                    </TableCell>
+                  ))}
+              </TableRow>
+            ))
             : appointments.reverse()?.map((appointment, index) => (
-                <TableRow key={appointment._id} className="hover:bg-gray-50">
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{appointment.doctorName}</TableCell>
-                  <TableCell>{appointment.name}</TableCell>
-                  <TableCell>{appointment.age}</TableCell>
-                  <TableCell>{appointment.phone}</TableCell>
-                  <TableCell>{appointment.email}</TableCell>
-                  <TableCell>{appointment.date}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`text-xs p-1 rounded-full ${
-                          appointment.status === "pending"
-                            ? "bg-yellow-500"
-                            : "bg-green-600"
+              <TableRow key={appointment._id} className="hover:bg-gray-50">
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{appointment.doctorName}</TableCell>
+                <TableCell>{appointment.name}</TableCell>
+                <TableCell>{appointment.age}</TableCell>
+                <TableCell>{appointment.phone}</TableCell>
+                <TableCell>{appointment.email}</TableCell>
+                <TableCell>{appointment.date}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`text-xs p-1 rounded-full ${appointment.status === "pending"
+                          ? "bg-yellow-500"
+                          : "bg-green-600"
                         } text-white`}
-                      >
-                        <FaCircle size={7} />
-                      </span>
-                      <span className="capitalize text-sm font-medium text-gray-700">
-                        {appointment.status}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreVertical className="h-5 w-5 text-foreground" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        {appointment?.status === "Prescribed" && (
-                          <DropdownMenuItem
-                            onClick={() => handleViewPrescription(appointment)}
-                            className="flex items-center gap-2"
-                          >
-                            <FileDown size={16} />
-                            View Prescription
-                          </DropdownMenuItem>
-                        )}
+                    >
+                      <FaCircle size={7} />
+                    </span>
+                    <span className="capitalize text-sm font-medium text-gray-700">
+                      {appointment.status}
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <MoreVertical className="h-5 w-5 text-foreground" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {appointment?.status === "Prescribed" && (
                         <DropdownMenuItem
-                          onClick={() => handleDetails(appointment)}
+                          onClick={() => handleViewPrescription(appointment)}
                           className="flex items-center gap-2"
                         >
-                          <BiDetail size={16} />
-                          View Details
+                          <FileDown size={16} />
+                          View Prescription
                         </DropdownMenuItem>
-                        {/* <DropdownMenuItem
-                          disabled={appointment.status === "Prescribed"}
-                          onClick={() =>
-                            handleDeleteAppointment(appointment._id)
-                          }
-                          className="flex items-center gap-2"
-                        >
-                          <Trash size={16} />
-                          Cancel Appointment
-                        </DropdownMenuItem> */}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
+                      )}
+                      <DropdownMenuItem
+                        onClick={() => handleDetails(appointment)}
+                        className="flex items-center gap-2"
+                      >
+                        <BiDetail size={16} />
+                        View Details
+                      </DropdownMenuItem>
+                      {
+                        appointment?.status !== "Prescribed" &&
+                        <DropdownMenuItem
+                        
+                        onClick={() =>
+                          handleDeleteAppointment(appointment._id)
+                        }
+                        className="flex items-center gap-2"
+                      >
+                        <Trash size={16} />
+                        Cancel Appointment
+                      </DropdownMenuItem>
+                      }
+                     
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
 

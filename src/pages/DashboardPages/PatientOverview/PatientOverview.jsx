@@ -65,7 +65,7 @@ const PatientOverview = () => {
   }
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       {/* Overview Cards */}
       <OverviewCards
         bedBookings={patientStats?.bedBookings}
