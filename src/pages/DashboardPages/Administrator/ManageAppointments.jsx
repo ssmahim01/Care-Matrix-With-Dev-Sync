@@ -245,13 +245,13 @@ const ManageAppointments = () => {
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
-                                            <DropdownMenuItem
+                                            {/* <DropdownMenuItem
                                                 onClick={() => handleChangeAppointmentStatus(appointment)}
                                                 className="flex items-center gap-2"
                                             >
                                                 <ClipboardPlus size={16} />
                                                 {appointment?.status === "pending" ? "Confirm Appointment" : "Make Pending Appointment"}
-                                            </DropdownMenuItem>
+                                            </DropdownMenuItem> */}
 
                                             <DropdownMenuItem
                                                 onClick={() => handleDetails(appointment)}
@@ -260,13 +260,13 @@ const ManageAppointments = () => {
                                                 <BiDetail size={16} />
                                                 View Details
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem
+                                            {/* <DropdownMenuItem
                                                 onClick={() => handleDeleteAppointment(appointment._id)}
                                                 className="flex items-center gap-2"
                                             >
                                                 <Trash size={16} />
                                                 Cancel Appointment
-                                            </DropdownMenuItem>
+                                            </DropdownMenuItem> */}
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </TableCell>
