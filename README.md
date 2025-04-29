@@ -1,78 +1,95 @@
+<div align="center">
+  <img src="/public/care-matrix-ui.png" alt="Care Matrix UI" width="100%" height="340"/>
+  <h1>🏥 Care Matrix</h1>
+  <p>A Comprehensive Hospital Management Application</p>
 
-  
-  🏥 Care Matrix
-  A Comprehensive Hospital Management Application
+  <p>
+    <a href="https://care-matrix.web.app">
+      <img src="https://img.shields.io/badge/Live%20Demo-Care%20Matrix-brightgreen" alt="Live Demo"/>
+    </a>
+    <a href="https://github.com/ssmahim01/Care-Matrix-Backend">
+      <img src="https://img.shields.io/badge/Backend%20Repository-Click%20Here-blue" alt="Backend Repository"/>
+    </a>
+    <a href="https://github.com/ssmahim01/Care-Matrix-With-Dev-Sync/blob/main/LICENSE">
+      <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT"/>
+    </a>
+  </p>
+</div>
 
-  
-    
-      
-    
-    
-      
-    
-    
-      
-    
-  
+---
 
+## 📖 Overview
 
+**Care Matrix** is a robust hospital management system designed to digitize and streamline hospital operations, enhance patient care, and improve operational efficiency. It facilitates seamless coordination among medical professionals, administrators, receptionists, pharmacists, and patients, ensuring optimal healthcare delivery through an intuitive and modern platform.
 
-📖 Overview
-Care Matrix is a robust hospital management system designed to digitize and streamline hospital operations, enhance patient care, and improve operational efficiency. It facilitates seamless coordination among medical professionals, administrators, receptionists, pharmacists, and patients, ensuring optimal healthcare delivery through an intuitive and modern platform.
+---
 
-🛠️ Technologies Used
-Frontend
+## 🛠️ Technologies Used
 
-React - JavaScript library for building user interfaces
-Redux Toolkit - State management
-Tailwind CSS - Utility-first CSS framework
-Daisy UI - Tailwind CSS component library
-Shadcn UI - Accessible UI components
-Stripe - Payment integration
+### Frontend
+- **React** - JavaScript library for building user interfaces
+- **Redux Toolkit** - State management
+- **Tailwind CSS** - Utility-first CSS framework
+- **Daisy UI** - Tailwind CSS component library
+- **Shadcn UI** - Accessible UI components
+- **Stripe** - Payment integration
 
-Backend
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web framework for Node.js
+- **MongoDB** - NoSQL database
 
-Node.js - JavaScript runtime
-Express.js - Web framework for Node.js
-MongoDB - NoSQL database
+### Additional Tools
+- **Firebase Authentication** - Secure user authentication
+- **React Router** - Client-side routing
+- **Lottie React** & **Framer Motion** - Animations
+- **Firebase** - Frontend hosting
+- **Vercel** - Backend hosting
 
-Additional Tools
+---
 
-Firebase Authentication - Secure user authentication
-React Router - Client-side routing
-Lottie React & Framer Motion - Animations
-Firebase - Frontend hosting
-Vercel - Backend hosting
+## 🚀 Core Features
 
+- **Smart Wait-Time Prediction System**  
+  Utilizes advanced algorithms to estimate real-time waiting times, improving patient experience and reducing congestion.
 
-🚀 Core Features
+- **Manage Medical Records**  
+  Securely stores and manages patient data, prescriptions, and medical history, accessible by both doctors and patients.
 
-Smart Wait-Time Prediction SystemUtilizes advanced algorithms to estimate real-time waiting times, improving patient experience and reducing congestion.
+- **Chat-Activated Dashboard**  
+  Enables real-time communication between users for better collaboration, including patient consultations with doctors and pharmacists.
 
-Manage Medical RecordsSecurely stores and manages patient data, prescriptions, and medical history, accessible by both doctors and patients.
+- **Billing & Payment System**  
+  Automates billing with Stripe integration for seamless online transactions, with status updates managed by receptionists.
 
-Chat-Activated DashboardEnables real-time communication between users for better collaboration, including patient consultations with doctors and pharmacists.
+- **Real-Time Bed Availability**  
+  Tracks and manages hospital bed occupancy in real-time, allowing efficient bed allocation.
 
-Billing & Payment SystemAutomates billing with Stripe integration for seamless online transactions, with status updates managed by receptionists.
+- **Pharmacy & Inventory Management**  
+  Monitors medicine stock and medical supplies with restocking alerts for pharmacists.
 
-Real-Time Bed AvailabilityTracks and manages hospital bed occupancy in real-time, allowing efficient bed allocation.
+- **Emergency Services Coordination**  
+  Provides quick access to emergency contacts, ambulance booking, and urgent care scheduling.
 
-Pharmacy & Inventory ManagementMonitors medicine stock and medical supplies with restocking alerts for pharmacists.
+- **Doctors Management**  
+  A dashboard for administrators to manage doctors’ schedules and availability.
 
-Emergency Services CoordinationProvides quick access to emergency contacts, ambulance booking, and urgent care scheduling.
+- **Patient Health Gamification & Rewards System**  
+  Encourages healthy habits with rewards for regular check-ups and medication adherence.
 
-Doctors ManagementA dashboard for administrators to manage doctors’ schedules and availability.
+- **Medicine Add To Cart & Checkout System**  
+  Allows patients to browse, add medicines to their cart, and checkout with dynamic cost updates.
 
-Patient Health Gamification & Rewards SystemEncourages healthy habits with rewards for regular check-ups and medication adherence.
+- **Purchase History Tracking**  
+  Enables patients to view and download their medicine purchase history as PDF invoices.
 
-Medicine Add To Cart & Checkout SystemAllows patients to browse, add medicines to their cart, and checkout with dynamic cost updates.
+---
 
-Purchase History TrackingEnables patients to view and download their medicine purchase history as PDF invoices.
+## 📦 Dependencies
 
-
-
-📦 Dependencies
 Here’s a list of key dependencies used in the project:
+
+```json
 {
   "dependencies": {
     "@ag-media/react-pdf-table": "^2.0.1",
@@ -102,115 +119,109 @@ Here’s a list of key dependencies used in the project:
     "tailwindcss": "^4.0.12"
   }
 }
+```
 
-For the full list, refer to the package.json file.
+For the full list, refer to the `package.json` file.
 
-📥 Installation & Setup
+---
+
+## 📥 Installation & Setup
+
 Follow these steps to set up the project locally:
-1. Clone the Repository
+
+### 1. Clone the Repository
+```bash
 git clone https://github.com/ssmahim01/Care-Matrix-With-Dev-Sync.git
 cd Care-Matrix-With-Dev-Sync
+```
 
-2. Install Dependencies
+### 2. Install Dependencies
+```bash
 npm install
+```
 
-3. Configure Environment Variables
-Create a .env.local file in the root directory and add the necessary environment variables (e.g., Firebase config, Stripe keys, ImgBB API key). Example:
-VITE_FIREBASE_API_KEY=your-firebase-api-key
-VITE_STRIPE_PUBLISHABLE_KEY=your-stripe-key
-VITE_IMGBB_API_KEY=your-imgbb-key
+### 3. Configure Environment Variables
+Create a `.env.local` file in the root directory and add the necessary environment variables. Example:
 
+```env
+VITE_apiKey=Provide-firebase-api-key
+VITE_authDomain=Provide-firebase-authDomain
+VITE_projectId=Provide-firebase-projectId
+VITE_storageBucket=Provide-firebase-storageBucket
+VITE_messagingSenderId=Provide-firebase-messagingSenderId
+VITE_appId=Provide-firebase-appId
+VITE_API_URL=Provide-backend-url
+VITE_IMGBB_API_URL=Provide-imgbb-key
+VITE_STRIPE_PUBLISHABLE_KEY=Provide-stripe-key
+```
 
-🏃 Running the Project Locally
+---
+
+## 🏃 Running the Project Locally
+
 To run the project locally:
+
+```bash
 npm run dev
+```
 
+- The development server will start at:  
+  🌐 **`http://localhost:5173`**
 
-The development server will start at:🌐 http://localhost:5173
+For backend setup instructions, visit the [Backend Repository](https://github.com/ssmahim01/Care-Matrix-Backend).
 
-For backend setup instructions, visit the Backend Repository.
+---
 
-📚 Key npm Packages
+## 📚 Key npm Packages
 
+| Package               | Purpose                          | Documentation                                      |
+|-----------------------|----------------------------------|----------------------------------------------------|
+| **react-pdf-table**   | Generate PDF tables             | [Docs](https://www.npmjs.com/package/@ag-media/react-pdf-table) |
+| **lottie-react**      | Animations with Lottie          | [Docs](https://www.npmjs.com/package/lottie-react) |
+| **react-hook-form**   | Form handling                   | [Docs](https://react-hook-form.com)                |
+| **react-icons**       | Icon library                    | [Docs](https://react-icons.github.io/react-icons)  |
+| **sweetalert2**       | Customizable alerts             | [Docs](https://sweetalert2.github.io)              |
+| **swiper**            | Touch-enabled sliders           | [Docs](https://swiperjs.com)                       |
+| **lucide-react**      | Icon library                    | [Docs](https://lucide.dev/guide/packages/lucide-react) |
+| **recharts**          | Data visualization              | [Docs](https://recharts.org/en-US)                 |
+| **react-hot-toast**   | Toast notifications             | [Docs](https://react-hot-toast.com)                |
 
+---
 
-Package
-Purpose
-Documentation
+## 🛠️ Development Setup (React + Vite)
 
+This project uses **React** with **Vite** for a fast development experience, including Hot Module Replacement (HMR) and ESLint rules.
 
+### Available Vite Plugins
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) - Uses Babel for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) - Uses SWC for Fast Refresh
 
-react-pdf-table
-Generate PDF tables
-Docs
+### ESLint Configuration
+For production applications, consider enhancing the ESLint setup with TypeScript and type-aware lint rules. Check out the [React + TypeScript Vite template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io).
 
+---
 
-lottie-react
-Animations with Lottie
-Docs
+## 🤝 Contributing
 
-
-react-hook-form
-Form handling
-Docs
-
-
-react-icons
-Icon library
-Docs
-
-
-sweetalert2
-Customizable alerts
-Docs
-
-
-swiper
-Touch-enabled sliders
-Docs
-
-
-lucide-react
-Icon library
-Docs
-
-
-recharts
-Data visualization
-Docs
-
-
-react-hot-toast
-Toast notifications
-Docs
-
-
-
-🛠️ Development Setup (React + Vite)
-This project uses React with Vite for a fast development experience, including Hot Module Replacement (HMR) and ESLint rules.
-Available Vite Plugins
-
-@vitejs/plugin-react - Uses Babel for Fast Refresh
-@vitejs/plugin-react-swc - Uses SWC for Fast Refresh
-
-ESLint Configuration
-For production applications, consider enhancing the ESLint setup with TypeScript and type-aware lint rules. Check out the React + TypeScript Vite template to integrate TypeScript and typescript-eslint.
-
-🤝 Contributing
 Contributions are welcome! To contribute to Care Matrix:
 
-Fork the repository.
-Create a new branch (git checkout -b feature/YourFeature).
-Make your changes and commit (git commit -m "Add YourFeature").
-Push to your branch (git push origin feature/YourFeature).
-Open a Pull Request.
+1. Clone the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes and commit (`git commit -m "Add YourFeature"`).
+4. Push to your branch (`git push origin feature/YourFeature`).
+5. Open a Pull Request.
 
 Please ensure your code follows the project’s coding standards and includes appropriate tests.
 
-📜 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+---
 
-🙌 Acknowledgments
+## 🙌 Acknowledgments
 
-Thanks to the open-source community for providing the tools and libraries that made this project possible.
-Special thanks to the contributors and testers who helped improve Care Matrix.
+- Thanks to the open-source community for providing the tools and libraries that made this project possible.
+- Special thanks to the contributors who helped improve Care Matrix.
+
+---
+
+<div align="center">
+  <p>Built with ❤️ <a href="https://github.com/ssmahim01">SS Mahim</a></p>
+</div>
