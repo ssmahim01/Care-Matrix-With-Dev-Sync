@@ -4,10 +4,10 @@
   <p>A Comprehensive Hospital Management Application</p>
 
   <p>
-    <a href="https://care-matrix.web.app">
+    <a target="_blank" href="https://care-matrix.web.app">
       <img src="https://img.shields.io/badge/Live%20Demo-Care%20Matrix-brightgreen" alt="Live Demo"/>
     </a>
-    <a href="https://github.com/ssmahim01/Care-Matrix-Backend">
+    <a target="_blank" href="https://github.com/ssmahim01/Care-Matrix-Backend">
       <img src="https://img.shields.io/badge/Backend%20Repository-Click%20Here-blue" alt="Backend Repository"/>
     </a>
   </p>
@@ -174,7 +174,8 @@ cd Care-Matrix-With-Dev-Sync
 ```bash
 npm install
 ```
-or <br>
+### Or 
+<br>
 
 ```bash
 bun install
