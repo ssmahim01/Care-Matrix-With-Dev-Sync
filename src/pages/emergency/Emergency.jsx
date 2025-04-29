@@ -92,14 +92,7 @@ export default function Emergency() {
       return data
     }
   })
-  // {
-  //   id: "AMB-001",
-  //   status: "En Route",
-  //   patient: "Maria Garcia",
-  //   destination: "Main Hospital",
-  //   eta: "5 min",
-  //   dispatchTime: "11:20 AM",
-  // },
+
   const [ambulances, setAmbulances] = useState(ambulance)
 
   const { data: triage = [] } = useQuery({
@@ -110,6 +103,7 @@ export default function Emergency() {
       return data
     }
   })
+
   const [activeEmergencies, setActiveEmergencies] = useState(triage)
 
   const { data = [] } = useQuery({
@@ -340,9 +334,11 @@ export default function Emergency() {
               </ScrollArea>
             </CardContent>
             <CardFooter className="border-t p-4 bg-muted/40">
+              <Link to={"/emergency/triage"}>
               <Button variant="outline" className="w-full">
-                View All Alerts
+                View All Emergency
               </Button>
+              </Link>
             </CardFooter>
           </Card>
         </TabsContent>

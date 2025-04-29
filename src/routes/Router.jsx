@@ -70,6 +70,7 @@ import DoctorOverview from "@/pages/Doctors/DoctorOverview/DoctorOverview";
 import DoctorBillingHistory from "@/pages/Doctors/DoctorBillingHistory/DoctorBillingHistory";
 import PatientChat from "@/pages/Patient/PatientChat/PatientChat";
 import DoctorChat from "@/pages/Doctors/DoctorsChat/DoctorChat";
+import PatientReviews from "@/pages/Home/Patient_Reviews/PatientReviews";
 import PharmacistChat from "@/pages/DashboardPages/Pharmacist/PharmacistChat/PharmacistChat";
 import ManageBlogs from "@/pages/DashboardPages/ManageBlogs/ManageBlogs";
 import BlogDetails from "@/pages/Home/Blogs_and_News/BlogDetails";
@@ -150,6 +151,7 @@ const Router = () => {
           }
         />
         <Route path="available-beds" element={<BedPage />} />
+        <Route path="patient-reviews" element={<PatientReviews />} />
         <Route path="departments/:department" element={<Departments />} />
       </Route>
 
