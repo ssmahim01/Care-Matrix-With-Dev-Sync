@@ -6,7 +6,7 @@ import { Users } from "lucide-react";
 
 const StuffManagement = () => {
   return (
-    <div className="px-7">
+    <div className="px-5">
       <DashboardPagesHeader
         title={"Manage-Users"}
         subtitle={
