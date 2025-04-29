@@ -67,7 +67,7 @@ const AssignUsers = () => {
   if (error) return "Error While Fetching Data";
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       {/* <Toaster /> */}
 
       <DashboardPagesHeader

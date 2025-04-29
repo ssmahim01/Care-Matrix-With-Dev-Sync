@@ -32,7 +32,7 @@ const RevenueInsights = () => {
   if (error) return toast.error("Error While Fetching Data!");
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       <RevenueInsightsHeader />
       {/* Main Tab Contents */}
       <Tabs defaultValue="overview" className="space-y-4 mt-8">

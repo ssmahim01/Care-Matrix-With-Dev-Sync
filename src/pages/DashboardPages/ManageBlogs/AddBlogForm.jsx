@@ -191,7 +191,7 @@ function AddBlogForm({ refetch, setIsFormOpen }) {
                                
                                 <Button>
                                     <span
-                                        className="text-red-500 cursor-pointer"
+                                        className="cursor-pointer"
                                         onClick={() => {
                                             setPreview("");
                                             setImage(null);
