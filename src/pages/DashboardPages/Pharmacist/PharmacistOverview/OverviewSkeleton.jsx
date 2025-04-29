@@ -3,7 +3,7 @@ import TabContentSkeleton from "../SalesReport/Skeleton/TabContentSkeleton";
 
 const OverviewSkeleton = () => {
   return (
-    <div className="px-7">
+    <div className="px-5">
       {/* Overview Cards */}
       <div>
         <OverviewCardsSkeleton />

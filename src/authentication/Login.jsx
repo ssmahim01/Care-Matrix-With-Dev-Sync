@@ -9,7 +9,7 @@ import NavigateTo from "./NavigateTo";
 import SocialLogin from "./SocialLogin";
 import { useNavigate } from "react-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useAuthUser } from "@/redux/auth/authActions";
+import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import auth from "@/firebase/firebase.config";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -19,6 +19,7 @@ import { toast } from "sonner";
 const Login = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
+  const authLoading = useAuthLoading();
 
   // states for email & password
   const [email, setEmail] = useState("");
@@ -58,33 +59,30 @@ const Login = () => {
         }
       );
 
+      toast.dismiss(loadingToast);
       if (response?.data?.message === "Login successful") {
         signInWithEmailAndPassword(auth, email, password).then(
           async (result) => {
             const user = result.user;
             if (user) {
+              // navigate & show success toast
+              navigate("/");
+              toast.success("Login Successful!", {
+                description:
+                  "Welcome back! You have successfully logged into your account",
+                duration: 3000,
+                position: "top-right",
+                style: {
+                  marginTop: "20px",
+                },
+              });
+
               // Optionally update last login time
               await axios.patch(
                 `${import.meta.env.VITE_API_URL}/users/last-login-at/${email}`,
                 { lastLoginAt: new Date().toISOString() }
               );
 
-              toast.dismiss(loadingToast);
-              toast.success("Login Successful!", {
-                description:
-                  "Welcome back! You have successfully logged into your account",
-                action: {
-                  label: "Dashboard",
-                  onClick: () => {
-                    navigate("/dashboard/profile");
-                  },
-                },
-                duration: 4000,
-                position: "top-right",
-                style: {
-                  marginTop: "20px",
-                },
-              });
               setLoading(false);
             }
           }
@@ -113,7 +111,7 @@ const Login = () => {
     }
   };
 
-  if (user) return navigate("/");
+  if (user && authLoading) return navigate("/");
 
   return (
     <div className="bg-blue-100/20">
