@@ -35,9 +35,6 @@ import { FileDown } from "lucide-react";
 import { PrescriptionViewModal } from "@/components/ManagePrescription/PrescriptionViewModal";
 import toast from "react-hot-toast";
 import { IoIosSearch } from "react-icons/io";
-import { Badge } from "@/components/ui/badge";
-import ReviewComment from "@/pages/Home/Patient_Reviews/ReviewComment";
-import { useAuthUser } from "@/redux/auth/authActions";
 
 const MyAppointments = () => {
   const [sortDate, setSortDate] = useState("");
@@ -47,14 +44,6 @@ const MyAppointments = () => {
   const [appointments, refetch, isLoading] = useMyAppointments(sortDate, search, category);
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
-  const [newReview, setNewReview] = useState({
-    name: "",
-    department: "",
-    rating: 5,
-    comment: "",
-  })
-  const [reviewDialog, setReviewDialog] = useState(false);
-  const user = useAuthUser()
 
   console.log(category, search);
 
@@ -125,30 +114,6 @@ const MyAppointments = () => {
       toast.error("No prescriptions found for this patient");
     }
   };
-
-    // Handle submitting a new review
-    const handleSubmitReview = async (e) => {
-      e.preventDefault()
-      const form = e.target
-      const name = form.name.value;
-      const department = form.department.value;
-      const rating = form.rating.value;
-      const comment = form.comment.value;
-      const date = new Date()
-  
-      const review = { name, department, rating, comment, helpful: 0, date, avatar: user.photoURL };
-  
-      try {
-        const res = await axios.post(`${import.meta.env.VITE_API_URL}/review/add`, review)
-        if (res.data) return ShadCnToast.success(res.data.message, { description: "Check the review list" })
-      } catch (error) {
-        console.log(error)
-      } finally {
-        refetch()
-        setReviewDialog(false)
-      }
-  
-    }
 
   return (
     <div className="p-7">
@@ -279,23 +244,17 @@ const MyAppointments = () => {
                 <TableCell>{appointment.date}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <Badge
-                      variant={
-                        appointment?.status === "Prescribed"
-                          ? "default"
-                          : "outline"
-                      }
-                      className={
-                        appointment?.status === "Prescribed"
-                          ? "bg-green-100 text-green-800 hover:bg-green-100"
-                          : ""
-                      }
+                    <span
+                      className={`text-xs p-1 rounded-full ${appointment.status === "pending"
+                          ? "bg-yellow-500"
+                          : "bg-green-600"
+                        } text-white`}
                     >
-                      {appointment?.status}
-                    </Badge>
-                    {/* <span className="capitalize text-sm font-medium text-gray-700">
+                      <FaCircle size={7} />
+                    </span>
+                    <span className="capitalize text-sm font-medium text-gray-700">
                       {appointment.status}
-                    </span> */}
+                    </span>
                   </div>
                 </TableCell>
                 <TableCell>
@@ -307,22 +266,13 @@ const MyAppointments = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       {appointment?.status === "Prescribed" && (
-                        <>
-                          <DropdownMenuItem
-                            onClick={() => setReviewDialog(true)}
-                            className="flex items-center gap-2"
-                          >
-                            <FileDown size={16} />
-                            Write a Review
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleViewPrescription(appointment)}
-                            className="flex items-center gap-2"
-                          >
-                            <FileDown size={16} />
-                            View Prescription
-                          </DropdownMenuItem>
-                        </>
+                        <DropdownMenuItem
+                          onClick={() => handleViewPrescription(appointment)}
+                          className="flex items-center gap-2"
+                        >
+                          <FileDown size={16} />
+                          View Prescription
+                        </DropdownMenuItem>
                       )}
                       <DropdownMenuItem
                         onClick={() => handleDetails(appointment)}
@@ -334,17 +284,17 @@ const MyAppointments = () => {
                       {
                         appointment?.status !== "Prescribed" &&
                         <DropdownMenuItem
-
-                          onClick={() =>
-                            handleDeleteAppointment(appointment._id)
-                          }
-                          className="flex items-center gap-2"
-                        >
-                          <Trash size={16} />
-                          Cancel Appointment
-                        </DropdownMenuItem>
+                        
+                        onClick={() =>
+                          handleDeleteAppointment(appointment._id)
+                        }
+                        className="flex items-center gap-2"
+                      >
+                        <Trash size={16} />
+                        Cancel Appointment
+                      </DropdownMenuItem>
                       }
-
+                     
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
@@ -368,14 +318,6 @@ const MyAppointments = () => {
           onClose={() => setIsPrescriptionViewModalOpen(false)}
         />
       )}
-
-      <ReviewComment
-        handleSubmitReview={handleSubmitReview}
-        newReview={newReview}
-        setNewReview={setNewReview}
-        setReviewDialog={setReviewDialog}
-        reviewDialog={reviewDialog}
-      />
     </div>
   );
 };
