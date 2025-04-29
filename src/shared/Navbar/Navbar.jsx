@@ -519,10 +519,11 @@ const Navbar = () => {
                               </div>
                               <div>
                                 <span className="font-semibold text-lg">
-                                Patient Reviews
+                                  Patient Reviews
                                 </span>
                                 <p className="text-sm text-gray-600">
-                                Bringing smiles and trust to life through honest patient feedback.
+                                  Bringing smiles and trust to life through
+                                  honest patient feedback.
                                 </p>
                               </div>
                             </NavLink>
@@ -591,7 +592,7 @@ const Navbar = () => {
                       <Separator className={"border-[1px]"} />
 
                       <NavLink
-                        className="mt-1 flex gap-1 items-center text-lg bg-[#f1f1f1] hover:bg-[#eaeaea] transition-all duration-300 ease-in-out py-1 px-2 rounded-md mb-1"
+                        className=" flex gap-1 items-center text-lg  hover:bg-[#eaeaea] transition-all duration-300 ease-in-out py-1 px-2 rounded-md "
                         to={
                           role === "administrator"
                             ? "/dashboard/administrator-overview"
@@ -614,7 +615,7 @@ const Navbar = () => {
                       </NavLink>
                       <Separator className={"border-[1px]"} />
                       {/* Logout Button */}
-                      <div className="my-1">
+                      <div className="">
                         <button
                           onClick={() => {
                             dispatch(logOut);
@@ -629,7 +630,7 @@ const Navbar = () => {
                               duration: 2000,
                             });
                           }}
-                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500 bg-red-100/50 hover:bg-red-200/50 duration-300"
+                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500  hover:bg-red-200/50 duration-300"
                         >
                           <BiLogOutCircle size={25} />
                           Logout
