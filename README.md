@@ -1,182 +1,216 @@
-<div align="center">
-  <img width="100%" height="340" src="/public/care-matrix-ui.png"  />
-</div>
 
----
+  
+  🏥 Care Matrix
+  A Comprehensive Hospital Management Application
 
-# 🏥Care Matrix - Hospital Management Application
+  
+    
+      
+    
+    
+      
+    
+    
+      
+    
+  
 
-**Care Matrix is a comprehensive hospital management system designed to digitize and streamline hospital operations, enhance patient care, and improve efficiency for medical professionals, administrators, receptionists, pharmacists, and patients. The platform facilitates seamless coordination among hospital staff and ensures optimal healthcare delivery.**
 
-[![Website](https://img.shields.io/badge/Live%20Demo-Chill%20Gamer%20Platform-brightgreen)](https://care-matrix.web.app)
-[![Backend Repository](https://img.shields.io/badge/Backend%20Repository-Click%20Here-blue)](https://github.com/ssmahim01/Care-Matrix-Backend)
 
----
+📖 Overview
+Care Matrix is a robust hospital management system designed to digitize and streamline hospital operations, enhance patient care, and improve operational efficiency. It facilitates seamless coordination among medical professionals, administrators, receptionists, pharmacists, and patients, ensuring optimal healthcare delivery through an intuitive and modern platform.
 
-## 🛠️ Used Main Technologies
+🛠️ Technologies Used
+Frontend
 
-- **Frontend:** React, Redux Toolkit, Tailwind CSS, Daisy UI, Shadcn UI, Stripe
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
-- **Authentication:** Firebase Authentication
-- **Routing:** React Router
-- **Animation:** Lottie React, Framer Motion
-- **Hosting:** Firebase (Frontend), Vercel (Backend)
+React - JavaScript library for building user interfaces
+Redux Toolkit - State management
+Tailwind CSS - Utility-first CSS framework
+Daisy UI - Tailwind CSS component library
+Shadcn UI - Accessible UI components
+Stripe - Payment integration
 
----
+Backend
 
-## 🚀 Core Features
+Node.js - JavaScript runtime
+Express.js - Web framework for Node.js
+MongoDB - NoSQL database
 
-✔ **Smart Wait-Time Prediction System** – Uses advanced algorithms to estimate and display real-time waiting times for patients, enhancing hospital visit experiences and reducing congestion.  
-✔ **Manage Medical Records** – Securely stores and manages patient data, prescriptions, and medical history. Doctors can update records, and patients can access their medical history and prescriptions.  
-✔ **Chat-Activated Dashboard** – Enables real-time communication between users for better collaboration. Patients can consult doctors or pharmacists for health advice.  
-✔ **Billing & Payment System** – Automates billing with online payment integration for seamless transactions. Once payment is completed, the status is updated, and the receptionist manages appointment statuses. 
-✔ **Real-Time Bed Availability** – A live dashboard to track and manage hospital bed occupancy. The system updates bed availability status, allowing authorized users to book or allocate beds efficiently.
-✔ **Pharmacy & Inventory Management** – Real-time tracking of medicine stock, medical supplies, and restocking alerts. Pharmacists manage inventory, dispense medications, and ensure the availability of essential drugs for patient care.
-✔ **Emergency Services Coordination** – Provides quick access to emergency contacts, ambulance booking, and urgent care scheduling. The receptionist prioritizes emergency cases and assigns doctors accordingly.
-✔ **Doctors Management** – A dedicated dashboard for managing doctors’ availability. Administrators have full control to update schedules and available days.
-✔ **Patient Health Gamification & Rewards System** – Encourages healthy habits by rewarding patients for regular check-ups, medication adherence, and lifestyle improvements, promoting better health outcomes.
-✔ **Medicine Add To Cart & Checkout System** – Patients can browse available medicines and add them to their cart. Quantity selection and total cost are dynamically updated. Medicines can be removed or updated before checkout.
-✔ **Purchase History Tracking** – Patients can view their previous medicine purchases with date and transaction details. Pharmacists can track and manage all sales records. Patients can download their purchase invoice paper in pdf format.
+Additional Tools
 
----
+Firebase Authentication - Secure user authentication
+React Router - Client-side routing
+Lottie React & Framer Motion - Animations
+Firebase - Frontend hosting
+Vercel - Backend hosting
 
-## 📦 Used Dependencies
 
-```json
-"dependencies": {
+🚀 Core Features
+
+Smart Wait-Time Prediction SystemUtilizes advanced algorithms to estimate real-time waiting times, improving patient experience and reducing congestion.
+
+Manage Medical RecordsSecurely stores and manages patient data, prescriptions, and medical history, accessible by both doctors and patients.
+
+Chat-Activated DashboardEnables real-time communication between users for better collaboration, including patient consultations with doctors and pharmacists.
+
+Billing & Payment SystemAutomates billing with Stripe integration for seamless online transactions, with status updates managed by receptionists.
+
+Real-Time Bed AvailabilityTracks and manages hospital bed occupancy in real-time, allowing efficient bed allocation.
+
+Pharmacy & Inventory ManagementMonitors medicine stock and medical supplies with restocking alerts for pharmacists.
+
+Emergency Services CoordinationProvides quick access to emergency contacts, ambulance booking, and urgent care scheduling.
+
+Doctors ManagementA dashboard for administrators to manage doctors’ schedules and availability.
+
+Patient Health Gamification & Rewards SystemEncourages healthy habits with rewards for regular check-ups and medication adherence.
+
+Medicine Add To Cart & Checkout SystemAllows patients to browse, add medicines to their cart, and checkout with dynamic cost updates.
+
+Purchase History TrackingEnables patients to view and download their medicine purchase history as PDF invoices.
+
+
+
+📦 Dependencies
+Here’s a list of key dependencies used in the project:
+{
+  "dependencies": {
     "@ag-media/react-pdf-table": "^2.0.1",
     "@hookform/resolvers": "^4.1.3",
-    "@radix-ui/react-accordion": "^1.2.3",
-    "@radix-ui/react-alert-dialog": "^1.1.10",
-    "@radix-ui/react-avatar": "^1.1.3",
-    "@radix-ui/react-checkbox": "^1.1.4",
-    "@radix-ui/react-collapsible": "^1.1.3",
-    "@radix-ui/react-dialog": "^1.1.11",
-    "@radix-ui/react-dropdown-menu": "^2.1.6",
-    "@radix-ui/react-label": "^2.1.2",
-    "@radix-ui/react-navigation-menu": "^1.2.5",
-    "@radix-ui/react-popover": "^1.1.6",
-    "@radix-ui/react-progress": "^1.1.2",
-    "@radix-ui/react-radio-group": "^1.2.3",
-    "@radix-ui/react-scroll-area": "^1.2.4",
-    "@radix-ui/react-select": "^2.1.6",
-    "@radix-ui/react-separator": "^1.1.2",
-    "@radix-ui/react-slot": "^1.2.0",
-    "@radix-ui/react-switch": "^1.1.3",
-    "@radix-ui/react-tabs": "^1.1.3",
-    "@radix-ui/react-tooltip": "^1.1.8",
-    "@react-pdf/renderer": "^4.3.0",
+    "@radix-ui/react-*": "Various components",
     "@reduxjs/toolkit": "^2.6.1",
     "@smastrom/react-rating": "^1.5.0",
     "@stripe/react-stripe-js": "^3.5.1",
     "@stripe/stripe-js": "^6.1.0",
-    "@tailwindcss/vite": "^4.0.12",
     "@tanstack/react-query": "^5.69.0",
     "axios": "^1.8.3",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
-    "dom-to-image": "^2.6.0",
     "firebase": "^11.4.0",
     "framer-motion": "^12.5.0",
-    "lodash": "^4.17.21",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.483.0",
-    "moment": "^2.30.1",
-    "next-themes": "^0.4.6",
     "react": "^19.0.0",
-    "react-confetti": "^6.4.0",
-    "react-day-picker": "8.10.1",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
-    "react-router": "^7.3.0",
     "react-router-dom": "^7.3.0",
-    "react-slick": "^0.30.3",
-    "react-to-pdf": "^2.0.0",
-    "react-use": "^17.6.0",
     "recharts": "^2.15.1",
-    "redux": "^5.0.1",
-    "slick-carousel": "^1.8.1",
-    "sonner": "^2.0.3",
     "sweetalert2": "^11.6.13",
     "swiper": "^11.2.5",
-    "tailwind-merge": "^3.0.2",
-    "tailwindcss": "^4.0.12",
-    "tailwindcss-animate": "^1.0.7",
-    "vaul": "^1.1.2",
-    "xlsx": "^0.18.5",
-    "zod": "^3.24.2"
+    "tailwindcss": "^4.0.12"
   }
-```
+}
 
----
+For the full list, refer to the package.json file.
 
-## 📥 Installation & Setup
-
-### 1️⃣ Clone the Repository
-
-```sh
+📥 Installation & Setup
+Follow these steps to set up the project locally:
+1. Clone the Repository
 git clone https://github.com/ssmahim01/Care-Matrix-With-Dev-Sync.git
 cd Care-Matrix-With-Dev-Sync
-```
 
-### 2️⃣ Install Dependencies
-
-```sh
+2. Install Dependencies
 npm install
-```
 
-### 3️⃣ Configure Environment Variables
+3. Configure Environment Variables
+Create a .env.local file in the root directory and add the necessary environment variables (e.g., Firebase config, Stripe keys, ImgBB API key). Example:
+VITE_FIREBASE_API_KEY=your-firebase-api-key
+VITE_STRIPE_PUBLISHABLE_KEY=your-stripe-key
+VITE_IMGBB_API_KEY=your-imgbb-key
 
-Create a `.env.local` file in the root directory and add the keys with URLs
 
----
-
-## 🏃 Project Run Locally
-
-To run the project locally, use the following command:
-
-```sh
+🏃 Running the Project Locally
+To run the project locally:
 npm run dev
-```
 
-🔹 This will start the development server, and you can access it at:  
-📌 **`http://localhost:5173`**
 
-For backend setup, refer to the **[Backend Repository](https://github.com/ssmahim01/Care-Matrix-Backend)**.
+The development server will start at:🌐 http://localhost:5173
 
----
+For backend setup instructions, visit the Backend Repository.
 
-## 📚 Used npm Packages
+📚 Key npm Packages
 
-| Package                     | Documentation                                                 |
-| --------------------------- | ------------------------------------------------------------- |
-| **react-pdf-table**      | [Docs](https://www.npmjs.com/package/@ag-media/react-pdf-table)                    |
-| **lottie-react**            | [Docs](https://www.npmjs.com/package/lottie-react)            |
-| **react-hook-form**                | [Docs](https://react-hook-form.com)                               |
-| **react-icons**             | [Docs](https://react-icons.github.io/react-icons)             |
-| **sweetalert2**             | [Docs](https://sweetalert2.github.io)                         |
-| **swiper-js**               | [Docs](https://swiperjs.com)                                  |
-| **lucide-react** | [Docs](https://lucide.dev/guide/packages/lucide-react) |
-| **recharts**           | [Docs](https://recharts.org/en-US)           |
-| **react-hot-toast**          | [Docs](https://react-hot-toast.com)          |
 
----
 
-# React + Vite
+Package
+Purpose
+Documentation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+react-pdf-table
+Generate PDF tables
+Docs
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+lottie-react
+Animations with Lottie
+Docs
+
+
+react-hook-form
+Form handling
+Docs
+
+
+react-icons
+Icon library
+Docs
+
+
+sweetalert2
+Customizable alerts
+Docs
+
+
+swiper
+Touch-enabled sliders
+Docs
+
+
+lucide-react
+Icon library
+Docs
+
+
+recharts
+Data visualization
+Docs
+
+
+react-hot-toast
+Toast notifications
+Docs
+
+
+
+🛠️ Development Setup (React + Vite)
+This project uses React with Vite for a fast development experience, including Hot Module Replacement (HMR) and ESLint rules.
+Available Vite Plugins
+
+@vitejs/plugin-react - Uses Babel for Fast Refresh
+@vitejs/plugin-react-swc - Uses SWC for Fast Refresh
+
+ESLint Configuration
+For production applications, consider enhancing the ESLint setup with TypeScript and type-aware lint rules. Check out the React + TypeScript Vite template to integrate TypeScript and typescript-eslint.
+
+🤝 Contributing
+Contributions are welcome! To contribute to Care Matrix:
+
+Fork the repository.
+Create a new branch (git checkout -b feature/YourFeature).
+Make your changes and commit (git commit -m "Add YourFeature").
+Push to your branch (git push origin feature/YourFeature).
+Open a Pull Request.
+
+Please ensure your code follows the project’s coding standards and includes appropriate tests.
+
+📜 License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+🙌 Acknowledgments
+
+Thanks to the open-source community for providing the tools and libraries that made this project possible.
+Special thanks to the contributors and testers who helped improve Care Matrix.
