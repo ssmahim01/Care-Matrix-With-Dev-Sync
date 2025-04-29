@@ -35,13 +35,13 @@ const BlogDetails = () => {
      // Sample data for categories
   const categories = [
     { name: "Health Care", postCount: 71 },
-    // Add more categories as needed
+    
   ];
 
 
     return (
         <div className="pt-16 pb-12 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
-            <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+            <div className="container mx-auto  py-8 flex flex-col lg:flex-row gap-8">
       {/* Main Blog Post Section */}
       <div className="lg:w-2/3">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -50,14 +50,14 @@ const BlogDetails = () => {
             alt={blog.title}
             className="w-full h-64 lg:h-[350px] object-cover rounded-t-lg"
           />
-          <div className="p-6">
-            {/* <Link to={`/category/${blog.category.toLowerCase().replace(/\s/g, "-")}`}>
+          <div className="p-3 lg:p-6">
+            <h2 >
               <span className="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full mb-2">
-                {mainPost.category}
+                {blog.tag}
               </span>
-            </Link> */}
-            <Link to={`/blog/${blog._id}`}>
-              <h2 className="text-2xl font-bold text-gray-900 mb-3 hover:text-blue-600">
+            </h2>
+            <Link>
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">
                 {blog.title}
               </h2>
             </Link>
@@ -105,7 +105,7 @@ const BlogDetails = () => {
         {/* Categories */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-            <span className="w-1 h-5 bg-red-500 mr-2"></span>
+            <span className="w-1 h-5 bg-blue-500 mr-2"></span>
             Categories
           </h3>
           <ul className="space-y-3">
