@@ -16,6 +16,7 @@ import {
   BriefcaseMedical,
   CalendarDays,
   CircleDollarSign,
+  ClipboardList,
   ClipboardPlus,
   Contact,
   CreditCard,
@@ -29,6 +30,7 @@ import {
   LucideBedSingle,
   MailIcon,
   MessageSquareText,
+  Newspaper,
   ShoppingCart,
   Sparkles,
   Stethoscope,
@@ -79,7 +81,7 @@ export function NavMain() {
           <div className="divider w-3/5 mx-auto"></div>
         </div>
       ) : (
-        <ul className="pt-2 *:font-semibold *:text-gray-700 flex flex-col gap-6 ">
+        <ul className="pt-2 *:font-semibold *:text-gray-700 flex flex-col gap-6 pl-2">
           {/* Administrator Dashboard Menu*/}
           {role === "administrator" && (
             <>
@@ -98,12 +100,20 @@ export function NavMain() {
                     Revenue Insights{" "}
                   </span>
                 </h3>
+              </NavLink>{" "}
+              <NavLink to="/dashboard/administrator/manage-billing-payments">
+                <h3 className="flex gap-2 items-center">
+                  <CreditCard className="text-base" />
+                  <span className={`${state === "collapsed" && "md:hidden"}`}>
+                    Billing & Payments{" "}
+                  </span>
+                </h3>
               </NavLink>
               <NavLink to="/dashboard/administrator/manage-users">
                 <h3 className="flex gap-2 items-center">
                   <Users className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Manage Users{" "}
+                    Users Management{" "}
                   </span>
                 </h3>
               </NavLink>{" "}
@@ -111,12 +121,12 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center tracking-[-0.2px]">
                   <IdCardIcon className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Manage Doctors{" "}
+                    Doctors Management{" "}
                   </span>
                 </h3>
               </NavLink>
               <NavLink to="/dashboard/administrator/assign-users">
-                <h3 className="flex gap-2 items-center">
+                <h3 className="flex gap-2 items-center tracking-wide">
                   <UserPlus className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
                     Assign New User{" "}
@@ -131,28 +141,19 @@ export function NavMain() {
                   </span>
                 </h3>
               </NavLink>
-              {/* <NavLink to="/dashboard/reports">
-                <h3 className="flex gap-2 items-center">
-                  <ChartPie className="text-base" />
+              {/* <NavLink to="/dashboard/administrator/manage-requests">
+                <h3 className="flex gap-2 items-center tracking-wide">
+                  <ClipboardList size={25} className="text-base " />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Reports & Analytics{" "}
+                    Manage Requests{" "}
                   </span>
                 </h3>
-              </NavLink>
-              <NavLink to="/dashboard/manage-hospital">
-                <h3 className="flex gap-2 items-center">
-                  <Hospital className="text-base" />
+              </NavLink> */}
+              <NavLink to="/dashboard/administrator/manage-blogs">
+                <h3 className="flex gap-2 items-center tracking-wide">
+                  <Newspaper size={25} className="text-base " />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Hospital Management{" "}
-                  </span>
-                </h3>
-              </NavLink>
-             */}
-              <NavLink to="/dashboard/administrator/manage-billing-payments">
-                <h3 className="flex gap-2 items-center">
-                  <CreditCard className="text-base" />
-                  <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Billing & Payments{" "}
+                    Manage Blogs{" "}
                   </span>
                 </h3>
               </NavLink>
@@ -439,7 +440,7 @@ export function NavMain() {
   );
 
   const mainRoutes = (
-    <ul className="pt-2 *:font-semibold *:text-gray-700 flex flex-col gap-6">
+    <ul className="pt-2 pl-2 *:font-semibold *:text-gray-700 flex flex-col gap-6">
       <NavLink to="/">
         <h3 className="flex gap-2 items-center">
           <Home />

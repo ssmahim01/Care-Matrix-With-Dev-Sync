@@ -72,6 +72,8 @@ import PatientChat from "@/pages/Patient/PatientChat/PatientChat";
 import DoctorChat from "@/pages/Doctors/DoctorsChat/DoctorChat";
 import PatientReviews from "@/pages/Home/Patient_Reviews/PatientReviews";
 import PharmacistChat from "@/pages/DashboardPages/Pharmacist/PharmacistChat/PharmacistChat";
+import ManageBlogs from "@/pages/DashboardPages/ManageBlogs/ManageBlogs";
+
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -235,6 +237,14 @@ const Router = () => {
           element={
             <AdminRoute>
               <AssignUsers />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/administrator/manage-blogs"
+          element={
+            <AdminRoute>
+              <ManageBlogs />
             </AdminRoute>
           }
         />

@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import useAxiosSecure from "./useAxiosSecure";
-import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
-import { useQuery } from "@tanstack/react-query";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useCallback } from "react";
+import { fetchCart } from "@/redux/cartSlice";
+import { useAuthUser } from "@/redux/auth/authActions";
 
 const useCart = () => {
-  const axiosSecure = useAxiosSecure();
+  const dispatch = useDispatch();
   const user = useAuthUser();
-  const loading = useAuthLoading();
+  const { items: cart, loading } = useSelector((state) => state.cart);
 
-  const {
-    data: cart = [],
-    isLoading: cartLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["cart", user?.email],
-    enabled: !!user?.email,
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/carts?email=${user?.email}`);
-      return res.data;
-    },
-  });
-  return [cart, cartLoading, refetch];
+  useEffect(() => {
+    if (user?.email) {
+      dispatch(fetchCart(user.email));
+    }
+  }, [user, dispatch]);
+
+  const refetch = useCallback(() => {
+    if (user?.email) {
+      dispatch(fetchCart(user.email));
+    }
+  }, [dispatch, user]);
+
+  return [cart, loading, refetch];
 };
 
 export default useCart;

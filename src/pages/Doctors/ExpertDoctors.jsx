@@ -44,7 +44,7 @@ const ExpertDoctors = () => {
     <div>
 
         {/* section inner */}
-        <div className="mx-auto px-4 py-10 md:py-14 lg:py-16">
+        <div className="w-11/12 lg:w-10/12 mt-10 mx-auto max-w-screen-2xl py-12">
           {/* section-header */}
           <SectionHeader
             title_1st_slice={"OUR"}
@@ -67,20 +67,6 @@ const ExpertDoctors = () => {
               <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
             </div>
 
-            {/* filter category  */}
-            {/* <Select value={category} onValueChange={(value) => {
-              setCategory(value)
-            }}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Categories " />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="upcoming">Upcoming</SelectItem>
-                <SelectItem value="past">Past</SelectItem>
-              </SelectContent>
-            </Select> */}
-
             {/* Sort Controls */}
             <Select value={selectedSort} onValueChange={(value) => {
               setSelectedSort(value)
@@ -89,8 +75,8 @@ const ExpertDoctors = () => {
                 <SelectValue placeholder="Sort By " />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="asc">Fee (Ascending)</SelectItem>
-                <SelectItem value="desc">Fee (Descending)</SelectItem>
+                <SelectItem value="asc">Fee (Lowest to highest)</SelectItem>
+                <SelectItem value="desc">Fee (Highest to lowest)</SelectItem>
               </SelectContent>
             </Select>
 
@@ -98,7 +84,7 @@ const ExpertDoctors = () => {
           </div>
 
           {/* section content  */}
-          <div className="mt-6 w-11/12 md:w-full mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="mt-6 w-11/12 md:w-full mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {isLoading
               ? Array.from({ length: 10 }).map((_, index) => (
                 <SkeletonCard key={index} />

@@ -1,4 +1,3 @@
-import { Link, useParams } from "react-router";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,13 +6,39 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { departmentsData } from "@/lib/department";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { departmentsData } from "@/lib/department";
+import {
+  CalendarClock,
+  ChevronRight,
+  Clock,
+  Mail,
+  MapPin,
+  Phone,
+  ShieldPlus,
+} from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Link, useParams } from "react-router";
+import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
 
 const Departments = () => {
   const { department } = useParams();
   const data = departmentsData.find((d) => d.title === department);
+
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showReadMore, setShowReadMore] = useState(false);
+  const contentRef = useRef(null);
+
+  // Check if content overflows to show "Read More" button
+  useEffect(() => {
+    const element = contentRef.current;
+    if (element.scrollHeight > element.clientHeight) {
+      setShowReadMore(true);
+    }
+  }, []);
 
   if (!data) {
     return (
@@ -50,19 +75,45 @@ const Departments = () => {
 
       {/* Department Content */}
       <div className="mt-8">
-        <img
-          src={data.image}
-          alt={data.title}
-          className="w-full h-80 object-cover rounded-xl shadow mb-4"
-        />
+        <div className="flex flex-col md:flex-row-reverse gap-4 md:gap-8 items-center">
+          <img
+            src={data.image}
+            alt={data.title}
+            className="w-full md:w-6/12 h-80 object-cover rounded-xl shadow mb-4"
+          />
 
-        <h1 className="text-2xl font-bold text-gray-800 mb-1">{data.title}</h1>
-        <p className="text-gray-700 text-lg mb-4 w-full lg:w-[95%]">
-          {data.description}
-        </p>
+          <div className="w-full md:w-6/12">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-1">
+              {data.title}
+            </h1>
+            <div className="mt-5 relative">
+              <p
+                ref={contentRef}
+                className={`text-gray-700 text-lg mb-4 w-full lg:w-[95%] transition-all duration-300 ${
+                  isExpanded
+                    ? "max-h-none"
+                    : "max-h-[140px] md:max-h-[220px] overflow-hidden relative"
+                }`}
+              >
+                {data.description}
+                {!isExpanded && showReadMore && (
+                  <span className="absolute bottom-0 left-0 right-0 h-12" />
+                )}
+              </p>
+              {showReadMore && (
+                <button
+                  className="text-sky-500 hover:underline text-sm font-medium"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  {isExpanded ? "Read Less" : "Read More"}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
 
         {/* Tab Content */}
-        <Tabs defaultValue="services" className="w-full">
+        <Tabs defaultValue="services" className="mt-8 w-full">
           <TabsList className="border w-full">
             <TabsTrigger
               className={"cursor-pointer py-2 px-4 w-full "}
@@ -84,28 +135,56 @@ const Departments = () => {
             </TabsTrigger>
           </TabsList>
           {/* 1st */}
-          <TabsContent value="services">
-            <Card
-              className={
-                "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
-              }
-            >
-              <CardContent className="flex gap-y-6 gap-x-10 xl:gap-x-16 flex-col lg:flex-row lg:items-stretch">
-                <div>
-                  <h2 className="text-xl font-semibold mb-3">Services</h2>
-                  <ul className="list-disc list-inside text-gray-600">
-                    {data.services.map((service, index) => (
-                      <li key={index}>{service}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="flex flex-col lg:border-l-2 pl-8">
-                  <h2 className="text-xl font-semibold mb-3">Facilities</h2>
-                  <ul className="list-disc list-inside text-gray-600">
-                    {data.facilities.map((facility, index) => (
-                      <li key={index}>{facility}</li>
-                    ))}
-                  </ul>
+          <TabsContent
+            value="services"
+            className="animate-in fade-in-50 duration-300"
+          >
+            <Card className="border shadow-sm border-[#e5e7eb] w-full py-4 mt-4 rounded-lg">
+              <CardContent className="px-6 md:px-8 py-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-sky-100 p-2 rounded-full">
+                        <ShieldPlus className="h-6 w-6 text-sky-700" />
+                      </div>
+                      <h2 className="text-2xl font-semibold text-slate-900">
+                        Services
+                      </h2>
+                    </div>
+                    <Separator />
+                    <ul className="space-y-4">
+                      {data.services.map((service, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <div className="bg-sky-50 p-1 rounded-full mt-0.5">
+                            <ChevronRight className="h-4 w-4 text-sky-600" />
+                          </div>
+                          <span className="text-slate-700">{service}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-sky-100 p-2 rounded-full">
+                        <ShieldPlus className="h-6 w-6 text-sky-700" />
+                      </div>
+                      <h2 className="text-2xl font-semibold text-slate-900">
+                        Facilities
+                      </h2>
+                    </div>
+                    <Separator />
+                    <ul className="space-y-4">
+                      {data.facilities.map((facility, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <div className="bg-sky-50 p-1 rounded-full mt-0.5">
+                            <ChevronRight className="h-4 w-4 text-sky-600" />
+                          </div>
+                          <span className="text-slate-700">{facility}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -114,7 +193,7 @@ const Departments = () => {
           <TabsContent value="doctors">
             <Card
               className={
-                "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+                "border shadow-sm border-[#e5e7eb] w-full py-6 mt-4 rounded-lg"
               }
             >
               <CardContent className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -132,44 +211,114 @@ const Departments = () => {
                     <p className="text-sm text-gray-600">
                       {doc.specialization}
                     </p>
-                    <p className="text-sm text-gray-500">{doc.experience}</p>
+                    <Link to={"/doctors"}>
+                      <Button
+                        size={"sm"}
+                        className={
+                          "mt-3 cursor-pointer bg-sky-600 hover:bg-sky-700"
+                        }
+                      >
+                        View Profile
+                      </Button>
+                    </Link>
                   </div>
                 ))}
               </CardContent>
             </Card>
           </TabsContent>
           {/* 3rd */}
-          <TabsContent value="contact-hours" className={"flex gap-4"}>
-            <Card
-              className={
-                "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
-              }
-            >
-              <CardContent className="flex gap-y-6 gap-x-10 xl:gap-x-16 flex-col lg:flex-row lg:items-stretch">
-                <div className="px-4">
-                  <h2 className="text-xl font-semibold mb-3">
-                    Contact Information
-                  </h2>
-                  <p className="text-gray-700 mb-1">
-                    <strong>Phone:</strong> {data.contact.phone}
-                  </p>
-                  <p className="text-gray-700 mb-1">
-                    <strong>Email:</strong> {data.contact.email}
-                  </p>
-                  <p className="text-gray-700 mb-1">
-                    <strong>Location:</strong> {data.contact.location}
-                  </p>
-                </div>
-                <div className="flex flex-col lg:border-l-2 pl-8">
-                  <h2 className="text-xl font-semibold mb-3">
-                    Operating Hours
-                  </h2>
-                  <p className="text-gray-700 mb-1">
-                    <strong>Weekdays:</strong> {data.hours.weekdays}
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Weekend:</strong> {data.hours.weekend}
-                  </p>
+          <TabsContent
+            value="contact-hours"
+            className="animate-in fade-in-50 duration-300"
+          >
+            <Card className="border shadow-sm border-[#e5e7eb] w-full mt-4 rounded-lg">
+              <CardContent className="p-6 md:p-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-sky-100 p-2 rounded-full">
+                        <Phone className="h-6 w-6 text-sky-700" />
+                      </div>
+                      <h2 className="text-2xl font-semibold text-slate-900">
+                        Contact Information
+                      </h2>
+                    </div>
+                    <Separator />
+
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <Phone className="h-5 w-5 text-sky-600 mt-0.5" />
+                        <div>
+                          <p className="text-sm text-slate-500">Phone</p>
+                          <p className="text-slate-700 font-medium">
+                            {data.contact.phone}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <Mail className="h-5 w-5 text-sky-600 mt-0.5" />
+                        <div>
+                          <p className="text-sm text-slate-500">Email</p>
+                          <p className="text-slate-700 font-medium">
+                            {data.contact.email}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <MapPin className="h-5 w-5 text-sky-600 mt-0.5" />
+                        <div>
+                          <p className="text-sm text-slate-500">Location</p>
+                          <p className="text-slate-700 font-medium">
+                            {data.contact.location}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-sky-100 p-2 rounded-full">
+                        <Clock className="h-6 w-6 text-sky-700" />
+                      </div>
+                      <h2 className="text-2xl font-semibold text-slate-900">
+                        Operating Hours
+                      </h2>
+                    </div>
+                    <Separator />
+
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <CalendarClock className="h-5 w-5 text-sky-600 mt-0.5" />
+                        <div>
+                          <p className="text-sm text-slate-500">Weekdays</p>
+                          <p className="text-slate-700 font-medium">
+                            {data.hours.weekdays}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <CalendarClock className="h-5 w-5 text-sky-600 mt-0.5" />
+                        <div>
+                          <p className="text-sm text-slate-500">Weekend</p>
+                          <p className="text-slate-700 font-medium">
+                            {data.hours.weekend}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 p-4 bg-sky-50 rounded-lg border border-sky-100">
+                      <p className="text-slate-700 text-sm">
+                        <span className="font-medium">Note:</span> Emergency
+                        services are available 24/7. For non-emergency
+                        appointments, please call during operating hours.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>

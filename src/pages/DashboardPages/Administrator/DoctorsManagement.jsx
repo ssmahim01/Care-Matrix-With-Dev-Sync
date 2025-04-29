@@ -160,7 +160,15 @@ const DoctorsManagement = () => {
             <div className="flex gap-4 md:flex-row-reverse flex-col-reverse w-full lg:w-9/12 xl:w-8/12 ">
               {/* Reset */}
               <div>
-                <Button className={"cursor-pointer"}>Reset</Button>
+                <Button
+                  onClick={() => {
+                    dispatch(setSort(""));
+                    dispatch(setSearch(""));
+                  }}
+                  className={"cursor-pointer"}
+                >
+                  Reset
+                </Button>
               </div>{" "}
               {/* Department */}
               <Select onValueChange={handleFilterChange}>
@@ -201,14 +209,16 @@ const DoctorsManagement = () => {
                   value={search}
                   onChange={handleSearchChange}
                 />
-                <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
+                <IoIosSearch className="absolute top-[7px] left-2 text-[1.5rem] text-[#adadad]" />
                 {/* shortcut hint */}
-                <button
-                  onClick={() => dispatch(setSearch(""))}
-                  className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[6px] rounded-md text-gray-500 cursor-pointer"
-                >
-                  Clear
-                </button>
+                {search && (
+                  <button
+                    onClick={() => dispatch(setSearch(""))}
+                    className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[6px] rounded-md text-gray-500 cursor-pointer"
+                  >
+                    Clear
+                  </button>
+                )}
               </div>
             </div>
           </div>

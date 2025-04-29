@@ -30,7 +30,7 @@ const Home = () => {
   return (
     <section className="w-full space-y-6">
       {/* Hero Section */}
-      <div className="lg:pt-12 md:pt-8 pt-2 pb-8">
+      <div className="pt-8 pb-8">
         {/* <Profiler id="Hero" onRender={onRenderCallback}> */}
         <Hero />
         {/* </Profiler> */}
@@ -57,7 +57,7 @@ const Home = () => {
       </div>
 
       {/* Introduction of Chat dashboard */}
-      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Chat />
       </div>
 
@@ -91,13 +91,14 @@ const Home = () => {
         <Specialties />
       </div>
 
+      {/* blog  */}
+      <div className="mx-auto pt-6 pb-16 w-11/12 xl:w-10/12 max-w-screen-2xl">
+        <Blogs />
+      </div>
+
       {/* FAQ */}
       <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
         <Faq />
-      </div>
-      {/* blog  */}
-      <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
-        <Blogs />
       </div>
     </section>
   );

@@ -9,19 +9,41 @@ import MedicineCartTab from "./MedicineCartTab";
 import BedBookingsTab from "./BedBookingsTab";
 import OverviewCards from "./OverviewCards";
 import SmartWaitTime from "./SmartWaitTime";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPatientStats } from "@/redux/patient/patientSlice";
+import { useEffect } from "react";
+import PatientOverviewSkeleton from "./PatientOverviewSkeleton";
+
+// Tan Stack Query Version
+// const { data: patientStats = [], isLoading } = useQuery({
+//   queryKey: ["patient-stats", user?.email],
+//   queryFn: async () => {
+//     const { data } = await axios(
+//       `${import.meta.env.VITE_API_URL}/patient/stats/${user?.email}`
+//     );
+//     return data;
+//   },
+// });
 
 const PatientOverview = () => {
-  // Fetch patient overview data
   const user = useAuthUser();
-  const { data: patientStats = [], isLoading } = useQuery({
-    queryKey: ["patient-stats", user?.email],
-    queryFn: async () => {
-      const { data } = await axios(
-        `${import.meta.env.VITE_API_URL}/patient/stats/${user?.email}`
-      );
-      return data;
-    },
-  });
+  const dispatch = useDispatch();
+
+  // Redux Version
+  const { stats, isLoading, error } = useSelector(
+    (state) => state.patientStats
+  );
+  const patientStats = stats || {};
+
+  // Fetch PatientStats
+  useEffect(() => {
+    if (user?.email) {
+      dispatch(fetchPatientStats(user.email));
+    }
+  }, [dispatch, user?.email]);
+
+  if (isLoading) return <PatientOverviewSkeleton />;
+  if (error) return "Error caught while fetching data!";
 
   // Format date for display
   function formatDate(dateString) {
@@ -58,7 +80,7 @@ const PatientOverview = () => {
       )}
 
       {/* Main Content Tabs */}
-      <Tabs defaultValue="appointments" className="mt-6 space-y-4">
+      <Tabs defaultValue="appointments" className="mt-8 space-y-4">
         {/* All TabList */}
         <TabsList className="border w-full">
           <TabsTrigger
