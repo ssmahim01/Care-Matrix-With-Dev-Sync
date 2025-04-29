@@ -34,7 +34,7 @@ const ManageBlogs = () => {
           onClick={() => setIsFormOpen(!isFormOpen)}
           className={"cursor-pointer"}
         >
-          Assign New User
+          Add New Blog
         </Button>
       </div>
       </div>

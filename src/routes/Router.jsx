@@ -72,6 +72,7 @@ import PatientChat from "@/pages/Patient/PatientChat/PatientChat";
 import DoctorChat from "@/pages/Doctors/DoctorsChat/DoctorChat";
 import PharmacistChat from "@/pages/DashboardPages/Pharmacist/PharmacistChat/PharmacistChat";
 import ManageBlogs from "@/pages/DashboardPages/ManageBlogs/ManageBlogs";
+import BlogDetails from "@/pages/Home/Blogs_and_News/BlogDetails";
 
 
 const Router = () => {
@@ -137,6 +138,9 @@ const Router = () => {
         <Route path="about-us" element={<DetailsAboutUs />} />
         <Route path="book-appointment/:name" element={<BookAppointment />} />
         <Route path="doctor-details/:id" element={<DoctorDetails />} />
+        <Route path="blogs/:id" element={<BlogDetails />} />
+
+
         <Route
           path="eid-greetings"
           element={
