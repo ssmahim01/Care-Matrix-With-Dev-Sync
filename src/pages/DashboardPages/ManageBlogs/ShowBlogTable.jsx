@@ -91,18 +91,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
       { position: "top-right" }
     );
   };
-//   const handleDelete = async (id) => {
-//     try {
-//       await toast.promise(axiosSecure.delete(`/blogs/${id}`), {
-//         loading: "Deleting Blog...",
-//         success: <b>Blog Deleted Successfully!</b>,
-//         error: <b>Unable to Delete!</b>,
-//       });
-//       refetch();
-//     } catch (error) {
-//       toast.error("Failed to delete blog");
-//     }
-//   };
+
 
   // Handle Edit
   const handleEdit = (blog) => {
@@ -202,7 +191,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                     <img
                       src={blog.image}
                       alt={blog.title}
-                      className="w-12 h-12 object-cover rounded-full"
+                      className=" w-8 h-8 lg:w-12 lg:h-12 object-cover rounded-full"
                     />
                   </TableCell>
                   <TableCell>{blog.title}</TableCell>
@@ -224,7 +213,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                       <DropdownMenuContent>
                         <DropdownMenuItem
                           className="cursor-pointer"
-                          onClick={() => handleEdit(blog)}
+                        //   onClick={() => handleEdit(blog)}
                         >
                           <Pencil className="w-4 h-4 mr-2" /> Update
                         </DropdownMenuItem>
@@ -253,7 +242,9 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
 
       {/* Edit Blog Dialog */}
       {selectedBlog && (
-        <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <Dialog 
+        open={isEditOpen}
+         onOpenChange={setIsEditOpen}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Edit Blog</DialogTitle>

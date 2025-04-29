@@ -21,7 +21,7 @@ const ManageBlogs = () => {
 
   return (
     <div className="px-7">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-center justify-between">
       <DashboardPagesHeader
         title={"Manage Blogs"}
         subtitle={"Easily add or manage Blogs and News"}
