@@ -242,7 +242,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       <CardContent className="flex flex-col lg:flex-row p-0">
         <div className="lg:w-1/4 border-r">
           {/* Invite Professionals and patients */}
-          <div className="w-full border-b py-3 shadow-sm">
+          <div className="w-full border-b bg-base-200 py-3 shadow-sm">
             <h3 className="text-lg font-medium ml-4">Invite</h3>
             <p className="w-full lg:w-11/12 text-sm font-medium text-gray-600 ml-4">
               Select an user then start the conversation
