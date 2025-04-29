@@ -43,10 +43,12 @@ const Login = () => {
 
     // Show loading toast
     const loadingToast = toast.loading("Logging in...", {
-      description: "Please wait while we authenticate you",
+      // description: "Please wait while we authenticate you",
       position: "top-right",
       style: {
-        marginTop: "20px",
+        // marginTop: "20px",
+        width: "fit-content",
+        paddingRight: "20px"
       },
     });
 
@@ -68,12 +70,14 @@ const Login = () => {
               // navigate & show success toast
               navigate("/");
               toast.success("Login Successful!", {
-                description:
-                  "Welcome back! You have successfully logged into your account",
+                // description:
+                //   "Welcome back! You have successfully logged into your account",
                 duration: 3000,
                 position: "top-right",
                 style: {
-                  marginTop: "20px",
+                  // marginTop: "20px",
+                  width: "fit-content",
+                  paddingRight: "20px"
                 },
               });
 
