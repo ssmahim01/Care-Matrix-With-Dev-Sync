@@ -14,6 +14,7 @@ import Chat from "@/components/Home/Chat";
 import EidGreetingSection from "./EidGreetingSection";
 import { Profiler } from "react";
 import Blogs from "./Blogs_and_News/Blogs";
+import { Testimonials } from "./Patient_Reviews/Testimonials";
 
 function onRenderCallback(
   id,
@@ -84,7 +85,7 @@ const Home = () => {
       </div>
 
       {/* Patient Reviews */}
-      <PatientReviews />
+      <Testimonials/>
 
       {/* specialties */}
       <div className="-mt-5 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
