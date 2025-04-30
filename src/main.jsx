@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import Router from "./routes/Router";
@@ -15,7 +14,7 @@ createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <HotToaster />
-      <ShadToaster />
+      <ShadCnToaster />
       <BrowserRouter>
         <Router />
       </BrowserRouter>
