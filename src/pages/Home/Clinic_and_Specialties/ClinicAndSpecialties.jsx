@@ -63,6 +63,33 @@ export default function ClinicAndSpecialties() {
   const totalDoctor = data.length
 
 
+  function GetAllTitle(doctors) {
+    const allTitles = doctors.flatMap(doctor => doctor.title);
+    const uniqueTitles = new Set(allTitles);
+    return uniqueTitles
+  }
+  const conditionTitles = Array.from(GetAllTitle(data));
+  
+  const generatedSpecialties = conditionTitles.map((title, index) => {
+    const match = specialties.find((s) =>
+      s.title.toLowerCase().includes(title.toLowerCase()) ||
+      title.toLowerCase().includes(s.title.toLowerCase())
+    );
+  
+    if (match) return { ...match, title }; // Override with the target title if needed
+  
+    // Fallback if not found — placeholder
+    return {
+      id: 100 + index,
+      Icon: User,
+      title,
+      description: `Specialized care in the field of ${title}.`,
+      patientCount: Math.floor(Math.random() * 1000) + 500,
+      doctorCount: Math.floor(Math.random() * 10) + 2,
+    };
+  });
+
+  console.log(generatedSpecialties)
 
 
   return (
