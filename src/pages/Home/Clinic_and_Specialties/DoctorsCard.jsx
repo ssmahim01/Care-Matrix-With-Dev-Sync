@@ -43,8 +43,8 @@ export default function DoctorCard({ doctor }) {
             <div className="flex items-start gap-2">
               <GraduationCap className="h-4 w-4 text-sky-500 mt-0.5" />
               <div>
-                <div className="font-medium text-sky-800">Education</div>
-                <div className="text-sky-600">{doctor.education}</div>
+                <div className="font-medium text-sky-800">Visiting Fee</div>
+                <span className="text-sky-600 flex items-center">{doctor.consultation_fee}<DollarSign className="size-4" /></span>
               </div>
             </div>
             <div className="flex items-start gap-2">
