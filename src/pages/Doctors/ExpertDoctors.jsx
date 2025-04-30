@@ -84,7 +84,7 @@ const ExpertDoctors = () => {
           </div>
 
           {/* section content  */}
-          <div className="mt-6 w-11/12 md:w-full mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="mt-6 w-11/12 md:w-full mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {isLoading
               ? Array.from({ length: 10 }).map((_, index) => (
                 <SkeletonCard key={index} />
