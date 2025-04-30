@@ -18,6 +18,15 @@ export default function HeroSection() {
     }
   })
 
+  const {data: patients = {}, isLoading: patientLoading} = useQuery({
+    queryKey: ["patient"],
+    queryFn: async ()=> {
+      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/users`)
+      return data
+    }
+  })
+
+
 
   return (
     <section className="bg-gradient-to-r from-sky-300/10 via-sky-200/50 to-sky-100/75 rounded-xl p-10 md:p-14 lg:p-16">
