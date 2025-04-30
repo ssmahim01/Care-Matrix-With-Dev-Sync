@@ -9,26 +9,24 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import EmptyState from "@/pages/DashboardPages/PatientOverview/EmptyState";
 import { format } from "date-fns";
 import {
   AlertCircle,
   CheckCircle2,
   ChevronRight,
   Clock,
-  Mail,
-  MapPin,
   Package,
-  Phone,
   RotateCcw,
   ShoppingBag,
   Truck,
-  User,
 } from "lucide-react";
 import { useState } from "react";
+import { FaFileInvoice } from "react-icons/fa";
 import { GiMedicines } from "react-icons/gi";
 import { Link } from "react-router";
 
-export default function PurchaseHistoryMain({ ordersData }) {
+const PurchaseHistoryMain = ({ ordersData }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   // Get status icon based on status
@@ -79,7 +77,23 @@ export default function PurchaseHistoryMain({ ordersData }) {
     }
   };
 
-  return (
+  return ordersData.length === 0 ? (
+    <Card
+      className={
+        "mt-6 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+      }
+    >
+      <CardContent>
+        <EmptyState
+          icon={ShoppingBag}
+          title="No orders or purchase history found"
+          description="Looks like you haven't made any purchases yet. Once you place an order, all your order details, tracking info, and history will appear here — happy shopping!"
+          actionLabel="Make An order"
+          actionLink="/dashboard/patient/manage-cart"
+        />
+      </CardContent>{" "}
+    </Card>
+  ) : (
     <div className="min-h-screen w-full">
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="border w-full flex flex-col lg:flex-row mb-4">
@@ -192,7 +206,7 @@ export default function PurchaseHistoryMain({ ordersData }) {
       </Tabs>
     </div>
   );
-}
+};
 
 // Orders List Component
 function OrdersList({ orders, onSelectOrder }) {
@@ -246,13 +260,19 @@ function OrdersList({ orders, onSelectOrder }) {
 
   if (orders.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <ShoppingBag className="h-12 w-12 text-muted-foreground mb-4" />
-        <h3 className="text-lg font-medium">No orders found</h3>
-        <p className="text-muted-foreground mt-1">
-          You don't have any orders in this category yet.
-        </p>
-      </div>
+      <Card
+        className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+      >
+        <CardContent>
+          <div className="flex flex-col items-center justify-center py-12">
+            <ShoppingBag className="h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-medium">No orders found</h3>
+            <p className="text-muted-foreground mt-1">
+              You don't have any orders in this category yet.
+            </p>
+          </div>{" "}
+        </CardContent>
+      </Card>
     );
   }
 
@@ -340,32 +360,33 @@ const OrderDetails = ({ order, onBack }) => {
   );
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
+    <div className="space-y-1">
+      <div className="pl-1 flex items-center gap-2">
         <Button variant="outline" size="sm" onClick={onBack}>
           <ChevronRight className="h-4 w-4 rotate-180 mr-1" />
           Back to Orders
         </Button>
       </div>
 
-      <div className="pl-1 md:pl-0 flex flex-col md:flex-row justify-between items-start md:items-center">
+      <div className="pl-1 flex flex-col md:flex-row justify-between items-start md:items-center">
         <div>
           <h2 className="text-2xl font-bold">Order #{order._id.slice(-10)}</h2>
           <p className="text-gray-800">
             Placed on {format(new Date(order.date), "MMMM d, yyyy 'at' h:mm a")}
           </p>
-          <p className="text-gray-800">
-            Address: {order.customerInfo.address}, {order.customerInfo.district},{" "}
-            {order.customerInfo.division}
+          <p className="text-gray-800 max-w-72 md:max-w-80 lg:max-w-xl truncate">
+            Address: {order.customerInfo.address}, {order.customerInfo.district}
+            , {order.customerInfo.division}
           </p>
         </div>
         <div className="mt-2 md:mt-0">
-        <StatusBadge status={order.orderStatus} /></div>
+          <StatusBadge status={order.orderStatus} />
+        </div>
       </div>
 
       {/* Status Tracker */}
       <Card
-        className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+        className={"mt-4 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
       >
         <CardHeader>
           <CardTitle>Order Status</CardTitle>
@@ -379,7 +400,7 @@ const OrderDetails = ({ order, onBack }) => {
       </Card>
 
       {/* Order Details */}
-      <Card className="w-full border shadow-sm border-[#e5e7eb] py-6 rounded-lg">
+      <Card className="mt-4 w-full border shadow-sm border-[#e5e7eb] py-6 rounded-lg">
         <CardHeader>
           <CardTitle>Order Details</CardTitle>
           <div className="flex justify-between items-center">
@@ -450,9 +471,14 @@ const OrderDetails = ({ order, onBack }) => {
         </CardContent>
       </Card>
 
-      <div className="text-center">
+      <div className="mt-4 flex justify-end">
         <Link to={`/dashboard/invoice/${order.transactionId}`}>
-          <Button variant="outline">Download Invoice</Button>
+          <Button
+            variant="outline"
+            className={"cursor-pointer flex items-center gap-1"}
+          >
+            <FaFileInvoice /> Download Invoice
+          </Button>
         </Link>
       </div>
     </div>
@@ -645,3 +671,5 @@ const StatusTracker = ({ currentStatus }) => {
     </div>
   );
 };
+
+export default PurchaseHistoryMain;
