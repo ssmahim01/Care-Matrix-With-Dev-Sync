@@ -45,7 +45,7 @@ const EmergencyNav = () => {
 
   return (
     <nav className="bg-[#f6f3f3] shadow-sm py-2 sticky top-0 z-50">
-      <div className="max-w-[1700px] container mx-auto lg:w-10/12 w-11/12 flex items-center justify-between">
+      <div className="max-w-[1700px] container mx-auto lg:w-[86%] w-11/12 flex items-center justify-between">
         {/* Logo Section */}
         <div className="flex items-center cursor-pointer">
           <Link to="/emergency" className="flex items-center">
