@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { HistoryIcon } from "lucide-react";
 import { FaFileInvoice } from "react-icons/fa";
 import { Link } from "react-router";
+import PurchaseHistoryMain from "./Purchase";
 
 const PurchaseHistoryTable = ({ purchaseHistory, isLoading }) => (
   <Table>
@@ -198,7 +199,9 @@ const PurchaseHistory = () => {
         icon={HistoryIcon}
       />
       {/* Purchase History Table */}
-      <PurchaseHistoryTable purchaseHistory={orders} isLoading={isLoading} />
+      {/* <PurchaseHistoryTable purchaseHistory={orders} isLoading={isLoading} /> */}
+      {/*  */}
+      <PurchaseHistoryMain ordersData={orders}/>
     </div>
   );
 };
