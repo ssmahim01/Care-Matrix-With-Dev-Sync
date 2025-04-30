@@ -52,7 +52,7 @@ const UsersMessage = ({
           )}
           {msg.message && (
             <span
-              className={`inline-block p-2 rounded-xl shadow-sm font-medium text-gray-700 ${
+              className={`inline-block p-2 rounded-xl shadow-sm font-medium text-gray-800 ${
                 isCurrentUser
                   ? "bg-blue-200 rounded-br-none"
                   : "bg-gray-200 rounded-bl-none"
