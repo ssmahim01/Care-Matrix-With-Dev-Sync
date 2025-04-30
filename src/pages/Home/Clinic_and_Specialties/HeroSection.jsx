@@ -3,8 +3,22 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Calendar, Phone } from "lucide-react";
 import { Link } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Count } from "./Counter";
+import { Loader2 } from "lucide-react";
 
 export default function HeroSection() {
+
+  const {data = [], isLoading} = useQuery({
+    queryKey: ["doctors"],
+    queryFn: async ()=> {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors/all`)
+      return res.data
+    }
+  })
+
+
   return (
     <section className="bg-gradient-to-r from-sky-300/10 via-sky-200/50 to-sky-100/75 rounded-xl p-10 md:p-14 lg:p-16">
       <div className="md:w-11/12 xl:w-10/12 max-w-screen-2xl mx-auto">
@@ -48,12 +62,12 @@ export default function HeroSection() {
               </div>
               <div className="h-10 border-r border-sky-200"></div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-sky-700">100+</div>
+                <div className="text-3xl font-bold text-sky-700"><Count number={data?.length}/>+</div>
                 <div className="text-sm text-sky-600">Doctors</div>
               </div>
               <div className="h-10 border-r border-sky-200"></div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-sky-700">50k+</div>
+                <div className="text-3xl font-bold text-sky-700"><Count number={patients.totalItems}/>+</div>
                 <div className="text-sm text-sky-600">Patients</div>
               </div>
             </div>
