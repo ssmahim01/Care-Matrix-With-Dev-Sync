@@ -28,7 +28,7 @@ import FacilityCard from "./FacilityCard";
 import { Link } from "react-router";
 
 export default function ClinicAndSpecialties() {
-  const [searchQuery, setSearchQuery] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
   const [, setActiveTab] = useState("specialties");
 
   return (
@@ -43,16 +43,16 @@ export default function ClinicAndSpecialties() {
       <main className="max-w-screen-2xl mx-auto w-11/12 xl:w-10/12 pb-8">
         {/* Search and Quick Actions */}
         <div className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="relative w-full md:w-96">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sky-500 h-4 w-4" />
-            <Input
+          {/* <div className="relative w-full md:w-96"> */}
+            {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sky-500 h-4 w-4" /> */}
+            {/* <Input
               placeholder="Search specialties, doctors, services..."
               className="pl-10 border-sky-200 focus:border-sky-400"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-3 w-full md:w-auto">
+            /> */}
+          {/* </div> */}
+          <div className="flex gap-3 w-full ml-4 md:w-auto">
             <Link to={"/doctors"}>
               <Button className="bg-sky-600 hover:bg-sky-700 cursor-pointer">
                 <Calendar className="mr-2 h-4 w-4" /> Book Appointment
