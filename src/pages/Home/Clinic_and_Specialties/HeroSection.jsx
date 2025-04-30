@@ -6,7 +6,9 @@ import { Link } from "react-router";
 
 import { Count } from "./Counter";
 
-export default function HeroSection() {
+export default function HeroSection( props ) {
+
+  const { totalUniqueServices, totalPatient, totalDoctor } = props;
 
   return (
     <section className="bg-gradient-to-r from-sky-300/10 via-sky-200/50 to-sky-100/75 rounded-xl p-10 md:p-14 lg:p-16">
@@ -46,17 +48,17 @@ export default function HeroSection() {
             </div>
             <div className="flex items-center gap-6 pt-4">
               <div className="text-center">
-                <div className="text-3xl font-bold text-sky-700"><Count number={totalUniqueServices}/>+</div>
+                <div className="text-3xl font-bold text-sky-700"><Count number={totalUniqueServices}/> +</div>
                 <div className="text-sm text-sky-600">Specialties</div>
               </div>
               <div className="h-10 border-r border-sky-200"></div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-sky-700"><Count number={data?.length}/>+</div>
+                <div className="text-3xl font-bold text-sky-700"><Count number={totalDoctor}/>+</div>
                 <div className="text-sm text-sky-600">Doctors</div>
               </div>
               <div className="h-10 border-r border-sky-200"></div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-sky-700"><Count number={patients.totalItems}/>+</div>
+                <div className="text-3xl font-bold text-sky-700"><Count number={totalPatient}/>+</div>
                 <div className="text-sm text-sky-600">Patients</div>
               </div>
             </div>

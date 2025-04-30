@@ -9,6 +9,13 @@ import {
   Search,
   Calendar,
   Phone,
+  Heart,
+  Brain,
+  Stethoscope,
+  Baby,
+  Bone,
+  User,
+  ShieldCheck,
 } from "lucide-react";
 import { doctors, facilities, services, specialties } from "@/lib/data";
 import HeroSection from "./HeroSection";
@@ -25,48 +32,49 @@ export default function ClinicAndSpecialties() {
   // const [searchQuery, setSearchQuery] = useState("");
   const [, setActiveTab] = useState("specialties");
 
-  const {data = [], isLoading} = useQuery({
+  const { data = [], isLoading } = useQuery({
     queryKey: ["doctors"],
-    queryFn: async ()=> {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors/all`)
-      return res.data
+    queryFn: async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors/all`)
+      return data
     }
   })
 
-  const {data: patients = {}, isLoading: patientLoading} = useQuery({
-    queryKey: ["patient"],
-    queryFn: async ()=> {
-      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/users`)
+  const { data: pat = {}, isLoading: patientLoading } = useQuery({
+    queryKey: ["patients"],
+    queryFn: async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/users`)
       return data
     }
   })
 
 
-  if(isLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin"/></div>
-  if(patientLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin"/></div>
+  if (isLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin" /></div>
+  if (patientLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin" /></div>
 
   function countUniqueServices(doctors) {
     const allServices = doctors.flatMap(doctor => doctor.services || []);
     const uniqueServices = new Set(allServices);
     return uniqueServices.size;
   }
-  
-  const totalUniqueServices = countUniqueServices(data);
 
-  function GetAllTitle(doctors) {
-    const allTitles = doctors.flatMap(doctor=> doctor.title);
-    const unique = new Set(allTitles);
-    console.log(unique)
-    console.log(allTitles)
-  }
-  console.log(GetAllTitle(data))
+  const totalUniqueServices = countUniqueServices(data);
+  const totalPatient = pat.totalItems
+  const totalDoctor = data.length
+
+
+
 
   return (
     <section className="w-full">
       {/* Hero Section */}
       <div className="-mt-8" />
       <div className="mb-12">
-        <HeroSection />
+        <HeroSection
+          totalUniqueServices={totalUniqueServices}
+          totalPatient={totalPatient}
+          totalDoctor={totalDoctor}
+        />
       </div>
 
       {/* Main Content */}
@@ -74,8 +82,8 @@ export default function ClinicAndSpecialties() {
         {/* Search and Quick Actions */}
         <div className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-between">
           {/* <div className="relative w-full md:w-96"> */}
-            {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sky-500 h-4 w-4" /> */}
-            {/* <Input
+          {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sky-500 h-4 w-4" /> */}
+          {/* <Input
               placeholder="Search specialties, doctors, services..."
               className="pl-10 border-sky-200 focus:border-sky-400"
               value={searchQuery}
@@ -152,13 +160,12 @@ export default function ClinicAndSpecialties() {
               </div> */}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {specialties.map(
+                {generatedSpecialties.map(
                   ({
                     id,
                     Icon,
                     title,
                     description,
-                    patientCount,
                     doctorCount,
                   }) => (
                     <SpecialtyCard
@@ -166,7 +173,6 @@ export default function ClinicAndSpecialties() {
                       icon={<Icon className="h-8 w-8 text-sky-600" />}
                       title={title}
                       description={description}
-                      patientCount={patientCount}
                       doctorCount={doctorCount}
                     />
                   )
