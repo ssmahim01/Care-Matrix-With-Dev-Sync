@@ -29,13 +29,13 @@ const PatientsMessageCounts = ({ patient, setSelectedPartner, messageCount, user
             {(userRole === "doctor" || userRole === "pharmacist") && (
               <>
                 {messageCount === 0 ? (
-                  <span className="badge bg-blue-400 text-[10px] text-white/90 font-medium border py-1 px-2 rounded-xl">
+                  <span className="badge bg-blue-400 text-[10px] text-white/90 font-medium border px-3 hover:bg-blue-600 rounded-xl">
                     New
                   </span>
                 ) : (
                   <div className="relative flex items-center">
-                    <MessageSquareText className="w-6 h-6 text-blue-500" />
-                    <span className="absolute -top-1 -right-1 text-xs font-medium text-white bg-blue-500 rounded-full w-[18px] p-1 h-[18px] flex items-center justify-center border-2 border-white/90">
+                    <MessageSquareText className="w-5 h-5 text-blue-500" />
+                    <span className="absolute -top-1 -right-1 text-xs font-medium text-white bg-blue-500 rounded-full w-[15px] p-1 h-[15px] flex items-center justify-center border-2 border-white/90">
                       {messageCount}
                     </span>
                   </div>

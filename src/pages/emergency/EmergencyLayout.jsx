@@ -20,8 +20,8 @@ const EmergencyLayout = () => {
 
   return (
     <section>
-      <header><EmergencyNav/></header>
-        <div className="flex flex-1 flex-col gap-4 lg:p-4 pt-0">
+      <header className="sticky top-0 z-50"><EmergencyNav/></header>
+        <div className="flex flex-1 flex-col gap-4 p-4 w-11/12 mx-auto lg:w-10/12 pt-5">
           <Outlet />
         </div>
     </section>
