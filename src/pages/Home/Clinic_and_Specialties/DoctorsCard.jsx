@@ -6,6 +6,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Star, GraduationCap, Clock } from "lucide-react";
 import { Link } from "react-router";
 import { DollarSign } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
 
 export default function DoctorCard({ doctor }) {
 
@@ -66,7 +68,14 @@ export default function DoctorCard({ doctor }) {
               <Clock className="h-4 w-4 text-sky-500 mt-0.5" />
               <div>
                 <div className="font-medium text-sky-800">Availability</div>
-                <div className="text-sky-600">{doctor.availability}</div>
+                <Badge 
+                variant={isAvailableToday(doctor.available_days) 
+                ? "outline" 
+                : "secondary"}
+                className={`${isAvailableToday(doctor.available_days) 
+                ? "bg-green-200" 
+                : "bg-red-200"}`}
+                >{isAvailableToday(doctor.available_days) ? "Available" : "Not Available"}</Badge>
               </div>
             </div>
           </div>
