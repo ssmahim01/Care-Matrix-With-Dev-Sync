@@ -76,9 +76,8 @@ export default function ClinicAndSpecialties() {
       title.toLowerCase().includes(s.title.toLowerCase())
     );
   
-    if (match) return { ...match, title }; // Override with the target title if needed
-  
-    // Fallback if not found — placeholder
+    if (match) return { ...match, title };
+
     return {
       id: 100 + index,
       Icon: User,
