@@ -8,6 +8,14 @@ import { Link } from "react-router";
 import { DollarSign } from "lucide-react";
 
 export default function DoctorCard({ doctor }) {
+
+    const isAvailableToday = (days) => {
+      const today = format(new Date(), "EEEE");
+      // Check if today is in availableDays
+      return days.includes(today);
+    };
+
+    
   return (
     <motion.div
       whileHover={{ y: -5 }}
@@ -43,7 +51,7 @@ export default function DoctorCard({ doctor }) {
             <div className="flex items-start gap-2">
               <GraduationCap className="h-4 w-4 text-sky-500 mt-0.5" />
               <div>
-                <div className="font-medium text-sky-800">Visiting Fee</div>
+                <div className="font-medium text-sky-800">Consultation Fee</div>
                 <span className="text-sky-600 flex items-center">{doctor.consultation_fee}<DollarSign className="size-4" /></span>
               </div>
             </div>
