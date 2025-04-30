@@ -76,19 +76,25 @@ export default function ClinicAndSpecialties() {
       title.toLowerCase().includes(s.title.toLowerCase())
     );
   
-    if (match) return { ...match, title };
-
+    const doctorCount = data.filter(
+      (doc) => doc.title.toLowerCase() === title.toLowerCase()
+    ).length;
+  
+    if (match) {
+      return { ...match, title, doctorCount };
+    }
+  
+    // Fallback
     return {
       id: 100 + index,
       Icon: User,
       title,
       description: `Specialized care in the field of ${title}.`,
       patientCount: Math.floor(Math.random() * 1000) + 500,
-      doctorCount: Math.floor(Math.random() * 10) + 2,
+      doctorCount,
     };
   });
-
-  console.log(generatedSpecialties)
+  
 
 
   return (
