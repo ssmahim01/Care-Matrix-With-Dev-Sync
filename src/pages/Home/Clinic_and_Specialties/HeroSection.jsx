@@ -30,6 +30,15 @@ export default function HeroSection() {
   if(isLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin"/></div>
   if(patientLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin"/></div>
 
+  function countUniqueServices(doctors) {
+    const allServices = doctors.flatMap(doctor => doctor.services || []);
+    const uniqueServices = new Set(allServices);
+    console.log(uniqueServices)
+    return uniqueServices.size;
+  }
+  
+  const totalUniqueServices = countUniqueServices(data);
+  
 
   return (
     <section className="bg-gradient-to-r from-sky-300/10 via-sky-200/50 to-sky-100/75 rounded-xl p-10 md:p-14 lg:p-16">
