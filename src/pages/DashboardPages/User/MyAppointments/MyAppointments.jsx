@@ -45,7 +45,7 @@ const MyAppointments = () => {
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  console.log(category, search);
+  // console.log(category, search);
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -53,7 +53,7 @@ const MyAppointments = () => {
     useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null)
   const [selectedPrescription, setSelectedPrescription] = useState(null);
-  console.log(appointments);
+  // console.log(appointments);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSkeleton(false);
@@ -233,7 +233,7 @@ const MyAppointments = () => {
                   ))}
               </TableRow>
             ))
-            : appointments.reverse()?.map((appointment, index) => (
+            : appointments?.map((appointment, index) => (
               <TableRow key={appointment._id} className="hover:bg-gray-50">
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{appointment.doctorName}</TableCell>
@@ -245,7 +245,7 @@ const MyAppointments = () => {
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-xs p-1 rounded-full ${appointment.status === "pending"
+                      className={`text-xs p-1 rounded-full ${appointment.status === "Approved"
                           ? "bg-yellow-500"
                           : "bg-green-600"
                         } text-white`}
