@@ -67,7 +67,7 @@ const Login = () => {
             if (user) {
               // navigate & show success toast
               navigate("/");
-              toast.success("Login Successful!", {
+              toast.success(<b>Login Successful!</b>, {
                 description:
                   "Welcome back! You have successfully logged into your account",
                 duration: 3000,
@@ -250,13 +250,17 @@ const Login = () => {
             {/* Error Message */}
             <IsError isError={isError} />
             {/* Register Button */}
-            <button
+            <motion.button
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
               type="submit"
               disabled={loading}
               className="btn border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
             >
               {loading ? "Login in..." : "Login"}
-            </button>
+            </motion.button>
           </form>
 
           {/* SocialLogin */}
