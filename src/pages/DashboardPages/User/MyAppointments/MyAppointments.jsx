@@ -202,7 +202,7 @@ const MyAppointments = () => {
       </div>
 
       {/* Table */}
-      <Table className="rounded-md  border-gray-300 mt-4">
+      <Table className="rounded-md  border-gray-200 mt-4">
         <TableCaption className="mb-2">
           A list of your appointments.
         </TableCaption>
