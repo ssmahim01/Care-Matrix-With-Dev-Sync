@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Star, GraduationCap, Clock } from "lucide-react";
 import { Link } from "react-router";
+import { DollarSign } from "lucide-react";
 
 export default function DoctorCard({ doctor }) {
   return (

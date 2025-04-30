@@ -10,7 +10,7 @@ import {
   Phone,
   User,
 } from "lucide-react";
-import { doctors, facilities, services, specialties } from "@/lib/data";
+import {  facilities, services, specialties } from "@/lib/data";
 import HeroSection from "./HeroSection";
 import SpecialtyCard from "./SpecieltiesCard";
 import DoctorCard from "./DoctorsCard";
@@ -226,7 +226,7 @@ export default function ClinicAndSpecialties() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {data.map((doctor) => (
-                  <DoctorCard key={doctor.id} doctor={doctor} />
+                  <DoctorCard key={doctor._id} doctor={doctor} />
                 ))}
               </div>
             </motion.div>
