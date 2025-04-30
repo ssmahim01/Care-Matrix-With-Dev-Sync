@@ -103,12 +103,12 @@ const BlogDetails = () => {
         </div>
 
         {/* Categories */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        {/* <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
             <span className="w-1 h-5 bg-blue-500 mr-2"></span>
             Categories
           </h3>
-          <ul className="space-y-3">
+           <ul className="space-y-3">
             {categories.map((category) => (
               <li key={category.name} className="flex items-center justify-between">
                 <Link to={`/category/${category.name.toLowerCase().replace(/\s/g, "-")}`}>
@@ -120,7 +120,7 @@ const BlogDetails = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
       </div>
     </div>
         </div>

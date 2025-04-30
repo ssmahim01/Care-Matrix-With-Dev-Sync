@@ -242,7 +242,7 @@ const ChatDashboard = ({ userEmail, userRole }) => {
       <CardContent className="flex flex-col lg:flex-row p-0">
         <div className="lg:w-1/4 border-r">
           {/* Invite Professionals and patients */}
-          <div className="w-full border-b bg-base-200 py-3 shadow-sm">
+          <div className="w-full border-b bg-base-200 py-3 rounded-tl-xl shadow-sm">
             <h3 className="text-lg font-medium ml-4">Invite</h3>
             <p className="w-full lg:w-11/12 text-sm font-medium text-gray-600 ml-4">
               Select an user then start the conversation
@@ -252,23 +252,26 @@ const ChatDashboard = ({ userEmail, userRole }) => {
           {professionals && userRole === "patient" ? (
             <>
               {potentialProfessionalsToInvite.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
+                <p className="p-4 text-sm text-muted-foreground">
                   No new doctors and pharmacists to invite.
                 </p>
               ) : (
-                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-44 py-4 pl-4">
-                  {potentialProfessionalsToInvite.map((professional) => {
-                    const messageCount = userMessageCounts && professional?.email ?
-                      userMessageCounts[professional?.email] || 0 : 0;
-                    return (
-                      <ProfessionalsMessageCounts
-                        professional={professional}
-                        setSelectedPartner={setSelectedPartner}
-                        messageCount={messageCount}
-                        userRole={userRole}
-                      />
-                    );
-                  })}
+                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-24 py-4 pl-4">
+                  {userMessageCounts &&
+                    potentialProfessionalsToInvite.map((professional) => {
+                      const messageCount =
+                        userMessageCounts && professional?.email
+                          ? userMessageCounts[professional?.email] || 0
+                          : 0;
+                      return (
+                        <ProfessionalsMessageCounts
+                          professional={professional}
+                          setSelectedPartner={setSelectedPartner}
+                          messageCount={messageCount}
+                          userRole={userRole}
+                        />
+                      );
+                    })}
                 </ul>
               )}
             </>
@@ -276,22 +279,26 @@ const ChatDashboard = ({ userEmail, userRole }) => {
             (professionals && userRole === "pharmacist") ? (
             <>
               {potentialPatientsToInvite.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm p-4 text-muted-foreground">
                   No new patients to invite.
                 </p>
               ) : (
-                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-44 py-4 pl-4">
-                  {potentialPatientsToInvite.map((patient) => {
-                    const messageCount = userMessageCounts && patient?.email ? userMessageCounts[patient?.email] || 0 : 0;
-                    return (
-                      <PatientsMessageCounts
-                        patient={patient}
-                        setSelectedPartner={setSelectedPartner}
-                        messageCount={messageCount}
-                        userRole={userRole}
-                      />
-                    );
-                  })}
+                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-24 py-4 pl-4">
+                  {userMessageCounts &&
+                    potentialPatientsToInvite.map((patient) => {
+                      const messageCount =
+                        userMessageCounts && patient?.email
+                          ? userMessageCounts[patient?.email] || 0
+                          : 0;
+                      return (
+                        <PatientsMessageCounts
+                          patient={patient}
+                          setSelectedPartner={setSelectedPartner}
+                          messageCount={messageCount}
+                          userRole={userRole}
+                        />
+                      );
+                    })}
                 </ul>
               )}
             </>

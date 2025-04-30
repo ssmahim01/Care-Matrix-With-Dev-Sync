@@ -171,15 +171,18 @@ cd Care-Matrix-With-Dev-Sync
 ```
 
 ### 2. Install Dependencies
+<p>
+
 ```bash
 npm install
 ```
-### Or 
-<br>
+
+<b>Or</b>
 
 ```bash
 bun install
 ```
+</p>
 
 ### 3. Configure Environment Variables
 Create a `.env.local` file in the root directory and add the necessary environment variables. Example:
