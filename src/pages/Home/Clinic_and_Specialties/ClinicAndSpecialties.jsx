@@ -9,15 +9,6 @@ import {
   Search,
   Calendar,
   Phone,
-  ChevronRight,
-  Heart,
-  Brain,
-  Stethoscope,
-  Baby,
-  Bone,
-  Eye,
-  Pill,
-  SmileIcon,
 } from "lucide-react";
 import { doctors, facilities, services, specialties } from "@/lib/data";
 import HeroSection from "./HeroSection";
@@ -26,10 +17,49 @@ import DoctorCard from "./DoctorsCard";
 import ServiceCard from "./ServicesCard";
 import FacilityCard from "./FacilityCard";
 import { Link } from "react-router";
+import { Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function ClinicAndSpecialties() {
   // const [searchQuery, setSearchQuery] = useState("");
   const [, setActiveTab] = useState("specialties");
+
+  const {data = [], isLoading} = useQuery({
+    queryKey: ["doctors"],
+    queryFn: async ()=> {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors/all`)
+      return res.data
+    }
+  })
+
+  const {data: patients = {}, isLoading: patientLoading} = useQuery({
+    queryKey: ["patient"],
+    queryFn: async ()=> {
+      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/users`)
+      return data
+    }
+  })
+
+
+  if(isLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin"/></div>
+  if(patientLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin"/></div>
+
+  function countUniqueServices(doctors) {
+    const allServices = doctors.flatMap(doctor => doctor.services || []);
+    const uniqueServices = new Set(allServices);
+    return uniqueServices.size;
+  }
+  
+  const totalUniqueServices = countUniqueServices(data);
+
+  function GetAllTitle(doctors) {
+    const allTitles = doctors.flatMap(doctor=> doctor.title);
+    const unique = new Set(allTitles);
+    console.log(unique)
+    console.log(allTitles)
+  }
+  console.log(GetAllTitle(data))
 
   return (
     <section className="w-full">

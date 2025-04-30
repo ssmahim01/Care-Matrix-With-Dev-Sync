@@ -3,40 +3,10 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Calendar, Phone } from "lucide-react";
 import { Link } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+
 import { Count } from "./Counter";
-import { Loader2 } from "lucide-react";
 
 export default function HeroSection() {
-
-  const {data = [], isLoading} = useQuery({
-    queryKey: ["doctors"],
-    queryFn: async ()=> {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/administrator/doctors/all`)
-      return res.data
-    }
-  })
-
-  const {data: patients = {}, isLoading: patientLoading} = useQuery({
-    queryKey: ["patient"],
-    queryFn: async ()=> {
-      const {data} = await axios.get(`${import.meta.env.VITE_API_URL}/users`)
-      return data
-    }
-  })
-
-
-  if(isLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin"/></div>
-  if(patientLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin"/></div>
-
-  function countUniqueServices(doctors) {
-    const allServices = doctors.flatMap(doctor => doctor.services || []);
-    const uniqueServices = new Set(allServices);
-    return uniqueServices.size;
-  }
-  
-  const totalUniqueServices = countUniqueServices(data);
 
   return (
     <section className="bg-gradient-to-r from-sky-300/10 via-sky-200/50 to-sky-100/75 rounded-xl p-10 md:p-14 lg:p-16">
