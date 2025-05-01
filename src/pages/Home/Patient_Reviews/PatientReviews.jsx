@@ -66,13 +66,6 @@ export default function PatientReviews() {
       )
     }
 
-    // Filter by department
-    if (selectedDepartment !== "all") {
-      results = results.filter(
-        (review) => review.department.toLowerCase() === selectedDepartment.toLowerCase()
-      )
-    }
-
 
     // Filter by tab
     if (activeTab === "recent") {
@@ -85,7 +78,9 @@ export default function PatientReviews() {
 
     setFilteredReviews(results)
     setCurrentPage(1) // Reset to first page when filters change
-  }, [searchQuery, selectedDepartment, activeTab])
+  }, [searchQuery, activeTab])
+
+  
 
   // Get current reviews for pagination
   const indexOfLastReview = currentPage * reviewsPerPage
@@ -183,6 +178,11 @@ export default function PatientReviews() {
     setFilteredReviews(res.data)
   }
 
+  const handleCategoryDepartment = async (value) => {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/review/department?department=${value}`)
+    console.log(res.data)
+  }
+
 
   return (
     <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl pt-10 my-10">
@@ -214,7 +214,7 @@ export default function PatientReviews() {
 
             <div className="relative">
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sky-500 h-4 w-4" />
-              <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
+              <Select onValueChange={(value) => handleCategoryDepartment(value)}              >
                 <SelectTrigger className="pl-10 border-sky-200">
                   <SelectValue placeholder="Filter by department" />
                 </SelectTrigger>
