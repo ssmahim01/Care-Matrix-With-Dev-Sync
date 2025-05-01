@@ -625,12 +625,12 @@ const MyAppointments = () => {
                             appointment.status === "Approved" ? 
                             <Button onClick={() =>
                               handleDeleteAppointment(appointment._id)
-                            } className={"cursor-pointer"} variant="destructive">
+                            } className={"cursor-pointer bg-neutral-900"} variant="destructive">
                               Cancel Appointment
                             </Button> :
                             <Button onClick={() =>
                               handleViewPrescription(appointment)
-                            } className={"cursor-pointer bg-green-600"} variant="">
+                            } className={"cursor-pointer bg-neutral-900"} variant="">
                               View Prescription
                             </Button>
                             
@@ -649,7 +649,7 @@ const MyAppointments = () => {
               (
                 <EmptyState
                   icon={CalendarPlus}
-                  title="No Upcoming Appointments"
+                  title="You haven’t booked any appointments yet"
                   description="You don't have any scheduled appointments. Book a consultation with one of our specialists."
                   actionLabel="Book An Appointment"
                   actionLink="/doctors"
