@@ -649,7 +649,7 @@ const MyAppointments = () => {
               (
                 <EmptyState
                   icon={CalendarPlus}
-                  title="You haven’t booked any appointments yet"
+                  title="No Appointments Yet"
                   description="You don't have any scheduled appointments. Book a consultation with one of our specialists."
                   actionLabel="Book An Appointment"
                   actionLink="/doctors"

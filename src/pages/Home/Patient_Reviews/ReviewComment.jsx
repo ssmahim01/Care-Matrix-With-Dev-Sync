@@ -15,10 +15,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { useAuthUser } from '@/redux/auth/authActions'
+import { useNavigate } from 'react-router'
 
-const ReviewComment = ({handleSubmitReview, newReview, setNewReview}) => {
+const ReviewComment = ({handleSubmitReview, newReview, setNewReview, reviewDialog, setReviewDialog}) => {
+
+
     return (
-        <Dialog>
+        <Dialog open={reviewDialog} onOpenChange={setReviewDialog}>
             <DialogTrigger asChild>
                 <Button className="bg-sky-600 hover:bg-sky-700 text-white">
                     Write a Review <ChevronRight className="ml-2 w-4 h-4" />
@@ -36,7 +40,7 @@ const ReviewComment = ({handleSubmitReview, newReview, setNewReview}) => {
                         <div className="space-y-2">
                             <Label htmlFor="name">Your Name</Label>
                             <Input
-                                id="name"
+                                name="name"
                                 value={newReview.name}
                                 onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
                                 required
@@ -46,19 +50,17 @@ const ReviewComment = ({handleSubmitReview, newReview, setNewReview}) => {
                         <div className="space-y-2">
                             <Label htmlFor="department">Department</Label>
                             <Select
-                                value={newReview.department}
-                                onValueChange={(value) => setNewReview({ ...newReview, department: value })}
+                                name="department"
                                 required
                             >
-                                <SelectTrigger id="department">
+                                <SelectTrigger >
                                     <SelectValue placeholder="Select department" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="Cardiology">Cardiology</SelectItem>
-                                    <SelectItem value="Orthopedics">Orthopedics</SelectItem>
-                                    <SelectItem value="Pediatrics">Pediatrics</SelectItem>
-                                    <SelectItem value="Obstetrics">Obstetrics</SelectItem>
-                                    <SelectItem value="Emergency">Emergency</SelectItem>
+                                    <SelectItem value="cardiology">Cardiology</SelectItem>
+                                    <SelectItem value="orthopedics">Orthopedics</SelectItem>
+                                    <SelectItem value="pediatrics">Pediatrics</SelectItem>
+                                    <SelectItem value="emergency">Emergency</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -68,6 +70,7 @@ const ReviewComment = ({handleSubmitReview, newReview, setNewReview}) => {
                             <RadioGroup
                                 className="flex space-x-2"
                                 defaultValue="5"
+                                name="rating"
                                 onValueChange={(value) => setNewReview({ ...newReview, rating: Number.parseInt(value) })}
                             >
                                 {[1, 2, 3, 4, 5].map((rating) => (
@@ -86,7 +89,7 @@ const ReviewComment = ({handleSubmitReview, newReview, setNewReview}) => {
                         <div className="space-y-2">
                             <Label htmlFor="comment">Your Review</Label>
                             <Textarea
-                                id="comment"
+                                name="comment"
                                 placeholder="Share your experience..."
                                 className="min-h-[100px]"
                                 value={newReview.comment}

@@ -92,7 +92,7 @@ const SkeletonBarChartAnalytics = () => {
 // Skeleton Loader for the Entire Overview Page
 const SkeletonOverview = () => {
   return (
-    <div className="space-y-4 px-7">
+    <div className="space-y-4 px-5">
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, index) => (

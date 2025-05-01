@@ -49,7 +49,7 @@ const ManageOrders = () => {
       : orders?.filter((order) => order.orderStatus === activeTab);
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       <DashboardPagesHeader
         title="Manage Orders"
         subtitle="Track and process all customer orders efficiently, Manage orders in one place"

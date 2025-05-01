@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import CartDropdown from "./CartDropdown";
 import {
   Drawer,
@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
 import { Menu } from "lucide-react";
+import { Star } from "lucide-react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const Navbar = () => {
                     size={30}
                   />
                 </DrawerTrigger>
-                <DrawerContent className="h-full overflow-auto w-[300px] bg-[#f3f6f9] fixed top-0 left-0">
+                <DrawerContent className="h-full overflow-y-scroll w-[300px] bg-[#f3f6f9] fixed top-0 left-0">
                   <DrawerHeader>
                     <DrawerTitle>
                       <div className="pt-1 pl-0.5">
@@ -407,6 +408,7 @@ const Navbar = () => {
                                 </p>
                               </div>
                             </NavLink>
+
                             <NavLink
                               to="/available-beds"
                               className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
@@ -446,6 +448,7 @@ const Navbar = () => {
                                 </p>
                               </div>
                             </NavLink>
+
                             <NavLink
                               to="/contact-us"
                               className="flex items-start gap-3 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
@@ -505,6 +508,26 @@ const Navbar = () => {
                               </div>
                             </NavLink>
                           </ul>
+
+                          <ul className="flex flex-col gap-4 text-gray-800">
+                            <NavLink
+                              to="/patient-reviews"
+                              className="flex items-start gap-2 transition-all duration-300 hover:bg-gray-200/40 rounded-lg p-2"
+                            >
+                              <div className="mt-1">
+                                <Star size={20} className="text-gray-800" />
+                              </div>
+                              <div>
+                                <span className="font-semibold text-lg">
+                                  Patient Reviews
+                                </span>
+                                <p className="text-sm text-gray-600">
+                                  Bringing smiles and trust to life through
+                                  honest patient feedback.
+                                </p>
+                              </div>
+                            </NavLink>
+                          </ul>
                         </div>
                       </article>
                     )}
@@ -517,7 +540,7 @@ const Navbar = () => {
                 <Link to="/emergency">
                   <Button
                     className={`${
-                      user && role === "patient" ? "" : "mr-4"
+                      user && role === "patient" ? "" : "mr-3"
                     } bg-red-100 hover:bg-red-200 tracking-tight text-red-500 cursor-pointer`}
                   >
                     <span>Emergency</span>
@@ -528,7 +551,7 @@ const Navbar = () => {
 
               {/* Cart */}
               {user && role === "patient" && (
-                <div className="mx-4 ">
+                <div className="mx-4">
                   <CartDropdown />
                 </div>
               )}
@@ -569,7 +592,7 @@ const Navbar = () => {
                       <Separator className={"border-[1px]"} />
 
                       <NavLink
-                        className="flex gap-1 items-center text-lg bg-[#f1f1f1] hover:bg-[#eaeaea] transition-all duration-300 ease-in-out py-1 px-2 rounded-md mb-1"
+                        className=" flex gap-1 items-center text-lg  hover:bg-[#eaeaea] transition-all duration-300 ease-in-out py-1 px-2 rounded-md "
                         to={
                           role === "administrator"
                             ? "/dashboard/administrator-overview"
@@ -592,14 +615,22 @@ const Navbar = () => {
                       </NavLink>
                       <Separator className={"border-[1px]"} />
                       {/* Logout Button */}
-                      <div className="my-1">
+                      <div className="">
                         <button
                           onClick={() => {
                             dispatch(logOut);
-                            toast.success("Log out successful");
                             navigate("/");
+                            toast.success("Logged out successfully", {
+                              description:
+                                "You have been securely logged out of your account",
+                              style: {
+                                marginTop: "20px",
+                              },
+                              position: "top-right",
+                              duration: 2000,
+                            });
                           }}
-                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500 bg-red-100/50 hover:bg-red-200/50 duration-300"
+                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500  hover:bg-red-200/50 duration-300"
                         >
                           <BiLogOutCircle size={25} />
                           Logout

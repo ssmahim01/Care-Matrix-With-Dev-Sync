@@ -98,7 +98,7 @@ const MyFavoriteDoctors = () => {
                                 </TableCell>
                             </TableRow>
                         ))
-                        : favoriteDoctors.reverse()?.map((doctor, index) => (
+                        : favoriteDoctors?.map((doctor, index) => (
                             <TableRow key={doctor._id}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>

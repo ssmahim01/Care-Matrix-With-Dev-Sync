@@ -90,7 +90,7 @@ const HowItWorks = () => {
     if (isAutoPlaying) {
       interval = setInterval(() => {
         setActiveStep((prev) => (prev + 1) % services.length);
-      }, 4000);
+      }, 5000);
     }
 
     return () => clearInterval(interval);
@@ -107,7 +107,7 @@ const HowItWorks = () => {
   };
 
   const handleStepClick = (index) => {
-    setIsAutoPlaying(false);
+    // setIsAutoPlaying(false);
     setActiveStep(index);
   };
 

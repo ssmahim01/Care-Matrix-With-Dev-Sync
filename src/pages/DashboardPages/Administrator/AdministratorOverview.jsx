@@ -184,7 +184,7 @@ const AdministratorOverview = () => {
   const activities = activitiesData?.recentActivities || [];
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       {/* Dashboard Summary Cards */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
         {/* Total Doctors Card */}

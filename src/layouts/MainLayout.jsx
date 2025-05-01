@@ -1,6 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { Toaster } from "sonner";
 
 // Lazy load components
 const Navbar = lazy(() => import("@/shared/Navbar/Navbar"));
@@ -24,7 +23,6 @@ const MainLayout = () => {
           <Outlet />
         </div>
         <Footer />
-        <Toaster />
       </div>
     </Suspense>
   );
