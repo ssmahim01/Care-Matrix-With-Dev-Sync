@@ -35,6 +35,8 @@ import { FileDown } from "lucide-react";
 import { PrescriptionViewModal } from "@/components/ManagePrescription/PrescriptionViewModal";
 import toast from "react-hot-toast";
 import { IoIosSearch } from "react-icons/io";
+import AddReviewAppointment from "./AddReviewAppointment";
+import { MdReviews } from "react-icons/md";
 
 const MyAppointments = () => {
   const [sortDate, setSortDate] = useState("");
@@ -44,6 +46,11 @@ const MyAppointments = () => {
   const [appointments, refetch, isLoading] = useMyAppointments(sortDate, search, category);
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
+  const [reviewDialog, setReviewDialog] = useState(false)
+  const [newReview, setNewReview] = useState({
+    rating: 5,
+  });
+  
 
   // console.log(category, search);
 
@@ -114,6 +121,37 @@ const MyAppointments = () => {
       toast.error("No prescriptions found for this patient");
     }
   };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const name = formData.get("name");
+    const department = formData.get("department");
+    const comment = formData.get("comment");
+
+    // You already have rating tracked in `newReview.rating`
+    const rating = newReview.rating;
+
+    const reviewData = {
+      name,
+      department,
+      comment,
+      rating,
+      date: new Date().toISOString(),
+    };
+
+    console.log("Submitted Review:", reviewData);
+
+    // 👉 Send `reviewData` to backend or state management here
+
+    // Optional: Reset form and close dialog
+    form.reset();
+    setNewReview((prev) => ({ ...prev, rating: 5 })); // reset rating to default
+    setReviewDialog(false);
+  }
 
   return (
     <div className="p-7">
@@ -246,8 +284,8 @@ const MyAppointments = () => {
                   <div className="flex items-center gap-2">
                     <span
                       className={`text-xs p-1 rounded-full ${appointment.status === "Approved"
-                          ? "bg-yellow-500"
-                          : "bg-green-600"
+                        ? "bg-yellow-500"
+                        : "bg-green-600"
                         } text-white`}
                     >
                       <FaCircle size={7} />
@@ -266,6 +304,14 @@ const MyAppointments = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       {appointment?.status === "Prescribed" && (
+                        <>
+                        <DropdownMenuItem
+                          onClick={() => setReviewDialog(true)}
+                          className="flex items-center gap-2"
+                        >
+                          <MdReviews size={16} />
+                          Write a review
+                        </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleViewPrescription(appointment)}
                           className="flex items-center gap-2"
@@ -273,6 +319,7 @@ const MyAppointments = () => {
                           <FileDown size={16} />
                           View Prescription
                         </DropdownMenuItem>
+                        </>
                       )}
                       <DropdownMenuItem
                         onClick={() => handleDetails(appointment)}
@@ -284,17 +331,17 @@ const MyAppointments = () => {
                       {
                         appointment?.status !== "Prescribed" &&
                         <DropdownMenuItem
-                        
-                        onClick={() =>
-                          handleDeleteAppointment(appointment._id)
-                        }
-                        className="flex items-center gap-2"
-                      >
-                        <Trash size={16} />
-                        Cancel Appointment
-                      </DropdownMenuItem>
+
+                          onClick={() =>
+                            handleDeleteAppointment(appointment._id)
+                          }
+                          className="flex items-center gap-2"
+                        >
+                          <Trash size={16} />
+                          Cancel Appointment
+                        </DropdownMenuItem>
                       }
-                     
+
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
@@ -318,6 +365,13 @@ const MyAppointments = () => {
           onClose={() => setIsPrescriptionViewModalOpen(false)}
         />
       )}
+
+      <AddReviewAppointment
+        reviewDialog={reviewDialog}
+        handleSubmitReview={handleSubmitReview}
+        newReview={newReview}
+        setNewReview={setNewReview}
+      />
     </div>
   );
 };
