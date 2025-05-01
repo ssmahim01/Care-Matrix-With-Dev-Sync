@@ -1,8 +1,7 @@
-// eslint-disable-next-line no-unused-vars
+
 import { motion } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ChevronRight, Users, UserRound } from "lucide-react";
+import { Users, UserRound } from "lucide-react";
 
 export default function SpecialtyCard({
   icon,
