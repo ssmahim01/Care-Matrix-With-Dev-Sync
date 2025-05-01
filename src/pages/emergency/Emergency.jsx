@@ -136,8 +136,8 @@ export default function Emergency() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <Card className={`py-2`}>
+          <CardHeader className="flex flex-row items-center justify-between pt-2 pb-2">
             <CardTitle className="text-sm font-medium">Active Emergencies</CardTitle>
             <AlertCircle className="h-4 w-4 text-red-600" />
           </CardHeader>
@@ -148,7 +148,7 @@ export default function Emergency() {
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={`py-2`}>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Ambulances</CardTitle>
             <Ambulance className="h-4 w-4 text-blue-600" />
@@ -160,7 +160,7 @@ export default function Emergency() {
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={`py-2`}>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Waiting Patients</CardTitle>
             <Users className="h-4 w-4 text-orange-600" />
@@ -170,7 +170,7 @@ export default function Emergency() {
             <p className="text-xs text-muted-foreground">Average wait: 25 minutes</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={`py-2`}>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Emergency Contacts</CardTitle>
             <Activity className="h-4 w-4 text-green-600" />
