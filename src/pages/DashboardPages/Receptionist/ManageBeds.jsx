@@ -39,7 +39,7 @@ import {
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { FaFileUpload } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { imgUpload } from "@/lib/imgUpload";
@@ -51,7 +51,15 @@ function ManageBeds() {
   const [preview, setPreview] = useState("");
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, reset, setValue, control } = useForm({
+    defaultValues: {
+      details: [{ value: "" }],
+    },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "details",
+  });
   const axiosSecure = useAxiosSecure();
 
   // Fetching bed data using useQuery
@@ -135,6 +143,12 @@ function ManageBeds() {
     setValue("title", bed.title);
     setValue("price", bed.price);
     setValue("status", bed.status);
+    setValue(
+      "details",
+      bed.details && bed.details.length > 0
+        ? bed.details.map((detail) => ({ value: detail }))
+        : [{ value: "" }]
+    );
   };
 
   // Handle image upload
@@ -171,6 +185,11 @@ function ManageBeds() {
       price: parseFloat(data.price),
       image: imageUrl,
       status: data.status,
+      details: data.details
+        ? data.details
+            .map((item) => item.value)
+            .filter((value) => value.trim() !== "")
+        : [],
     };
 
     try {
@@ -185,7 +204,7 @@ function ManageBeds() {
       setIsEditOpen(false);
       setPreview("");
       setImage(null);
-      reset();
+      reset({ details: [{ value: "" }] });
       refetch();
     } catch (error) {
       toast.error("Failed to update bed");
@@ -195,7 +214,7 @@ function ManageBeds() {
   };
 
   return (
-    <div className="p-7">
+    <div className="px-7">
       <DashboardPagesHeader
         title={"Manage Beds"}
         subtitle={"View, Add And Manage All Beds"}
@@ -221,6 +240,7 @@ function ManageBeds() {
                 <TableHead>Bed Image</TableHead>
                 <TableHead>Bed Title</TableHead>
                 <TableHead>Bed Price</TableHead>
+                <TableHead>Details</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -229,7 +249,7 @@ function ManageBeds() {
               {isLoading
                 ? Array.from({ length: 8 }).map((_, i) => (
                     <TableRow key={i}>
-                      {Array.from({ length: 6 }).map((_, j) => (
+                      {Array.from({ length: 7 }).map((_, j) => (
                         <TableCell key={j}>
                           <div className="skeleton h-8 rounded w-full"></div>
                         </TableCell>
@@ -250,6 +270,28 @@ function ManageBeds() {
                       </TableCell>
                       <TableCell>{bed.title}</TableCell>
                       <TableCell>{bed.price}</TableCell>
+                      <TableCell>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            {bed.details && bed.details.length > 0
+                              ? `${bed.details[0]}${
+                                  bed.details.length > 1 ? "..." : ""
+                                }`
+                              : "No details"}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <ul className="list-disc pl-4">
+                              {bed.details && bed.details.length > 0 ? (
+                                bed.details.map((detail, index) => (
+                                  <li key={index}>{detail}</li>
+                                ))
+                              ) : (
+                                <li>No details available</li>
+                              )}
+                            </ul>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableCell>
                       <TableCell>
                         <Tooltip className="cursor-pointer">
                           <TooltipTrigger>
@@ -353,6 +395,34 @@ function ManageBeds() {
                         <option value="available">Available</option>
                         <option value="booked">Booked</option>
                       </select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label>Details (one per line)</Label>
+                      {fields.map((field, index) => (
+                        <div key={field.id} className="flex items-center gap-2">
+                          <Input
+                            placeholder="Enter detail"
+                            {...register(`details.${index}.value`)}
+                          />
+                          <Button
+                            type="button"
+                          
+                            size="sm"
+                            onClick={() => remove(index)}
+                            disabled={fields.length === 1}
+                          >
+                            <MdDelete className="h-4 w-4 " />
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => append({ value: "" })}
+                      >
+                        Add Detail
+                      </Button>
                     </div>
                     <div className="grid gap-2">
                       <Label htmlFor="photo">Upload Bed Image</Label>
