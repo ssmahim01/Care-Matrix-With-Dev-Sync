@@ -19,6 +19,8 @@ import axios from "axios";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import EmptyState from "@/pages/DashboardPages/PatientOverview/EmptyState";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 const RequestHistory = () => {
   const [requestedData, refetch, , search, setSearch] = useRoleRequest();
@@ -91,7 +93,7 @@ const RequestHistory = () => {
 
   const pendingNote = (
     <>
-      <p className="text-warning font-semibold text-base">
+      <p className="text-warning font-medium text-sm">
         Waiting for the administrator note...
       </p>
     </>
@@ -199,76 +201,89 @@ const RequestHistory = () => {
 
       <dialog id="request_modal" className="modal modal-middle">
         {requestModal && (
-          <div className="w-full flex justify-center items-center">
+          <div className="overflow-auto w-full flex justify-center items-center">
             <div className="modal-box">
-              <h2 className="md:text-3xl text-2xl font-bold text-center">
-                Details Of Upgrade Request
-              </h2>
-              <div className="divider md:w-11/12 mx-auto"></div>
+              <div className="flex justify-end">
+                <Button
+                  onClick={() =>
+                    document.getElementById("request_modal").close()
+                  }
+                  className="cursor-pointer flex items-center gap-2"
+                >
+                  <CopyX className="w-4 h-4" />
+                  <span>Close</span>
+                </Button>
+              </div>
 
-              <figure className="w-44 h-44 mx-auto mt-3">
-                <img
-                  className="w-full h-full border-4 border-muted overflow-hidden rounded-full object-cover"
-                  src={requestModal?.userPhoto}
-                  alt={requestModal?.userName}
-                />
-              </figure>
+              <Separator className={"border mt-4"} />
 
-              <div className="divider"></div>
+              <div className="flex mt-3 flex-col sm:flex-row sm:items-center gap-5">
+                <figure className="w-24 h-24 sm:pr-2 sm:border-r">
+                  <img
+                    className="w-full h-full overflow-hidden rounded-full object-cover"
+                    src={requestModal?.userPhoto}
+                    alt={requestModal?.userName}
+                  />
+                </figure>
+                <div>
+                  {" "}
+                  <h4 className="text-base truncate  text-gray-900 font-semibold">
+                    Name:{" "}
+                    <span className="text-gray-900 text-sm truncate  w-fit font-normal">
+                      {requestModal?.userName}
+                    </span>
+                  </h4>
+                  <h4 className="text-base truncate text-gray-900 font-semibold">
+                    Email:{" "}
+                    <span className="text-gray-900 text-sm truncate  w-fit font-normal">
+                      {requestModal?.userEmail}
+                    </span>
+                  </h4>
+                  <h4 className="text-base truncate text-gray-900 font-semibold">
+                    Request Role:{" "}
+                    <span className="text-gray-900 text-sm truncate w-fit  font-normal">
+                      {requestModal?.requestedRole}
+                    </span>
+                  </h4>
+                </div>
+              </div>
 
-              <div className="w-full space-y-3">
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Name:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.userName}
-                  </span>
-                </h4>
+              <Separator className={"border mt-2"} />
 
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Email:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.userEmail}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Request Role:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.requestedRole}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Emergency Contact:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.emergencyContact}
-                  </span>
-                </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
+              <div className="mt-4 w-full space-y-1.5">
+                <h4 className="text-base text-gray-900 font-semibold">
                   Shift:{" "}
-                  <span className="text-gray-700 font-semibold">
+                  <span className="text-gray-900 text-sm font-normal">
                     {requestModal?.shift}
                   </span>
                 </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
+                <h4 className="text-base text-gray-900 font-semibold">
+                  Emergency Contact:{" "}
+                  <span className="text-gray-900 text-sm font-normal">
+                    {requestModal?.emergencyContact}
+                  </span>
+                </h4>
+                <h4 className="text-base text-gray-900 font-semibold">
                   Available Moment:{" "}
-                  <span className="text-gray-700 font-semibold">
+                  <span className="text-gray-900 text-sm font-normal">
                     {new Date(requestModal?.availableDate).toLocaleString(
                       "en-UK"
                     )}
                   </span>
                 </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
+                <h4 className="text-base text-gray-900 font-semibold">
                   Address:{" "}
-                  <span className="text-gray-700 font-semibold">
+                  <span className="text-gray-900 text-sm font-normal">
                     {requestModal?.address}
                   </span>
                 </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
+                <h4 className="text-base text-gray-900 font-semibold">
+                  Cover Letter:{" "}
+                  <span className="text-gray-900 text-sm font-normal">
+                    {requestModal?.coverLetter}
+                  </span>
+                </h4>{" "}
+                <h4 className="text-base text-gray-900 font-semibold">
                   Administrator Note:{" "}
                   <p className="text-gray-700 font-semibold">
                     {requestModal?.adminNotes === ""
@@ -276,25 +291,6 @@ const RequestHistory = () => {
                       : requestModal?.adminNotes}
                   </p>
                 </h4>
-
-                <h4 className="text-lg text-gray-900 font-bold">
-                  Cover Letter:{" "}
-                  <span className="text-gray-700 font-semibold">
-                    {requestModal?.coverLetter}
-                  </span>
-                </h4>
-
-                <div className="py-3">
-                  <button
-                    onClick={() =>
-                      document.getElementById("request_modal").close()
-                    }
-                    className="md:px-14 px-10 btn bg-rose-500 text-base text-white font-bold rounded-md flex gap-2 items-center"
-                  >
-                    <CopyX className="w-4 h-4" />
-                    <span>Close</span>
-                  </button>
-                </div>
               </div>
             </div>
           </div>
