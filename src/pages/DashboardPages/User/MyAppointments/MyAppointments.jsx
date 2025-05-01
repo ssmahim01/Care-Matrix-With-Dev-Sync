@@ -37,6 +37,8 @@ import toast from "react-hot-toast";
 import { IoIosSearch } from "react-icons/io";
 import AddReviewAppointment from "./AddReviewAppointment";
 import { MdReviews } from "react-icons/md";
+import { useAuthUser } from "@/redux/auth/authActions";
+import axios from "axios";
 
 const MyAppointments = () => {
   const [sortDate, setSortDate] = useState("");
@@ -50,6 +52,7 @@ const MyAppointments = () => {
   const [newReview, setNewReview] = useState({
     rating: 5,
   });
+  const user = useAuthUser()
 
 
   // console.log(category, search);
@@ -131,21 +134,14 @@ const MyAppointments = () => {
     const name = formData.get("name");
     const department = formData.get("department");
     const comment = formData.get("comment");
+    const date = new Date()
 
     // You already have rating tracked in `newReview.rating`
     const rating = newReview.rating;
 
-    const reviewData = {
-      name,
-      department,
-      comment,
-      rating,
-      date: new Date().toISOString(),
-    };
+    const review = { name, department, rating, comment, helpful: 0, date, avatar: user.photoURL };
 
-    console.log("Submitted Review:", reviewData);
 
-    // 👉 Send `reviewData` to backend or state management here
 
     // Optional: Reset form and close dialog
     form.reset();
@@ -309,7 +305,7 @@ const MyAppointments = () => {
                             onClick={() => setReviewDialog(true)}
                             className="flex items-center gap-2"
                           >
-                            <MdReviews/> Write a review
+                            <MdReviews /> Write a review
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => handleViewPrescription(appointment)}
@@ -367,12 +363,12 @@ const MyAppointments = () => {
 
       {reviewDialog && (
         <AddReviewAppointment
-        reviewDialog={reviewDialog}
-        setReviewDialog={() => setReviewDialog(false)}
-        handleSubmitReview={handleSubmitReview}
-        newReview={newReview}
-        setNewReview={setNewReview}
-      />
+          reviewDialog={reviewDialog}
+          setReviewDialog={() => setReviewDialog(false)}
+          handleSubmitReview={handleSubmitReview}
+          newReview={newReview}
+          setNewReview={setNewReview}
+        />
       )}
 
     </div>
