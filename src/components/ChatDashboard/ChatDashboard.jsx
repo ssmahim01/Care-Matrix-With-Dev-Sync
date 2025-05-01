@@ -249,14 +249,14 @@ const ChatDashboard = ({ userEmail, userRole }) => {
             </p>
           </div>
           {/* Chat Partners List */}
-          {professionals && userRole === "patient" ? (
+          {professionals && userEmail && userRole === "patient" ? (
             <>
               {potentialProfessionalsToInvite.length === 0 ? (
                 <p className="p-4 text-sm text-muted-foreground">
                   No new doctors and pharmacists to invite.
                 </p>
               ) : (
-                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-24 py-4 pl-4">
+                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-40 py-4 pl-4">
                   {userMessageCounts &&
                     potentialProfessionalsToInvite.map((professional) => {
                       const messageCount =
@@ -275,15 +275,15 @@ const ChatDashboard = ({ userEmail, userRole }) => {
                 </ul>
               )}
             </>
-          ) : (professionals && userRole === "doctor") ||
-            (professionals && userRole === "pharmacist") ? (
+          ) : (professionals && userEmail && userRole === "doctor") ||
+            (professionals && userEmail && userRole === "pharmacist") ? (
             <>
               {potentialPatientsToInvite.length === 0 ? (
                 <p className="text-sm p-4 text-muted-foreground">
                   No new patients to invite.
                 </p>
               ) : (
-                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-24 py-4 pl-4">
+                <ul className="space-y-2 overflow-y-scroll lg:h-[560px] h-40 py-4 pl-4">
                   {userMessageCounts &&
                     potentialPatientsToInvite.map((patient) => {
                       const messageCount =
