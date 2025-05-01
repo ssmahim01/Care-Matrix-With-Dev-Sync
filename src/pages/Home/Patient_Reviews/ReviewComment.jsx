@@ -60,7 +60,6 @@ const ReviewComment = ({handleSubmitReview, newReview, setNewReview, reviewDialo
                                     <SelectItem value="cardiology">Cardiology</SelectItem>
                                     <SelectItem value="orthopedics">Orthopedics</SelectItem>
                                     <SelectItem value="pediatrics">Pediatrics</SelectItem>
-                                    <SelectItem value="emergency">Emergency</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>

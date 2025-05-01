@@ -180,6 +180,7 @@ export default function PatientReviews() {
 
   const handleCategoryDepartment = async (value) => {
     const res = await axios.get(`${import.meta.env.VITE_API_URL}/review/department?department=${value}`)
+    setFilteredReviews(res.data)
     console.log(res.data)
   }
 
