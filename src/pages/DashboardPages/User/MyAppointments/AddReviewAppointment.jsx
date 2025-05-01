@@ -16,15 +16,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
-const AddReviewAppointment = ({ handleSubmitReview, reviewDialog, setReviewDialog, newReview }) => {
+const AddReviewAppointment = ({ handleSubmitReview, reviewDialog, setReviewDialog, newReview, setNewReview }) => {
 
     return (
         <Dialog open={reviewDialog} onOpenChange={setReviewDialog}>
-            <DialogTrigger asChild>
-                <Button className="bg-sky-600 hover:bg-sky-700 text-white">
-                    Write a Review <ChevronRight className="ml-2 w-4 h-4" />
-                </Button>
-            </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle className="text-sky-800">Share Your Experience</DialogTitle>
