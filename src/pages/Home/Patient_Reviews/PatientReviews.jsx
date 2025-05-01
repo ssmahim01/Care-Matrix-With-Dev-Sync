@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react"
-// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -35,7 +34,6 @@ export default function PatientReviews() {
   // State management
   const [activeTab, setActiveTab] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedDepartment, setSelectedDepartment] = useState("all")
   const [filteredReviews, setFilteredReviews] = useState(reviews)
   const [showReplyForm, setShowReplyForm] = useState(null)
   const [replyText, setReplyText] = useState("")
@@ -138,7 +136,6 @@ export default function PatientReviews() {
     // Trigger refiltering
     setActiveTab("all")
     setSearchQuery("")
-    setSelectedDepartment("all")
 
   }
 
