@@ -80,7 +80,7 @@ const OrdersList = ({ orders, onSelectOrder }) => {
 
   return (
     <div className="space-y-4 :::grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {orders.map((order) => (
+      {orders?.map((order) => (
         <Card
           key={order._id}
           className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow  border shadow-sm border-[#e5e7eb] w-full rounded-lg"

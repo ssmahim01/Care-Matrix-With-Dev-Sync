@@ -627,7 +627,7 @@ const Navbar = () => {
                               //   width: "fit-content",
                               // },
                               position: "top-right",
-                              duration: 2000,
+                              duration: 500,
                             });
                           }}
                           className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500  hover:bg-red-200/50 duration-300"

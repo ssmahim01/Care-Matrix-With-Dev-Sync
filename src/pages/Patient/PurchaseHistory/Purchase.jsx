@@ -20,13 +20,13 @@ const PurchaseHistoryMain = ({ ordersData }) => {
           icon={ShoppingBag}
           title="No orders or purchase history found"
           description="Looks like you haven't made any purchases yet. Once you place an order, all your order details, tracking info, and history will appear here — happy shopping!"
-          actionLabel="Make An order"
+          actionLabel="Make An Order"
           actionLink="/dashboard/patient/manage-cart"
         />
       </CardContent>{" "}
     </Card>
   ) : (
-    <div className="min-h-screen w-full">
+    <div className="w-full">
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="border w-full flex flex-col lg:flex-row mb-4">
           <TabsTrigger

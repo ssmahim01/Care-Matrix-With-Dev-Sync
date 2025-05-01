@@ -72,7 +72,7 @@ const Login = () => {
               toast.success(<b>Login Successful!</b>, {
                 description:
                   "Welcome back! You have successfully logged into your account",
-                duration: 2000,
+                duration: 1000,
                 position: "top-right",
                 style: {
                   marginTop: "20px",
