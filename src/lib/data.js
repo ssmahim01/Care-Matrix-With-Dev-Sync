@@ -1,4 +1,5 @@
-import { Baby, Bone, Brain, Eye, Heart, Pill, SmileIcon, Stethoscope, Siren, Scissors, Activity, Video, Scan } from "lucide-react"
+import { Baby, Bone, Brain, Heart, Pill, SmileIcon, Stethoscope, Siren, Scissors, Activity, Video, Scan, HeartPulse } from "lucide-react"
+import { GiStomach } from "react-icons/gi"
 
 // Sample data
 // export const reviews = [
@@ -295,9 +296,9 @@ export const specialties = [
   },
   {
     id: 6,
-    Icon: Eye ,
-    title: "Ophthalmology",
-    description: "Diagnosis and treatment of eye disorders and vision problems.",
+    Icon: HeartPulse ,
+    title: "Cardiologist",
+    description: "Specializes in the diagnosis, treatment, and prevention of heart and blood vessel diseases.",
     patientCount: 1100,
     doctorCount: 5
   },
@@ -316,5 +317,13 @@ export const specialties = [
     description: "Diagnosis and treatment of skin, hair, and nail conditions.",
     patientCount: 950,
     doctorCount: 4
-  }
+  },
+  {
+    id: 9,
+    Icon: GiStomach ,
+    title: "Oncologist",
+    description: "Specializes in diagnosing and treating cancer.",
+    patientCount: 950,
+    doctorCount: 4
+  },
 ]
