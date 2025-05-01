@@ -111,7 +111,7 @@ const AllDoctors = () => {
         />
 
         {/* Main Content */}
-        <div className="flex gap-4 lg:flex-row flex-col items-center">
+        <div className="flex gap-4 lg:flex-row flex-col lg:items-center">
           {/* Search Input */}
           <div className="relative w-full flex xl:flex-1">
             <input
