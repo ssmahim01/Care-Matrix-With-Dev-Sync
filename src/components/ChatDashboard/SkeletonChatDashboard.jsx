@@ -3,7 +3,7 @@ import { Badge } from "../ui/badge";
 
 export default function SkeletonChatDashboard() {
   return (
-    <div className="lg:w-full w-11/12 max-w-[2500px] mx-auto space-y-2">
+    <div className="lg:w-full w-11/12 mx-auto space-y-2">
       {/* Header Skeleton */}
       <div className="bg-white flex flex-col p-6 rounded-xl shadow-sm border mb-4 w-full">
         <div className="flex items-center gap-2">
