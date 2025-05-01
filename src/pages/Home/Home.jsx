@@ -14,7 +14,7 @@ import Chat from "@/components/Home/Chat";
 import EidGreetingSection from "./EidGreetingSection";
 import { Profiler } from "react";
 import Blogs from "./Blogs_and_News/Blogs";
-import { Testimonials } from "./Patient_Reviews/Testimonials";
+import Testimonials from "./Patient_Reviews/Testimonials";
 
 function onRenderCallback(
   id,
