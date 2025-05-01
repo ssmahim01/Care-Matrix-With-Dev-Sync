@@ -5,9 +5,11 @@ import { ShoppingBag } from "lucide-react";
 import OrderDetails from "./OrderDetails";
 import OrdersList from "./OrdersList";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const PurchaseHistoryMain = ({ ordersData }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isAllOrders, setIsAllOrders] = useState(ordersData.slice(0, 3));
 
   return ordersData.length === 0 ? (
     <Card
@@ -67,7 +69,31 @@ const PurchaseHistoryMain = ({ ordersData }) => {
               onBack={() => setSelectedOrder(null)}
             />
           ) : (
-            <OrdersList orders={ordersData} onSelectOrder={setSelectedOrder} />
+            <>
+              <OrdersList
+                orders={isAllOrders}
+                onSelectOrder={setSelectedOrder}
+              />
+              <div className="mt-4 flex justify-end">
+                {isAllOrders.length === 3 ? (
+                  <Button
+                    onClick={() => setIsAllOrders(ordersData)}
+                    className={"cursor-pointer flex items-center gap-2"}
+                  >
+                    <ShoppingBag />
+                    View Past Orders
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => setIsAllOrders(ordersData.slice(0, 3))}
+                    className={"cursor-pointer flex items-center gap-2"}
+                  >
+                    <ShoppingBag />
+                    View Recent Orders
+                  </Button>
+                )}
+              </div>
+            </>
           )}
         </TabsContent>
         <TabsContent value="pending" className="space-y-4">

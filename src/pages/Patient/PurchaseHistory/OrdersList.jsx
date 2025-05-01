@@ -1,5 +1,12 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import {
@@ -7,13 +14,20 @@ import {
   CheckCircle2,
   ChevronRight,
   Clock,
+  Eye,
   Package,
   RotateCcw,
   ShoppingBag,
   Truck,
 } from "lucide-react";
+import { useState } from "react";
+import { FaFileInvoice } from "react-icons/fa";
+import { Link } from "react-router";
+import StatusTracker from "./StatusTracker";
 
 const OrdersList = ({ orders, onSelectOrder }) => {
+  const [isTrackingOn, setIsTrackingOn] = useState(false);
+
   const getStatusColor = (status) => {
     switch (status) {
       case "Pending":
@@ -70,7 +84,7 @@ const OrdersList = ({ orders, onSelectOrder }) => {
             <ShoppingBag className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium">No orders found</h3>
             <p className="text-muted-foreground mt-1">
-              You don't have any orders in this category yet.
+              You don't have any orders in this category yet
             </p>
           </div>{" "}
         </CardContent>
@@ -83,29 +97,27 @@ const OrdersList = ({ orders, onSelectOrder }) => {
       {orders?.map((order) => (
         <Card
           key={order._id}
+          onClick={() => onSelectOrder(order)}
           className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow  border shadow-sm border-[#e5e7eb] w-full rounded-lg"
         >
-          <div
-            className="flex flex-col sm:flex-row"
-            onClick={() => onSelectOrder(order)}
-          >
+          <div className="flex flex-col sm:flex-row">
             <div className="flex-1 p-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 md:gap-4 mb-2">
                 <div>
                   <p className="text-base text-gray-800">
-                    {format(new Date(order.date), "MMMM d, yyyy")}
+                    {format(new Date(order?.date), "MMMM d, yyyy")}
                   </p>
                   <h3 className="font-medium text-lg">
-                    Order #{order._id.slice(-10)}
+                    Order #{order?._id.slice(-10)}
                   </h3>
                 </div>
                 <div
                   className={`inline-flex w-fit items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                    order.orderStatus
+                    order?.orderStatus
                   )}`}
                 >
-                  {getStatusIcon(order.orderStatus)}
-                  <span>{order.orderStatus}</span>
+                  {getStatusIcon(order?.orderStatus)}
+                  <span>{order?.orderStatus}</span>
                 </div>
               </div>
               <Separator className="border mt-4 md:mt-0" />
@@ -114,39 +126,77 @@ const OrdersList = ({ orders, onSelectOrder }) => {
                   <div className="text-base">
                     <span className="text-gray-700">Items:</span>{" "}
                     <span className="font-medium">
-                      {order.medicines.length}
+                      {order?.medicines?.length}
                     </span>
                   </div>
                   <div className="text-base">
                     <span className="text-gray-700">Total:</span>{" "}
                     <span className="font-medium">
                       <span className="font-extrabold">৳</span>{" "}
-                      {order.totalPrice.toFixed(2)}
+                      {order?.totalPrice?.toFixed(2)}
                     </span>
                   </div>
                 </div>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {order.medicines.slice(0, 2).map((medicine) => (
+                  {order?.medicines?.slice(0, 2).map((medicine) => (
                     <Badge
-                      key={medicine.medicineId}
+                      key={medicine?.medicineId}
                       variant="outline"
                       className="font-normal"
                     >
-                      {medicine.medicineName} x{medicine.quantity}
+                      {medicine?.medicineName} x{medicine?.quantity}
                     </Badge>
                   ))}
-                  {order.medicines.length > 2 && (
+                  {order?.medicines?.length > 2 && (
                     <Badge variant="outline" className="font-normal">
-                      +{order.medicines.length - 2} more
+                      +{order?.medicines?.length - 2} more
                     </Badge>
                   )}
                 </div>
               </div>
+              <div className="mt-1 flex justify-end gap-2">
+                {/* <Button
+                  onClick={() => setIsTrackingOn(!isTrackingOn)}
+                  className={"cursor-pointer flex items-center gap-1"}
+                  size="sm"
+                >
+                  <Eye /> Track Order
+                </Button> */}
+                <Link to={`/dashboard/invoice/${order.transactionId}`}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className={"cursor-pointer flex items-center gap-1"}
+                  >
+                    <FaFileInvoice /> Download Invoice
+                  </Button>
+                </Link>
+              </div>
             </div>
-            <div className="flex items-center justify-end p-4 sm:border-l bg-muted/20">
+            <button
+              onClick={() => onSelectOrder(order)}
+              className="flex cursor-pointer items-center justify-end p-4 sm:border-l bg-muted/20"
+            >
               <ChevronRight className="h-5 w-5 text-muted-foreground" />
-            </div>
+            </button>
           </div>
+          {/* Status Tracker */}
+
+          {/* {isTrackingOn && (
+            <div>
+              <Card className="w-[93%] ml-6 border shadow-sm border-[#e5e7eb] py-6 rounded-lg mb-6">
+                <CardHeader>
+                  <CardTitle>Order Status</CardTitle>
+                  <CardDescription className="text-gray-700">
+                    Track your order's progress
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <StatusTracker currentStatus={order.orderStatus} />
+                </CardContent>
+              </Card>
+            </div>
+          )} */}
         </Card>
       ))}
     </div>
