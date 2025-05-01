@@ -259,7 +259,7 @@ export default function AmbulanceBooking() {
       </div>
 
       <Tabs defaultValue={"available"} >
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
           <TabsTrigger value="available">Available Ambulances</TabsTrigger>
           <TabsTrigger value="book">Book Ambulance</TabsTrigger>
           {user
@@ -351,7 +351,7 @@ export default function AmbulanceBooking() {
         </TabsContent>
 
         <TabsContent id="book" value="book">
-          <Card>
+          <Card className={`py-3`}>
             <CardHeader>
               <CardTitle>Request an Ambulance</CardTitle>
               <CardDescription>
