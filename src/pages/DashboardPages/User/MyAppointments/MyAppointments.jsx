@@ -373,7 +373,7 @@ const MyAppointments = () => {
     useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null)
   const [selectedPrescription, setSelectedPrescription] = useState(null);
-  console.log(appointments);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSkeleton(false);
