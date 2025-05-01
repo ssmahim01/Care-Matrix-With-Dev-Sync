@@ -3,7 +3,7 @@ import { SkeletonBox } from "../Pharmacist/SalesReport/SalesReportSkeleton";
 
 const PatientOverviewSkeleton = () => {
   return (
-    <div className="px-7">
+    <div className="px-5">
       {/* Overview Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {[0, 1, 2, 3].map((_, i) => (
@@ -24,13 +24,13 @@ const PatientOverviewSkeleton = () => {
       </div>
       {/* TabList */}
       <div className="mt-8 border bg-[#fefefe] border-border p-2 rounded-lg w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <SkeletonBox className="w-full h-8" />
-        <SkeletonBox className="w-full h-8" />
-        <SkeletonBox className="w-full h-8" />
-        <SkeletonBox className="w-full h-8" />
+        <div className="skeleton bg-gray-300 w-full h-8" />
+        <div className="skeleton bg-gray-300 w-full h-8" />
+        <div className="skeleton bg-gray-300 w-full h-8" />
+        <div className="skeleton bg-gray-300 w-full h-8" />
       </div>
       {/* Appointment Tab */}
-      <Card className="mt-6 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
+      <Card className="mt-4 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
         <CardHeader>
           <div className="h-6 w-48 bg-gray-300 rounded-md animate-pulse" />
           <div className="h-4 w-64 bg-gray-300 rounded-md animate-pulse mt-2" />
