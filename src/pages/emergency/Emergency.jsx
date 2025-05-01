@@ -14,43 +14,6 @@ import axios from "axios"
 import { format } from "date-fns"
 
 export default function Emergency() {
- 
-
-
-
-
-  const [alerts, setAlerts] = useState([
-    {
-      id: 1,
-      message: "Ambulance AMB-001 arriving in 5 minutes with cardiac patient",
-      time: "11:25 AM",
-      type: "urgent",
-    },
-    {
-      id: 2,
-      message: "ER Room 2 now available for emergency patients",
-      time: "11:20 AM",
-      type: "info",
-    },
-    {
-      id: 3,
-      message: "Code Blue initiated in ER Room 3",
-      time: "11:15 AM",
-      type: "critical",
-    },
-    {
-      id: 4,
-      message: "Dr. Johnson requested additional staff for trauma case",
-      time: "11:10 AM",
-      type: "urgent",
-    },
-    {
-      id: 5,
-      message: "New emergency patient registered at reception",
-      time: "11:05 AM",
-      type: "info",
-    },
-  ])
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
