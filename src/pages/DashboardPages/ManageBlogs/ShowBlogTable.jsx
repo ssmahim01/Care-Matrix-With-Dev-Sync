@@ -204,7 +204,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                   <TableCell>{blog.author}</TableCell>
                   <TableCell>{blog.date}</TableCell>
                   <TableCell>
-                    <DropdownMenu>
+                    <DropdownMenu modal={false}>
                       <DropdownMenuTrigger asChild>
                         <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
                           <MoreVertical className="cursor-pointer text-gray-700" />
@@ -213,7 +213,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                       <DropdownMenuContent>
                         <DropdownMenuItem
                           className="cursor-pointer"
-                        //   onClick={() => handleEdit(blog)}
+                          onClick={() => handleEdit(blog)}
                         >
                           <Pencil className="w-4 h-4 mr-2" /> Update
                         </DropdownMenuItem>

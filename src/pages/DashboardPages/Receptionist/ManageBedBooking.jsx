@@ -133,7 +133,7 @@ function ManageBedBooking() {
   };
 
   return (
-    <div className="p-7">
+    <div className="px-7">
       <DashboardPagesHeader
         title={"Bed Booking Requests"}
         subtitle={"View And Manage All Bed Booking Requests"}

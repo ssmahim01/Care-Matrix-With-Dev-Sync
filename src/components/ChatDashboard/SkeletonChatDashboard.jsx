@@ -1,8 +1,28 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Badge } from "../ui/badge";
 
 export default function SkeletonChatDashboard() {
   return (
-    <Card className="shadow-md border border-gray-200 mt-8">
+    <div className="lg:w-full w-11/12 max-w-[2500px] mx-auto space-y-2">
+      {/* Header Skeleton */}
+      <div className="bg-white flex flex-col p-6 rounded-xl shadow-sm border mb-4 w-full">
+        <div className="flex items-center gap-2">
+          <div className="skeleton h-6 w-6 rounded" />
+          <div className="flex flex-col gap-3">
+            <div className="skeleton h-8 w-72 rounded" />
+            <div className="skeleton h-4 w-56 rounded" />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 mt-3">
+          <Badge variant="outline" className="text-muted-foreground p-1">
+            <div className="skeleton h-4 w-4 rounded" />
+            <div className="skeleton h-4 w-20 rounded" />
+          </Badge>
+        </div>
+      </div>
+
+      <Card className="shadow-md border border-gray-200 mt-8">
       <CardHeader className="flex flex-row justify-between items-center">
         <div>
           <div className="skeleton h-8 w-1/2 rounded" />
@@ -95,5 +115,6 @@ export default function SkeletonChatDashboard() {
         </div>
       </CardContent>
     </Card>
+    </div>
   );
 }

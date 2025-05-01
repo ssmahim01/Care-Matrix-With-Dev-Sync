@@ -11,16 +11,16 @@ const PharmacyNavbar = ({ search, setSearch }) => {
       <div className="relative w-full min-w-xs flex flex-1 product_search_input">
         <input
           className="px-4 py-2 border border-border rounded-md w-full pl-[40px] outline-none focus:ring ring-gray-300"
-          placeholder="Search Medicines..."
+          placeholder="Search Medicines by name or category..."
           onChange={(e) => setSearch(e.target.value)}
           value={search}
         />
         <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
 
         {/* shortcut hint */}
-        <div className="absolute top-[5px] right-1.5 text-[0.6rem] font-bold border border-gray-100 p-[8px] rounded-md text-gray-500">
+        {/* <div className="absolute top-[5px] right-1.5 text-[0.6rem] font-bold border border-gray-100 p-[8px] rounded-md text-gray-500">
           Ctrl + E
-        </div>
+        </div> */}
       </div>
       {/* My Cart */}
       <div>
