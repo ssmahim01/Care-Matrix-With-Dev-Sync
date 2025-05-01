@@ -9,11 +9,13 @@ import { TbCurrencyTaka } from 'react-icons/tb';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
+
 const Payment = () => {
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
   const consultationFee = parseFloat(location?.state?.appointmentInfo?.consultationFee) || 0;
-
+  
+  console.log(location?.state?.appointmentInfo);
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
