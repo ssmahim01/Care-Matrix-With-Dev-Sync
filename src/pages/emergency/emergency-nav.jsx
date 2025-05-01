@@ -44,24 +44,25 @@ const EmergencyNav = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg py-4 px-6 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <nav className="bg-[#f6f3f3] shadow-sm py-2 sticky top-0 z-50">
+      <div className="max-w-[1700px] container mx-auto lg:w-[86%] w-11/12 flex items-center justify-between">
         {/* Logo Section */}
-        <div className="flex items-center">
-          <Link to="/emergency" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-red-700">Emergency Hub</span>
+        <div className="flex items-center cursor-pointer">
+          <Link to="/emergency" className="flex items-center">
+          <img src="/collapse-logo.png" className="w-12 h-12" alt="Logo of care matrix" />
+            <span className="text-2xl font-bold text-gray-800">Emergency Care</span>
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-10">
+        <div className="hidden lg:flex items-center space-x-10">
           {routes.map((route, index) => (
             <Link
               key={index}
               to={route.href}
               className={`flex items-center space-x-2 text-gray-700 hover:text-red-600 transition-colors duration-300 ${
                 route.active
-                  ? 'text-red-600 font-semibold border-b-2 border-red-600'
+                  ? 'text-red-600 font-semibold border-b-2 border-red-500'
                   : 'border-b-2 border-transparent'
               } py-2`}
             >
@@ -73,7 +74,7 @@ const EmergencyNav = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-gray-700 hover:text-red-600 focus:outline-none"
+          className="lg:hidden text-gray-700 hover:text-red-600 focus:outline-none"
           onClick={toggleMobileMenu}
         >
           {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -82,7 +83,7 @@ const EmergencyNav = () => {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200">
+        <div className="lg:hidden bg-white border-t border-gray-200">
           <div className="flex flex-col items-start space-y-2 py-4 px-6">
             {routes.map((route, index) => (
               <Link
@@ -90,7 +91,7 @@ const EmergencyNav = () => {
                 to={route.href}
                 className={`flex items-center space-x-2 w-full text-gray-700 hover:text-red-600 transition-colors duration-300 ${
                   route.active
-                    ? 'text-red-600 font-semibold border-l-4 border-red-600 pl-2'
+                    ? 'text-red-500 font-semibold border-l-4 border-red-500 pl-2'
                     : ''
                 } py-2`}
                 onClick={toggleMobileMenu}

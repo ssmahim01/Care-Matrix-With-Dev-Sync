@@ -10,7 +10,10 @@ import { Calendar, MessageSquare, Send, Star, ThumbsUp } from 'lucide-react'
 import { format } from "date-fns"
 
 
-const FeaturedReview = ({ handleHelpful, helpfulReviews, setShowReplyForm, showReplyForm, replyText, setReplyText, handleSubmitReply, featuredReview }) => {
+const FeaturedReview = ({ handleHelpful, setShowReplyForm, showReplyForm, replyText, setReplyText, handleSubmitReply, featuredReview }) => {
+    if (!featuredReview) return <div className="text-center py-10 text-sky-600">
+        <p>No highlight reviews found.</p>
+    </div>
     return (
         <motion.div variants={itemVariants} whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
             <Card className="border-sky-100 shadow-md bg-gradient-to-r from-sky-50 to-white overflow-hidden pb-3">
@@ -30,9 +33,9 @@ const FeaturedReview = ({ handleHelpful, helpfulReviews, setShowReplyForm, showR
                         <div className="space-y-4">
                             <div>
                                 <div className="flex items-center gap-2 mb-1">
-                                    <h3 className="font-bold text-xl text-sky-800">{featuredReview.name}</h3>
+                                    <h3 className="font-bold text-xl text-sky-800">{featuredReview?.name}</h3>
                                     <div className="flex">
-                                        {Array.from({ length: featuredReview.rating }).map((star, i) => (
+                                        {Array.from({ length: featuredReview?.rating }).map((star, i) => (
                                             <motion.div
                                                 key={i}
                                                 initial={{ scale: 0 }}
@@ -46,9 +49,9 @@ const FeaturedReview = ({ handleHelpful, helpfulReviews, setShowReplyForm, showR
                                 </div>
                                 <div className="flex items-center gap-2 text-sm text-sky-600">
                                     <Calendar className="w-4 h-4" />
-                                    <span>{format(featuredReview.date, "MMMM d, Y")}</span>
+                                    {featuredReview?.date && <span>{format(featuredReview?.date, "MMMM d, Y")}</span>}
                                     <span className="px-2">•</span>
-                                    <span className="capitalize">{featuredReview.department} Department</span>
+                                    <span className="capitalize">{featuredReview?.department} Department</span>
                                 </div>
                             </div>
                             <motion.blockquote
@@ -57,7 +60,7 @@ const FeaturedReview = ({ handleHelpful, helpfulReviews, setShowReplyForm, showR
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.3 }}
                             >
-                                "{featuredReview.comment}"
+                                "{featuredReview?.comment}"
                             </motion.blockquote>
                             <div className="flex items-center gap-4 ">
                                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -68,7 +71,7 @@ const FeaturedReview = ({ handleHelpful, helpfulReviews, setShowReplyForm, showR
                                         onClick={() => handleHelpful(featuredReview._id)}
                                     >
                                         <ThumbsUp className="w-4 h-4 mr-2" />
-                                        Helpful {featuredReview.helpful}
+                                        Helpful {featuredReview?.helpful}
                                     </Button>
                                 </motion.div>
                                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -87,19 +90,19 @@ const FeaturedReview = ({ handleHelpful, helpfulReviews, setShowReplyForm, showR
                             {showReplyForm === "featured" && (
 
                                 <>
-                                    {featuredReview?.replyComments && featuredReview.replyComments.length > 0 ? (
+                                    {featuredReview?.replyComments && featuredReview?.replyComments.length > 0 ? (
                                         <div className="mt-6">
                                             <h2 className="text-xl font-semibold mb-4">Comments</h2>
                                             <ul className="space-y-4">
-                                                {featuredReview.replyComments.map((reply, i) => (
+                                                {featuredReview?.replyComments.map((reply, i) => (
                                                     <li
                                                         key={i}
                                                         className="p-4 bg-gray-100 rounded-lg shadow-sm flex flex-col gap-1"
                                                     >
                                                         <p className="text-gray-700">{reply.text}</p>
-                                                        <span className="text-xs text-gray-500">
-                                                            {format(new Date(reply.date), "hh:mm a, d MMM")}
-                                                        </span>
+                                                        {reply?.date && <span className="text-xs text-gray-500">
+                                                            {format(new Date(reply?.date), "hh:mm a, d MMM")}
+                                                        </span>}
                                                     </li>
                                                 ))}
                                             </ul>

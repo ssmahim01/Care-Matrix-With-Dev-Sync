@@ -41,7 +41,7 @@ const ChatBox = ({
   userEmail,
 }) => {
   return (
-    <div className="flex-1 flex flex-col h-[640px] overflow-y-auto">
+    <div className="flex-1 flex flex-col h-[640px]">
       {selectedPartner ? (
         <>
           <div className="p-2 flex sticky top-0 bg-base-200 justify-between border-b items-center rounded-tr-xl shadow-sm">
@@ -79,7 +79,7 @@ const ChatBox = ({
 
               {/* User Info */}
               <DropdownMenuContent
-                className="w-64 p-0 shadow-none rounded-lg border-t border-b-0 bg-base-200"
+                className="w-72 p-0 shadow-none rounded-lg border-t border-b-0 bg-base-200"
                 align="end"
               >
                 <Card>
@@ -103,7 +103,7 @@ const ChatBox = ({
                       <p className="flex gap-2 items-center">
                         <Mail className="w-4 h-4" />
                         <span className="text-sm text-gray-700 font-medium">
-                          {selectedPartner?.email.slice(0, 25)}...
+                          {selectedPartner?.email}
                         </span>
                       </p>
                     </div>
@@ -137,7 +137,7 @@ const ChatBox = ({
             </DropdownMenu>
           </div>
 
-          <div className="flex-1 py-4 px-4">
+          <div className="flex-1 lg:py-4 py-8 px-4 overflow-y-auto">
             {loadingMessages || loadingUser ? (
               <div className="text-center text-gray-500">
                 Loading messages...

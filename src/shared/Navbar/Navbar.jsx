@@ -94,7 +94,7 @@ const Navbar = () => {
                     size={30}
                   />
                 </DrawerTrigger>
-                <DrawerContent className="h-full overflow-auto w-[300px] bg-[#f3f6f9] fixed top-0 left-0">
+                <DrawerContent className="h-full overflow-y-scroll w-[300px] bg-[#f3f6f9] fixed top-0 left-0">
                   <DrawerHeader>
                     <DrawerTitle>
                       <div className="pt-1 pl-0.5">
