@@ -1,8 +1,11 @@
 "use client";;
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import { ThumbsUp } from "lucide-react";
+import { Star } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 import { useEffect, useState } from "react";
+import { Button } from "./button";
 
 export const AnimatedTestimonials = ({
   testimonials,
@@ -100,12 +103,41 @@ export const AnimatedTestimonials = ({
               duration: 0.2,
               ease: "easeInOut",
             }}>
-            <h3 className="text-2xl font-bold text-black dark:text-white capitalize">
-              {testimonials[active]?.name}
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-neutral-500 capitalize">
-              {testimonials[active]?.department}
-            </p>
+            <div className="flex items-end justify-between">
+              <div>
+                <h3 className="text-2xl font-bold text-black dark:text-white capitalize">
+                  {testimonials[active]?.name}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-neutral-500 capitalize">
+                  {testimonials[active]?.department}
+                </p>
+                <div className="flex gap-1 mt-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      size={16}
+                      className={i < Number(testimonials[active].rating) ? "text-yellow-400" : "text-gray-300"}
+                      fill={i < Number(testimonials[active].rating) ? "currentColor" : "none"}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div>
+                <Button
+                  onClick={() => console.log("object")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-2xl transition-all 
+                    shadow-sm text-white text-sm font-medium
+                    `}
+                >
+                  <ThumbsUp
+                    className={`h-5 w-5 transition-transform `}
+                    // fill={liked ? "#fff" : "none"}
+                  />
+                  {/* {liked ? "Liked" : "Like"} */}
+                    Like
+                </Button>
+              </div>
+            </div>
             <motion.p className="mt-8 text-lg text-gray-500 dark:text-neutral-300">
               {testimonials[active]?.comment.split(" ").map((word, index) => (
                 <motion.span
