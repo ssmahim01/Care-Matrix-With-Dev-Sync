@@ -29,8 +29,8 @@ const PurchaseHistoryMain = ({ ordersData }) => {
     </Card>
   ) : (
     <div className="w-full">
-      <Tabs defaultValue="all" className="w-full">
-        <TabsList className="border w-full flex flex-col lg:flex-row mb-4">
+      <Tabs defaultValue="all" className="w-full mt-2">
+        <TabsList className="border w-full flex flex-col lg:flex-row mb-2">
           <TabsTrigger
             className={"cursor-pointer py-2 px-4 w-full "}
             value="all"
@@ -74,25 +74,27 @@ const PurchaseHistoryMain = ({ ordersData }) => {
                 orders={isAllOrders}
                 onSelectOrder={setSelectedOrder}
               />
-              <div className="mt-4 flex justify-end">
-                {isAllOrders.length === 3 ? (
-                  <Button
-                    onClick={() => setIsAllOrders(ordersData)}
-                    className={"cursor-pointer flex items-center gap-2"}
-                  >
-                    <ShoppingBag />
-                    View Past Orders
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => setIsAllOrders(ordersData.slice(0, 3))}
-                    className={"cursor-pointer flex items-center gap-2"}
-                  >
-                    <ShoppingBag />
-                    View Recent Orders
-                  </Button>
-                )}
-              </div>
+              {ordersData.length > 2 && (
+                <div className="mt-4 flex justify-end">
+                  {isAllOrders.length === 3 ? (
+                    <Button
+                      onClick={() => setIsAllOrders(ordersData)}
+                      className={"cursor-pointer flex items-center gap-2"}
+                    >
+                      <ShoppingBag />
+                      View Past Orders
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => setIsAllOrders(ordersData.slice(0, 3))}
+                      className={"cursor-pointer flex items-center gap-2"}
+                    >
+                      <ShoppingBag />
+                      View Recent Orders
+                    </Button>
+                  )}
+                </div>
+              )}
             </>
           )}
         </TabsContent>

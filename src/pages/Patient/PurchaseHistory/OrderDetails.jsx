@@ -38,17 +38,20 @@ const OrderDetails = ({ order, onBack }) => {
 
       <div className="pl-1 flex flex-col md:flex-row justify-between items-start md:items-center">
         <div>
-          <h2 className="text-2xl font-bold">Order #{order._id.slice(-10)}</h2>
+          <h2 className="text-2xl font-bold">
+            Order #{order?._id?.slice(-10)}
+          </h2>
           <p className="text-gray-800">
-            Placed on {format(new Date(order.date), "MMMM d, yyyy 'at' h:mm a")}
+            Placed on{" "}
+            {format(new Date(order?.date), "MMMM d, yyyy 'at' h:mm a")}
           </p>
           <p className="text-gray-800 max-w-72 md:max-w-80 lg:max-w-xl truncate">
-            Address: {order.customerInfo.address}, {order.customerInfo.district}
-            , {order.customerInfo.division}
+            Address: {order?.customerInfo?.address},{" "}
+            {order?.customerInfo?.district}, {order?.customerInfo?.division}
           </p>
         </div>
         <div className="mt-2 md:mt-0">
-          <StatusBadge status={order.orderStatus} />
+          <StatusBadge status={order?.orderStatus} />
         </div>
       </div>
 
@@ -65,7 +68,7 @@ const OrderDetails = ({ order, onBack }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <StatusTracker currentStatus={order.orderStatus} />
+          <StatusTracker currentStatus={order?.orderStatus} />
         </CardContent>
       </Card>
 
@@ -75,21 +78,21 @@ const OrderDetails = ({ order, onBack }) => {
           <CardTitle>Order Details</CardTitle>
           <div className="flex justify-between items-center">
             <CardDescription className={"text-gray-700"}>
-              Transaction ID: {order.transactionId}
+              Transaction ID: {order?.transactionId}
             </CardDescription>
             <Badge
               variant="outline"
               className="bg-green-50 text-green-700 border-green-200"
             >
-              {order.paymentStatus}
+              {order?.paymentStatus}
             </Badge>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {order.medicines.map((medicine) => (
+            {order?.medicines.map((medicine) => (
               <div
-                key={medicine.medicineId}
+                key={medicine?.medicineId}
                 className="flex justify-between items-center"
               >
                 <div className="flex items-center gap-3">
@@ -98,16 +101,16 @@ const OrderDetails = ({ order, onBack }) => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-800">
-                      Qty: {medicine.quantity}
+                      Qty: {medicine?.quantity}
                     </p>
                     <p className="font-medium text-gray-800">
-                      {medicine.medicineName}
+                      {medicine?.medicineName}
                     </p>
                   </div>
                 </div>
                 <p className="font-medium">
                   <span className="font-extrabold">৳</span>{" "}
-                  {medicine.subtotal.toFixed(2)}
+                  {medicine?.subtotal.toFixed(2)}
                 </p>
               </div>
             ))}
@@ -122,11 +125,11 @@ const OrderDetails = ({ order, onBack }) => {
             </div>
             <div className="flex justify-between">
               <p className="text-gray-800">
-                Discount ({order.discountPercentage}%)
+                Discount ({order?.discountPercentage}%)
               </p>
               <p>
                 -<span className="font-extrabold">৳</span>{" "}
-                {Number.parseFloat(order.discountAmount).toFixed(2)}
+                {Number.parseFloat(order?.discountAmount).toFixed(2)}
               </p>
             </div>
             <Separator className="my-4 border" />
@@ -134,7 +137,7 @@ const OrderDetails = ({ order, onBack }) => {
               <p>Total</p>
               <p className="text-lg">
                 <span className="font-extrabold">৳</span>{" "}
-                {order.totalPrice.toFixed(2)}
+                {order?.totalPrice.toFixed(2)}
               </p>
             </div>
           </div>
@@ -142,7 +145,7 @@ const OrderDetails = ({ order, onBack }) => {
       </Card>
 
       <div className="mt-4 flex justify-end">
-        <Link to={`/dashboard/invoice/${order.transactionId}`}>
+        <Link to={`/dashboard/invoice/${order?.transactionId}`}>
           <Button
             variant="outline"
             className={"cursor-pointer flex items-center gap-1"}
