@@ -35,6 +35,10 @@ import { FileDown } from "lucide-react";
 import { PrescriptionViewModal } from "@/components/ManagePrescription/PrescriptionViewModal";
 import toast from "react-hot-toast";
 import { IoIosSearch } from "react-icons/io";
+import AddReviewAppointment from "./AddReviewAppointment";
+import { MdReviews } from "react-icons/md";
+import { useAuthUser } from "@/redux/auth/authActions";
+import axios from "axios";
 
 const MyAppointments = () => {
   const [sortDate, setSortDate] = useState("");
@@ -48,6 +52,12 @@ const MyAppointments = () => {
   );
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
+  const [reviewDialog, setReviewDialog] = useState(false)
+  const [newReview, setNewReview] = useState({
+    rating: 5,
+  });
+  const user = useAuthUser()
+
 
   // console.log(category, search);
 
@@ -118,6 +128,36 @@ const MyAppointments = () => {
       toast.error("No prescriptions found for this patient");
     }
   };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const name = formData.get("name");
+    const department = formData.get("department");
+    const comment = formData.get("comment");
+    const date = new Date()
+
+    // You already have rating tracked in `newReview.rating`
+    const rating = newReview.rating;
+
+    const review = { name, department, rating, comment, helpful: 0, date, avatar: user.photoURL };
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/review/add`, review)
+      if (res.data) return toast.success(res.data.message, { description: "Check the review list" })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      refetch()
+      setReviewDialog(false)
+    }
+
+    form.reset();
+    setReviewDialog(false);
+  }
 
   return (
     <div className="p-7">
@@ -251,39 +291,45 @@ const MyAppointments = () => {
                 </TableRow>
               ))
             : appointments?.map((appointment, index) => (
-                <TableRow key={appointment._id} className="hover:bg-gray-50">
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{appointment.doctorName}</TableCell>
-                  <TableCell>{appointment.name}</TableCell>
-                  <TableCell>{appointment.age}</TableCell>
-                  <TableCell>{appointment.phone}</TableCell>
-                  <TableCell>{appointment.email}</TableCell>
-                  <TableCell>{appointment.date}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`text-xs p-1 rounded-full ${
-                          appointment.status === "Approved"
-                            ? "bg-yellow-500"
-                            : "bg-green-600"
+              <TableRow key={appointment._id} className="hover:bg-gray-50">
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{appointment.doctorName}</TableCell>
+                <TableCell>{appointment.name}</TableCell>
+                <TableCell>{appointment.age}</TableCell>
+                <TableCell>{appointment.phone}</TableCell>
+                <TableCell>{appointment.email}</TableCell>
+                <TableCell>{appointment.date}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`text-xs p-1 rounded-full ${appointment.status === "Approved"
+                        ? "bg-yellow-500"
+                        : "bg-green-600"
                         } text-white`}
-                      >
-                        <FaCircle size={7} />
-                      </span>
-                      <span className="capitalize text-sm font-medium text-gray-700">
-                        {appointment.status}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreVertical className="h-5 w-5 text-foreground" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        {appointment?.status === "Prescribed" && (
+                    >
+                      <FaCircle size={7} />
+                    </span>
+                    <span className="capitalize text-sm font-medium text-gray-700">
+                      {appointment.status}
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <DropdownMenu modal={false}>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <MoreVertical className="h-5 w-5 text-foreground" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" >
+                      {appointment?.status === "Prescribed" && (
+                        <>
+                          <DropdownMenuItem
+                            onClick={() => setReviewDialog(true)}
+                            className="flex items-center gap-2"
+                          >
+                            <MdReviews /> Write a review
+                          </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => handleViewPrescription(appointment)}
                             className="flex items-center gap-2"
@@ -291,30 +337,34 @@ const MyAppointments = () => {
                             <FileDown size={16} />
                             View Prescription
                           </DropdownMenuItem>
-                        )}
+                        </>
+                      )}
+                      <DropdownMenuItem
+                        onClick={() => handleDetails(appointment)}
+                        className="flex items-center gap-2"
+                      >
+                        <BiDetail size={16} />
+                        View Details
+                      </DropdownMenuItem>
+                      {
+                        appointment?.status !== "Prescribed" &&
                         <DropdownMenuItem
-                          onClick={() => handleDetails(appointment)}
+
+                          onClick={() =>
+                            handleDeleteAppointment(appointment._id)
+                          }
                           className="flex items-center gap-2"
                         >
-                          <BiDetail size={16} />
-                          View Details
+                          <Trash size={16} />
+                          Cancel Appointment
                         </DropdownMenuItem>
-                        {appointment?.status !== "Prescribed" && (
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleDeleteAppointment(appointment._id)
-                            }
-                            className="flex items-center gap-2"
-                          >
-                            <Trash size={16} />
-                            Cancel Appointment
-                          </DropdownMenuItem>
-                        )}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
+                      }
+
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
 
@@ -333,6 +383,17 @@ const MyAppointments = () => {
           onClose={() => setIsPrescriptionViewModalOpen(false)}
         />
       )}
+
+      {reviewDialog && (
+        <AddReviewAppointment
+          reviewDialog={reviewDialog}
+          setReviewDialog={() => setReviewDialog(false)}
+          handleSubmitReview={handleSubmitReview}
+          newReview={newReview}
+          setNewReview={setNewReview}
+        />
+      )}
+
     </div>
   );
 };
