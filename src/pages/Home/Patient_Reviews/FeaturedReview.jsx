@@ -11,6 +11,9 @@ import { format } from "date-fns"
 
 
 const FeaturedReview = ({ handleHelpful, setShowReplyForm, showReplyForm, replyText, setReplyText, handleSubmitReply, featuredReview }) => {
+    if (!featuredReview) return <div className="text-center py-10 text-sky-600">
+        <p>No highlight reviews found.</p>
+    </div>
     return (
         <motion.div variants={itemVariants} whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
             <Card className="border-sky-100 shadow-md bg-gradient-to-r from-sky-50 to-white overflow-hidden pb-3">

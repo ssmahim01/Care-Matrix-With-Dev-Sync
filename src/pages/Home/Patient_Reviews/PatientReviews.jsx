@@ -33,7 +33,6 @@ export default function PatientReviews() {
 
   // State management
   const [activeTab, setActiveTab] = useState("all")
-  const [searchQuery, setSearchQuery] = useState("")
   const [filteredReviews, setFilteredReviews] = useState(reviews)
   const [showReplyForm, setShowReplyForm] = useState(null)
   const [replyText, setReplyText] = useState("")
@@ -48,35 +47,6 @@ export default function PatientReviews() {
     comment: "",
   })
   const [reviewDialog, setReviewDialog] = useState(false);
-
-
-  // Filter reviews based on search, department, and active tab
-  useEffect(() => {
-    let results = [...reviews]
-
-    // Filter by search query
-    if (searchQuery) {
-      results = results.filter(
-        (review) =>
-          review.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          review.comment.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          review.department.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
-    }
-
-
-    // Filter by tab
-    if (activeTab === "recent") {
-      results = results
-        .slice() // clone array to avoid mutating original
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else if (activeTab === "highest") {
-      results = results.filter((review) => review.rating >= 5)
-    }
-
-    setFilteredReviews(results)
-    setCurrentPage(1) // Reset to first page when filters change
-  }, [searchQuery, activeTab])
 
   
 
@@ -135,7 +105,6 @@ export default function PatientReviews() {
 
     // Trigger refiltering
     setActiveTab("all")
-    setSearchQuery("")
 
   }
 
@@ -178,7 +147,6 @@ export default function PatientReviews() {
   const handleCategoryDepartment = async (value) => {
     const res = await axios.get(`${import.meta.env.VITE_API_URL}/review/department?department=${value}`)
     setFilteredReviews(res.data)
-    console.log(res.data)
   }
 
 
@@ -200,14 +168,6 @@ export default function PatientReviews() {
                 className="pl-10 border-sky-200 focus:border-sky-400"
                 onChange={(e) => handleSearch(e.target.value)}
               />
-              {searchQuery && (
-                <button
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sky-500 hover:text-sky-700"
-                  onClick={() => setSearchQuery("")}
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
             </div>
 
             <div className="relative">
