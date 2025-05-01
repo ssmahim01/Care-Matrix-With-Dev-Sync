@@ -75,7 +75,7 @@ const Home = () => {
       </div>
 
       {/* Our Medical Experts */}
-      <div className="lg:-mb-3 mx-auto lg:w-10/12 max-w-screen-2xl">
+      <div className="lg:-mb-3 mx-auto md:w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Doctors />
       </div>
 
