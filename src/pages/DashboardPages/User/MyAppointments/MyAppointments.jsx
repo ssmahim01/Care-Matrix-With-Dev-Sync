@@ -151,9 +151,7 @@ const MyAppointments = () => {
       setReviewDialog(false)
     }
 
-    // Optional: Reset form and close dialog
     form.reset();
-    setNewReview((prev) => ({ ...prev, rating: 5 })); // reset rating to default
     setReviewDialog(false);
   }
 
