@@ -68,7 +68,7 @@ export default function PatientReviews() {
 
     // Filter by department
     if (selectedDepartment !== "all") {
-      results = results.filter((review) => review.department === selectedDepartment)
+      results = results.filter((review) => review.department.toLowerCase() === selectedDepartment.toLowerCase())
     }
 
     // Filter by tab
