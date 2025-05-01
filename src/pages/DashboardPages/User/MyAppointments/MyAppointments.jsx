@@ -141,7 +141,15 @@ const MyAppointments = () => {
 
     const review = { name, department, rating, comment, helpful: 0, date, avatar: user.photoURL };
 
-
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/review/add`, review)
+      if (res.data) return toast.success(res.data.message, { description: "Check the review list" })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      refetch()
+      setReviewDialog(false)
+    }
 
     // Optional: Reset form and close dialog
     form.reset();
