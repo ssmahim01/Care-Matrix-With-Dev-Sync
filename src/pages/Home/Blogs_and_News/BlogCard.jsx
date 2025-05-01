@@ -30,7 +30,7 @@ blog
           </div>
         </div>
         {/* Text */}
-        <div className="pl-3 pb-0 flex flex-col sm:p-4 flex-grow">
+        <div className="pl-3 pb-0 flex flex-col p-2 sm:p-4  flex-grow">
           <div className="flex items-center justify-between">
             <div className="flex space-x-2 mb-2">
               <span

@@ -25,22 +25,79 @@ import {
 import Swal from "sweetalert2";
 import { format } from "date-fns";
 import moment from "moment";
+import { capitalize } from "lodash";
 
 const handleViewDetails = (payment) => {
   Swal.fire({
-    title: "Payment Details",
+    title: "Appointment Details",
     html: `
-       <div class="flex flex-col gap-2">
-        <p><strong>Patient:</strong> ${payment.appointmentInfo.name}</p>
-        <p><strong>Doctor:</strong> ${payment.appointmentInfo.doctorName}</p>
-        <p><strong>Amount:</strong> $${payment.amount}</p>
-        <p><strong>Transaction ID:</strong> ${payment.transactionId}</p>
-        <p><strong>Payment Date:</strong> ${moment(payment.paymentDate).format(
-          "MMM D, YYYY, h:mm a"
-        )}</p>
-       </div>
-      `,
+      <div class="flex flex-col max-h-80 overflow-y-auto gap-4 text-left text-sm rounded-md">
+        <!-- Patient Details -->
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Patient Details</h3>
+          <div class="flex flex-col gap-2">
+            <p><strong>Name:</strong> ${payment.appointmentInfo.name}</p>
+            <p><strong>Email:</strong> ${payment.appointmentInfo.email}</p>
+            <p><strong>Phone:</strong> ${payment.appointmentInfo.phone}</p>
+            <p><strong>Age:</strong> ${payment.appointmentInfo.age}</p>
+            <p><strong>Date:</strong> ${payment.appointmentInfo.date}</p>
+            <p><strong>Time:</strong> ${payment.appointmentInfo.time}</p>
+            <p><strong>Reason:</strong> ${
+              payment.appointmentInfo.reason || "Not specified"
+            }</p>
+            <p><strong>Status:</strong> <span class="${
+              payment.appointmentInfo.status === "pending"
+                ? "text-yellow-600"
+                : "text-green-600"
+            } font-medium">${(payment.appointmentInfo.status)}</span></p>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="border-gray-200 my-4">
+
+        <!-- Doctor Details -->
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Doctor Details</h3>
+          <div class="flex flex-col gap-2">
+            <p><strong>Name:</strong> ${payment.appointmentInfo.doctorName}</p>
+            <p><strong>Title:</strong> ${payment.appointmentInfo.doctorTitle}</p>
+            <p><strong>Doctor ID:</strong> ${payment.appointmentInfo.doctorId}</p>
+            <p><strong>Consultation Fee:</strong> ${
+              payment.appointmentInfo.consultationFee
+            }</p>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="border-gray-200 my-4">
+
+        <!-- Payment Details -->
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Payment Details</h3>
+          <div class="flex flex-col gap-2">
+            <p><strong>Payment Status: <span class="text-green-600">${payment.paymentStatus}<span/></strong>
+            <p><strong>Amount:</strong> $${payment.amount.toFixed(2)}</p>
+            <p><strong>Payment Date:</strong> ${moment(payment.paymentDate).format(
+              "MMM D, YYYY, h:mm a"
+            )}</p>
+            <p><strong>Transaction ID:</strong> <span title="${
+              payment.transactionId
+            }">${(payment.transactionId)}</span></p>
+            <p><strong>Created At:</strong> ${moment(payment.createdAt).format(
+              "MMM D, YYYY, h:mm a"
+            )}</p>
+          </div>
+        </div>
+      </div>
+    `,
     icon: "info",
+    confirmButtonText: "OK",
+    customClass: {
+      popup: "rounded-lg",
+      title: "text-xl",
+      confirmButton: "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md",
+    },
   });
 };
 
