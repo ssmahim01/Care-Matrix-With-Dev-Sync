@@ -68,8 +68,11 @@ export default function PatientReviews() {
 
     // Filter by department
     if (selectedDepartment !== "all") {
-      results = results.filter((review) => review.department.toLowerCase() === selectedDepartment.toLowerCase())
+      results = results.filter(
+        (review) => review.department.toLowerCase() === selectedDepartment.toLowerCase()
+      )
     }
+
 
     // Filter by tab
     if (activeTab === "recent") {
@@ -220,7 +223,6 @@ export default function PatientReviews() {
                   <SelectItem value="cardiology">Cardiology</SelectItem>
                   <SelectItem value="orthopedics">Orthopedics</SelectItem>
                   <SelectItem value="pediatrics">Pediatrics</SelectItem>
-                  <SelectItem value="emergency">Emergency</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -280,7 +282,7 @@ export default function PatientReviews() {
                 </CardDescription>
               </CardHeader>
               <CardFooter>
-                 
+
               </CardFooter>
             </Card>
           </motion.div>
