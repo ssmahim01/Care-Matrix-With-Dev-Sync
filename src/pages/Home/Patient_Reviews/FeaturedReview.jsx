@@ -46,7 +46,7 @@ const FeaturedReview = ({ handleHelpful, setShowReplyForm, showReplyForm, replyT
                                 </div>
                                 <div className="flex items-center gap-2 text-sm text-sky-600">
                                     <Calendar className="w-4 h-4" />
-                                    <span>{format(featuredReview?.date, "MMMM d, Y")}</span>
+                                    {featuredReview?.date && <span>{format(featuredReview?.date, "MMMM d, Y")}</span>}
                                     <span className="px-2">•</span>
                                     <span className="capitalize">{featuredReview?.department} Department</span>
                                 </div>
@@ -97,9 +97,9 @@ const FeaturedReview = ({ handleHelpful, setShowReplyForm, showReplyForm, replyT
                                                         className="p-4 bg-gray-100 rounded-lg shadow-sm flex flex-col gap-1"
                                                     >
                                                         <p className="text-gray-700">{reply.text}</p>
-                                                        <span className="text-xs text-gray-500">
+                                                        {reply?.date && <span className="text-xs text-gray-500">
                                                             {format(new Date(reply?.date), "hh:mm a, d MMM")}
-                                                        </span>
+                                                        </span>}
                                                     </li>
                                                 ))}
                                             </ul>
