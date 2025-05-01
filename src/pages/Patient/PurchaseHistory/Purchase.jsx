@@ -209,7 +209,7 @@ const PurchaseHistoryMain = ({ ordersData }) => {
 };
 
 // Orders List Component
-function OrdersList({ orders, onSelectOrder }) {
+const OrdersList = ({ orders, onSelectOrder }) => {
   // Get status color based on status
   const getStatusColor = (status) => {
     switch (status) {
@@ -277,7 +277,7 @@ function OrdersList({ orders, onSelectOrder }) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 :::grid grid-cols-1 lg:grid-cols-2 gap-4">
       {orders.map((order) => (
         <Card
           key={order._id}
@@ -288,7 +288,7 @@ function OrdersList({ orders, onSelectOrder }) {
             onClick={() => onSelectOrder(order)}
           >
             <div className="flex-1 p-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 md:gap-4 mb-2">
                 <div>
                   <p className="text-base text-gray-800">
                     {format(new Date(order.date), "MMMM d, yyyy")}
@@ -298,7 +298,7 @@ function OrdersList({ orders, onSelectOrder }) {
                   </h3>
                 </div>
                 <div
-                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                  className={`inline-flex w-fit items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(
                     order.orderStatus
                   )}`}
                 >
@@ -306,7 +306,7 @@ function OrdersList({ orders, onSelectOrder }) {
                   <span>{order.orderStatus}</span>
                 </div>
               </div>
-              <Separator className="border" />
+              <Separator className="border mt-4 md:mt-0" />
               <div className="mt-2">
                 <div className="flex flex-col">
                   <div className="text-base">
@@ -349,7 +349,7 @@ function OrdersList({ orders, onSelectOrder }) {
       ))}
     </div>
   );
-}
+};
 
 // Order Details Component
 const OrderDetails = ({ order, onBack }) => {
@@ -362,7 +362,12 @@ const OrderDetails = ({ order, onBack }) => {
   return (
     <div className="space-y-1">
       <div className="pl-1 flex items-center gap-2">
-        <Button variant="outline" size="sm" onClick={onBack}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onBack}
+          className={"cursor-pointer"}
+        >
           <ChevronRight className="h-4 w-4 rotate-180 mr-1" />
           Back to Orders
         </Button>
@@ -386,7 +391,9 @@ const OrderDetails = ({ order, onBack }) => {
 
       {/* Status Tracker */}
       <Card
-        className={"mt-4 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
+        className={
+          "mt-4 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+        }
       >
         <CardHeader>
           <CardTitle>Order Status</CardTitle>
@@ -655,9 +662,9 @@ const StatusTracker = ({ currentStatus }) => {
           );
         })}
       </div>
-      <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-200"></div>
+      <div className="absolute top-[14.5px] left-2 right-2.5 h-0.5 bg-gray-200" />
       <div
-        className="absolute top-4 left-0 h-0.5 bg-green-500"
+        className="absolute top-[14.5px] left-2 h-0.5 bg-green-500"
         style={{
           width: `${
             currentIndex === 0
