@@ -18,6 +18,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
+import { GiMedicines } from "react-icons/gi";
 
 const OurPharmacy = () => {
   const [page, setPage] = useState(1);
@@ -49,6 +51,17 @@ const OurPharmacy = () => {
   const handleNextPage = () => {
     setPage((prev) => (prev < data.totalPages ? prev + 1 : prev));
   };
+  // clear filter
+  const handleClearFilter = () => {
+    setSearch("");
+    setCategory("All Medicines");
+  };
+  // change category
+  const handleChangeCategory = (e) => {
+    setCategory(e);
+    setSearch("");
+    setPage(1);
+  };
 
   return (
     <>
@@ -68,7 +81,7 @@ const OurPharmacy = () => {
               {medicine_categories.map((category, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setCategory(category.category_name)}
+                  onClick={() => handleChangeCategory(category.category_name)}
                   className={`rounded h-full grid place-content-stretch py-2 px-4 font-medium text-xl tracking-wider w-full text-left cursor-pointer 
                 ${
                   selectedCategory === category?.category_name
@@ -84,7 +97,19 @@ const OurPharmacy = () => {
           {/* medicines */}
           <div className="w-full lg:w-8/12 xl:w-9/12">
             {data.medicines?.length === 0 ? (
-              "No Medicine Available"
+              <div className="flex flex-col items-center justify-center h-[70vh] text-center">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mb-4">
+                  <GiMedicines className="h-10 w-10 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-medium mb-1">No Medicine Found</h3>
+                <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+                  Sorry, we couldn't find any medicines matching your criteria.
+                  Try adjusting your filters.
+                </p>
+                <Button onClick={handleClearFilter} className="cursor-pointer">
+                  Clear Filters
+                </Button>
+              </div>
             ) : (
               <Medicines medicines={data.medicines} isLoading={isLoading} />
             )}
