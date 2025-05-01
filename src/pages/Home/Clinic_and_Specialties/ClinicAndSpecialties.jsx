@@ -116,7 +116,7 @@ export default function ClinicAndSpecialties() {
               onChange={(e) => setSearchQuery(e.target.value)}
             /> */}
           {/* </div> */}
-          <div className="flex gap-3 w-full ml-4 md:w-auto">
+          <div className="flex  gap-3 w-full md:ml-4 md:w-auto ">
             <Link to={"/doctors"}>
               <Button className="bg-sky-600 hover:bg-sky-700 cursor-pointer">
                 <Calendar className="mr-2 h-4 w-4" /> Book Appointment
