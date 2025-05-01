@@ -14,11 +14,11 @@ const teamMembers = [
   {
     id: 2,
     name: "Sheikh Saiyam",
-    role: "Back-end Developer",
-    image: "https://i.ibb.co.com/DPtzXY4q/image.png",
-    github: "https://github.com/michaelchen",
-    linkedin: "https://linkedin.com/in/michaelchen",
-    email: "michael@carematrix.com",
+    role: "Front-end Developer",
+    image: "https://i.ibb.co.com/QF4hLXMk/Screenshot-2025-05-01-193220.png",
+    github: "https://github.com/sheikh-saiyam",
+    linkedin: "https://linkedin.com/in/sheikh-saiyam",
+    email: "sheikhsaiyam29@gmail.com",
   },
   {
     id: 3,
@@ -148,20 +148,20 @@ const TeamSection = ({ title, subtitle, description }) => {
     "Our dedicated team of six professionals combines expertise in healthcare and technology to deliver an exceptional medical platform that prioritizes your well-being.";
 
   return (
-    <section className="py-12">
-      <div className="">
-        <div className="text-center mb-12">
+    <section className="pt-24 pb-6">
+      <div>
+        <div className="text-center mb-8">
           <h4 className="text-[#0E82FD] font-semibold text-sm uppercase tracking-wider">
             {title}
           </h4>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mt-4">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
             The Brilliant <span className="text-[#0E82FD] ">Minds</span> Behind
             CareMatrix
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-gray-600">{description}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {teamMembers.map((member) => (
             <TeamMemberCard key={member.id} member={member} />
           ))}

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPatientStats } from "@/redux/patient/patientSlice";
 import { useEffect } from "react";
 import PatientOverviewSkeleton from "./PatientOverviewSkeleton";
+import { toast } from "sonner";
 
 // Tan Stack Query Version
 // const { data: patientStats = [], isLoading } = useQuery({
@@ -42,8 +43,14 @@ const PatientOverview = () => {
     }
   }, [dispatch, user?.email]);
 
+  if (error) {
+    const errorMessage = "An unexpected error occurred while fetching the data";
+    return toast.error("Error While Fetching Data!", {
+      description: errorMessage,
+      position: "top-right",
+    });
+  }
   if (isLoading) return <PatientOverviewSkeleton />;
-  if (error) return "Error caught while fetching data!";
 
   // Format date for display
   function formatDate(dateString) {
@@ -80,7 +87,7 @@ const PatientOverview = () => {
       )}
 
       {/* Main Content Tabs */}
-      <Tabs defaultValue="appointments" className="mt-8 space-y-4">
+      <Tabs defaultValue="appointments" className="mt-8 space-y-2">
         {/* All TabList */}
         <TabsList className="border w-full">
           <TabsTrigger

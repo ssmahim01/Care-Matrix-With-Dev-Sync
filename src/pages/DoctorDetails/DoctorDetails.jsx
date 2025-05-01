@@ -55,9 +55,15 @@ const DoctorDetails = () => {
                 if (res?.data?.insertedId) {
                     toast.success(`${doctorInfo?.name} is added to your favorite list!`);
                 }
+                console.log(res);
             })
             .catch(err => {
-                toast.error("Something went wrong! Please try again.");
+                console.log("err", err.response.data.message);
+                if(err?.response?.data?.message === "Doctor already in favorites"){
+                    toast.error("Doctor already in favorites.");
+                }else{
+                    toast.error("Something went wrong! Please try again.");
+                }
             });
     };
 

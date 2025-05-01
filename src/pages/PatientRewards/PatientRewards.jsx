@@ -13,8 +13,8 @@ const PatientRewards = () => {
     <div className="min-h-screen">
       {/* Banner Section */}
       <section className="relative bg-gradient-to-r from-blue-600 to-teal-500 text-white pt-20 pb-24">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-3xl lg:text-5xl md:text-4xl font-bold mb-3">
+        <div className="container mx-auto md:px-6 text-center">
+          <h1 className="lg:text-5xl text-4xl font-bold mb-3">
             Earn Rewards for a Healthier You
           </h1>
           <p className="text-lg max-w-2xl mx-auto">
@@ -22,11 +22,11 @@ const PatientRewards = () => {
             healthy habits into exciting rewards!
           </p>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gray-50 rounded-t-[2rem]"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-white rounded-t-[2rem]"></div>
       </section>
 
       {/* Content Section */}
-      <section className="container lg:w-4/5 mx-auto lg:px-8 md:px-16 px-6 pb-10">
+      <section className="container mx-auto md:w-[86%] w-11/12 pb-10">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-semibold text-gray-800">
             Transform Your Health Journey
@@ -116,7 +116,7 @@ const PatientRewards = () => {
           className="mt-16 lg:pl-14 py-28 rounded-lg bg-cover bg-fixed bg-center bg-no-repeat"
           style={{
             backgroundImage:
-              "url('https://i.ibb.co.com/rRrh6LkK/phone-doctor.jpg')",
+              "url('/rewards-image.jpg')",
           }}
         >
           <h3 className="lg:text-left text-center md:text-3xl text-2xl font-bold text-white/90 mb-4">
@@ -141,7 +141,7 @@ const PatientRewards = () => {
           </div>
           ) : (
             <div className="lg:text-left text-center">
-              <p className="text-rose-500 md:text-base text-xs font-bold">Only logged in patients can view action buttons...</p>
+              <p className="text-amber-500 md:text-base text-xs font-bold">Only logged in patients can view action buttons...</p>
             </div>
           )}
         </div>

@@ -93,7 +93,7 @@ function MyBedRequests() {
   if (isLoading) return <Loader text={"Loading Bed Bookings"} />;
 
   return (
-    <div className="p-7">
+    <div className="px-5">
       <DashboardPagesHeader
         title={"Manage My Bed Booking Requests"}
         subtitle={"View and manage all bed booking Requests"}

@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
-import { Github, Linkedin } from "lucide-react"
+import { Github, Linkedin } from "lucide-react";
 const MoreAboutUs = () => {
-  
   return (
     <section className="bg-white">
       <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -16,12 +15,12 @@ const MoreAboutUs = () => {
           <img
             src="/hospital bed.jpg"
             alt="Hospital bed"
-            className="absolute bottom-4 left-4 w-20 h-20 sm:w-40 sm:h-40 object-cover rounded-lg shadow-md border-4 border-white"
+            className="absolute bottom-4 left-4 w-20 h-20 sm:w-40 sm:h-40 object-cover rounded-lg shadow-lg border-2 border-white"
           />
           <img
             src="/operaation theater.jpg"
             alt="Hospital operation theater"
-            className="absolute bottom-4 right-4 w-20 h-20 sm:w-40 sm:h-40 object-cover rounded-lg shadow-md border-4 border-white"
+            className="absolute top-4 right-4 w-20 h-20 sm:w-40 sm:h-40 object-cover rounded-lg shadow-lg border-2 border-white"
           />
         </div>
 
@@ -30,7 +29,7 @@ const MoreAboutUs = () => {
           <h4 className="text-[#0E82FD] font-semibold text-sm uppercase tracking-wider">
             More About Us
           </h4>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mt-4">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mt-1">
             We Are A Clinic,{" "}
             <span className="text-[#0E82FD]">Provide Excellence</span> In
             Personalized Care
@@ -62,17 +61,8 @@ const MoreAboutUs = () => {
               </p>
             </div>
           </div>
-
-          {/* Learn More Button */}
-          <Link
-            to="/contact-us"
-            className="mt-8 inline-flex items-center text-[#0E82FD] font-medium hover:underline"
-          >
-            Learn More <FaArrowRight className="ml-2" />
-          </Link>
         </div>
       </div>
-      
     </section>
   );
 };

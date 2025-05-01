@@ -32,6 +32,7 @@ import { z } from "zod";
 import AvailabilityModal from "@/components/AvailabilityModal/AvailabilityModal";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { IoIosSearch } from "react-icons/io";
+import { X } from "lucide-react";
 
 const AllDoctors = () => {
   const dispatch = useDispatch();
@@ -110,7 +111,7 @@ const AllDoctors = () => {
         />
 
         {/* Main Content */}
-        <div className="flex gap-4 md:flex-row flex-col items-center">
+        <div className="flex gap-4 lg:flex-row flex-col lg:items-center">
           {/* Search Input */}
           <div className="relative w-full flex xl:flex-1">
             <input
@@ -123,12 +124,14 @@ const AllDoctors = () => {
             />
             <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
             {/* shortcut hint */}
-            <button
-              onClick={() => dispatch(setSearch(""))}
-              className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[6px] rounded-md text-gray-500 cursor-pointer"
-            >
-              Clear
-            </button>
+           {search && (
+             <button
+             onClick={() => dispatch(setSearch(""))}
+             className="absolute top-[5px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[4px] rounded-md text-gray-500 cursor-pointer"
+           >
+             <X className="w-4 h-4" />
+           </button>
+           )}
           </div>
 
           {/* Fee Sort */}
@@ -156,7 +159,7 @@ const AllDoctors = () => {
 
       {/* Request Table Data */}
       <div className="md:py-6 py-8 rounded-xl">
-        <Table className={"*:w-full *:rounded-xl"}>
+        <Table className={"*:w-full border *:rounded-xl"}>
           <TableCaption>A List Of All Doctors</TableCaption>
           <TableHeader>
             <TableRow className={"bg-gray-50 hover:bg-gray-50"}>
