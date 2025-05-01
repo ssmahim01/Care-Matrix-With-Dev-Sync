@@ -10,7 +10,7 @@ import { Calendar, MessageSquare, Send, Star, ThumbsUp } from 'lucide-react'
 import { format } from "date-fns"
 
 
-const FeaturedReview = ({ handleHelpful, helpfulReviews, setShowReplyForm, showReplyForm, replyText, setReplyText, handleSubmitReply, featuredReview }) => {
+const FeaturedReview = ({ handleHelpful, setShowReplyForm, showReplyForm, replyText, setReplyText, handleSubmitReply, featuredReview }) => {
     return (
         <motion.div variants={itemVariants} whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
             <Card className="border-sky-100 shadow-md bg-gradient-to-r from-sky-50 to-white overflow-hidden pb-3">

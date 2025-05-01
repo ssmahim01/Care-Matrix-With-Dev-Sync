@@ -239,7 +239,6 @@ export default function PatientReviews() {
             featuredReview={featuredReview}
             handleHelpful={handleHelpful}
             handleSubmitReply={handleSubmitReply}
-            helpfulReviews={helpfulReviews}
             replyText={replyText}
             setReplyText={setReplyText}
             setShowReplyForm={setShowReplyForm}
