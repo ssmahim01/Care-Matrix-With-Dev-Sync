@@ -38,10 +38,14 @@ import { IoIosSearch } from "react-icons/io";
 
 const MyAppointments = () => {
   const [sortDate, setSortDate] = useState("");
-  const [search, setSearch] = useState("")
-  const [category, setCategory] = useState("")
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
-  const [appointments, refetch, isLoading] = useMyAppointments(sortDate, search, category);
+  const [appointments, refetch, isLoading] = useMyAppointments(
+    sortDate,
+    search,
+    category
+  );
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
 
@@ -51,7 +55,7 @@ const MyAppointments = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [isPrescriptionViewModalOpen, setIsPrescriptionViewModalOpen] =
     useState(false);
-  const [selectedPatient, setSelectedPatient] = useState(null)
+  const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedPrescription, setSelectedPrescription] = useState(null);
   // console.log(appointments);
   useEffect(() => {
@@ -154,11 +158,8 @@ const MyAppointments = () => {
             Reset
           </Button>
         </div> */}
-
-
       </div>
       <div className="flex gap-4 mb-6 items-center flex-wrap">
-
         {/* Searchbar */}
         <div className="relative w-full flex xl:flex-1">
           <input
@@ -171,9 +172,12 @@ const MyAppointments = () => {
         </div>
 
         {/* Sort category  */}
-        <Select value={category} onValueChange={(value) => {
-          setCategory(value)
-        }}>
+        <Select
+          value={category}
+          onValueChange={(value) => {
+            setCategory(value);
+          }}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Categories " />
           </SelectTrigger>
@@ -185,10 +189,13 @@ const MyAppointments = () => {
         </Select>
 
         {/* Sort Controls */}
-        <Select value={selectedSort} onValueChange={(value) => {
-          handleSortByDate(value)
-          setSelectedSort(value)
-        }}>
+        <Select
+          value={selectedSort}
+          onValueChange={(value) => {
+            handleSortByDate(value);
+            setSelectedSort(value);
+          }}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Sort By " />
           </SelectTrigger>
@@ -198,7 +205,17 @@ const MyAppointments = () => {
           </SelectContent>
         </Select>
 
-        <Button className="cursor-pointer" onClick={() => { setSortDate(""); setSelectedSort(""); setSearch(""); setCategory("") }}>Reset</Button>
+        <Button
+          className="cursor-pointer"
+          onClick={() => {
+            setSortDate("");
+            setSelectedSort("");
+            setSearch("");
+            setCategory("");
+          }}
+        >
+          Reset
+        </Button>
       </div>
 
       {/* Table */}
@@ -223,83 +240,81 @@ const MyAppointments = () => {
         <TableBody>
           {isLoading || showSkeleton
             ? [...Array(9)].map((_, idx) => (
-              <TableRow key={idx} className="animate-pulse">
-                {Array(9)
-                  .fill()
-                  .map((_, i) => (
-                    <TableCell key={i}>
-                      <div className="skeleton h-6 w-full max-w-[100px] rounded-md"></div>
-                    </TableCell>
-                  ))}
-              </TableRow>
-            ))
+                <TableRow key={idx} className="animate-pulse">
+                  {Array(9)
+                    .fill()
+                    .map((_, i) => (
+                      <TableCell key={i}>
+                        <div className="skeleton h-6 w-full max-w-[100px] rounded-md"></div>
+                      </TableCell>
+                    ))}
+                </TableRow>
+              ))
             : appointments?.map((appointment, index) => (
-              <TableRow key={appointment._id} className="hover:bg-gray-50">
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{appointment.doctorName}</TableCell>
-                <TableCell>{appointment.name}</TableCell>
-                <TableCell>{appointment.age}</TableCell>
-                <TableCell>{appointment.phone}</TableCell>
-                <TableCell>{appointment.email}</TableCell>
-                <TableCell>{appointment.date}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`text-xs p-1 rounded-full ${appointment.status === "Approved"
-                          ? "bg-yellow-500"
-                          : "bg-green-600"
+                <TableRow key={appointment._id} className="hover:bg-gray-50">
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{appointment.doctorName}</TableCell>
+                  <TableCell>{appointment.name}</TableCell>
+                  <TableCell>{appointment.age}</TableCell>
+                  <TableCell>{appointment.phone}</TableCell>
+                  <TableCell>{appointment.email}</TableCell>
+                  <TableCell>{appointment.date}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-xs p-1 rounded-full ${
+                          appointment.status === "Approved"
+                            ? "bg-yellow-500"
+                            : "bg-green-600"
                         } text-white`}
-                    >
-                      <FaCircle size={7} />
-                    </span>
-                    <span className="capitalize text-sm font-medium text-gray-700">
-                      {appointment.status}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-5 w-5 text-foreground" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      {appointment?.status === "Prescribed" && (
+                      >
+                        <FaCircle size={7} />
+                      </span>
+                      <span className="capitalize text-sm font-medium text-gray-700">
+                        {appointment.status}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical className="h-5 w-5 text-foreground" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        {appointment?.status === "Prescribed" && (
+                          <DropdownMenuItem
+                            onClick={() => handleViewPrescription(appointment)}
+                            className="flex items-center gap-2"
+                          >
+                            <FileDown size={16} />
+                            View Prescription
+                          </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem
-                          onClick={() => handleViewPrescription(appointment)}
+                          onClick={() => handleDetails(appointment)}
                           className="flex items-center gap-2"
                         >
-                          <FileDown size={16} />
-                          View Prescription
+                          <BiDetail size={16} />
+                          View Details
                         </DropdownMenuItem>
-                      )}
-                      <DropdownMenuItem
-                        onClick={() => handleDetails(appointment)}
-                        className="flex items-center gap-2"
-                      >
-                        <BiDetail size={16} />
-                        View Details
-                      </DropdownMenuItem>
-                      {
-                        appointment?.status !== "Prescribed" &&
-                        <DropdownMenuItem
-                        
-                        onClick={() =>
-                          handleDeleteAppointment(appointment._id)
-                        }
-                        className="flex items-center gap-2"
-                      >
-                        <Trash size={16} />
-                        Cancel Appointment
-                      </DropdownMenuItem>
-                      }
-                     
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
+                        {appointment?.status !== "Prescribed" && (
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleDeleteAppointment(appointment._id)
+                            }
+                            className="flex items-center gap-2"
+                          >
+                            <Trash size={16} />
+                            Cancel Appointment
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
         </TableBody>
       </Table>
 
