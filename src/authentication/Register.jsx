@@ -418,7 +418,7 @@ const Register = () => {
                 value={strongPassword}
                 placeholder="Password"
                 onChange={handlePasswordChange}
-                onFocus={() => setIsDropdownOpen(true)}
+                // onFocus={() => setIsDropdownOpen(true)}
                 // onBlur={() => setIsDropdownOpen(false)}
                 className="peer border-blue-200 border rounded-md outline-none pl-11 pr-12 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
@@ -462,6 +462,13 @@ const Register = () => {
               </div>
             )}
           </div>
+          <button
+            type="button"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="-mt-3 cursor-pointer text-sm text-[#0E82FD] underline underline-offset-1 flex justify-end"
+          >
+            {!isDropdownOpen ? "View" : "Close"} Password Suggestions
+          </button>
           {/* Error Message */}
           <IsError isError={isError} />
           {/* Register Button */}
