@@ -86,7 +86,7 @@ const SocialLogin = ({ setIsError }) => {
           <Button
             variant="outline"
             onClick={() => handleSocialLogin("google")}
-            className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 py-5"
+            className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 "
           >
             <FaGoogle /> Google
           </Button>
@@ -96,7 +96,7 @@ const SocialLogin = ({ setIsError }) => {
           <Button
             variant="outline"
             onClick={() => handleSocialLogin("github")}
-            className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 py-5"
+            className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 "
           >
             <FaGithub /> Github
           </Button>

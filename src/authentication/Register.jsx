@@ -2,7 +2,7 @@ import auth from "@/firebase/firebase.config";
 import { imgUpload } from "@/lib/imgUpload";
 import axios from "axios";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
@@ -27,6 +27,13 @@ const Register = () => {
   const navigate = useNavigate();
   const userLoading = useAuthLoading();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 
   // states for name, email
   const [name, setName] = useState("");
@@ -481,7 +488,7 @@ const Register = () => {
           </button>
         </form>
         {/* SocialLogin */}
-        {/* <SocialLogin setIsError={setIsError} /> */}
+        <SocialLogin setIsError={setIsError} />
         {/* Navigate to login */}
         <NavigateTo />
       </div>
