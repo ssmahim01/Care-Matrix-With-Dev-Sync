@@ -8,6 +8,7 @@ export default function SpecialtyCard({
   icon,
   title,
   description,
+  patientCount,
   doctorCount,
 }) {
   return (

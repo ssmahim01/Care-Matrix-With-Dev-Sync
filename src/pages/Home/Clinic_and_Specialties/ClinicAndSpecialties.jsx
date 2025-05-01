@@ -35,7 +35,7 @@ export default function ClinicAndSpecialties() {
   const { data: pat = {}, isLoading: patientLoading } = useQuery({
     queryKey: ["patients"],
     queryFn: async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/users`)
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/appointments`)
       return data
     }
   })
@@ -51,7 +51,7 @@ export default function ClinicAndSpecialties() {
   }
 
   const totalUniqueServices = countUniqueServices(data);
-  const totalPatient = pat.totalItems
+  const totalPatient = pat.length
   const totalDoctor = data.length
 
 
@@ -71,9 +71,11 @@ export default function ClinicAndSpecialties() {
     const doctorCount = data.filter(
       (doc) => doc.title.toLowerCase() === title.toLowerCase()
     ).length;
+
+    const patientCount = pat.filter(p=> p.doctorTitle.toLowerCase() === title.toLowerCase()).length
   
     if (match) {
-      return { ...match, title, doctorCount };
+      return { ...match, title,patientCount, doctorCount };
     }
   
     // Fallback
@@ -95,7 +97,7 @@ export default function ClinicAndSpecialties() {
       <div className="-mt-8" />
       <div className="mb-12">
         <HeroSection
-          totalUniqueServices={totalUniqueServices}
+          totalUniqueServices={conditionTitles.length}
           totalPatient={totalPatient}
           totalDoctor={totalDoctor}
         />
@@ -177,7 +179,7 @@ export default function ClinicAndSpecialties() {
                   Our Medical Specialties
                 </h2>
                 <p className="text-sky-600 max-w-3xl">
-                  Horizon Medical Center offers comprehensive care across
+                  Care matrix offers comprehensive care across
                   multiple specialties, with state-of-the-art facilities and
                   experienced specialists.
                 </p>
@@ -190,12 +192,14 @@ export default function ClinicAndSpecialties() {
                     Icon,
                     title,
                     description,
+                    patientCount,
                     doctorCount,
                   }) => (
                     <SpecialtyCard
                       key={id}
                       icon={<Icon className="h-8 w-8 text-sky-600" />}
                       title={title}
+                      patientCount={patientCount}
                       description={description}
                       doctorCount={doctorCount}
                     />
