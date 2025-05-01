@@ -1,15 +1,10 @@
-import {
-  Card,
-  CardContent
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EmptyState from "@/pages/DashboardPages/PatientOverview/EmptyState";
-import {
-  ShoppingBag
-} from "lucide-react";
-import { useState } from "react";
+import { ShoppingBag } from "lucide-react";
 import OrderDetails from "./OrderDetails";
 import OrdersList from "./OrdersList";
+import { useState } from "react";
 
 const PurchaseHistoryMain = ({ ordersData }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);

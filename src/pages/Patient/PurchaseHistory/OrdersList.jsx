@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 
 const OrdersList = ({ orders, onSelectOrder }) => {
-  // Get status color based on status
   const getStatusColor = (status) => {
     switch (status) {
       case "Pending":
@@ -38,7 +37,6 @@ const OrdersList = ({ orders, onSelectOrder }) => {
     }
   };
 
-  // Get status icon based on status
   const getStatusIcon = (status) => {
     switch (status) {
       case "Pending":

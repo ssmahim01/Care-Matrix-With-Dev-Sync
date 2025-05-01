@@ -8,29 +8,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import EmptyState from "@/pages/DashboardPages/PatientOverview/EmptyState";
 import { format } from "date-fns";
-import {
-  AlertCircle,
-  CheckCircle2,
-  ChevronRight,
-  Clock,
-  Package,
-  RotateCcw,
-  ShoppingBag,
-  Truck,
-} from "lucide-react";
-import { useState } from "react";
+import { ChevronRight } from "lucide-react";
 import { FaFileInvoice } from "react-icons/fa";
 import { GiMedicines } from "react-icons/gi";
 import { Link } from "react-router";
-import StatusTracker from "./StatusTracker";
 import StatusBadge from "./StatusBadge";
+import StatusTracker from "./StatusTracker";
 
 const OrderDetails = ({ order, onBack }) => {
-  // Calculate subtotal from medicines
-  const subtotal = order.medicines.reduce(
+  const subtotal = order?.medicines?.reduce(
     (sum, medicine) => sum + medicine.subtotal,
     0
   );
