@@ -293,7 +293,6 @@
 
 
 import React, { useEffect, useState } from 'react';
-import useAxiosSecure from '@/hooks/useAxiosSecure';
 import DashboardPagesHeader from '@/shared/Section/DashboardPagesHeader';
 import { ClipboardPlus, MoreVertical, Trash } from 'lucide-react';
 import { BiDetail } from 'react-icons/bi';
@@ -317,7 +316,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import AppointmentDetailsModal from '@/components/Modal/AppointmentDetailsModal ';
-import toast from 'react-hot-toast';
 import { IoIosSearch } from 'react-icons/io';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TabsContent } from '@radix-ui/react-tabs';
@@ -437,22 +435,22 @@ const ManageAppointments = () => {
 
             <Tabs defaultValue="approved-appointments" className="space-y-4 ">
                 {/* All Tablist */}
-                <TabsList className="border w-full data-[state=selected]:bg-muted border-b transition-colors bg-base-200 hover:bg-base-200">
+                <TabsList className="border data-[state=selected]:bg-muted border-b transition-colors bg-base-200 hover:bg-base-200">
                     <TabsTrigger
                         value="approved-appointments"
                         className="cursor-pointer py-2 px-4"
                     >
-                        Approved Appointments
+                        Approved
                     </TabsTrigger>
                     <TabsTrigger
                         value="prescribed-appointments"
                         className="cursor-pointer py-2 px-4"
                     >
-                        Prescribed Appointments
+                        Prescribed
                     </TabsTrigger>
 
                     <TabsTrigger value="all-appointments" className="cursor-pointer py-2 px-4">
-                        All Appointments
+                        All
                     </TabsTrigger>
                 </TabsList>
 
@@ -560,6 +558,7 @@ const ManageAppointments = () => {
                             )}
                         </TableBody>
                     </Table>
+                    
                 </TabsContent>
 
 
@@ -668,7 +667,7 @@ const ManageAppointments = () => {
                             )}
                         </TableBody>
                     </Table>
-
+                     
                 </TabsContent>
 
                 {/* 3rd Tab Content: all-appointments */}
@@ -776,7 +775,6 @@ const ManageAppointments = () => {
                             )}
                         </TableBody>
                     </Table>
-
                 </TabsContent>
 
             </Tabs>

@@ -31,7 +31,6 @@ const BookAppointment = () => {
       }
     }, [user, dispatch]);
 
-    
 
     const doctorInfo = doctors.find((doctor) => doctor._id === location.state);
     const reward = rewardUser.find((reward) => reward?.userEmail === user?.email)
