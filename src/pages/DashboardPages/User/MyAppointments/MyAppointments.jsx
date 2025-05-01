@@ -33,6 +33,10 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router";
 import EmptyState from "../../PatientOverview/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
+import AddReviewAppointment from "./AddReviewAppointment";
+import { MdReviews } from "react-icons/md";
+import { useAuthUser } from "@/redux/auth/authActions";
+import axios from "axios";
 
 const MyAppointments = () => {
   const [sortDate, setSortDate] = useState("");
@@ -42,6 +46,12 @@ const MyAppointments = () => {
   const [appointments, refetch, isLoading] = useMyAppointments(sortDate, search, category);
   const axiosSecure = useAxiosSecure();
   const [showSkeleton, setShowSkeleton] = useState(true);
+  const [reviewDialog, setReviewDialog] = useState(false)
+  const [newReview, setNewReview] = useState({
+    rating: 5,
+  });
+  const user = useAuthUser()
+
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -166,6 +176,35 @@ const MyAppointments = () => {
       </Card>
     );
   };
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const name = formData.get("name");
+    const department = formData.get("department");
+    const comment = formData.get("comment");
+    const date = new Date()
+
+    // You already have rating tracked in `newReview.rating`
+    const rating = newReview.rating;
+
+    const review = { name, department, rating, comment, helpful: 0, date, avatar: user.photoURL };
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/review/add`, review)
+      if (res.data) return toast.success(res.data.message, { description: "Check the review list" })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      refetch()
+      setReviewDialog(false)
+    }
+
+    form.reset();
+    setReviewDialog(false);
+  }
 
   return (
     <div className="p-7 pt-0">
@@ -355,6 +394,17 @@ const MyAppointments = () => {
           onClose={() => setIsPrescriptionViewModalOpen(false)}
         />
       )}
+
+      {reviewDialog && (
+        <AddReviewAppointment
+          reviewDialog={reviewDialog}
+          setReviewDialog={() => setReviewDialog(false)}
+          handleSubmitReview={handleSubmitReview}
+          newReview={newReview}
+          setNewReview={setNewReview}
+        />
+      )}
+
     </div>
   );
 };

@@ -5,8 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Star, GraduationCap, Clock } from "lucide-react";
 import { Link } from "react-router";
+import { DollarSign } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
 
 export default function DoctorCard({ doctor }) {
+
+    const isAvailableToday = (days) => {
+      const today = format(new Date(), "EEEE");
+      // Check if today is in availableDays
+      return days.includes(today);
+    };
+
+    
   return (
     <motion.div
       whileHover={{ y: -5 }}
@@ -42,8 +53,8 @@ export default function DoctorCard({ doctor }) {
             <div className="flex items-start gap-2">
               <GraduationCap className="h-4 w-4 text-sky-500 mt-0.5" />
               <div>
-                <div className="font-medium text-sky-800">Education</div>
-                <div className="text-sky-600">{doctor.education}</div>
+                <div className="font-medium text-sky-800">Consultation Fee</div>
+                <span className="text-sky-600 flex items-center">{doctor.consultation_fee}<DollarSign className="size-4" /></span>
               </div>
             </div>
             <div className="flex items-start gap-2">
@@ -57,7 +68,14 @@ export default function DoctorCard({ doctor }) {
               <Clock className="h-4 w-4 text-sky-500 mt-0.5" />
               <div>
                 <div className="font-medium text-sky-800">Availability</div>
-                <div className="text-sky-600">{doctor.availability}</div>
+                <Badge 
+                variant={isAvailableToday(doctor.available_days) 
+                ? "outline" 
+                : "secondary"}
+                className={`${isAvailableToday(doctor.available_days) 
+                ? "bg-green-200" 
+                : "bg-red-200"}`}
+                >{isAvailableToday(doctor.available_days) ? "Available" : "Not Available"}</Badge>
               </div>
             </div>
           </div>

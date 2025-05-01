@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+
 import { motion } from "framer-motion"
 import { itemVariants } from '@/lib/varients'
 import { Star } from 'lucide-react'
@@ -18,9 +18,9 @@ const averageRating = totalRatings / filteredReviews.length;
 
             >
                 <div className="flex">
-                    {Array.from({ length: averageRating.toLocaleString().slice(0,1) }).map((star) => (
+                    {Array.from({ length: averageRating.toLocaleString().slice(0,1) }).map((star, i) => (
                         <motion.div
-                            key={star}
+                            key={i}
                             initial={{ rotate: -30, opacity: 0 }}
                             transition={{ delay: star * 0.1 }}
                             whileInView={{ rotate: 0, opacity: 1 }}
