@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+
 import { motion } from "framer-motion"
 import { itemVariants } from '@/lib/varients'
 import { Star } from 'lucide-react'
