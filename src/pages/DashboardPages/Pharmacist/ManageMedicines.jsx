@@ -205,6 +205,7 @@ const ManageMedicines = () => {
           {/* Reset & Add Button */}
           <div className="flex items-center flex-wrap gap-2">
             <Button
+              variant={"outline"}
               onClick={() => {
                 setCategory("");
                 setSearch("");
@@ -213,7 +214,7 @@ const ManageMedicines = () => {
             >
               Reset
             </Button>
-            <Button>Add Category</Button>
+            {/* <Button>Add Category</Button> */}
             <AddMedicine
               isOpen={setOpen}
               setIsOpen={setIsOpen}

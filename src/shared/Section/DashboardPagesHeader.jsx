@@ -6,7 +6,7 @@ const DashboardPagesHeader = ({ title, subtitle, icon: Icon }) => {
           {Icon && <Icon className="text-3xl text-gray-700" />}
           {title}
         </h2>
-        <p className="text-gray-600 text-base md:text-lg lg:text-xl mt-1 ml-[2px] font-medium whitespace-pre-line">
+        <p className="text-gray-600 text-base md:text-lg lg:text-xl mt-1 ml-[2px] font-medium lg:whitespace-pre-line">
           {subtitle}
         </p>
       </div>

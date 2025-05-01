@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useOrders from "./../../../../hooks/useOrders";
 import { FaTruck } from "react-icons/fa6";
 import OrdersTable from "./OrdersTable";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useState } from "react";
 import axios from "axios";
 
@@ -22,7 +22,12 @@ const ManageOrders = () => {
       );
       if (data.data.modifiedCount) {
         refetch();
-        toast.success(data?.message);
+        toast.success(data?.message, {
+          description:
+            "Order Status Successfully Updated And Moved To Updated Status Tab",
+          position: "top-right",
+          duration: 2000,
+        });
       }
     } catch (error) {
       toast.error(error.message);
