@@ -19,20 +19,14 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 const AddReviewAppointment = ({ handleSubmitReview, reviewDialog, setReviewDialog, newReview, setNewReview }) => {
 
     return (
-        <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 bg-opacity-50 ${reviewDialog ? "block" : "hidden"} px-8`}>
-            <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative max-h-[80vh] overflow-y-auto">
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-semibold">Create Prescription</h3>
-                    <button
-                        onClick={setReviewDialog}
-                        className="text-gray-500 hover:text-gray-700"
-                    >
-                        ✕
-                    </button>
-                </div>
-                    <p className="text-sm text-gray-500 mb-4">
-                        Prescribe medication for 
-                    </p>
+        <Dialog open={reviewDialog} onOpenChange={setReviewDialog}>
+            <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto [&_[data-dialog-close]]:hidden ">
+                <DialogHeader>
+                    <DialogTitle className="text-sky-800">Share Your Experience</DialogTitle>
+                    <DialogDescription className="text-sky-600">
+                        Your feedback helps us improve our services and assists other patients.
+                    </DialogDescription>
+                </DialogHeader>
                 <form onSubmit={handleSubmitReview} className="space-y-4 mt-4">
                     <div className="grid grid-cols-1 gap-4">
                         <div className="space-y-2">
@@ -80,8 +74,8 @@ const AddReviewAppointment = ({ handleSubmitReview, reviewDialog, setReviewDialo
                                         <Label htmlFor={`rating-${rating}`} className="cursor-pointer">
                                             <Star
                                                 className={`w-8 h-8 ${newReview.rating >= rating
-                                                    ? "fill-yellow-400 text-yellow-400"
-                                                    : "fill-gray-200 text-gray-200"
+                                                        ? "fill-yellow-400 text-yellow-400"
+                                                        : "fill-gray-200 text-gray-200"
                                                     }`}
                                             />
                                         </Label>
@@ -101,14 +95,14 @@ const AddReviewAppointment = ({ handleSubmitReview, reviewDialog, setReviewDialo
                             />
                         </div>
                     </div>
-                    <div >
+                    <DialogFooter >
                         <Button type="submit" className="bg-sky-600 hover:bg-sky-700 text-white">
                             Submit Review
                         </Button>
-                    </div>
+                    </DialogFooter>
                 </form>
-            </div>
-        </div>
+            </DialogContent>
+        </Dialog>
     )
 }
 
