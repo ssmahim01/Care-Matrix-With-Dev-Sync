@@ -50,7 +50,7 @@ const MyAppointments = () => {
   const [newReview, setNewReview] = useState({
     rating: 5,
   });
-  
+
 
   // console.log(category, search);
 
@@ -305,20 +305,19 @@ const MyAppointments = () => {
                     <DropdownMenuContent align="end">
                       {appointment?.status === "Prescribed" && (
                         <>
-                        <DropdownMenuItem
-                          onClick={() => setReviewDialog(true)}
-                          className="flex items-center gap-2"
-                        >
-                          <MdReviews size={16} />
-                          Write a review
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleViewPrescription(appointment)}
-                          className="flex items-center gap-2"
-                        >
-                          <FileDown size={16} />
-                          View Prescription
-                        </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => setReviewDialog(true)}
+                            className="flex items-center gap-2"
+                          >
+                            <MdReviews/> Write a review
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleViewPrescription(appointment)}
+                            className="flex items-center gap-2"
+                          >
+                            <FileDown size={16} />
+                            View Prescription
+                          </DropdownMenuItem>
                         </>
                       )}
                       <DropdownMenuItem
@@ -366,12 +365,16 @@ const MyAppointments = () => {
         />
       )}
 
-      <AddReviewAppointment
+      {reviewDialog && (
+        <AddReviewAppointment
         reviewDialog={reviewDialog}
+        setReviewDialog={() => setReviewDialog(false)}
         handleSubmitReview={handleSubmitReview}
         newReview={newReview}
         setNewReview={setNewReview}
       />
+      )}
+
     </div>
   );
 };
