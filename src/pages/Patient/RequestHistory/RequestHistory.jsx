@@ -16,6 +16,9 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { IoSearch } from "react-icons/io5";
 import axios from "axios";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import EmptyState from "@/pages/DashboardPages/PatientOverview/EmptyState";
+import { Card, CardContent } from "@/components/ui/card";
 
 const RequestHistory = () => {
   const [requestedData, refetch, , search, setSearch] = useRoleRequest();
@@ -23,13 +26,11 @@ const RequestHistory = () => {
   const [requestModal, setRequestModal] = useState({});
 
   const handleView = (request) => {
-    // console.log(request);
     setRequestModal(request);
     document.getElementById("request_modal").showModal();
   };
 
   const handleCancelRequest = async (id) => {
-    // console.log(id);
     setIsLoading(true);
 
     Swal.fire({
@@ -85,134 +86,116 @@ const RequestHistory = () => {
       setIsLoading(false);
     }, 2000);
 
-    // Cleanup
     return () => clearTimeout(timer);
   }, []);
 
-  const pendingNote = <>
-  <p className="text-warning font-semibold text-base">Waiting for the administrator note...</p>
-  </>
+  const pendingNote = (
+    <>
+      <p className="text-warning font-semibold text-base">
+        Waiting for the administrator note...
+      </p>
+    </>
+  );
 
   return (
-    <div className="lg:w-full md:w-[95%] w-11/12 mx-auto">
-      <div className="flex md:flex-row flex-col flex-wrap justify-between items-center">
+    <div className="px-5">
+      <div>
         {/* Heading of the Table */}
-        <div className="space-y-2">
-          <h2 className="text-3xl font-bold text-gray-700 flex items-center gap-2">
-            <History className="text-3xl text-gray-800" />
-            Request History
-          </h2>
-          <p className="text-gray-600 text-base ml-9 font-medium whitespace-pre-line">
-            History of all sent requests
-          </p>
-        </div>
+        <DashboardPagesHeader
+          title={"Request History"}
+          subtitle={"A complete record of all your previous requests"}
+          icon={History}
+        />
 
-        <div className="lg:w-2/6 md:w-2/5 md:mt-0 mt-4 w-11/12 md:mx-0 mx-auto relative">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by role or shift..."
-            className="border bg-transparent border-border py-3 pl-4 pr-[65px] outline-none w-full rounded-md"
-          />
+        <div className="flex justify-end">
+          <div className="relative lg:w-2/6 md:w-2/5 w-11/12 ">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by role or shift..."
+              className="border bg-transparent border-border py-1.5 pl-4 pr-[65px] outline-none w-full rounded-md"
+            />
 
-          <button className="bg-gray-300 text-gray-500 absolute top-0 right-0 h-full px-5 flex items-center justify-center rounded-r-md hover:bg-gray-400 group"
-          >
-            <IoSearch className="text-[1.3rem]  group-hover:text-gray-200" />
-          </button>
+            <button className="bg-gray-200 text-gray-500 absolute top-0 right-0 h-full px-5 flex items-center justify-center rounded-r-md hover:bg-gray-300 duration-300 group">
+              <IoSearch className="text-[1.3rem] " />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Request Table Data */}
-      <div className="md:py-6 py-8 rounded-xl">
-        <Table
+      {requestedData.length === 0 ? (
+        <Card
           className={
-            "*:w-full *:rounded-xl border border-gray-200 dark:border-gray-700"
+            "mt-6 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
           }
         >
-          <TableCaption>A list of your upgrade requests.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Serial</TableHead>
-              <TableHead>Photo</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead>Shift</TableHead>
-              <TableHead>Request Date</TableHead>
-              <TableHead>Department</TableHead>
-              <TableHead>Request Role</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading
-              ? Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow
-                    key={index}
-                    className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    <TableCell>
-                      <div className="skeleton h-4 w-4" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-12 w-12 rounded-full" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-32" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-48" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-24" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-20" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-28" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-32" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-24" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-4 w-16" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="skeleton h-8 w-8" />
-                    </TableCell>
-                  </TableRow>
-                ))
-              : requestedData.map((request, index) => (
-                  <RequestTableRow
-                    key={request?._id || index}
-                    request={request}
-                    index={index}
-                    handleCancelRequest={handleCancelRequest}
-                    handleDeleteRequest={handleDeleteRequest}
-                    handleView={handleView}
-                  />
-                ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={2}>Total Requests:</TableCell>
-              <TableCell>
-                {isLoading ? (
-                  <div className="skeleton w-8 h-4"></div>
-                ) : (
-                  requestedData.length
-                )}
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </div>
+          <CardContent>
+            <EmptyState
+              icon={History}
+              title="No Request History"
+              description="You currently have no request history. Once you submit a request, it will appear here for easy tracking and reference."
+              actionLabel="Make A Request"
+              actionLink="/dashboard/patient/request-form"
+            />
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="md:py-6 py-8 rounded-xl">
+          <Table className={"*:w-full *:rounded-xl"}>
+            <TableCaption>A list of your role upgrade requests</TableCaption>
+            <TableHeader>
+              <TableRow className={"bg-base-200 hover:bg-base-200"}>
+                <TableHead></TableHead>
+                <TableHead>Photo</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Shift</TableHead>
+                <TableHead className="text-xs">
+                  Request <br /> Date
+                </TableHead>
+                <TableHead>Department</TableHead>
+                <TableHead className="text-xs">
+                  Request <br /> Role
+                </TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isLoading
+                ? Array.from({ length: 3 }).map((_, i) => (
+                    <TableRow key={i}>
+                      {Array.from({ length: 11 }).map((_, j) => (
+                        <TableCell key={j}>
+                          <div className="skeleton h-8 rounded w-full"></div>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                : requestedData?.map((request, index) => (
+                    <RequestTableRow
+                      key={request?._id || index}
+                      request={request}
+                      index={index}
+                      handleCancelRequest={handleCancelRequest}
+                      handleDeleteRequest={handleDeleteRequest}
+                      handleView={handleView}
+                    />
+                  ))}
+            </TableBody>
+            {/* <TableFooter>
+              <TableRow>
+                <TableCell colSpan={10}>
+                  Total Requests: {isLoading ? 0 : requestedData.length}
+                </TableCell>
+              </TableRow>
+            </TableFooter> */}
+          </Table>
+        </div>
+      )}
 
       <dialog id="request_modal" className="modal modal-middle">
         {requestModal && (
@@ -288,7 +271,9 @@ const RequestHistory = () => {
                 <h4 className="text-lg text-gray-900 font-bold">
                   Administrator Note:{" "}
                   <p className="text-gray-700 font-semibold">
-                    {requestModal?.adminNotes === "" ? pendingNote : requestModal?.adminNotes}
+                    {requestModal?.adminNotes === ""
+                      ? pendingNote
+                      : requestModal?.adminNotes}
                   </p>
                 </h4>
 
