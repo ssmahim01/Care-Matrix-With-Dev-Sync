@@ -77,20 +77,6 @@ const ExpertDoctors = () => {
             <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
           </div>
 
-<<<<<<< HEAD
-          {/* section content  */}
-          <div className="mt-6 w-11/12 md:w-full mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {isLoading
-              ? Array.from({ length: 10 }).map((_, index) => (
-                <SkeletonCard key={index} />
-              ))
-              : doctors.map((doctor) => (
-                <Link key={doctor._id} to={`/doctors/${doctor._id}`}>
-                  <DoctorCard doctor={doctor} />
-                </Link>
-              ))}
-          </div>
-=======
           {/* Sort Controls */}
           <Select
             value={selectedSort}
@@ -117,7 +103,6 @@ const ExpertDoctors = () => {
           >
             Reset
           </Button>
->>>>>>> 9bd41a7055050b4c2e6c139f3e8241173634219e
         </div>
 
         {/* section content  */}
