@@ -74,7 +74,7 @@ const Medicines = ({ medicines, isLoading }) => {
         : // Medicines List
           medicines?.map((medicine, index) => (
             <Link key={index} to={`/medicine/${medicine._id}`}>
-              <div className="border rounded p-4 hover:shadow-xl duration-300 group">
+              <div className="border rounded p-4 hover:shadow-xl duration-300 group  flex flex-col h-full">
                 {/* Image */}
                 <div className="overflow-hidden">
                   <img
@@ -84,14 +84,14 @@ const Medicines = ({ medicines, isLoading }) => {
                   />
                 </div>
                 {/* Text content */}
-                <div className="mt-4">
+                <div className="mt-4 flex-grow ">
                   <h1 className="text-2xl font-bold">
                     {medicine?.brandName}{" "}
                     <span className="opacity-70 text-[14px] font-semibold">
                       {medicine?.strength}
                     </span>
                   </h1>
-                  <h3 className="text-xl mt-1 font-semibold">
+                  <h3 className="text-xl mt-1 font-semibold flex-grow">
                     <span className="text-lg pr-1 font-extrabold">৳</span>
                     {medicine?.price?.discountedAmount} -{" "}
                     <span className="opacity-70 text-[16px] font-medium">
@@ -101,6 +101,8 @@ const Medicines = ({ medicines, isLoading }) => {
                       </span>
                     </span>
                   </h3>
+                </div>
+                <div>
                   <button
                     disabled={medicine?.availability === "Out Of Stock"}
                     onClick={(e) => handleAddToCart(e, medicine)}
