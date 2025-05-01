@@ -2,7 +2,7 @@ import auth from "@/firebase/firebase.config";
 import { imgUpload } from "@/lib/imgUpload";
 import axios from "axios";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
@@ -27,6 +27,13 @@ const Register = () => {
   const navigate = useNavigate();
   const userLoading = useAuthLoading();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 
   // states for name, email
   const [name, setName] = useState("");
@@ -418,7 +425,7 @@ const Register = () => {
                 value={strongPassword}
                 placeholder="Password"
                 onChange={handlePasswordChange}
-                onFocus={() => setIsDropdownOpen(true)}
+                // onFocus={() => setIsDropdownOpen(true)}
                 // onBlur={() => setIsDropdownOpen(false)}
                 className="peer border-blue-200 border rounded-md outline-none pl-11 pr-12 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
@@ -462,6 +469,13 @@ const Register = () => {
               </div>
             )}
           </div>
+          <button
+            type="button"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="-mt-3 cursor-pointer text-sm text-[#0E82FD] underline underline-offset-1 flex justify-end"
+          >
+            {!isDropdownOpen ? "View" : "Close"} Password Suggestions
+          </button>
           {/* Error Message */}
           <IsError isError={isError} />
           {/* Register Button */}
@@ -474,7 +488,7 @@ const Register = () => {
           </button>
         </form>
         {/* SocialLogin */}
-        {/* <SocialLogin setIsError={setIsError} /> */}
+        <SocialLogin setIsError={setIsError} />
         {/* Navigate to login */}
         <NavigateTo />
       </div>

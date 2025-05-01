@@ -267,7 +267,7 @@ export default function EmergencyContactsList() {
             </TabsList>
 
             <TabsContent value="all">
-              <Card>
+              <Card className={`py-3`}>
                 <CardHeader>
                   <CardTitle>All Emergency Contacts</CardTitle>
                   <CardDescription>List of all emergency contacts in the system</CardDescription>

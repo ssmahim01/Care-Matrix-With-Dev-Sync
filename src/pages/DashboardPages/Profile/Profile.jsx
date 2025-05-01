@@ -248,7 +248,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="px-7 pb-12 max-w-screen-2xl">
+    <div className="px-5 pb-12 max-w-screen-2xl">
       <DashboardPagesHeader
         title={"My Profile"}
         subtitle={"Manage your personal information and account settings"}

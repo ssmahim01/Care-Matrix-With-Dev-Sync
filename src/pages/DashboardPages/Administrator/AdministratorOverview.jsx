@@ -8,9 +8,12 @@ import {
   FaProcedures,
   FaUserMd,
 } from "react-icons/fa";
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import SkeletonOverview from "@/components/Skeleton/SkeletonOverview";
 import DoctorsPatientsChart from "@/components/BarChart/DoctorsPatientsChart";
+import { CalendarIcon, Layout } from "lucide-react";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
 
 function transformStatsData({
   revenuePerDay = [],
@@ -182,9 +185,27 @@ const AdministratorOverview = () => {
 
   // Ensure activities is an array, fallback to empty array if undefined
   const activities = activitiesData?.recentActivities || [];
+  const currentDate = format(new Date(), "MMMM d, yyyy");
 
   return (
     <div className="px-5">
+      {/* Dashboard heading */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border mb-6">
+        <div>
+          <DashboardPagesHeader
+            title={`Administrator Overview`}
+            subtitle="View recent with medical activities"
+            icon={Layout}
+          />
+          <div className="flex items-center gap-2 mt-2">
+            <Badge variant="outline" className="text-muted-foreground">
+              <CalendarIcon className="mr-1 h-3 w-3" />
+              {currentDate}
+            </Badge>
+          </div>
+        </div>
+      </div>
+
       {/* Dashboard Summary Cards */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
         {/* Total Doctors Card */}

@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAppointments } from '@/redux/appointments/appointmentsSlice';
 import { fetchRewardUser } from '@/redux/rewardUser/rewardUserSlice';
+import SectionHeader from '@/shared/Section/SectionHeader';
 
 
 const BookAppointment = () => {
@@ -31,7 +32,6 @@ const BookAppointment = () => {
       }
     }, [user, dispatch]);
 
-    
 
     const doctorInfo = doctors.find((doctor) => doctor._id === location.state);
     const reward = rewardUser.find((reward) => reward?.userEmail === user?.email)
@@ -79,8 +79,19 @@ const BookAppointment = () => {
     };
 
     return (
-        <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 pt-24'>
-            <div className="shadow rounded-lg space-y-4">
+        <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 pt-16'>
+            {/* page heading  */}
+        
+            <SectionHeader
+            title_1st_slice={"Schedule"}
+            title_2nd_slice={"Your"}
+            title_3rd_slice={"Checkup"}
+            subTitle={
+              "Easily schedule a consultation with trusted specialists, ensuring \n timely care and personalized treatment tailored to your unique health needs."
+            }>
+            </SectionHeader>
+
+            <div className="shadow rounded-lg space-y-4 mt-4">
                 <div className="bg-gradient-to-r from-[#1664D4] to-[#3B9DF8] text-white rounded-t-lg px-6 py-5 flex gap-4">
                     <img src={doctorInfo?.image} alt="Doctor" className="w-20 h-20 rounded-full border-2 border-white object-cover" />
                     <div>
