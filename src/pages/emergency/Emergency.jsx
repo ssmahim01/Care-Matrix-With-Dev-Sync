@@ -183,10 +183,10 @@ export default function Emergency() {
       </div>
 
       <Tabs defaultValue="emergencies">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="emergencies">Active Emergencies</TabsTrigger>
-          <TabsTrigger value="ambulances">Ambulance Status</TabsTrigger>
-          <TabsTrigger value="alerts">Emergency Alerts</TabsTrigger>
+        <TabsList className="grid w-full sm:grid-cols-3">
+          <TabsTrigger className={`sm:w-full w-64`} value="emergencies">Active Emergencies</TabsTrigger>
+          <TabsTrigger className={`sm:w-full w-64`} value="ambulances">Ambulance Status</TabsTrigger>
+          <TabsTrigger className={`sm:w-full w-64`} value="alerts">Emergency Alerts</TabsTrigger>
         </TabsList>
 
         <TabsContent value="emergencies" className="space-y-4">
@@ -289,7 +289,7 @@ export default function Emergency() {
         </TabsContent>
 
         <TabsContent value="alerts">
-          <Card>
+          <Card className={`pt-4`}>
             <CardHeader>
               <CardTitle>Emergency Alerts</CardTitle>
               <CardDescription>Real-time alerts and notifications for emergency staff</CardDescription>
@@ -297,35 +297,35 @@ export default function Emergency() {
             <CardContent>
               <ScrollArea className="h-[400px]">
                 <div className="space-y-4">
-                  {alerts.map((alert) => (
-                    <div key={alert.id} className={cn("p-3 rounded-md", getAlertColor(alert.type))}>
+                  {activeEmergencies.map((alert) => (
+                    <div key={alert._id} className={cn("p-3 rounded-md", getAlertColor(alert.priority))}>
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-2">
                           <Bell
                             className={cn(
                               "h-5 w-5 mt-0.5",
-                              alert.type === "critical"
+                              alert.priority === "critical"
                                 ? "text-red-600"
-                                : alert.type === "urgent"
+                                : alert.priority === "urgent"
                                   ? "text-orange-500"
                                   : "text-blue-500",
                             )}
                           />
                           <div>
-                            <p className="font-medium">{alert.message}</p>
-                            <p className="text-xs text-muted-foreground">{alert.time}</p>
+                            <p className="font-medium">{alert.complaint}</p>
+                            <p className="text-xs text-muted-foreground">{format(alert.arrivalTime, "h:mm a")}</p>
                           </div>
                         </div>
                         <Badge
                           variant={
-                            alert.type === "critical"
+                            alert.priority === "critical"
                               ? "destructive"
-                              : alert.type === "urgent"
+                              : alert.priority === "urgent"
                                 ? "default"
                                 : "secondary"
                           }
                         >
-                          {alert.type}
+                          {alert.priority}
                         </Badge>
                       </div>
                     </div>
