@@ -1,4 +1,4 @@
-<div align="center">
+<div align="left">
   <img src="/public/care-matrix-ui.png" alt="Care Matrix UI" width="100%" height="370"/>
   <h1>🏥 Care Matrix</h1>
   <p>A Comprehensive Hospital Management Application</p>
@@ -249,7 +249,7 @@ For production applications, consider enhancing the ESLint setup with TypeScript
 
 Contributions are welcome! To contribute to Care Matrix:
 
-1. Clone the repository.
+1. Fork the repository.
 2. Create a new branch (`git checkout -b feature/YourFeature`).
 3. Make your changes and commit (`git commit -m "Add YourFeature"`).
 4. Push to your branch (`git push origin feature/YourFeature`).

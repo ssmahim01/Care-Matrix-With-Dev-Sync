@@ -48,7 +48,7 @@ const MyFavoriteDoctors = () => {
     };
 
     return (
-        <div className="p-7">
+        <div className="p-7 pt-0">
             <DashboardPagesHeader
                 title={"Favorite Doctors"}
                 subtitle={"View your all favorite doctors"}
