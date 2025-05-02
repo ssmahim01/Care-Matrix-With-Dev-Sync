@@ -46,7 +46,7 @@ const Payment = () => {
 
 {
   location?.state?.appointmentInfo?.rewardInfo?.discount > 0 ? 
-  <p className='font-medium flex items-center'>Amount: {location?.state?.appointmentInfo?.consultationFee - parseInt(location?.state?.appointmentInfo?.consultationFee * location?.state?.appointmentInfo?.rewardInfo?.discount / 100)}tk  <span className='ml-1'>(with {location?.state?.appointmentInfo?.rewardInfo?.discount}% reward discount)</span> </p>
+  <p className='font-medium flex items-center'>Amount: {location?.state?.appointmentInfo?.consultationFee}tk  <span className='ml-1'>(with {location?.state?.appointmentInfo?.rewardInfo?.discount}% reward discount)</span> </p>
    :
     <p className='font-medium'>Amount: {location?.state?.appointmentInfo?.consultationFee}tk</p>
 }
