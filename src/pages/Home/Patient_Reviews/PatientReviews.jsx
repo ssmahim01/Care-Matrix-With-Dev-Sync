@@ -48,7 +48,21 @@ export default function PatientReviews() {
   })
   const [reviewDialog, setReviewDialog] = useState(false);
 
+    // Filter reviews based on search, department, and active tab
+    useEffect(() => {
+      let results = [...reviews]
+      // Filter by tab
+      if (activeTab === "recent") {
+        results = results
+          .slice() // clone array to avoid mutating original
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+      } else if (activeTab === "highest") {
+        results = results.filter((review) => review.rating >= 5)
+      }
   
+      setFilteredReviews(results)
+      setCurrentPage(1) // Reset to first page when filters change
+    }, [activeTab])
 
   // Get current reviews for pagination
   const indexOfLastReview = currentPage * reviewsPerPage
