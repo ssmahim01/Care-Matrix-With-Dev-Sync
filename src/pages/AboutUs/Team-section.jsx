@@ -51,7 +51,7 @@ const teamMembers = [
   {
     id: 6,
     name: "Md. Ar Rafi Fayez Joy",
-    role: "Front-end Developer",
+    role: "MERN Stack Developer",
     image: "https://i.ibb.co.com/7JBqkG9Z/1746157241266-2-1.jpg",
     github: "https://github.com/arrafi2644/",
     linkedin: "https://www.linkedin.com/in/md-ar-rafi-fayez-joy/",
