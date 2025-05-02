@@ -122,21 +122,6 @@ export const AnimatedTestimonials = ({
                   ))}
                 </div>
               </div>
-              <div>
-                <Button
-                  onClick={() => console.log("object")}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-2xl transition-all 
-                    shadow-sm text-white text-sm font-medium
-                    `}
-                >
-                  <ThumbsUp
-                    className={`h-5 w-5 transition-transform `}
-                    // fill={liked ? "#fff" : "none"}
-                  />
-                  {/* {liked ? "Liked" : "Like"} */}
-                    Like
-                </Button>
-              </div>
             </div>
             <motion.p className="mt-8 text-lg text-gray-500 dark:text-neutral-300">
               {testimonials[active]?.comment.split(" ").map((word, index) => (

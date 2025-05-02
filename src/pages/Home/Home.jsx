@@ -85,7 +85,7 @@ const Home = () => {
       </div>
 
       {/* Patient Reviews */}
-      <Testimonials />
+      {/* <Testimonials /> */}
 
       {/* specialties */}
       <div className="-mt-5 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
