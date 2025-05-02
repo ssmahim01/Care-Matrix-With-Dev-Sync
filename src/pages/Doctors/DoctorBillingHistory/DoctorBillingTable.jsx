@@ -29,7 +29,7 @@ import {
       Swal.fire({
          title: "Appointment Details",
          html: `
-           <div class="flex flex-col max-h-80 overflow-y-auto gap-4 text-left text-sm rounded-md">
+           <div class="flex flex-col max-h-80 overflow-y-auto gap-4 text-left text-sm">
              <!-- Patient Details -->
              <div>
                <h3 class="text-lg font-semibold text-gray-800 mb-2">Patient Details</h3>
@@ -117,7 +117,7 @@ import {
         {isLoading ? (
           Array.from({ length: 10 }).map((_, i) => (
             <TableRow key={i}>
-              {Array.from({ length: 12 }).map((_, j) => (
+              {Array.from({ length: 8 }).map((_, j) => (
                 <TableCell key={j}>
                   <div className="skeleton h-8 rounded w-full"></div>
                 </TableCell>

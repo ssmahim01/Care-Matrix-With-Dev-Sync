@@ -204,7 +204,7 @@ const Cart = () => {
   const options = clientSecret ? { clientSecret, appearance } : null;
 
   return (
-    <div className="w-full flex flex-col gap-8 md:gap-0 md:flex-row px-5">
+    <div className="w-full flex flex-col gap-8 md:gap-0 lg:flex-row px-5">
       {/* Left Column - Order Summary */}
       <div className="bg-gray-50 rounded-md p-4 md:p-8 flex-1">
         <div>
@@ -327,7 +327,7 @@ const Cart = () => {
       </div>
 
       {/* Right Column - Checkout Form (Sticky on large devices) */}
-      <div className="flex-1 md:px-8 lg:sticky lg:top-16 lg:self-start">
+      <div className="flex-1 md:px-8 py-4  lg:sticky lg:top-16 lg:self-start">
         <div className="space-y-6">
           {/* Name */}
           <div className="space-y-2">
