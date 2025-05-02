@@ -12,33 +12,42 @@ import { Swiper, SwiperSlide } from "swiper/react";
 const BannerPharma = () => {
   const [banners] = useBanners({ isActive: "active" });
 
+  const handleShop = () => {
+    window.scroll({
+      top: 580,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div
       className="bg-no-repeat bg-cover bg-right-top py-12"
       style={{ backgroundImage: `url('${sliderbg}')` }}
     >
       <div className="w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl">
-      <Swiper
-        spaceBetween={30}
-        centeredSlides={true}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper"
-      >
-        {banners?.map((medicine) => (
-          <SwiperSlide key={medicine._id}>
-            <Slide
-              image={medicine.image}
-              title={medicine.medicineName}
-              subtitle={medicine.description}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div></div>
+        <Swiper
+          spaceBetween={30}
+          centeredSlides={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          modules={[Autoplay, Pagination, Navigation]}
+          className="mySwiper"
+        >
+          {banners?.map((medicine) => (
+            <SwiperSlide key={medicine._id}>
+              <Slide
+              handleShop={handleShop}
+                image={medicine.image}
+                title={medicine.medicineName}
+                subtitle={medicine.description}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </div>
   );
 };
 
