@@ -5,7 +5,7 @@ const teamMembers = [
   {
     id: 1,
     name: "Sayman Shakil Mahim",
-    role: "Team Leader",
+    role: "MERN-Stack Developer(Leader)",
     image: "https://i.ibb.co.com/TxLYwr1R/IMG-6716.jpg",
     github: "https://github.com/sarahjohnson",
     linkedin: "https://linkedin.com/in/sarahjohnson",
@@ -42,11 +42,11 @@ const teamMembers = [
   {
     id: 5,
     name: "Nafizul Iqram",
-    role: "Front-end Developer",
-    image: "/placeholder.svg?height=300&width=300",
-    github: "https://github.com/oliviamartinez",
-    linkedin: "https://linkedin.com/in/oliviamartinez",
-    email: "olivia@carematrix.com",
+    role: "Full-stack Developer",
+    image: "https://i.ibb.co.com/tMKWDkWm/PXL-20230728-113801888-PORTRAIT-2.jpg",
+    github: "https://github.com/nafiz678",
+    linkedin: "https://www.linkedin.com/in/md-nafizul-iqram/",
+    email: "nafizulikram3@gmail.com",
   },
   {
     id: 6,
