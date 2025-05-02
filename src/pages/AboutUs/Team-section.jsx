@@ -5,7 +5,7 @@ const teamMembers = [
   {
     id: 1,
     name: "Sayman Shakil Mahim",
-    role: "MERN-Stack Developer(Leader)",
+    role: "Full Stack Developer (Leader)",
     image: "https://i.ibb.co.com/TxLYwr1R/IMG-6716.jpg",
     github: "https://github.com/ssmahim01",
     linkedin: "https://www.linkedin.com/in/sayman-shakil-mahim",
@@ -90,6 +90,7 @@ const TeamMemberCard = ({ member }) => {
           <img
             src={member?.image || "/placeholder.svg"}
             alt={member.name}
+            referrerPolicy="no-referrer"
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
         </div>
