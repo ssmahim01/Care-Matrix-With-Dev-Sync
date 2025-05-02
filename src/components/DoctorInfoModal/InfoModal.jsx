@@ -2,7 +2,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Calendar, Clock, DollarSign, Mail } from "lucide-react";
+import {
+  BriefcaseMedical,
+  Calendar,
+  Clock,
+  DollarSign,
+  Mail,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 
@@ -10,6 +16,16 @@ const InfoModal = ({ openDialog, setOpenDialog, consultant }) => {
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogContent forceMount className="bg-base-200 max-h-150 overflow-auto">
+        <div className="flex flex-col -mb-4">
+          <h2 className="text-2xl font-bold text-gray-700 flex items-center gap-2">
+            <BriefcaseMedical className="text-2xl text-gray-800" />
+            <span>Doctor Info</span>
+          </h2>
+          <p className="text-gray-600 text-base ml font-medium whitespace-pre-line">
+            The information of doctor are shown here
+          </p>
+        </div>
+
         <Card className="mt-4 w-full border shadow-sm border-[#e5e7eb] rounded-lg">
           <CardContent className="p-6">
             <div className="flex flex-col gap-4">

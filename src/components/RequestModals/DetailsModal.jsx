@@ -278,7 +278,7 @@ const DetailsModal = ({ form, detailsModal }) => {
                       <FormItem>
                         <FormLabel className="flex items-center gap-2 text-gray-700 font-semibold">
                           <HandCoins className="w-5 h-5 text-blue-600" />
-                          Consultation Fee ($)
+                          Consultation Fee
                         </FormLabel>
                         <FormControl>
                           <Input

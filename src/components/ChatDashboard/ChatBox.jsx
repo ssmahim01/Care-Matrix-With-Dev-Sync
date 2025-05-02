@@ -83,7 +83,7 @@ const ChatBox = ({
                 align="end"
               >
                 <Card>
-                  <figure className="p-2 h-44 shadow-sm">
+                  <figure className="p-2 h-56 shadow-sm">
                     <img
                       className="w-full h-full rounded-md object-cover border"
                       referrerPolicy="no-referrer"
@@ -241,9 +241,9 @@ const ChatBox = ({
           </div>
         </>
       ) : (
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center p-4">
           <p className="text-muted-foreground">
-            Select a conversation to start chatting.
+            Select an user to start chatting.
           </p>
         </div>
       )}

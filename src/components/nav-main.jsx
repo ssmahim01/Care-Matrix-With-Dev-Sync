@@ -31,6 +31,7 @@ import {
   MailIcon,
   MessageSquareText,
   Newspaper,
+  ShoppingBag,
   ShoppingCart,
   Sparkles,
   Stethoscope,
@@ -303,16 +304,15 @@ export function NavMain() {
               <NavLink
                 to="/dashboard/patient/rewards"
                 className={
-                  "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+                  "inline-flex gap-2 items-center transition-all duration-300 ease-in-out tracking-wider"
                 }
               >
                 <Award className="text-base" />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
-                  My Rewards
+                  <span className="tracking-widest">My</span> Rewards
                 </span>
               </NavLink>
-
-              <NavLink
+              {/* <NavLink
                 to="/dashboard/patient/request-form"
                 className={
                   "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
@@ -322,8 +322,7 @@ export function NavMain() {
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
                   Upgrade Role
                 </span>
-              </NavLink>
-
+              </NavLink> */}
               <NavLink
                 to="/dashboard/patient/appointments"
                 className={
@@ -335,7 +334,6 @@ export function NavMain() {
                   My Appointments
                 </span>
               </NavLink>
-
               <NavLink
                 to="/dashboard/patient/favorite-doctors"
                 className={
@@ -347,7 +345,6 @@ export function NavMain() {
                   My Favorite Doctors
                 </span>
               </NavLink>
-
               <NavLink
                 to="/dashboard/patient/my-bedRequest"
                 className={
@@ -359,7 +356,6 @@ export function NavMain() {
                   My Bed Requests
                 </span>
               </NavLink>
-
               <NavLink
                 to="/dashboard/patient/request-history"
                 className={
@@ -372,6 +368,17 @@ export function NavMain() {
                 </span>
               </NavLink>
               <NavLink
+                to="/dashboard/patient/purchase-history"
+                className={
+                  "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
+                }
+              >
+                <ShoppingBag className="text-base" />
+                <span className={`${state === "collapsed" && "md:hidden"}`}>
+                  Order History
+                </span>
+              </NavLink>
+              <NavLink
                 to="/dashboard/patient/manage-cart"
                 className={
                   "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
@@ -380,17 +387,6 @@ export function NavMain() {
                 <ShoppingCart className="text-base" />
                 <span className={`${state === "collapsed" && "md:hidden"}`}>
                   Manage Cart
-                </span>
-              </NavLink>
-              <NavLink
-                to="/dashboard/patient/purchase-history"
-                className={
-                  "inline-flex gap-2 items-center transition-all duration-300 ease-in-out"
-                }
-              >
-                <img src={historyIcon} alt="" className="w-5.5 " />
-                <span className={`${state === "collapsed" && "md:hidden"}`}>
-                  Purchase History
                 </span>
               </NavLink>
               <div className="divider"></div>

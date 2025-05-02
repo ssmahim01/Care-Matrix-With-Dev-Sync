@@ -112,7 +112,7 @@ const NoteModal = ({ form2, noteModal, onSubmit }) => {
 
                     <Button
                       type="submit"
-                      className="md:px-14 px-10 btn bg-teal-600 text-base text-white font-bold rounded-md flex gap-2 items-center"
+                      className="md:px-14 px-10 btn bg-blue-500 text-base text-white font-bold rounded-md flex gap-2 items-center"
                     >
                       <BadgePlus className="w-6 h-6" />
                       <span>Add Note</span>

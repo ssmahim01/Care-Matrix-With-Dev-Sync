@@ -90,7 +90,7 @@ const HowItWorks = () => {
     if (isAutoPlaying) {
       interval = setInterval(() => {
         setActiveStep((prev) => (prev + 1) % services.length);
-      }, 5000);
+      }, 6000);
     }
 
     return () => clearInterval(interval);
@@ -173,7 +173,7 @@ const HowItWorks = () => {
               </p>
 
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg">Key Benefits:</h4>
+                {/* <h4 className="font-semibold text-lg">Key Benefits:</h4> */}
                 <ul className="space-y-2">
                   {[1, 2, 3].map((item) => (
                     <li key={item} className="flex items-start gap-2">

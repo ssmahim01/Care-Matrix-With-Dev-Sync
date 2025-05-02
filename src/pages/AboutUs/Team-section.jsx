@@ -7,18 +7,18 @@ const teamMembers = [
     name: "Sayman Shakil Mahim",
     role: "Team Leader",
     image: "https://i.ibb.co.com/TxLYwr1R/IMG-6716.jpg",
-    github: "https://github.com/sarahjohnson",
-    linkedin: "https://linkedin.com/in/sarahjohnson",
-    email: "sarah@carematrix.com",
+    github: "https://github.com/ssmahim01",
+    linkedin: "https://www.linkedin.com/in/sayman-shakil-mahim",
+    email: "saymanshakilmahim03@gmail.com",
   },
   {
     id: 2,
     name: "Sheikh Saiyam",
-    role: "Back-end Developer",
-    image: "https://i.ibb.co.com/DPtzXY4q/image.png",
-    github: "https://github.com/michaelchen",
-    linkedin: "https://linkedin.com/in/michaelchen",
-    email: "michael@carematrix.com",
+    role: "Front-end Developer",
+    image: "https://i.ibb.co.com/QF4hLXMk/Screenshot-2025-05-01-193220.png",
+    github: "https://github.com/sheikh-saiyam",
+    linkedin: "https://linkedin.com/in/sheikh-saiyam",
+    email: "sheikhsaiyam29@gmail.com",
   },
   {
     id: 3,
@@ -51,11 +51,11 @@ const teamMembers = [
   {
     id: 6,
     name: "Md. Ar Rafi Fayez Joy",
-    role: "Front-end Developer",
-    image: "/placeholder.svg?height=300&width=300",
-    github: "https://github.com/davidkim",
-    linkedin: "https://linkedin.com/in/davidkim",
-    email: "david@carematrix.com",
+    role: "MERN Stack Developer",
+    image: "https://i.ibb.co.com/7JBqkG9Z/1746157241266-2-1.jpg",
+    github: "https://github.com/arrafi2644/",
+    linkedin: "https://www.linkedin.com/in/md-ar-rafi-fayez-joy/",
+    email: "arrafifayez12@gmail.com",
   },
 ];
 
@@ -148,20 +148,20 @@ const TeamSection = ({ title, subtitle, description }) => {
     "Our dedicated team of six professionals combines expertise in healthcare and technology to deliver an exceptional medical platform that prioritizes your well-being.";
 
   return (
-    <section className="py-12">
-      <div className="">
-        <div className="text-center mb-12">
+    <section className="pt-24 pb-6">
+      <div>
+        <div className="text-center mb-8">
           <h4 className="text-[#0E82FD] font-semibold text-sm uppercase tracking-wider">
             {title}
           </h4>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mt-4">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mt-2">
             The Brilliant <span className="text-[#0E82FD] ">Minds</span> Behind
             CareMatrix
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-gray-600">{description}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {teamMembers.map((member) => (
             <TeamMemberCard key={member.id} member={member} />
           ))}

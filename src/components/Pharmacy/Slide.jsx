@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { delay, motion } from "framer-motion";
-function Slide({ image, title, subtitle }) {
+function Slide({ image, title, subtitle, handleShop }) {
   return (
     <div className="container bg-cover bg-center object-cover bg-no-repeat px-4 md:px-8 py-10 bg-blend-overlay flex flex-col-reverse md:flex-row justify-between items-center">
       <motion.div
@@ -23,14 +23,13 @@ function Slide({ image, title, subtitle }) {
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeInOut", delay: 0.4 }}
         >
-          <Link to={"/pharmacy"}>
-            <Button
-              className="mt-4 bg-black text-white cursor-pointer"
-              size="lg"
-            >
-              Buy Now
-            </Button>
-          </Link>
+          <Button
+            onClick={handleShop}
+            className="mt-4 bg-black text-white cursor-pointer"
+            size="lg"
+          >
+            Buy Now
+          </Button>
         </motion.div>
       </motion.div>
       <div className="flex-1 flex justify-end">

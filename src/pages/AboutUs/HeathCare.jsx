@@ -1,6 +1,6 @@
-// WhyChooseUs.js
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
+
 const HealthCare = () => {
   const items = [
     {
@@ -32,8 +32,8 @@ const HealthCare = () => {
         <div className="text-white flex flex-col items-center">
           {/* title */}
           <h1 className="text-4xl font-bold text-black mb-10 text-center">
-            Why Choose Us For Your <br />{" "}
-            <span className="text-[#0E82FD]">Health Care Needs</span>
+            Why <span className="text-[#0E82FD]">Choose Us</span> For Your{" "}
+            <br /> Health <span className="text-[#0E82FD]">Care</span> Needs
           </h1>
 
           {/* items card  */}

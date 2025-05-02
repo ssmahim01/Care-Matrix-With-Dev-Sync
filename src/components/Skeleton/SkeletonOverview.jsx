@@ -1,4 +1,10 @@
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "../ui/badge";
 
 // Skeleton Loader for AdministratorAnalytics (Area Chart)
 const SkeletonAnalytics = () => {
@@ -42,7 +48,7 @@ const SkeletonAnalytics = () => {
   );
 };
 
-// Skeleton Loader for Bar Chart Analytics (DoctorsPatientsChart)
+// Skeleton Loader for Bar Chart Analytics
 const SkeletonBarChartAnalytics = () => {
   return (
     <Card className="shadow-lg">
@@ -73,12 +79,6 @@ const SkeletonBarChartAnalytics = () => {
               ))}
             </div>
           </div>
-          {/* X-Axis Placeholder (Patient Counts) */}
-          {/* <div className="flex justify-between mt-2">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <div key={index} className="skeleton h-4 w-8 rounded" />
-            ))}
-          </div> */}
         </div>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 pt-8 pb-4 text-sm">
@@ -93,6 +93,24 @@ const SkeletonBarChartAnalytics = () => {
 const SkeletonOverview = () => {
   return (
     <div className="space-y-4 px-5">
+      {/* Header Skeleton */}
+      <div className="bg-white flex flex-col p-6 rounded-xl shadow-sm border mb-6 w-full">
+        <div className="flex items-center gap-2">
+          <div className="skeleton h-6 w-6 rounded" />
+          <div className="flex flex-col gap-3">
+            <div className="skeleton h-8 w-60 rounded" />
+            <div className="skeleton h-4 w-52 rounded" />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 mt-3">
+          <Badge variant="outline" className="text-muted-foreground p-1">
+            <div className="skeleton h-4 w-4 rounded" />
+            <div className="skeleton h-4 w-20 rounded" />
+          </Badge>
+        </div>
+      </div>
+
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, index) => (
@@ -112,17 +130,17 @@ const SkeletonOverview = () => {
         ))}
       </div>
 
-     <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-5">
-       {/* Charts & Analytics (Area Chart) */}
-       <div className="my-6 lg:w-3/5 h-full">
-        <SkeletonAnalytics />
-      </div>
+      <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-5">
+        {/* Charts & Analytics (Area Chart) */}
+        <div className="my-6 lg:w-3/5 h-full">
+          <SkeletonAnalytics />
+        </div>
 
-      {/* Bar Chart Analytics (Doctors and Patients) */}
-      <div className="my-6 lg:w-2/5 h-full">
-        <SkeletonBarChartAnalytics />
+        {/* Bar Chart Analytics (Doctors and Patients) */}
+        <div className="my-6 lg:w-2/5 h-full">
+          <SkeletonBarChartAnalytics />
+        </div>
       </div>
-     </div>
 
       {/* Recent Activities */}
       <div className="bg-white/80 shadow-md p-6 border-b border-gray-300 rounded-lg">

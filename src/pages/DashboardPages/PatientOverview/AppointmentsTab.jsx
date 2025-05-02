@@ -13,6 +13,7 @@ import {
   Clock,
   CreditCard,
   FileText,
+  Timer,
   User,
   Users,
 } from "lucide-react";
@@ -54,6 +55,13 @@ const AppointmentsTab = ({ appointment, formatDate }) => {
                   <span className="text-sm font-medium">Time:</span>
                   <span className="text-sm">{appointment?.time || "N/A"}</span>
                 </div>
+                <div className="flex items-center gap-2">
+                  <Timer className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Serial:</span>
+                  <span className="text-sm">
+                    {appointment?.serialNumber || "N/A"}
+                  </span>
+                </div>
               </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
@@ -89,11 +97,6 @@ const AppointmentsTab = ({ appointment, formatDate }) => {
               <Link to="/dashboard/patient/appointments">
                 <Button className={"cursor-pointer"} variant="outline">
                   View Details
-                </Button>
-              </Link>
-              <Link to="/dashboard/patient/appointments">
-                <Button className={"cursor-pointer"} variant="destructive">
-                  Cancel
                 </Button>
               </Link>
             </div>

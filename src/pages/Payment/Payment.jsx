@@ -9,11 +9,13 @@ import { TbCurrencyTaka } from 'react-icons/tb';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
+
 const Payment = () => {
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
   const consultationFee = parseFloat(location?.state?.appointmentInfo?.consultationFee) || 0;
-
+  
+  console.log(location?.state?.appointmentInfo);
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const Payment = () => {
 
 {
   location?.state?.appointmentInfo?.rewardInfo?.discount > 0 ? 
-  <p className='font-medium flex items-center'>Amount: {location?.state?.appointmentInfo?.consultationFee - parseInt(location?.state?.appointmentInfo?.consultationFee * location?.state?.appointmentInfo?.rewardInfo?.discount / 100)}tk  <span className='ml-1'>(with {location?.state?.appointmentInfo?.rewardInfo?.discount}% reward discount)</span> </p>
+  <p className='font-medium flex items-center'>Amount: {location?.state?.appointmentInfo?.consultationFee}tk  <span className='ml-1'>(with {location?.state?.appointmentInfo?.rewardInfo?.discount}% reward discount)</span> </p>
    :
     <p className='font-medium'>Amount: {location?.state?.appointmentInfo?.consultationFee}tk</p>
 }
