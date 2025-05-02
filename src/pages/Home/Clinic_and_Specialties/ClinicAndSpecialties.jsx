@@ -19,6 +19,7 @@ import { Link } from "react-router";
 import { Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import MainLayoutLoader from "@/components/Loader/MainLayoutLoader";
 
 export default function ClinicAndSpecialties() {
   // const [searchQuery, setSearchQuery] = useState("");
@@ -41,8 +42,8 @@ export default function ClinicAndSpecialties() {
   })
 
 
-  if (isLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin" /></div>
-  if (patientLoading) return <div className="flex items-center justify-center"><Loader2 className="animate-spin" /></div>
+  if (isLoading) return <MainLayoutLoader/>
+  if (patientLoading) return <MainLayoutLoader/>
 
   function countUniqueServices(doctors) {
     const allServices = doctors.flatMap(doctor => doctor.services || []);

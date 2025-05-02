@@ -17,6 +17,7 @@ import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"
 import { useAuthUser } from "@/redux/auth/authActions"
 import { useNavigate } from "react-router"
+import MainLayoutLoader from "@/components/Loader/MainLayoutLoader"
 
 export default function PatientReviews() {
   const user = useAuthUser()
@@ -167,7 +168,7 @@ export default function PatientReviews() {
   return (
     <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl pt-10 my-10">
       {isLoading ? (
-        <Loader />
+        <MainLayoutLoader/>
       ) : (
         <motion.div className="space-y-6" animate="visible" variants={containerVariants}>
           {/* Header Section */}
