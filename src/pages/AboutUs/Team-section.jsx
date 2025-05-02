@@ -33,11 +33,11 @@ const teamMembers = [
   {
     id: 4,
     name: "Abu Sayed Khan",
-    role: "Full Stack Developer",
-    image: "/placeholder.svg?height=300&width=300",
+    role: "Front-end Developer",
+    image: "https://i.ibb.co.com/qFLtDJCn/1130-removebg.png",
     github: "https://github.com/jameswilson",
-    linkedin: "https://linkedin.com/in/jameswilson",
-    email: "james@carematrix.com",
+    linkedin: "https://www.linkedin.com/in/abusayedkhan725/",
+    email: "ssayed72533@gmail.com",
   },
   {
     id: 5,
