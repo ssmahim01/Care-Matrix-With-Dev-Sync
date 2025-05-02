@@ -1,0 +1,12 @@
+.slick-center .item {
+    transform: scale(1.05);
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .slick-slide .item {
+    opacity: 0.3;
+    transform: scale(0.85);
+    transition: all 0.3s ease-in-out;
+  }
+  

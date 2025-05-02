@@ -94,7 +94,7 @@ const Navbar = () => {
                     size={30}
                   />
                 </DrawerTrigger>
-                <DrawerContent className="h-full overflow-auto w-[300px] bg-[#f3f6f9] fixed top-0 left-0">
+                <DrawerContent className="h-full overflow-y-scroll w-[300px] bg-[#f3f6f9] fixed top-0 left-0">
                   <DrawerHeader>
                     <DrawerTitle>
                       <div className="pt-1 pl-0.5">
@@ -577,7 +577,7 @@ const Navbar = () => {
                   </div>
                   <ul
                     tabIndex={0}
-                    className="menu menu-sm dropdown-content bg-base-200 bg-opacity-60 rounded z-[20] mt-2 w-80 py-3 shadow-md"
+                    className="menu menu-sm dropdown-content bg-base-200 bg-opacity-60 rounded z-[20] mt-1.5 w-80 py-3 shadow-md  border-t"
                   >
                     <div className="pl-2 *:font-bold flex flex-col gap-2">
                       <div className="flex flex-col">
@@ -592,7 +592,7 @@ const Navbar = () => {
                       <Separator className={"border-[1px]"} />
 
                       <NavLink
-                        className=" flex gap-1 items-center text-lg  hover:bg-[#eaeaea] transition-all duration-300 ease-in-out py-1 px-2 rounded-md "
+                        className=" flex gap-1 items-center text-lg :::bg-[#f0f0f0] hover:bg-[#eaeaea] transition-all duration-300 ease-in-out py-1 px-2 rounded-md "
                         to={
                           role === "administrator"
                             ? "/dashboard/administrator-overview"
@@ -608,7 +608,7 @@ const Navbar = () => {
                         }
                         onClick={() => setIsDrawerOpen(false)}
                       >
-                        <MdDashboard className="mt-0.5" size={25} />
+                        <MdDashboard size={25} />
                         <span className="font-medium text-gray-800">
                           Dashboard
                         </span>
@@ -623,16 +623,16 @@ const Navbar = () => {
                             toast.success("Logged out successfully", {
                               description:
                                 "You have been securely logged out of your account",
-                              style: {
-                                marginTop: "20px",
-                              },
+                              // style: {
+                              //   width: "fit-content",
+                              // },
                               position: "top-right",
-                              duration: 2000,
+                              duration: 500,
                             });
                           }}
-                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500  hover:bg-red-200/50 duration-300"
+                          className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500 :::bg-red-100/50 hover:bg-red-200/50 duration-300"
                         >
-                          <BiLogOutCircle size={25} />
+                          <BiLogOutCircle size={25} className="mt-[1.5px]" />
                           Logout
                         </button>
                       </div>

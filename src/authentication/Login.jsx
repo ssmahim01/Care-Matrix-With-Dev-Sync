@@ -1,5 +1,5 @@
 import loginImg from "@/assets/loginPage.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -20,6 +20,13 @@ const Login = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
   const authLoading = useAuthLoading();
+
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 
   // states for email & password
   const [email, setEmail] = useState("");
@@ -47,6 +54,8 @@ const Login = () => {
       position: "top-right",
       style: {
         marginTop: "20px",
+        // width: "fit-content",
+        // paddingRight: "20px"
       },
     });
 
@@ -59,21 +68,24 @@ const Login = () => {
         }
       );
 
-      toast.dismiss(loadingToast);
       if (response?.data?.message === "Login successful") {
         signInWithEmailAndPassword(auth, email, password).then(
           async (result) => {
             const user = result.user;
             if (user) {
+              toast.dismiss(loadingToast);
+
               // navigate & show success toast
               navigate("/");
               toast.success(<b>Login Successful!</b>, {
                 description:
                   "Welcome back! You have successfully logged into your account",
-                duration: 3000,
+                duration: 1000,
                 position: "top-right",
                 style: {
                   marginTop: "20px",
+                  // width: "fit-content",
+                  // paddingRight: "20px"
                 },
               });
 
@@ -257,7 +269,7 @@ const Login = () => {
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
               type="submit"
               disabled={loading}
-              className="btn border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
+              className="btn btn-sm py-[18px] border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
             >
               {loading ? "Login in..." : "Login"}
             </motion.button>

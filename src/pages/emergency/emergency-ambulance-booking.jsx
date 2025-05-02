@@ -259,7 +259,7 @@ export default function AmbulanceBooking() {
       </div>
 
       <Tabs defaultValue={"available"} >
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
           <TabsTrigger value="available">Available Ambulances</TabsTrigger>
           <TabsTrigger value="book">Book Ambulance</TabsTrigger>
           {user
@@ -351,7 +351,7 @@ export default function AmbulanceBooking() {
         </TabsContent>
 
         <TabsContent id="book" value="book">
-          <Card>
+          <Card className={`py-3`}>
             <CardHeader>
               <CardTitle>Request an Ambulance</CardTitle>
               <CardDescription>
@@ -693,7 +693,7 @@ export default function AmbulanceBooking() {
         </TabsContent>
 
         <TabsContent value="active">
-          <Card>
+          <Card className={`py-3`}>
             <CardHeader>
               <CardTitle>{role !== "patient" ? "Active Bookings" : user ? "My" : "Active"} Bookings</CardTitle>
               <CardDescription>See currently active bookings</CardDescription>
@@ -742,7 +742,7 @@ export default function AmbulanceBooking() {
         </TabsContent>
 
         <TabsContent value="login" className={`md:pt-20 pt-10`}>
-          <Card className="w-full max-w-md mx-auto shadow-xl border border-border rounded-2xl bg-background animate-fade-in ">
+          <Card className="w-full max-w-md mx-auto shadow-xl border border-border rounded-2xl bg-background animate-fade-in py-2">
             <CardHeader className="text-center space-y-2 py-6">
               <div className="flex justify-center">
                 <LockKeyhole className="h-10 w-10 text-primary" />

@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react"
-// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -18,6 +17,7 @@ import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"
 import { useAuthUser } from "@/redux/auth/authActions"
 import { useNavigate } from "react-router"
+import MainLayoutLoader from "@/components/Loader/MainLayoutLoader"
 
 export default function PatientReviews() {
   const user = useAuthUser()
@@ -34,8 +34,6 @@ export default function PatientReviews() {
 
   // State management
   const [activeTab, setActiveTab] = useState("all")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedDepartment, setSelectedDepartment] = useState("all")
   const [filteredReviews, setFilteredReviews] = useState(reviews)
   const [showReplyForm, setShowReplyForm] = useState(null)
   const [replyText, setReplyText] = useState("")
@@ -51,38 +49,21 @@ export default function PatientReviews() {
   })
   const [reviewDialog, setReviewDialog] = useState(false);
 
-
-  // Filter reviews based on search, department, and active tab
-  useEffect(() => {
-    let results = [...reviews]
-
-    // Filter by search query
-    if (searchQuery) {
-      results = results.filter(
-        (review) =>
-          review.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          review.comment.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          review.department.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
-    }
-
-    // Filter by department
-    if (selectedDepartment !== "all") {
-      results = results.filter((review) => review.department === selectedDepartment)
-    }
-
-    // Filter by tab
-    if (activeTab === "recent") {
-      results = results
-        .slice() // clone array to avoid mutating original
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else if (activeTab === "highest") {
-      results = results.filter((review) => review.rating >= 5)
-    }
-
-    setFilteredReviews(results)
-    setCurrentPage(1) // Reset to first page when filters change
-  }, [searchQuery, selectedDepartment, activeTab])
+    // Filter reviews based on search, department, and active tab
+    useEffect(() => {
+      let results = [...reviews]
+      // Filter by tab
+      if (activeTab === "recent") {
+        results = results
+          .slice() // clone array to avoid mutating original
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+      } else if (activeTab === "highest") {
+        results = results.filter((review) => review.rating >= 5)
+      }
+  
+      setFilteredReviews(results)
+      setCurrentPage(1) // Reset to first page when filters change
+    }, [activeTab])
 
   // Get current reviews for pagination
   const indexOfLastReview = currentPage * reviewsPerPage
@@ -139,8 +120,6 @@ export default function PatientReviews() {
 
     // Trigger refiltering
     setActiveTab("all")
-    setSearchQuery("")
-    setSelectedDepartment("all")
 
   }
 
@@ -180,11 +159,16 @@ export default function PatientReviews() {
     setFilteredReviews(res.data)
   }
 
+  const handleCategoryDepartment = async (value) => {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/review/department?department=${value}`)
+    setFilteredReviews(res.data)
+  }
+
 
   return (
     <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl pt-10 my-10">
       {isLoading ? (
-        <Loader />
+        <MainLayoutLoader/>
       ) : (
         <motion.div className="space-y-6" animate="visible" variants={containerVariants}>
           {/* Header Section */}
@@ -199,19 +183,11 @@ export default function PatientReviews() {
                 className="pl-10 border-sky-200 focus:border-sky-400"
                 onChange={(e) => handleSearch(e.target.value)}
               />
-              {searchQuery && (
-                <button
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sky-500 hover:text-sky-700"
-                  onClick={() => setSearchQuery("")}
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
             </div>
 
             <div className="relative">
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sky-500 h-4 w-4" />
-              <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
+              <Select onValueChange={(value) => handleCategoryDepartment(value)}              >
                 <SelectTrigger className="pl-10 border-sky-200">
                   <SelectValue placeholder="Filter by department" />
                 </SelectTrigger>
@@ -220,7 +196,6 @@ export default function PatientReviews() {
                   <SelectItem value="cardiology">Cardiology</SelectItem>
                   <SelectItem value="orthopedics">Orthopedics</SelectItem>
                   <SelectItem value="pediatrics">Pediatrics</SelectItem>
-                  <SelectItem value="emergency">Emergency</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -239,7 +214,6 @@ export default function PatientReviews() {
             featuredReview={featuredReview}
             handleHelpful={handleHelpful}
             handleSubmitReply={handleSubmitReply}
-            helpfulReviews={helpfulReviews}
             replyText={replyText}
             setReplyText={setReplyText}
             setShowReplyForm={setShowReplyForm}
@@ -281,7 +255,7 @@ export default function PatientReviews() {
                 </CardDescription>
               </CardHeader>
               <CardFooter>
-                 
+
               </CardFooter>
             </Card>
           </motion.div>

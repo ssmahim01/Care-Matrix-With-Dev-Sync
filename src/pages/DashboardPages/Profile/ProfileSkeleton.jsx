@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ProfileSkeleton() {
   return (
-    <div className="px-7 pb-12 animate-pulse">
+    <div className="px-5 pb-12 animate-pulse">
       {/* Header */}
       <div className="space-y-1 mb-6">
         <Skeleton className="h-6 w-40" />

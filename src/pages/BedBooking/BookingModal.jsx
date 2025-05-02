@@ -12,9 +12,11 @@ import { Textarea } from "@/components/ui/textarea"; // Import Textarea for the 
 import { useAuthUser } from "@/redux/auth/authActions";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 
 const BookingModal = ({ isOpen, onClose, bedType, refetch }) => {
   const user = useAuthUser();
+  const axiosPublic= useAxiosPublic()
 
   const {
     register,
@@ -53,8 +55,8 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch }) => {
     try {
       // Step 1: Post booking info
       await toast.promise(
-        axios.post(
-          `${import.meta.env.VITE_API_URL}/bed-booking`,
+        axiosPublic.post(
+          `/bed-booking`,
           bedBookingInfo
         ),
         {
@@ -156,7 +158,7 @@ const BookingModal = ({ isOpen, onClose, bedType, refetch }) => {
               Contact Number
             </Label>
             <Input
-              type="tel"
+              type="number"
               id="contactNumber"
               {...register("contactNumber", {
                 required: "Contact number is required",

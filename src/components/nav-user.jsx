@@ -167,7 +167,7 @@ export function NavUser() {
                       marginTop: "5px",
                     },
                     position: "top-right",
-                    duration: 2500,
+                    duration: 500,
                   });
                 }}
               >

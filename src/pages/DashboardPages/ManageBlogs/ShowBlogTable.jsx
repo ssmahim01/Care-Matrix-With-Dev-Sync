@@ -44,7 +44,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
 
   // Handle Delete
-  const handleDelete = async(id) => {
+  const handleDelete = async (id) => {
     // console.log(id)
     toast(
       (t) => (
@@ -61,19 +61,27 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                 toast.dismiss(t.id);
                 try {
                   toast.loading("Deleting bed...", { position: "top-right" });
-                  const { data } = await axiosSecure.delete(`/blogs/delete/${id}`);
-                  
+                  const { data } = await axiosSecure.delete(
+                    `/blogs/delete/${id}`
+                  );
+
                   if (data.data.deletedCount) {
                     refetch();
                     toast.dismiss();
-                    toast.success("Bed deleted successfully!", { position: "top-right" });
+                    toast.success("Bed deleted successfully!", {
+                      position: "top-right",
+                    });
                   } else {
                     toast.dismiss();
-                    toast.error("No bed was deleted.", { position: "top-right" });
+                    toast.error("No bed was deleted.", {
+                      position: "top-right",
+                    });
                   }
                 } catch (error) {
                   toast.dismiss();
-                  toast.error(error.message || "Failed to delete the bed!", { position: "top-right" });
+                  toast.error(error.message || "Failed to delete the bed!", {
+                    position: "top-right",
+                  });
                 }
               }}
             >
@@ -91,7 +99,6 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
       { position: "top-right" }
     );
   };
-
 
   // Handle Edit
   const handleEdit = (blog) => {
@@ -169,10 +176,10 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
     <div className="w-full mt-6">
       <div className="rounded-md">
         <Table>
-        <TableCaption>A List of All Blogs</TableCaption>
+          <TableCaption>A List of All Blogs</TableCaption>
           <TableHeader>
             <TableRow className="bg-base-200 hover:bg-base-200">
-            <TableHead className="w-12">#</TableHead>
+              <TableHead className="w-12">#</TableHead>
               <TableHead>Image</TableHead>
               <TableHead className="">Title</TableHead>
               <TableHead>Tag</TableHead>
@@ -183,10 +190,20 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {blogs.length > 0 ? (
-              blogs.map((blog,i) => (
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                  {Array.from({ length: 8 }).map((_, j) => (
+                    <TableCell key={j}>
+                      <div className="skeleton h-8 rounded w-full"></div>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : blogs.length > 0 ? (
+              blogs.map((blog, i) => (
                 <TableRow key={blog._id}>
-                     <TableCell className="font-medium">{i + 1}</TableCell>
+                  <TableCell className="font-medium">{i + 1}</TableCell>
                   <TableCell>
                     <img
                       src={blog.image}
@@ -204,7 +221,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                   <TableCell>{blog.author}</TableCell>
                   <TableCell>{blog.date}</TableCell>
                   <TableCell>
-                    <DropdownMenu>
+                    <DropdownMenu modal={false}>
                       <DropdownMenuTrigger asChild>
                         <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
                           <MoreVertical className="cursor-pointer text-gray-700" />
@@ -213,7 +230,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                       <DropdownMenuContent>
                         <DropdownMenuItem
                           className="cursor-pointer"
-                        //   onClick={() => handleEdit(blog)}
+                          onClick={() => handleEdit(blog)}
                         >
                           <Pencil className="w-4 h-4 mr-2" /> Update
                         </DropdownMenuItem>
@@ -221,9 +238,8 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                           className="cursor-pointer"
                           onClick={() => handleDelete(blog._id)}
                         >
-                          <Trash className="w-4 h-4 mr-2 text-red-500" />{" "} Delete
+                          <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
                         </DropdownMenuItem>
-
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -242,9 +258,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
 
       {/* Edit Blog Dialog */}
       {selectedBlog && (
-        <Dialog 
-        open={isEditOpen}
-         onOpenChange={setIsEditOpen}>
+        <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Edit Blog</DialogTitle>
