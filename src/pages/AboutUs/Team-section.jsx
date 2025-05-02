@@ -7,9 +7,9 @@ const teamMembers = [
     name: "Sayman Shakil Mahim",
     role: "Team Leader",
     image: "https://i.ibb.co.com/TxLYwr1R/IMG-6716.jpg",
-    github: "https://github.com/sarahjohnson",
-    linkedin: "https://linkedin.com/in/sarahjohnson",
-    email: "sarah@carematrix.com",
+    github: "https://github.com/ssmahim01",
+    linkedin: "https://www.linkedin.com/in/sayman-shakil-mahim",
+    email: "saymanshakilmahim03@gmail.com",
   },
   {
     id: 2,
