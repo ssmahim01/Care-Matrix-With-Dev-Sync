@@ -24,9 +24,10 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import useRole from "@/hooks/useRole";
 import { logOut, useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 export function NavUser() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const loading = useAuthLoading();
   const user = useAuthUser();
