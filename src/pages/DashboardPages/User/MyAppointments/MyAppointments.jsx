@@ -398,11 +398,12 @@ const MyAppointments = () => {
                         </Badge>
                       </div>
                     </div>
-                    <div className="flex justify-end gap-2">
+                    <div className="flex justify-end items-end gap-2">
                       <Button
                         onClick={() => handleDetails(appointment)}
                         className={"cursor-pointer"}
                         variant="outline"
+                        size={"sm"}
                       >
                         View Details
                       </Button>
@@ -413,22 +414,26 @@ const MyAppointments = () => {
                             handleDeleteAppointment(appointment._id)
                           }
                           className={"cursor-pointer"}
+                          size={"sm"}
+
                         >
                           Cancel Appointment
                         </Button>
                       ) : (
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-col-reverse md:flex-row items-end gap-2">
                           <Button
                             onClick={() => handleViewPrescription(appointment)}
                             className={
                               "cursor-pointer"
                             }
-                            variant=""
+                            size={"sm"}
+
                           >
                             View Prescription
                           </Button>
                           <Button
                             onClick={() => setReviewDialog(true)}
+                            size={"sm"}
                             className={"cursor-pointer  bg-blue-500 hover:bg-blue-600"}
                           >
                             Review
