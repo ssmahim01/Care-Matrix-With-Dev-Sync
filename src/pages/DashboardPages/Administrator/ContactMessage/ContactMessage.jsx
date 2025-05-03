@@ -1,36 +1,10 @@
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
-import { Eye, MailIcon, MoreVertical, Pencil, Trash } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-import moment from "moment";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import MessageDialog from "./MessageDialog";
 import { ContactMessageCard } from "./ContactMessageCard";
+import { useQuery } from "@tanstack/react-query";
+import { MailIcon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import axios from "axios";
 
 const ContactMessage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,10 +30,15 @@ const ContactMessage = () => {
       );
       if (data.deletedCount) {
         refetch();
-        toast.success("Message Deleted!");
+        toast.success("Message Deleted Successfully!", {
+          position: "top-right",
+          duration: 1500,
+        });
       }
     } catch (error) {
-      toast.error(error?.message || "Error Caught While Deleting Message");
+      toast.error(error?.message || "Error Caught While Deleting Message", {
+        position: "top-right",
+      });
     }
   };
 
@@ -74,7 +53,13 @@ const ContactMessage = () => {
       {/* Messages Cards */}
       <div className="mt-4 space-y-4">
         {contacts?.map((message, i) => (
-          <ContactMessageCard key={i} message={message} />
+          <ContactMessageCard
+            key={i}
+            message={message}
+            deleteMessage={deleteMessage}
+            isOpen={isOpen}
+            setIsOpen={isOpen}
+          />
         ))}
       </div>
     </div>
