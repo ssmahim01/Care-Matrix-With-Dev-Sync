@@ -1,6 +1,4 @@
-import { formatDistanceToNow } from "date-fns";
 import { Mail, MoreHorizontal, Phone } from "lucide-react";
-import { useState } from "react";
 
 import {
   Card,
@@ -17,12 +15,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Eye, MoreVertical, Pencil, Trash } from "lucide-react";
-import MessageDialog from "./MessageDialog";
 import { Button } from "@/components/ui/button";
+import { Eye, Pencil, Trash } from "lucide-react";
+import MessageDialog from "./MessageDialog";
+import { useState } from "react";
 import moment from "moment";
 
-const ContactMessageCard = ({ message, deleteMessage, isOpen, setIsOpen }) => {
+const ContactMessageCard = ({ message, deleteMessage }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Card
       className={"border shadow-sm border-[#e5e7eb] w-full py-4 rounded-lg"}
@@ -42,7 +43,7 @@ const ContactMessageCard = ({ message, deleteMessage, isOpen, setIsOpen }) => {
               {message?.phoneNumber}
             </div>
           </div>
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild className={"cursor-pointer"}>
               <Button variant="ghost" size="icon">
                 <MoreHorizontal className="h-4 w-4" />

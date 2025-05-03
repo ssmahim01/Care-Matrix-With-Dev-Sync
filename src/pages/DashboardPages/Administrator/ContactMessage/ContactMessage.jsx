@@ -1,14 +1,13 @@
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { ContactMessageCard } from "./ContactMessageCard";
+import ContactMessageCard from "./ContactMessageCard";
 import { useQuery } from "@tanstack/react-query";
 import { MailIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import axios from "axios";
+import MessageCardSkeleton from "./MessageCardSkeleton";
 
 const ContactMessage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
   // Fetch ContactMessage
   const {
     data: contacts,
@@ -52,15 +51,15 @@ const ContactMessage = () => {
 
       {/* Messages Cards */}
       <div className="mt-4 space-y-4">
-        {contacts?.map((message, i) => (
-          <ContactMessageCard
-            key={i}
-            message={message}
-            deleteMessage={deleteMessage}
-            isOpen={isOpen}
-            setIsOpen={isOpen}
-          />
-        ))}
+        {isLoading
+          ? [...Array(3)].map((_, i) => <MessageCardSkeleton key={i} />)
+          : contacts?.map((message, i) => (
+              <ContactMessageCard
+                key={i}
+                message={message}
+                deleteMessage={deleteMessage}
+              />
+            ))}
       </div>
     </div>
   );
