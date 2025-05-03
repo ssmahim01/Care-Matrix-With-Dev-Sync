@@ -61,7 +61,7 @@ const ContactMessage = () => {
   };
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       <DashboardPagesHeader
         title="Contact Messages"
         subtitle="View all messages sent by users through the contact form."
