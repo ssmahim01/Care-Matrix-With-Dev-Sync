@@ -19,7 +19,10 @@ const PurchaseSkeleton = () => {
       </div>
       <div className="space-y-4 mt-4">
         {[...Array(4)].map((_, i) => (
-          <Card className="overflow-hidden border shadow-sm border-[#e5e7eb] w-full rounded-lg">
+          <Card
+            key={i}
+            className="overflow-hidden border shadow-sm border-[#e5e7eb] w-full rounded-lg"
+          >
             <div className="flex flex-col sm:flex-row">
               <div className="flex-1 p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 md:gap-4 mb-2">
