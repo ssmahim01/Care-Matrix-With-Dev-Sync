@@ -1,7 +1,14 @@
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { useQuery } from "@tanstack/react-query";
-import { Eye, MailIcon, MoreVertical, Pencil, Trash } from "lucide-react";
 import axios from "axios";
+
+import { Eye, MailIcon, MoreVertical, Pencil, Trash } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import {
   Table,
@@ -12,22 +19,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDate } from "date-fns";
+
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
 import moment from "moment";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import MessageDialog from "./MessageDialog";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import MessageDialog from "./MessageDialog";
 
 const ContactMessage = () => {
   const [isOpen, setIsOpen] = useState(false);
