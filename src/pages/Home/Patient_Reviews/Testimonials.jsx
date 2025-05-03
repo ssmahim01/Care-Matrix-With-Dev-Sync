@@ -13,7 +13,7 @@ export function Testimonials() {
           return data
         }
       }) 
-      // console.log(data)
+      
       if(isLoading) return <div className="flex items-center justify-center">
         <Loader2 className="animate-spin duration-200 "/></div>
 

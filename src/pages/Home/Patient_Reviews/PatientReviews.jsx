@@ -17,6 +17,7 @@ import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"
 import { useAuthUser } from "@/redux/auth/authActions"
 import { useNavigate } from "react-router"
+import MainLayoutLoader from "@/components/Loader/MainLayoutLoader"
 
 export default function PatientReviews() {
   const user = useAuthUser()
@@ -48,7 +49,21 @@ export default function PatientReviews() {
   })
   const [reviewDialog, setReviewDialog] = useState(false);
 
+    // Filter reviews based on search, department, and active tab
+    useEffect(() => {
+      let results = [...reviews]
+      // Filter by tab
+      if (activeTab === "recent") {
+        results = results
+          .slice() // clone array to avoid mutating original
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+      } else if (activeTab === "highest") {
+        results = results.filter((review) => review.rating >= 5)
+      }
   
+      setFilteredReviews(results)
+      setCurrentPage(1) // Reset to first page when filters change
+    }, [activeTab])
 
   // Get current reviews for pagination
   const indexOfLastReview = currentPage * reviewsPerPage
@@ -153,7 +168,7 @@ export default function PatientReviews() {
   return (
     <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl pt-10 my-10">
       {isLoading ? (
-        <Loader />
+        <MainLayoutLoader/>
       ) : (
         <motion.div className="space-y-6" animate="visible" variants={containerVariants}>
           {/* Header Section */}
