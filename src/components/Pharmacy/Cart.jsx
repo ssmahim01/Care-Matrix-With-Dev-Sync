@@ -32,6 +32,7 @@ import {
 import { districts, divisionDistricts, divisions } from "@/lib/address";
 import useDiscount from "@/hooks/useDiscount";
 
+
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const globalStyles = {
@@ -49,6 +50,7 @@ const Cart = () => {
   const [loadingClientSecret, setLoadingClientSecret] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
   const [discount, discountLoading] = useDiscount();
+  // console.log(discount)
 
   // Use discount directly as a percentage (e.g., 20 means 20%)
   const discountPercentage = Number(discount) || 0; // Ensure it’s a number, default to 0
