@@ -31,7 +31,7 @@ import {
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BriefcaseMedical } from "lucide-react";
+import { BriefcaseMedical, X } from "lucide-react";
 import { IoIosSearch } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -157,10 +157,18 @@ const DoctorsManagement = () => {
               }
               icon={BriefcaseMedical}
             />
-            <div className="flex gap-4 md:flex-row-reverse flex-col-reverse w-full lg:w-9/12 xl:w-8/12 ">
+            <div className="flex gap-4 lg:flex-row-reverse flex-col-reverse w-full lg:w-9/12 xl:w-8/12 ">
               {/* Reset */}
               <div>
-                <Button className={"cursor-pointer"}>Reset</Button>
+                <Button
+                  onClick={() => {
+                    dispatch(setSort(""));
+                    dispatch(setSearch(""));
+                  }}
+                  className={"cursor-pointer"}
+                >
+                  Reset
+                </Button>
               </div>{" "}
               {/* Department */}
               <Select onValueChange={handleFilterChange}>
@@ -201,14 +209,16 @@ const DoctorsManagement = () => {
                   value={search}
                   onChange={handleSearchChange}
                 />
-                <IoIosSearch className="absolute top-[9px] left-2 text-[1.5rem] text-[#adadad]" />
+                <IoIosSearch className="absolute top-[7px] left-2 text-[1.5rem] text-[#adadad]" />
                 {/* shortcut hint */}
-                <button
-                  onClick={() => dispatch(setSearch(""))}
-                  className="absolute top-[4px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[6px] rounded-md text-gray-500 cursor-pointer"
-                >
-                  Clear
-                </button>
+                {search && (
+                  <button
+                    onClick={() => dispatch(setSearch(""))}
+                    className="absolute top-[5px] right-1.5 text-[0.6rem] font-bold border border-gray-300 p-[4px] rounded-md text-gray-500 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -226,7 +236,7 @@ const DoctorsManagement = () => {
       )}
 
       <div className="px-7 mt-4 overflow-x-auto w-full">
-        <Table>
+        <Table className={"border"}>
           <TableHeader>
             <TableRow className="bg-gray-50 hover:bg-gray-50">
               <TableHead className="px-4"></TableHead>

@@ -53,7 +53,7 @@ const HeroSearch = () => {
   return (
     <div
       ref={wrapperRef}
-      className="relative w-full sm:w-full product_search_input z-40"
+      className="relative w-full product_search_input z-40"
     >
       <input
         className="px-4 py-2 border border-border bg-white rounded-md w-full pl-[40px] outline-none cursor-pointer"
@@ -91,7 +91,7 @@ const HeroSearch = () => {
           keyPressOpen
             ? "opacity-100 scale-100 pointer-events-auto"
             : "opacity-0 scale-95 pointer-events-none"
-        } fixed sm:absolute top-full mt-2 w-full bg-white shadow-2xl border border-gray-200 transition-all duration-300 transform rounded-md z-50`}
+        }  absolute top-full mt-2 w-full bg-white shadow-2xl border border-gray-200 transition-all duration-300 transform rounded-md z-50`}
       >
         <div className="p-4">
           {/* Department */}

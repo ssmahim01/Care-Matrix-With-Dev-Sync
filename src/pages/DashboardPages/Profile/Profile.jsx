@@ -60,6 +60,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { toast as sonner } from "sonner";
 import { useDispatch } from "react-redux";
 import ProfileSkeleton from "./ProfileSkeleton";
 import { useQuery } from "@tanstack/react-query";
@@ -172,16 +173,14 @@ const Profile = () => {
     };
     reader.readAsDataURL(file);
 
-    try {
-      toast.loading("Uploading Image...");
-
+    const uploadAndUpdate = async () => {
       // Upload to ImgBB
       const imageUrl = await imgUpload(file);
 
-      // Update Firebase profile
+      // Update Firebase Photo
       await updateProfile(auth.currentUser, { photoURL: imageUrl });
 
-      // Update MongoDB via your API
+      // Update MongoDB Photo
       const { data } = await axios.patch(
         `${import.meta.env.VITE_API_URL}/users/update-user-photo/${
           user?.email
@@ -189,17 +188,23 @@ const Profile = () => {
         { photo: imageUrl }
       );
 
-      // Show Success Toast
       if (data.data.modifiedCount) {
         dispatch(updateUserPhoto(imageUrl));
-        toast.success("Profile Photo Updated!", {
-          duration: 2000,
-        });
       }
+
+      return data.data.modifiedCount;
+    };
+
+    try {
+      sonner.promise(uploadAndUpdate(), {
+        loading: "Uploading Image...",
+        success: (modifiedCount) =>
+          modifiedCount ? "Profile Photo Updated!" : "No changes made!",
+        error: "Something went wrong while updating your photo!",
+        position: "top-right",
+      });
     } catch (error) {
-      toast.error("Something went wrong while updating your photo.");
-    } finally {
-      toast.dismiss();
+      toast.error("Unexpected error occurred!", { position: "top-right" });
     }
   };
 
@@ -214,7 +219,7 @@ const Profile = () => {
         { name: newName }
       );
       // show success toast and update states
-      await toast.promise(updateUsernamePromise, {
+      sonner.promise(updateUsernamePromise, {
         loading: "Updating Username...",
         success: (res) => {
           if (res.data.data.modifiedCount) {
@@ -225,11 +230,15 @@ const Profile = () => {
             return "No changes were made";
           }
         },
+        position: "top-right",
         error: (err) => err.message || "Failed to update username",
       });
     } catch (error) {
       toast.error(
-        error.message || "Something went wrong while updating the username"
+        error.message || "Something went wrong while updating the username",
+        {
+          position: "top-right",
+        }
       );
     }
   };
@@ -239,7 +248,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="px-7 pb-12 max-w-screen-2xl">
+    <div className="px-5 pb-12 max-w-screen-2xl">
       <DashboardPagesHeader
         title={"My Profile"}
         subtitle={"Manage your personal information and account settings"}
@@ -267,7 +276,7 @@ const Profile = () => {
                     <AvatarImage
                       src={
                         user?.photoURL ||
-                        "https://i.ibb.co.com/XmpwWgv/doctor.jpg"
+                        "https://i.ibb.co/4RS0VXvL/default-user-image.png"
                       }
                       alt={user?.displayName}
                       className="object-cover"
@@ -342,7 +351,7 @@ const Profile = () => {
                 Account Information
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 p-4 px-6">
+            <CardContent className="space-y-4 p-4 px-6 -mt-5 pb-1">
               {/* Created At */}
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
@@ -360,7 +369,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <Separator />
+              <Separator className={"border"} />
               {/* Last Login At */}
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
@@ -376,7 +385,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <Separator />
+              <Separator className={"border"} />
               {/* Account Status */}
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
@@ -426,15 +435,22 @@ const Profile = () => {
                   <div>
                     <h3 className="font-medium">Complete your profile</h3>
                     <p className="text-sm text-muted-foreground">
-                      {98}% of your profile is complete
+                      {100}% of your profile is complete
                     </p>
                   </div>
                 </div>
-                <Progress value={98} className="h-2 flex-1" />
+                <Progress value={100} className="h-2 flex-1" />
                 <Button
-                  variant="outline"
                   size="sm"
+                  variant="outline"
                   className="whitespace-nowrap"
+                  onClick={() => {
+                    sonner.success("Profile Completed! 🎉", {
+                      description: "Your profile is now complete!",
+                      duration: 2000,
+                      position: "top-right",
+                    });
+                  }}
                 >
                   Complete Profile
                 </Button>

@@ -2,7 +2,7 @@ import auth from "@/firebase/firebase.config";
 import { imgUpload } from "@/lib/imgUpload";
 import axios from "axios";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoCloseOutline, IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdDelete, MdDone, MdLocalPhone, MdOutlineMail } from "react-icons/md";
@@ -17,12 +17,23 @@ import { RxCross1 } from "react-icons/rx";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/auth/authSlice";
 import Swal from "sweetalert2";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast, Toaster } from "sonner";
 
 const Register = () => {
   const user = useAuthUser();
   const navigate = useNavigate();
   const userLoading = useAuthLoading();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 
   // states for name, email
   const [name, setName] = useState("");
@@ -133,20 +144,35 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Show error is image not selected
-    if (!image) {
-      setLoading(false);
-      setIsError("Please Select An Image For Your Profile!");
-      return;
-    }
 
-    // Upload Image To imgBB
-    const imageUrl = await imgUpload(image);
-    // Show error if image upload failed
-    if (!imageUrl) {
-      setLoading(false);
-      setIsError("Image Upload Failed! Try Again");
-      return;
+    // // Show error is image not selected
+    // if (!image) {
+    //   setLoading(false);
+    //   setIsError("Please Select An Image For Your Profile!");
+    //   return;
+    // }
+
+    let imageUrl = "";
+
+    if (image) {
+      try {
+        // Upload Image To imgBB
+        const imgBbURL = await imgUpload(image);
+
+        if (!imgBbURL) {
+          setLoading(false);
+          setIsError("Image Upload Failed! Try Again");
+          return;
+        }
+
+        imageUrl = imgBbURL;
+      } catch (error) {
+        setLoading(false);
+        setIsError("Image Upload Failed! Try Again");
+        return;
+      }
+    } else {
+      imageUrl = "https://i.ibb.co/4RS0VXvL/default-user-image.png";
     }
 
     // Password Validation
@@ -223,37 +249,48 @@ const Register = () => {
             );
             // Show Success Modal
             if (data.data.insertedId) {
-              Swal.fire({
-                title: "Registration Successful! 🎉",
-                text: "Welcome To The dashboard!",
-                icon: "success",
-                confirmButtonText: "Go To Profile",
-                confirmButtonColor: "#000",
-              }).then(() => {
-                navigate("/dashboard/profile");
+              navigate("/dashboard/profile");
+              toast.success("Registration Complete! 🎉", {
+                description: "Your Account successfully created",
+                action: {
+                  label: "Go to Dashboard",
+                  onClick: () => {
+                    navigate("/dashboard/patient-overview");
+                  },
+                },
+                style: {
+                  background: "white",
+                  color: "black",
+                  fontWeight: "bold",
+                },
+                duration: 5000,
+                position: "top-right",
               });
             }
           })
           .catch((error) => {
+            setLoading(false);
             setIsError(error.message || "Registration Failed!");
           })
           .finally(() => {
             setLoading(false);
           });
       })
-      .catch((error) =>
+      .catch((error) => {
+        setLoading(false);
         setIsError(
           error?.message.includes("Firebase:")
             ? error?.message.split("Firebase:")[1]
             : error?.message || "Registration Failed!"
-        )
-      );
+        );
+      });
   };
 
   if (user && userLoading) return navigate("/");
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-blue-100/20 px-4 py-12">
+      {/* <Toaster /> */}
       <div className="max-w-lg lg:max-w-xl mx-auto p-6 bg-white border border-border shadow rounded-lg">
         {/* Header & Logo */}
         <AuthHeader />
@@ -262,13 +299,11 @@ const Register = () => {
           {/* Name input */}
           <div>
             {/* Label */}
-            <label htmlFor="name" className="text-[16px] text-text font-[600]">
-              Name
-            </label>
+            <Label>Name</Label>
             {/* Input with icon */}
             <div className="w-full mt-2 relative">
-              <RiAccountCircleLine className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-              <input
+              <RiAccountCircleLine className="absolute top-[6.5px] left-3 text-[1.5rem] text-[#777777]" />
+              <Input
                 type="text"
                 name="text"
                 id="text"
@@ -281,7 +316,12 @@ const Register = () => {
             </div>
           </div>
           {/* Photo File */}
-          <div className="w-full">
+          <div className="w-full space-y-2">
+            {/* Label */}
+            <Label>
+              Profile Photo{" "}
+              <span className="text-[10px] mt-1 -ml-1">(Optional)</span>
+            </Label>
             <input
               type="file"
               name="image"
@@ -291,54 +331,54 @@ const Register = () => {
             />
             {preview === "" ? (
               <div
-                className="w-full md:w-[100%] flex items-center justify-center flex-col gap-4 border-blue-200 border rounded-md py-4 cursor-pointer"
+                className="w-full md:w-[100%] flex items-center gap-3 border border-blue-200 py-[5.6px] rounded-lg px-4 cursor-pointer"
                 onClick={handleUploadImage}
               >
-                <FaFileUpload className="text-[2rem] text-[#777777]" />
-                <p className="text-gray-700">
+                <FaFileUpload className="text-[1.5rem] text-gray-500" />
+                <p className="text-gray-700 text-xs">
                   Browse To Upload Ranking Image File
                 </p>
               </div>
             ) : (
-              <div className="relative w-full border border-blue-200 rounded-xl p-4">
-                <img
-                  src={preview}
-                  alt="Selected file preview"
-                  className="mx-auto object-cover rounded-full w-24 h-24"
-                />
+              <div className="w-full border rounded-lg p-0.5 flex justify-between items-center gap-4">
+                <div className="flex items-center gap-2 pl-2">
+                  <img
+                    src={preview}
+                    alt="Selected file preview"
+                    className="mx-auto object-cover rounded-lg w-7 h-7"
+                  />
+                  {image && (
+                    <div>
+                      <p className="text-[10px] font-medium text-gray-700">
+                        {image.name}
+                      </p>
+                      <p className="text-[9px] text-gray-500">
+                        {(image.size / 1024).toFixed(2)} KB | {image.type}
+                      </p>
+                    </div>
+                  )}{" "}
+                </div>
                 <MdDelete
-                  className="text-[2rem] text-white bg-[#000000ad] p-1 absolute top-0 right-0 cursor-pointer rounded-tr-[13px]"
+                  className="text-[2rem] text-white bg-[#000000ad] p-1 rounded-r-lg mr-[1px] cursor-pointer"
                   onClick={() => {
                     setPreview("");
                     setImage(null);
                   }}
                 />
-                {image && (
-                  <div className="mt-4 text-center">
-                    <p className="text-sm font-medium text-gray-700">
-                      {image.name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {(image.size / 1024).toFixed(2)} KB | {image.type}
-                    </p>
-                  </div>
-                )}
               </div>
             )}
           </div>
           {/* Number input */}
           <div>
             {/* Label */}
-            <label
-              htmlFor="number"
-              className="text-[16px] text-text font-[600]"
-            >
-              Phone Number <span className="text-[10px]">(Bangladeshi)</span>
-            </label>
+            <Label>
+              Phone Number{" "}
+              <span className="text-[10px] mt-1 -ml-1">(Bangladeshi)</span>
+            </Label>
             {/* Input with icon */}
             <div className="w-full mt-2 relative">
-              <MdLocalPhone className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-              <input
+              <MdLocalPhone className="absolute top-[6.5px] left-3 text-[1.5rem] text-[#777777]" />
+              <Input
                 type="number"
                 name="phoneNumber"
                 id="phoneNumber"
@@ -355,13 +395,11 @@ const Register = () => {
           {/* Email input */}
           <div>
             {/* Label */}
-            <label htmlFor="email" className="text-[16px] text-text font-[600]">
-              Email
-            </label>
+            <Label>Email</Label>
             {/* Input with icon */}
             <div className="w-full mt-2 relative">
-              <MdOutlineMail className=" absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-              <input
+              <MdOutlineMail className="absolute top-[6.5px] left-3 text-[1.5rem] text-[#777777]" />
+              <Input
                 type="email"
                 name="email"
                 id="email"
@@ -376,35 +414,30 @@ const Register = () => {
           {/* Password input */}
           <div>
             {/* Label */}
-            <label
-              htmlFor="password"
-              className="text-[16px] text-text font-[600]"
-            >
-              Password
-            </label>
+            <Label>Password</Label>
             {/* Input with icon */}
             <div className="w-full mt-2 relative">
-              <RiLockPasswordLine className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-              <input
+              <RiLockPasswordLine className="absolute top-[6.5px] left-3 text-[1.5rem] text-[#777777]" />
+              <Input
                 type={isEyeOpen ? "text" : "password"}
                 id="password"
                 name="password"
                 value={strongPassword}
                 placeholder="Password"
                 onChange={handlePasswordChange}
-                onFocus={() => setIsDropdownOpen(true)}
+                // onFocus={() => setIsDropdownOpen(true)}
                 // onBlur={() => setIsDropdownOpen(false)}
                 className="peer border-blue-200 border rounded-md outline-none pl-11 pr-12 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
               />
 
               {isEyeOpen ? (
                 <IoEyeOutline
-                  className="absolute top-3.5 right-3 text-[1.5rem] text-[#777777] cursor-pointer"
+                  className="absolute top-[6.5px] right-3 text-[1.5rem] text-[#777777] cursor-pointer"
                   onClick={() => setIsEyeOpen(false)}
                 />
               ) : (
                 <IoEyeOffOutline
-                  className="absolute top-3.5 right-3 text-[1.5rem] text-[#777777] cursor-pointer"
+                  className="absolute top-[6.5px] right-3 text-[1.5rem] text-[#777777] cursor-pointer"
                   onClick={() => setIsEyeOpen(true)}
                 />
               )}
@@ -436,19 +469,26 @@ const Register = () => {
               </div>
             )}
           </div>
+          <button
+            type="button"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="-mt-3 cursor-pointer text-sm text-[#0E82FD] underline underline-offset-1 flex justify-end"
+          >
+            {!isDropdownOpen ? "View" : "Close"} Password Suggestions
+          </button>
           {/* Error Message */}
           <IsError isError={isError} />
           {/* Register Button */}
           <button
             type="submit"
             disabled={loading}
-            className="btn border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
+            className="btn btn-sm py-[18px] border-none rounded-lg text-white text-lg mt-1 bg-[#0E82FD] hover:bg-[#0e72fd] duration-700 cursor-pointer disabled:text-gray-700"
           >
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
         {/* SocialLogin */}
-        {/* <SocialLogin setIsError={setIsError} /> */}
+        <SocialLogin setIsError={setIsError} />
         {/* Navigate to login */}
         <NavigateTo />
       </div>

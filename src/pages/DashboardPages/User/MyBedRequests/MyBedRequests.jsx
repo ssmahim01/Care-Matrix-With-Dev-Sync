@@ -90,10 +90,10 @@ function MyBedRequests() {
     }
   };
 
-  if (isLoading) return <Loader text={"Loading Bed Bookings"} />;
+
 
   return (
-    <div className="p-7">
+    <div className="px-5">
       <DashboardPagesHeader
         title={"Manage My Bed Booking Requests"}
         subtitle={"View and manage all bed booking Requests"}
@@ -127,13 +127,36 @@ function MyBedRequests() {
             </TableHeader>
             <TableBody>
 
-            {bed_booking.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={12} className="text-center font-semibold py-10">
-                    No Bed Booking Requests Found
-                  </TableCell>
+
+           {
+            isLoading? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                  {Array.from({ length: 12 }).map((_, j) => (
+                    <TableCell key={j}>
+                      <div className="skeleton h-8 rounded w-full"></div>
+                    </TableCell>
+                  ))}
                 </TableRow>
-              ) : (
+              ))
+            ) : bed_booking?.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={12}
+                  className="text-center font-semibold py-10"
+                >
+                  No Bed Booking Requests Found
+                </TableCell>
+              </TableRow>
+            )
+           
+
+
+
+
+
+
+             : (
                 bed_booking?.map((bed, i) => (
             
                 <TableRow key={bed._id}>
@@ -179,7 +202,8 @@ function MyBedRequests() {
                     </div>
                   </TableCell>
                 </TableRow>)
-              ))}
+              ))
+              }
             </TableBody>
           </Table>
         </div>

@@ -1,9 +1,11 @@
-// eslint-disable-next-line no-unused-vars
+
 import { motion } from "framer-motion"
 import { itemVariants } from '@/lib/varients'
 import { Star } from 'lucide-react'
 
-const PatientReviewHeader = () => {
+const PatientReviewHeader = ({filteredReviews}) => {
+    const totalRatings = filteredReviews.reduce((sum, review) => sum + Number(review.rating), 0);
+const averageRating = totalRatings / filteredReviews.length;
     return (
         <motion.div className="text-center space-y-4 mb-8" variants={itemVariants}>
             <h1 className="text-3xl md:text-4xl font-bold text-sky-800">Patient Reviews</h1>
@@ -16,9 +18,9 @@ const PatientReviewHeader = () => {
 
             >
                 <div className="flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
+                    {Array.from({ length: averageRating.toLocaleString().slice(0,1) }).map((star, i) => (
                         <motion.div
-                            key={star}
+                            key={i}
                             initial={{ rotate: -30, opacity: 0 }}
                             transition={{ delay: star * 0.1 }}
                             whileInView={{ rotate: 0, opacity: 1 }}
@@ -27,8 +29,8 @@ const PatientReviewHeader = () => {
                         </motion.div>
                     ))}
                 </div>
-                <span className="font-medium">4.8 out of 5</span>
-                <span className="text-sky-600">based on 1,248 reviews</span>
+                <span className="font-medium">{averageRating.toLocaleString().slice(0,3)} out of 5</span>
+                <span className="text-sky-600">based on {filteredReviews.length} reviews</span>
             </motion.div>
         </motion.div>
     )

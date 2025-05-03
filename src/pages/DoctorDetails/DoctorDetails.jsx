@@ -55,9 +55,15 @@ const DoctorDetails = () => {
                 if (res?.data?.insertedId) {
                     toast.success(`${doctorInfo?.name} is added to your favorite list!`);
                 }
+                console.log(res);
             })
             .catch(err => {
-                toast.error("Something went wrong! Please try again.");
+                console.log("err", err.response.data.message);
+                if(err?.response?.data?.message === "Doctor already in favorites"){
+                    toast.error("Doctor already in favorites.");
+                }else{
+                    toast.error("Something went wrong! Please try again.");
+                }
             });
     };
 
@@ -155,7 +161,7 @@ const DoctorDetails = () => {
                 </div>
                 {/* Location, Availability, and Fee */}
                 <div className="rounded-tl-lg rounded-tr-md bg-white p-6 flex flex-wrap items-center justify-between gap-4 text-sm text-gray-600">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full items-start">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 w-full flex-wrap items-start md:items-center">
                         <div className="flex items-center gap-2 py-1 rounded-full">
                             <div className='text-gray-500'>
                                 <IoLocationOutline size={20} />
@@ -176,7 +182,8 @@ const DoctorDetails = () => {
                         </div>
 
 
-                        <div className="flex items-center gap-2 py-1 rounded-full">
+                       {/* <div className='flex flex-col md:flex-row justify-between'> */}
+                       <div className="flex items-center gap-2 py-1 rounded-full">
                             <div className='text-gray-500'>
                                 <TbCurrencyTaka size={20} />
                             </div>
@@ -194,6 +201,7 @@ const DoctorDetails = () => {
                                 </button>
                             </Link>
                         </div>
+                       {/* </div> */}
                     </div>
                 </div>
             </div>

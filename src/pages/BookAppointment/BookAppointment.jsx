@@ -1,12 +1,16 @@
 import useAppointment from '@/hooks/useAppointment';
 import useDoctors from '@/hooks/useDoctors';
 import useRewardUsers from '@/hooks/useRewardUsers';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaStar, FaPhoneAlt, FaCalendarAlt, FaClock, FaUser } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAppointments } from '@/redux/appointments/appointmentsSlice';
+import { fetchRewardUser } from '@/redux/rewardUser/rewardUserSlice';
+import SectionHeader from '@/shared/Section/SectionHeader';
+
 
 const BookAppointment = () => {
     const [search, setSearch] = useState("")
@@ -14,43 +18,80 @@ const BookAppointment = () => {
     const [doctors] = useDoctors(search, selectedSort);
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
-    const [appointments] = useAppointment();
-    const [rewardUser, isPending, isLoading, refetch] = useRewardUsers()
+    // const [rewardUser, isPending, , refetch] = useRewardUsers()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const location = useLocation();
+    const dispatch = useDispatch();
+    const { appointments, isLoading } = useSelector((state) => state.appointments);
+    const { rewardUser } = useSelector((state) => state.rewardUser);
+  
+    useEffect(() => {
+      if (user?.email) {
+        dispatch(fetchAppointments({ email: user?.email, sortDate: '' }));
+        dispatch(fetchRewardUser(user.email));
+      }
+    }, [user, dispatch]);
+
 
     const doctorInfo = doctors.find((doctor) => doctor._id === location.state);
-    const reward = rewardUser?.find(reward => reward?.userEmail === user?.email)
+    const reward = rewardUser.find((reward) => reward?.userEmail === user?.email)
 
-    let consultationFee = doctorInfo.consultation_fee;
+    let consultationFee = doctorInfo?.consultation_fee;
     let rewardInfo;
 
     if (reward) {
         consultationFee = parseInt(consultationFee - (consultationFee * reward.redeemDiscount / 100))
         rewardInfo = {
-            discount : reward.redeemDiscount,
-            rewardId : reward._id
+            discount: reward.redeemDiscount,
+            rewardId: reward._id
         }
     }
 
-
     const onSubmit = (data) => {
+        // const appointmentInfo = {
+        //     ...data,
+        //     status: "Approved",
+        //     doctorId: doctorInfo._id,
+        //     doctorName: doctorInfo.name,
+        //     doctorTitle: doctorInfo.title,
+        //     consultationFee: consultationFee,
+        //     rewardInfo: rewardInfo
+        // };
+        const filteredAppointments = appointments.filter(appointment =>
+            appointment.doctorId === doctorInfo._id &&
+            appointment.date === data.date
+        );
+
+        const serialNumber = filteredAppointments.length + 1;
+
         const appointmentInfo = {
             ...data,
-            status: "pending",
+            status: "Approved",
             doctorId: doctorInfo._id,
             doctorName: doctorInfo.name,
             doctorTitle: doctorInfo.title,
             consultationFee: consultationFee,
-            rewardInfo: rewardInfo
+            rewardInfo: rewardInfo,
+            serialNumber: serialNumber  // <-- added here
         };
         // console.log(appointmentInfo);
         navigate('/book-appointment/payment', { state: { appointmentInfo } });
     };
 
     return (
-        <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 pt-24'>
-            <div className="shadow rounded-lg space-y-4">
+        <div className='w-11/12 lg:w-10/12 mx-auto max-w-screen-2xl pb-12 pt-16'>
+            {/* page heading  */}
+        
+            <SectionHeader
+            title_1st_slice={"Schedule"}
+            title_2nd_slice={"Your"}
+            title_3rd_slice={"Checkup"}
+            subTitle={
+              "Easily schedule a consultation with trusted specialists, ensuring \n timely care and personalized treatment tailored to your unique health needs."
+            }>
+            </SectionHeader>
+
+            <div className="shadow rounded-lg space-y-4 mt-4">
                 <div className="bg-gradient-to-r from-[#1664D4] to-[#3B9DF8] text-white rounded-t-lg px-6 py-5 flex gap-4">
                     <img src={doctorInfo?.image} alt="Doctor" className="w-20 h-20 rounded-full border-2 border-white object-cover" />
                     <div>
@@ -101,10 +142,28 @@ const BookAppointment = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium mb-1">Preferred Admission Date*</label>
+                            <label className="block text-sm font-medium mb-1">Preferred Date*</label>
                             <div className="flex items-center border rounded-md p-2">
                                 <FaCalendarAlt className="text-gray-500 mr-2" />
-                                <input type="date" {...register("date", { required: "Appointment date is required", validate: (value) => { const selectedDate = new Date(value); const today = new Date(); today.setHours(0, 0, 0, 0); return selectedDate >= today || "Admission date must be today or in the future"; } })} className="w-full outline-none" />
+                                <input type="date" {...register("date", {
+                                    required: "Appointment date is required", validate: (value) => {
+                                        const selectedDate = new Date(value);
+                                        const today = new Date();
+                                        today.setHours(0, 0, 0, 0);
+                                        if(selectedDate <= today ){
+                                            return "Appointment date must be today or in the future";
+                                        }
+                                        // return selectedDate >= today || "Appointment date must be today or in the future";
+
+                                        const dayName = selectedDate.toLocaleDateString('en-US', { weekday: 'long' }); // example: "Monday"
+
+                                        if (!doctorInfo?.available_days.includes(dayName)) {
+                                            return `Doctor is not available on ${dayName}`;
+                                        }
+                                    
+                                        return true;
+                                    }
+                                })} className="w-full outline-none" />
                             </div>
                             {errors.date && <p className="text-xs text-red-500 mt-1">{errors.date.message}</p>}
                         </div>
@@ -134,8 +193,8 @@ const BookAppointment = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1">Appointment Reason*</label>
-                        <textarea {...register("reason", { required: true })} className="w-full border rounded-md p-2" rows="3" placeholder="Briefly describe the reason"></textarea>
+                        <label className="block text-sm font-medium mb-1">Appointment Reason <span className='font-normal'>(optional)</span></label>
+                        <textarea {...register("reason", { required: false })} className="w-full border rounded-md p-2" rows="3" placeholder="Briefly describe the reason"></textarea>
                         {errors.reason && <p className="text-xs text-red-500 mt-1">Appointment reason is required</p>}
                     </div>
 

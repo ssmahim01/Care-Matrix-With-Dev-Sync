@@ -90,7 +90,7 @@ function ManageBanners() {
   };
 
   return (
-    <div className="px-7">
+    <div className="px-5">
       <DashboardPagesHeader
         title={"Manage Banners"}
         subtitle={"Create, edit, and showcase promotional banners"}

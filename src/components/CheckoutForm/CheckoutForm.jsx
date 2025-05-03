@@ -17,7 +17,7 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  console.log("appointment info is ", appointmentInfo)
+  // console.log("appointment info is ", appointmentInfo)
   
   if (!clientSecret) {
     console.error("No client secret provided!");
@@ -81,8 +81,6 @@ const CheckoutForm = ({ consultationFee, appointmentInfo, clientSecret }) => {
             const rewardUserResponse = await axiosSecure.delete(`/reward-users/${appointmentInfo?.rewardInfo?.rewardId}`)
 
           }
-
-
 
             // Award points for completed appointment
             const rewardInfo = {

@@ -7,11 +7,15 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import axios from "axios";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const SocialLogin = ({ setIsError }) => {
+  const navigate = useNavigate();
+
   // Google & Github SignIn Function
   const handleSocialLogin = (provider) => {
     setIsError("");
@@ -37,6 +41,18 @@ const SocialLogin = ({ setIsError }) => {
         };
         // save userData in db --->
         await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
+
+        navigate("/");
+        toast.success(<b>Login Successful!</b>, {
+          description:
+            "Welcome back! You have successfully logged into your account",
+          duration: 1000,
+          position: "top-right",
+          style: {
+            marginTop: "20px",
+          },
+        });
+
         // Update lastLoginAt Time
         await axios.patch(
           `${import.meta.env.VITE_API_URL}/users/last-login-at/${
@@ -70,7 +86,7 @@ const SocialLogin = ({ setIsError }) => {
           <Button
             variant="outline"
             onClick={() => handleSocialLogin("google")}
-            className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 py-5"
+            className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 "
           >
             <FaGoogle /> Google
           </Button>
@@ -80,7 +96,7 @@ const SocialLogin = ({ setIsError }) => {
           <Button
             variant="outline"
             onClick={() => handleSocialLogin("github")}
-            className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 py-5"
+            className="w-full border-blue-200/50 shadow-sm shadow-blue-200/50 flex items-center text-base gap-2 font-medium cursor-pointer duration-500 "
           >
             <FaGithub /> Github
           </Button>

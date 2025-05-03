@@ -74,54 +74,66 @@ function ManageBedBooking() {
   };
 
   // Handle bed deletion
-  const handleBedDelete = async (id, bedId) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "This action will permanently delete the bed booking!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it",
-      cancelButtonText: "No, cancel",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        const { data } = await axiosSecure.delete(`/bed-booking/delete/${id}`);
-        if (data.deletedCount) {
-          //   change the bed status to available
-          await toast.promise(
-            axiosSecure.patch(`/beds/status/${bedId}`, { status: "available" }),
-            {
-              loading: "Updating bed status...",
-              success: <b>Bed Status Updated Successfully!</b>,
-              error: <b>Could not update bed status.</b>,
-            }
-          );
-
-          refetch();
-          Swal.fire({
-            title: "Deleted!",
-            text: "Bed booking has been deleted successfully!",
-            icon: "success",
-          });
-        }
-      } catch (error) {
-        Swal.fire({
-          title: "Error!",
-          text: error.message || "Failed to delete the bed booking!",
-          icon: "error",
-          background: "#ffffff",
-          color: "#000000",
-          confirmButtonColor: "#ef4444",
-        });
-      }
-    }
+  const handleBedDelete = (id, bedId) => {
+    toast(
+      t => (
+        <div className="flex gap-3 items-center">
+          <div>
+            <p>
+              Are you <b>sure?</b>
+            </p>
+          </div>
+          <div className="gap-2 flex">
+            <button
+              className="bg-red-400 text-white px-3 py-1 rounded-md"
+              onClick={async () => {
+                toast.dismiss(t.id);
+                try {
+                  toast.loading("Deleting bed booking...", { position: "top-right" });
+                  const { data } = await axiosSecure.delete(`/bed-booking/delete/${id}`);
+                  
+                  if (data.deletedCount) {
+                    // Update bed status to available
+                    await toast.promise(
+                      axiosSecure.patch(`/beds/status/${bedId}`, { status: "available" }),
+                      {
+                        loading: "Updating bed status...",
+                        success: <b>Bed status updated successfully!</b>,
+                        error: <b>Could not update bed status.</b>,
+                      },
+                      { position: "top-right" }
+                    );
+                    
+                    refetch();
+                    toast.dismiss();
+                    toast.success("Bed booking deleted successfully!", { position: "top-right" });
+                  } else {
+                    toast.dismiss();
+                    toast.error("No bed booking was deleted.", { position: "top-right" });
+                  }
+                } catch (error) {
+                  toast.dismiss();
+                  toast.error(error.message || "Failed to delete the bed booking!", { position: "top-right" });
+                }
+              }}
+            >
+              Yes
+            </button>
+            <button
+              className="bg-green-400 text-white px-3 py-1 rounded-md"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { position: "top-right" }
+    );
   };
 
-  // if (isLoading) return <Loader text={"Loading Bed Bookings"} />;
-
   return (
-    <div className="p-7">
+    <div className="px-7">
       <DashboardPagesHeader
         title={"Bed Booking Requests"}
         subtitle={"View And Manage All Bed Booking Requests"}

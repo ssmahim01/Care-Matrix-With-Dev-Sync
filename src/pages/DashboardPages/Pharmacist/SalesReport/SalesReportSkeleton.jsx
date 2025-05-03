@@ -12,7 +12,7 @@ export const CircleSkeleton = ({ size = "w-10 h-10" }) => (
 
 const SalesReportSkeleton = () => {
   return (
-    <div className="px-7">
+    <div className="px-5">
       {/* Header */}
       <SalesHeaderSkeleton />
       {/* Tablist's */}

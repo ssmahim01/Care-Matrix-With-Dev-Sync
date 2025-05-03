@@ -14,43 +14,6 @@ import axios from "axios"
 import { format } from "date-fns"
 
 export default function Emergency() {
- 
-
-
-
-
-  const [alerts, setAlerts] = useState([
-    {
-      id: 1,
-      message: "Ambulance AMB-001 arriving in 5 minutes with cardiac patient",
-      time: "11:25 AM",
-      type: "urgent",
-    },
-    {
-      id: 2,
-      message: "ER Room 2 now available for emergency patients",
-      time: "11:20 AM",
-      type: "info",
-    },
-    {
-      id: 3,
-      message: "Code Blue initiated in ER Room 3",
-      time: "11:15 AM",
-      type: "critical",
-    },
-    {
-      id: 4,
-      message: "Dr. Johnson requested additional staff for trauma case",
-      time: "11:10 AM",
-      type: "urgent",
-    },
-    {
-      id: 5,
-      message: "New emergency patient registered at reception",
-      time: "11:05 AM",
-      type: "info",
-    },
-  ])
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
@@ -92,14 +55,7 @@ export default function Emergency() {
       return data
     }
   })
-  // {
-  //   id: "AMB-001",
-  //   status: "En Route",
-  //   patient: "Maria Garcia",
-  //   destination: "Main Hospital",
-  //   eta: "5 min",
-  //   dispatchTime: "11:20 AM",
-  // },
+
   const [ambulances, setAmbulances] = useState(ambulance)
 
   const { data: triage = [] } = useQuery({
@@ -110,6 +66,7 @@ export default function Emergency() {
       return data
     }
   })
+
   const [activeEmergencies, setActiveEmergencies] = useState(triage)
 
   const { data = [] } = useQuery({
@@ -142,8 +99,8 @@ export default function Emergency() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <Card className={`py-2`}>
+          <CardHeader className="flex flex-row items-center justify-between pt-2 pb-2">
             <CardTitle className="text-sm font-medium">Active Emergencies</CardTitle>
             <AlertCircle className="h-4 w-4 text-red-600" />
           </CardHeader>
@@ -154,7 +111,7 @@ export default function Emergency() {
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={`py-2`}>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Ambulances</CardTitle>
             <Ambulance className="h-4 w-4 text-blue-600" />
@@ -166,7 +123,7 @@ export default function Emergency() {
             </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={`py-2`}>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Waiting Patients</CardTitle>
             <Users className="h-4 w-4 text-orange-600" />
@@ -176,7 +133,7 @@ export default function Emergency() {
             <p className="text-xs text-muted-foreground">Average wait: 25 minutes</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={`py-2`}>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Emergency Contacts</CardTitle>
             <Activity className="h-4 w-4 text-green-600" />
@@ -189,10 +146,10 @@ export default function Emergency() {
       </div>
 
       <Tabs defaultValue="emergencies">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="emergencies">Active Emergencies</TabsTrigger>
-          <TabsTrigger value="ambulances">Ambulance Status</TabsTrigger>
-          <TabsTrigger value="alerts">Emergency Alerts</TabsTrigger>
+        <TabsList className="grid w-full sm:grid-cols-3">
+          <TabsTrigger className={`sm:w-full w-64`} value="emergencies">Active Emergencies</TabsTrigger>
+          <TabsTrigger className={`sm:w-full w-64`} value="ambulances">Ambulance Status</TabsTrigger>
+          <TabsTrigger className={`sm:w-full w-64`} value="alerts">Emergency Alerts</TabsTrigger>
         </TabsList>
 
         <TabsContent value="emergencies" className="space-y-4">
@@ -295,7 +252,7 @@ export default function Emergency() {
         </TabsContent>
 
         <TabsContent value="alerts">
-          <Card>
+          <Card className={`pt-4`}>
             <CardHeader>
               <CardTitle>Emergency Alerts</CardTitle>
               <CardDescription>Real-time alerts and notifications for emergency staff</CardDescription>
@@ -303,35 +260,35 @@ export default function Emergency() {
             <CardContent>
               <ScrollArea className="h-[400px]">
                 <div className="space-y-4">
-                  {alerts.map((alert) => (
-                    <div key={alert.id} className={cn("p-3 rounded-md", getAlertColor(alert.type))}>
+                  {activeEmergencies.map((alert) => (
+                    <div key={alert._id} className={cn("p-3 rounded-md", getAlertColor(alert.priority))}>
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-2">
                           <Bell
                             className={cn(
                               "h-5 w-5 mt-0.5",
-                              alert.type === "critical"
+                              alert.priority === "critical"
                                 ? "text-red-600"
-                                : alert.type === "urgent"
+                                : alert.priority === "urgent"
                                   ? "text-orange-500"
                                   : "text-blue-500",
                             )}
                           />
                           <div>
-                            <p className="font-medium">{alert.message}</p>
-                            <p className="text-xs text-muted-foreground">{alert.time}</p>
+                            <p className="font-medium">{alert.complaint}</p>
+                            <p className="text-xs text-muted-foreground">{format(alert.arrivalTime, "h:mm a")}</p>
                           </div>
                         </div>
                         <Badge
                           variant={
-                            alert.type === "critical"
+                            alert.priority === "critical"
                               ? "destructive"
-                              : alert.type === "urgent"
+                              : alert.priority === "urgent"
                                 ? "default"
                                 : "secondary"
                           }
                         >
-                          {alert.type}
+                          {alert.priority}
                         </Badge>
                       </div>
                     </div>
@@ -340,9 +297,11 @@ export default function Emergency() {
               </ScrollArea>
             </CardContent>
             <CardFooter className="border-t p-4 bg-muted/40">
+              <Link to={"/emergency/triage"}>
               <Button variant="outline" className="w-full">
-                View All Alerts
+                View All Emergency
               </Button>
+              </Link>
             </CardFooter>
           </Card>
         </TabsContent>

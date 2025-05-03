@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { format } from "date-fns"
 import { AnimatePresence, motion } from "framer-motion"
 import { MessageSquare, Send, Star, ThumbsUp } from "lucide-react"
 
@@ -25,7 +26,7 @@ export default function ReviewCard({
             whileHover={{ y: -5 }}
             transition={{ type: "spring", stiffness: 300 }}
         >
-            <Card className="border-sky-100 hover:shadow-md transition-shadow">
+            <Card className="border-sky-100 hover:shadow-md transition-shadow pb-2">
                 <CardContent className="pt-6">
                     <div className="flex gap-4">
                         <motion.div
@@ -49,9 +50,9 @@ export default function ReviewCard({
                                 <div>
                                     <h4 className="font-semibold text-sky-800">{review.name}</h4>
                                     <div className="flex items-center gap-2 text-xs text-sky-600">
-                                        <span>{review.date}</span>
+                                        <span>{format(new Date(review.date), "p, d MMMM yyyy")}</span>
                                         <span>•</span>
-                                        <span>{review.department}</span>
+                                        <span className="capitalize">{review.department}</span>
                                     </div>
                                 </div>
                                 <div className="flex">
@@ -83,10 +84,10 @@ export default function ReviewCard({
                                         variant="ghost"
                                         size="sm"
                                         className="text-sky-700 hover:bg-sky-50 h-8 px-2"
-                                        onClick={() => onHelpful(review.id)}
+                                        onClick={() => onHelpful(review._id)}
                                     >
                                         <ThumbsUp className="w-3 h-3 mr-1" />
-                                        Helpful ({review.helpful + helpfulCount})
+                                        Helpful ({review.helpful})
                                     </Button>
                                 </motion.div>
                                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -94,7 +95,7 @@ export default function ReviewCard({
                                         variant="ghost"
                                         size="sm"
                                         className="text-sky-700 hover:bg-sky-50 h-8 px-2"
-                                        onClick={() => setShowReplyForm(review.id)}
+                                        onClick={() => setShowReplyForm(review._id)}
                                     >
                                         <MessageSquare className="w-3 h-3 mr-1" /> Reply
                                     </Button>
@@ -103,6 +104,27 @@ export default function ReviewCard({
 
                             <AnimatePresence>
                                 {showReplyForm && (
+                                    <>
+                                    {review?.replyComments && review.replyComments.length > 0 ? (
+                                        <div className="mt-6">
+                                            <h2 className="text-xl font-semibold mb-4">Comments</h2>
+                                            <ul className="space-y-4">
+                                                {review.replyComments.map((reply, i) => (
+                                                    <li
+                                                        key={i}
+                                                        className="p-4 bg-gray-100 rounded-lg shadow-sm flex flex-col gap-1"
+                                                    >
+                                                        <p className="text-gray-700">{reply.text}</p>
+                                                        <span className="text-xs text-gray-500">
+                                                            {format(new Date(reply.date), "hh:mm a, d MMM")}
+                                                        </span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ) : (
+                                        <p className="text-gray-500 mt-6">No comments yet.</p>
+                                    )}
                                     <motion.div
                                         className="flex gap-2 mt-2"
                                         initial={{ opacity: 0, height: 0 }}
@@ -118,11 +140,12 @@ export default function ReviewCard({
                                         <Button
                                             size="sm"
                                             className="bg-sky-600 hover:bg-sky-700"
-                                            onClick={() => handleSubmitReply(review.id)}
+                                            onClick={() => handleSubmitReply(review._id)}
                                         >
                                             <Send className="w-4 h-4" />
                                         </Button>
                                     </motion.div>
+                                    </>
                                 )}
                             </AnimatePresence>
                         </div>

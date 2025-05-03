@@ -7,15 +7,15 @@ import {
 import { TableCell, TableRow } from "../ui/table";
 import { Button } from "../ui/button";
 import { BookmarkX, Eye, MoreHorizontal, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const RequestTableRow = ({
   request,
   index,
   handleCancelRequest,
   handleDeleteRequest,
-  handleView
+  handleView,
 }) => {
-
   return (
     <TableRow className="hover:bg-gray-100 dark:hover:bg-gray-700">
       <TableCell>{index + 1}</TableCell>
@@ -36,25 +36,25 @@ const RequestTableRow = ({
       <TableCell>{request?.department}</TableCell>
       <TableCell>{request?.requestedRole}</TableCell>
       <TableCell>
-        <div
-          className={`py-[2px] rounded-full text-white/90 font-bold ${
-            request?.status === "Pending" && "bg-amber-500"
-          } ${request?.status === "Reject" && "bg-rose-500"} ${
-            request?.status === "Assign" && "bg-green-600"
-          } ${request?.status === "Cancel" && "bg-red-500"}`}
+        <Badge
+          className={`
+            font-bold text-white min-w-20
+            ${request?.status === "Pending" && "bg-amber-500"}
+            ${request?.status === "Reject" && "bg-rose-500"}
+            ${request?.status === "Assign" && "bg-green-600"}
+            ${request?.status === "Cancel" && "bg-red-500"}
+          `}
         >
-          <p className="text-center w-full px-3">
-            {request?.status === "Pending" && "Pending"}{" "}
-            {request?.status === "Reject" && "Rejected"}{" "}
-            {request?.status === "Assign" && "Assigned"}
-            {request?.status === "Cancel" && "Cancelled"}
-          </p>
-        </div>
+          {request?.status === "Pending" && "Pending"}
+          {request?.status === "Reject" && "Rejected"}
+          {request?.status === "Assign" && "Assigned"}
+          {request?.status === "Cancel" && "Cancelled"}
+        </Badge>
       </TableCell>
       <TableCell>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="cursor-pointer" size="icon">
+            <Button variant="outline" className="cursor-pointer" size="icon">
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -72,14 +72,14 @@ const RequestTableRow = ({
               onClick={() => handleCancelRequest(request?._id)}
             >
               <BookmarkX className="w-4 h-4" />
-              <span>Cancel</span>
+              <span>Cancel Request</span>
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="cursor-pointer focus:text-destructive flex gap-2 items-center"
+              className="cursor-pointer focus:text-destructive duration-300 flex gap-2 items-center"
               onClick={() => handleDeleteRequest(request?._id)}
             >
-              <Trash2 className="h-4 w-4" />
-              <span>Delete</span>
+              <Trash2 className="h-4 w-4 focus:text-destructive duration-300" />
+              <span>Delete Request</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

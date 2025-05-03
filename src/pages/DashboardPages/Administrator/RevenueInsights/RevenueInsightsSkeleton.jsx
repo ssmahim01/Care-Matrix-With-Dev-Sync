@@ -5,7 +5,7 @@ import OverviewCardsSkeleton from "../../Pharmacist/SalesReport/Skeleton/Overvie
 
 const RevenueInsightsSkeleton = () => {
   return (
-    <div className="px-7">
+    <div className="px-5">
       {/* Header */}
       <SalesHeaderSkeleton />
       {/* Tablist's */}

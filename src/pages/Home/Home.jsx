@@ -14,6 +14,7 @@ import Chat from "@/components/Home/Chat";
 import EidGreetingSection from "./EidGreetingSection";
 import { Profiler } from "react";
 import Blogs from "./Blogs_and_News/Blogs";
+import { Testimonials } from "./Patient_Reviews/Testimonials";
 
 function onRenderCallback(
   id,
@@ -30,7 +31,7 @@ const Home = () => {
   return (
     <section className="w-full space-y-6">
       {/* Hero Section */}
-      <div className="lg:pt-12 md:pt-8 pt-2 pb-8">
+      <div className="pt-8 pb-8">
         {/* <Profiler id="Hero" onRender={onRenderCallback}> */}
         <Hero />
         {/* </Profiler> */}
@@ -57,7 +58,7 @@ const Home = () => {
       </div>
 
       {/* Introduction of Chat dashboard */}
-      <div className="pb-10 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
+      <div className="mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Chat />
       </div>
 
@@ -74,7 +75,7 @@ const Home = () => {
       </div>
 
       {/* Our Medical Experts */}
-      <div className="lg:-mb-3 mx-auto lg:w-10/12 max-w-screen-2xl">
+      <div className="lg:-mb-3 mx-auto md:w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Doctors />
       </div>
 
@@ -84,20 +85,21 @@ const Home = () => {
       </div>
 
       {/* Patient Reviews */}
-      <PatientReviews />
+      {/* <Testimonials /> */}
 
       {/* specialties */}
       <div className="-mt-5 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
         <Specialties />
       </div>
 
+      {/* blog  */}
+      <div className="mx-auto pt-6 pb-16 w-11/12 xl:w-10/12 max-w-screen-2xl">
+        <Blogs />
+      </div>
+
       {/* FAQ */}
       <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
         <Faq />
-      </div>
-      {/* blog  */}
-      <div className="mx-auto w-11/12 xl:w-10/12 max-w-screen-2xl">
-        <Blogs />
       </div>
     </section>
   );

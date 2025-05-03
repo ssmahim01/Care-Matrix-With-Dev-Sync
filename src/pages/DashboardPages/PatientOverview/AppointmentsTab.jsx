@@ -9,25 +9,30 @@ import {
 import { Separator } from "@/components/ui/separator";
 import {
   Calendar,
+  CalendarPlus,
   Clock,
   CreditCard,
   FileText,
+  Timer,
   User,
   Users,
 } from "lucide-react";
 import { Link } from "react-router";
+import EmptyState from "./EmptyState";
 
 const AppointmentsTab = ({ appointment, formatDate }) => {
   return (
     <Card
       className={"border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"}
     >
-      <CardHeader>
-        <CardTitle>Upcoming Appointment</CardTitle>
-        <CardDescription>
-          Your next scheduled appointment details
-        </CardDescription>
-      </CardHeader>
+      {appointment && (
+        <CardHeader>
+          <CardTitle>Upcoming Appointment</CardTitle>
+          <CardDescription>
+            Your next scheduled appointment details
+          </CardDescription>
+        </CardHeader>
+      )}
       <CardContent>
         {appointment ? (
           <div className="space-y-4">
@@ -49,6 +54,13 @@ const AppointmentsTab = ({ appointment, formatDate }) => {
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Time:</span>
                   <span className="text-sm">{appointment?.time || "N/A"}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Timer className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Serial:</span>
+                  <span className="text-sm">
+                    {appointment?.serialNumber || "N/A"}
+                  </span>
                 </div>
               </div>
               <div className="space-y-2">
@@ -87,23 +99,16 @@ const AppointmentsTab = ({ appointment, formatDate }) => {
                   View Details
                 </Button>
               </Link>
-              <Link to="/dashboard/patient/appointments">
-                <Button className={"cursor-pointer"} variant="destructive">
-                  Cancel
-                </Button>
-              </Link>
             </div>
           </div>
         ) : (
-          <>
-            <Separator />
-            <p className="text-muted-foreground mt-2">
-              No Upcoming Appointments Scheduled!
-            </p>
-            <Button className="mt-2 cursor-pointer" variant={"outline"}>
-              Book An Appointment
-            </Button>
-          </>
+          <EmptyState
+            icon={CalendarPlus}
+            title="No Upcoming Appointments"
+            description="You don't have any scheduled appointments. Book a consultation with one of our specialists."
+            actionLabel="Book An Appointment"
+            actionLink="/doctors"
+          />
         )}
       </CardContent>
     </Card>
