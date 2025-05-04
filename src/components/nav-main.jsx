@@ -184,7 +184,7 @@ export function NavMain() {
                 <h3 className="flex gap-2 items-center">
                   <MessageSquareText className="text-base" />
                   <span className={`${state === "collapsed" && "md:hidden"}`}>
-                    Conversation{" "}
+                   Patient Conversation{" "}
                   </span>
                 </h3>
               </NavLink>
