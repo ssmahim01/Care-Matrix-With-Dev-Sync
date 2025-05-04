@@ -259,7 +259,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
       {/* Edit Blog Dialog */}
       {selectedBlog && (
         <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-          <DialogContent>
+          <DialogContent className="w-[100%] max-w-none max-h-[80vh] overflow-y-auto p-6">
             <DialogHeader>
               <DialogTitle>Edit Blog</DialogTitle>
               <DialogDescription>
@@ -298,7 +298,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                   <Textarea
                     id="description"
                     placeholder="Write your blog content here..."
-                    className="resize-none min-h-[150px]"
+                    className=":::resize-none :::min-h-[150px]"
                     required
                     {...register("description")}
                   />
