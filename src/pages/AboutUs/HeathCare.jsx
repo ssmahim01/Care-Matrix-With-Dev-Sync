@@ -26,7 +26,7 @@ const HealthCare = () => {
   ];
 
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-20 lg:pt-30">
+    <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-20 lg:pt-24">
       {/* Left Side: Text */}
       <div>
         <div className="text-white flex flex-col items-center">
