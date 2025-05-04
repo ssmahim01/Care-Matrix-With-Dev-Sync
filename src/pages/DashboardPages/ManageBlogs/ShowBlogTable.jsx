@@ -33,6 +33,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical, Pencil, Trash } from "lucide-react";
+import DashboardBlogCard from "./BlogCard";
 
 const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
   const axiosSecure = useAxiosSecure();
@@ -45,18 +46,17 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
 
   // Handle Delete
   const handleDelete = async (id) => {
-    // console.log(id)
     toast(
       (t) => (
         <div className="flex gap-3 items-center">
           <div>
             <p>
-              Are you <b>sure?</b>
+              <b>Are you sure?</b>
             </p>
           </div>
           <div className="gap-2 flex">
             <button
-              className="bg-red-400 text-white px-3 py-1 rounded-md"
+              className="bg-red-500 text-white px-3 py-1 rounded-md"
               onClick={async () => {
                 toast.dismiss(t.id);
                 try {
@@ -88,7 +88,7 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
               Yes
             </button>
             <button
-              className="bg-green-400 text-white px-3 py-1 rounded-md"
+              className="bg-green-500 text-white px-3 py-1 rounded-md"
               onClick={() => toast.dismiss(t.id)}
             >
               Cancel
@@ -254,6 +254,12 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
             )}
           </TableBody>
         </Table>
+        {/* Blog Cards */}
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {blogs.map((blog, i) => (
+            <DashboardBlogCard key={i} blog={blog} />
+          ))}
+        </div>
       </div>
 
       {/* Edit Blog Dialog */}
