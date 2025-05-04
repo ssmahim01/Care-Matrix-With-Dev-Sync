@@ -4,12 +4,13 @@ import React from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { FaUserCircle, FaCalendarAlt } from "react-icons/fa";
+import MainLayoutLoader from "@/components/Loader/MainLayoutLoader";
 
 const BlogDetails = () => {
   const { id } = useParams();
   const axiosPublic = useAxiosPublic();
 
-  const { data: blog = {} } = useQuery({
+  const { data: blog = {}, isLoading: blogLoading } = useQuery({
     queryKey: ["blogDetails", id],
     queryFn: async () => {
       const { data } = await axiosPublic.get(`/blogs/${id}`);
@@ -17,7 +18,7 @@ const BlogDetails = () => {
     },
   });
 
-  const { data: latestPosts = [] } = useQuery({
+  const { data: latestPosts = [], isLoading: latestBlogLoading } = useQuery({
     queryKey: ["blogs"],
     queryFn: async () => {
       const { data } = await axiosPublic.get("/blogs");
@@ -25,7 +26,9 @@ const BlogDetails = () => {
     },
   });
 
-  const categories = [{ name: "Health Care", postCount: 71 }];
+  if (blogLoading || latestBlogLoading) return <MainLayoutLoader />;
+
+  // const categories = [{ name: "Health Care", postCount: 71 }];
 
   return (
     <div className="pt-16 pb-12 mx-auto w-11/12 lg:w-10/12 max-w-screen-2xl">
@@ -34,29 +37,29 @@ const BlogDetails = () => {
         <div className="lg:w-2/3">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <img
-              src={blog.image}
-              alt={blog.title}
+              src={blog?.image}
+              alt={blog?.title}
               className="w-full h-64 lg:h-[350px] object-cover rounded-t-lg"
             />
             <div className="p-3 lg:p-6">
               <h2>
                 <span className="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full mb-2">
-                  {blog.tag}
+                  {blog?.tag}
                 </span>
               </h2>
               <Link>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                  {blog.title}
+                  {blog?.title}
                 </h2>
               </Link>
               <div className="flex items-center text-gray-600 text-sm mb-4">
                 <FaUserCircle className="mr-2" />
-                <span>{blog.author}</span>
+                <span>{blog?.author}</span>
                 <FaCalendarAlt className="ml-4 mr-2" />
-                <span>{blog.date}</span>
+                <span>{blog?.date}</span>
               </div>
-              <p className="text-gray-700 leading-relaxed">
-                {blog.description}
+              <p className="text-gray-700 whitespace-pre-line">
+                {blog?.description}
               </p>
             </div>
           </div>
@@ -65,31 +68,33 @@ const BlogDetails = () => {
         {/* Sidebar: Latest Posts and Categories */}
         <div className="lg:w-1/3 space-y-8 lg:sticky lg:top-18 max-h-screen overflow-y-auto">
           {/* Latest Posts */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md border p-6">
             <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
               <span className="w-1 h-5 bg-blue-500 mr-2"></span>
-              Latest Posts
+              Latest Blogs
             </h3>
             <ul className="space-y-4">
-              {latestPosts.slice(0, 10).map((post, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="text-blue-500 font-bold mr-3">
-                    {index + 1}
-                  </span>
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-16 h-12 object-cover rounded mr-3"
-                  />
-                  <div>
-                    <Link to={`/blogs/${post._id}`}>
-                      <h4 className="text-sm font-medium text-gray-900 hover:text-blue-600">
-                        {post.title}
-                      </h4>
-                    </Link>
-                    <p className="text-xs text-gray-600">{post.date}</p>
-                  </div>
-                </li>
+              {latestPosts?.slice(0, 10).map((post, index) => (
+                <Link to={`/blogs/${post._id}`} key={index}>
+                  <li className="flex items-start hover:bg-gray-100 cursor-pointer duration-300 p-2 rounded-lg group">
+                    <span className="text-blue-500 font-bold mr-3">
+                      {index + 1}
+                    </span>
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-16 h-12 object-cover rounded mr-3"
+                    />
+                    <div>
+                      <Link to={`/blogs/${post._id}`}>
+                        <h4 className="text-sm font-medium text-gray-900 group-hover:text-blue-600">
+                          {post.title}
+                        </h4>
+                      </Link>
+                      <p className="text-xs text-gray-600">{post.date}</p>
+                    </div>
+                  </li>{" "}
+                </Link>
               ))}
             </ul>
           </div>
