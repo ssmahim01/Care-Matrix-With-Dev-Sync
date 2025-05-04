@@ -1,17 +1,4 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
-import toast from "react-hot-toast";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
 import {
   Dialog,
   DialogContent,
@@ -19,20 +6,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useForm } from "react-hook-form";
-import { FaFileUpload } from "react-icons/fa";
-import { imgUpload } from "@/lib/imgUpload";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MoreVertical, Pencil, Trash } from "lucide-react";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { imgUpload } from "@/lib/imgUpload";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { FaFileUpload } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import DashboardBlogCard from "./BlogCard";
 
 const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
@@ -68,18 +52,18 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
                   if (data.data.deletedCount) {
                     refetch();
                     toast.dismiss();
-                    toast.success("Bed deleted successfully!", {
+                    toast.success("Blog deleted successfully!", {
                       position: "top-right",
                     });
                   } else {
                     toast.dismiss();
-                    toast.error("No bed was deleted.", {
+                    toast.error("No Blog was deleted.", {
                       position: "top-right",
                     });
                   }
                 } catch (error) {
                   toast.dismiss();
-                  toast.error(error.message || "Failed to delete the bed!", {
+                  toast.error(error.message || "Failed to delete the blog!", {
                     position: "top-right",
                   });
                 }
@@ -173,93 +157,17 @@ const ShowBlogTable = ({ blogs, isLoading, refetch }) => {
   };
 
   return (
-    <div className="w-full mt-6">
-      <div className="rounded-md">
-        <Table>
-          <TableCaption>A List of All Blogs</TableCaption>
-          <TableHeader>
-            <TableRow className="bg-base-200 hover:bg-base-200">
-              <TableHead className="w-12">#</TableHead>
-              <TableHead>Image</TableHead>
-              <TableHead className="">Title</TableHead>
-              <TableHead>Tag</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Author</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              Array.from({ length: 5 }).map((_, i) => (
-                <TableRow key={i}>
-                  {Array.from({ length: 8 }).map((_, j) => (
-                    <TableCell key={j}>
-                      <div className="skeleton h-8 rounded w-full"></div>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : blogs.length > 0 ? (
-              blogs.map((blog, i) => (
-                <TableRow key={blog._id}>
-                  <TableCell className="font-medium">{i + 1}</TableCell>
-                  <TableCell>
-                    <img
-                      src={blog.image}
-                      alt={blog.title}
-                      className=" w-8 h-8 lg:w-12 lg:h-12 object-cover rounded-full"
-                    />
-                  </TableCell>
-                  <TableCell>{blog.title}</TableCell>
-                  <TableCell>{blog.tag}</TableCell>
-                  <TableCell>
-                    {blog.description.length > 50
-                      ? `${blog.description.slice(0, 50)}...`
-                      : blog.description}
-                  </TableCell>
-                  <TableCell>{blog.author}</TableCell>
-                  <TableCell>{blog.date}</TableCell>
-                  <TableCell>
-                    <DropdownMenu modal={false}>
-                      <DropdownMenuTrigger asChild>
-                        <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
-                          <MoreVertical className="cursor-pointer text-gray-700" />
-                        </div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem
-                          className="cursor-pointer"
-                          onClick={() => handleEdit(blog)}
-                        >
-                          <Pencil className="w-4 h-4 mr-2" /> Update
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="cursor-pointer"
-                          onClick={() => handleDelete(blog._id)}
-                        >
-                          <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center">
-                  No blogs available
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        {/* Blog Cards */}
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {blogs.map((blog, i) => (
-            <DashboardBlogCard key={i} blog={blog} />
-          ))}
-        </div>
+    <div className="w-full">
+      {/* Blog Cards */}
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {blogs?.map((blog, i) => (
+          <DashboardBlogCard
+            key={i}
+            blog={blog}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+          />
+        ))}
       </div>
 
       {/* Edit Blog Dialog */}

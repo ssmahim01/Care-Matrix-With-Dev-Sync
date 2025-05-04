@@ -1,4 +1,11 @@
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import {
+  Eye,
+  MoreHorizontal,
+  MoreVertical,
+  Pencil,
+  Trash,
+  Trash2,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,7 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const DashboardBlogCard = ({ blog }) => {
+const DashboardBlogCard = ({ blog, handleDelete, handleEdit }) => {
   return (
     <Card className="overflow-hidden shadow-sm w-full rounded-lg">
       <CardHeader className="p-0 relative h-48">
@@ -25,25 +32,27 @@ const DashboardBlogCard = ({ blog }) => {
           className="object-cover h-[220px] w-full"
         />
         <div className="absolute top-2 right-2">
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="bg-white/80 hover:bg-white"
-              >
-                <MoreHorizontal className="h-4 w-4" />
-                <span className="sr-only">Actions</span>
-              </Button>
+              <div className="bg-base-200 p-2 mx-0 rounded border border-border w-fit">
+                <MoreVertical className="cursor-pointer text-gray-700" />
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <Pencil className="mr-2 h-4 w-4" />
-                <span>Update</span>
+              <DropdownMenuItem className="cursor-pointer">
+                <Eye className="w-4 h-4 mr-2" /> Details
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive focus:text-destructive">
-                <Trash2 className="mr-2 h-4 w-4" />
-                <span>Delete</span>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => handleEdit(blog)}
+              >
+                <Pencil className="w-4 h-4 mr-2" /> Update
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => handleDelete(blog._id)}
+              >
+                <Trash className="w-4 h-4 mr-2 text-red-500" /> Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

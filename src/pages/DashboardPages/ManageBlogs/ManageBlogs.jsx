@@ -25,14 +25,14 @@ const ManageBlogs = () => {
 
   return (
     <div className="px-5">
-      <div className="flex flex-col sm:flex-row items-center justify-between">
+      <div className=":::flex :::flex-col :::sm:flex-row :::items-center :::justify-between">
         <DashboardPagesHeader
           title={"Manage Blogs"}
           subtitle={"Easily add or manage Blogs and News"}
           icon={Newspaper}
         />
         {/* Add Blog Form */}
-        <div className="">
+        <div className="flex justify-end mb-6">
           <Button
             disabled={isFormOpen}
             onClick={() => setIsFormOpen(!isFormOpen)}
