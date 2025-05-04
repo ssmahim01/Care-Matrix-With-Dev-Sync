@@ -2,7 +2,7 @@ import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import useCart from "@/hooks/useCart";
 import { useAuthUser } from "@/redux/auth/authActions";
 import { useEffect } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router";
 
@@ -25,7 +25,13 @@ const Medicines = ({ medicines, isLoading }) => {
     e.stopPropagation();
 
     if (!user) {
-      return toast.error("You must login before add to cart");
+      return toast.error("You must login before add to cart", {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
+        },
+      });
     }
 
     const cartItem = {
@@ -45,11 +51,16 @@ const Medicines = ({ medicines, isLoading }) => {
 
     await toast.promise(axiosPublic.post("/carts", cartItem), {
       loading: "Adding to cart...",
-      success: <b>Successfully Added To Cart</b>,
+      success: <b>Medicine Successfully Added To Cart</b>,
       error: (error) => {
         const errorMessage =
           error.response?.data?.error || error.message || "Unable to Add";
         return <b>{errorMessage}</b>;
+      },
+      position: "top-right",
+      duration: 2000,
+      style: {
+        marginTop: "35px",
       },
     });
     refetch();

@@ -26,6 +26,7 @@ import {
 } from "@/lib/pharmacy";
 
 import { Calendar } from "@/components/ui/calendar";
+
 import {
   Popover,
   PopoverContent,
@@ -34,8 +35,8 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import toast from "react-hot-toast";
 import { imgUpload } from "@/lib/imgUpload";
+import { toast } from "sonner";
 import axios from "axios";
 
 const AddMedicine = ({ isOpen, setIsOpen, refetch }) => {
@@ -119,7 +120,10 @@ const AddMedicine = ({ isOpen, setIsOpen, refetch }) => {
     for (const [condition, errorMessage] of validations) {
       if (condition) {
         setLoading(false);
-        toast.error(errorMessage);
+        toast.error(errorMessage, {
+          position: "top-right",
+          duration: 2000,
+        });
         return;
       }
     }
@@ -129,11 +133,20 @@ const AddMedicine = ({ isOpen, setIsOpen, refetch }) => {
     try {
       imageUrl = await imgUpload(image);
       if (!imageUrl) {
-        toast.error("Image upload failed");
+        toast.error("Image upload failed", {
+          position: "top-right",
+          duration: 2000,
+        });
       }
     } catch (error) {
       setLoading(false);
-      toast.error("Failed to upload image. Please try again later.");
+      toast.error("Failed to upload image. Please try again later.", {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
+        },
+      });
       return;
     }
 
@@ -177,10 +190,19 @@ const AddMedicine = ({ isOpen, setIsOpen, refetch }) => {
       );
       if (data.data.insertedId) {
         refetch();
-        toast.success("Medicine Added Successfully!");
+        toast.success("Medicine Added Successfully!", {
+          position: "top-right",
+          duration: 2000,
+        });
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message, {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
+        },
+      });
     } finally {
       setIsOpen(false);
       setLoading(false);

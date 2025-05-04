@@ -270,7 +270,7 @@ const ManageMedicines = () => {
                         alt="Medicine Image"
                         className="min-w-24 h-16 object-cover"
                       />
-                      <AvatarFallback className="min-w-24 h-16 rounded">
+                      <AvatarFallback className="max-w-24 h-16 rounded">
                         {medicine?.brandName?.[0] || "M"}
                       </AvatarFallback>
                     </Avatar>

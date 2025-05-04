@@ -13,7 +13,7 @@ import ProductDetails from "./MedicineDetails/ProductDetails";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useAuthUser } from "@/redux/auth/authActions";
 import useCart from "@/hooks/useCart";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import {
   Breadcrumb,
@@ -88,7 +88,13 @@ export default function MedicineDetails() {
   const handleAddToCart = async () => {
     try {
       if (!user) {
-        return toast.error("You Must Login Before Add To Cart");
+        return toast.error("You Must Login Before Add To Cart", {
+          position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
+        },
+        });
       }
 
       // Set To true
@@ -116,6 +122,11 @@ export default function MedicineDetails() {
           const errorMessage =
             error.response?.data?.error || error.message || "Unable To Add";
           return <b>{errorMessage}</b>;
+        },
+        position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
         },
       });
     } finally {
