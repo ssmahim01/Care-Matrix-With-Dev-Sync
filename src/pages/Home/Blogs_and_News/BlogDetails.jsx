@@ -1,15 +1,17 @@
+import MainLayoutLoader from "@/components/Loader/MainLayoutLoader";
+import { FaCalendarAlt, FaUserCircle } from "react-icons/fa";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { FaUserCircle, FaCalendarAlt } from "react-icons/fa";
-import MainLayoutLoader from "@/components/Loader/MainLayoutLoader";
+import { useState } from "react";
 
 const BlogDetails = () => {
   const { id } = useParams();
   const axiosPublic = useAxiosPublic();
-
+  const [isExpanded, setIsExpanded] = useState(false);
+  const charLimit = 1200;
+  
   const { data: blog = {}, isLoading: blogLoading } = useQuery({
     queryKey: ["blogDetails", id],
     queryFn: async () => {
@@ -27,6 +29,14 @@ const BlogDetails = () => {
   });
 
   if (blogLoading || latestBlogLoading) return <MainLayoutLoader />;
+
+  const toggleExpanded = () => setIsExpanded(!isExpanded);
+
+  const textToShow = isExpanded
+    ? blog?.description
+    : blog?.description?.slice(0, charLimit);
+
+  const shouldShowToggle = blog?.description?.length > charLimit;
 
   // const categories = [{ name: "Health Care", postCount: 71 }];
 
@@ -58,9 +68,21 @@ const BlogDetails = () => {
                 <FaCalendarAlt className="ml-4 mr-2" />
                 <span>{blog?.date}</span>
               </div>
-              <p className="text-gray-700 whitespace-pre-line">
-                {blog?.description}
-              </p>
+              <div>
+                <p className="text-gray-700 whitespace-pre-line">
+                  {textToShow}
+                  {!isExpanded && shouldShowToggle && "..."}
+                </p>
+
+                {shouldShowToggle && (
+                  <button
+                    onClick={toggleExpanded}
+                    className="text-blue-500 mt-2 cursor-pointer hover:underline"
+                  >
+                    {isExpanded ? "Read less" : "Read more"}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
