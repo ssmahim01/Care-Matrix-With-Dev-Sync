@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import React, { lazy } from "react";
 import { Link } from "react-router";
 
@@ -71,38 +72,46 @@ const OurDepartments = () => {
       />
       {/* Main Container */}
       <div className="mt-6 grid gap-7 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-        {departments?.map((department) => (
-          <div
-            key={department?._id}
-            className="w-full h-full grid place-content-stretch shadow-[0px_4px_10px_#0E82FD50] hover:shadow-none z-0 bg-white rounded relative cursor-pointer group 
-            before:absolute before:top-0 hover:before:top-[10px] before:left-0 hover:before:left-[-10px] 
-            before:w-full before:h-full before:rounded before:bg-[#0E82FD20] before:transition-all before:duration-500 before:z-[-1] 
-            after:w-full after:h-full after:absolute after:top-0 hover:after:top-[20px] after:left-0 hover:after:left-[-20px] 
-            after:rounded after:bg-[#0E82FD10] after:z-[-2] after:transition-all after:duration-500"
+        {departments?.map((department, i) => (
+          <Link
+            key={i}
+            to={`/departments/${encodeURIComponent(department?.title)}`}
+            state={department?.title}
           >
-            {/*  image  */}
-            <img
-              src={department?.image}
-              alt="animated_card"
-              className="w-full h-[250px] rounded-t object-cover"
-            />
+            <div className="z-10 group relative cursor-pointer h-full w-full overflow-hidden rounded-xl bg-white transition-all duration-300 hover:translate-y-[-5px]">
+              {/* Card shadow effect */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-sky-100/50 to-blue-100/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-            {/*  contents  */}
-            <div className="p-[18px] pt-2.5 bg-white rounded-b">
-              <h3 className="text-[1.5rem] font-bold text-[#272727] tracking-wide">
-                {department?.title}
-              </h3>
-              <p className="text-[1rem] mt-1 font-[400] text-gray-600">
-                {department?.description}
-              </p>
-              <Link
-                to={`/departments/${department?.title}`}
-                state={department?.title}
-              >
-                <UnderLineButton text={"Read More..."} />
-              </Link>
+              {/* Image container with gradient overlay */}
+              <div className="relative h-[220px] w-full overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
+                <img
+                  src={department?.image || "/placeholder.svg"}
+                  alt={department?.title}
+                  width={500}
+                  height={300}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="relative z-20 p-5">
+                <h3 className="mb-2 text-xl font-bold text-gray-800 tracking-tight">
+                  {department?.title}
+                </h3>
+                <p className="mb-4 text-sm text-gray-600 line-clamp-3">
+                  {department?.description}
+                </p>
+                <span className="cursor-pointer group/link inline-flex items-center text-sm font-medium text-blue-600 transition-colors hover:text-blue-800">
+                  Read More
+                  <ArrowRight className="ml-1 mt-0.5 h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </span>
+              </div>
+
+              {/* Subtle border */}
+              <div className="absolute inset-0 rounded-xl border border-gray-200 shadow-sm" />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

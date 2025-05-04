@@ -632,7 +632,7 @@ const Navbar = () => {
                           }}
                           className="flex items-center gap-[5px] cursor-pointer rounded-md w-full py-1 px-2 text-[1rem] text-red-500 :::bg-red-100/50 hover:bg-red-200/50 duration-300"
                         >
-                          <BiLogOutCircle size={25} className="mt-[1.5px]" />
+                          <BiLogOutCircle size={25} className="mt-[1px]" />
                           Logout
                         </button>
                       </div>

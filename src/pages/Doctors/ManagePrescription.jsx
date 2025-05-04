@@ -1,5 +1,6 @@
 import { PrescriptionTable } from "@/components/ManagePrescription/PrescriptionTable";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import { File } from "lucide-react";
 
 function ManagePrescription() {
   return (
@@ -9,6 +10,7 @@ function ManagePrescription() {
         subtitle={
           "Review patient information and prescribe medication for approved patients."
         }
+        icon={File}
       />
 
       <PrescriptionTable />

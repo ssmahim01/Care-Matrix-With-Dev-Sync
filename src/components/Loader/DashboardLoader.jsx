@@ -1,8 +1,10 @@
+import DashboardMainLoader from "./DashboardMainLoader";
+
 const DashboardLoader = () => {
   return (
     <div className="flex flex- md:flex-row min-h-screen">
       {/* Sidebar Skeleton */}
-      <div className="hidden md:flex w-full md:w-64 bg-base-200 p-4 flex-col">
+      <div className="hidden md:flex w-full md:w-64 bg-gray-100 p-4 flex-col">
         <div className="space-y-4">
           {/* Header */}
           <div className="h-10 w-full skeleton bg-gray-200 p-2"></div>
@@ -71,7 +73,9 @@ const DashboardLoader = () => {
 
       {/* Main Content Skeleton */}
       <div className="flex-1 p-7 space-y-4 bg-white">
-        <div className="h-full w-full skeleton"></div>
+        <div className="h-full w-full skeleton bg-gray-50">
+        <DashboardMainLoader />
+        </div>
       </div>
     </div>
   );

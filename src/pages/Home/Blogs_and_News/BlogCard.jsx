@@ -3,9 +3,7 @@ import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { Link } from "react-router";
 
-const BlogCard = ({
-blog
-}) => {
+const BlogCard = ({ blog }) => {
   return (
     <div
       className="w-full h-full grid place-item-stretch shadow-[0px_4px_10px_#0E82FD50] hover:shadow-none z-0 bg-white rounded relative cursor-pointer group 

@@ -2,7 +2,7 @@ import DashboardLoader from "@/components/Loader/DashboardLoader";
 import { useAuthLoading, useAuthUser } from "@/redux/auth/authActions";
 import { Navigate } from "react-router";
 import useRole from "@/hooks/useRole";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 const ReceptionistRoute = ({ children }) => {
   const loading = useAuthLoading();
@@ -28,7 +28,10 @@ const ReceptionistRoute = ({ children }) => {
           : "/"
       }
     >
-      {toast.error("You're not allowed to visit receptionist routes!")}
+      {toast.error("You're not allowed to visit receptionist routes!", {
+        position: "top-right",
+        duration: 2000,
+      })}
     </Navigate>
   );
 };
