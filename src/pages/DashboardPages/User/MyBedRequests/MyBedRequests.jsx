@@ -1,15 +1,14 @@
+import { Card, CardContent } from "@/components/ui/card";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { useAuthUser } from "@/redux/auth/authActions";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { BedDouble } from "lucide-react";
 import { LuBedSingle } from "react-icons/lu";
-import Swal from "sweetalert2";
-import { useAuthUser } from "@/redux/auth/authActions";
+import { toast } from "sonner";
+import EmptyState from "../../PatientOverview/EmptyState";
 import BedBookingCard from "./BedBookingCard";
 import SkeletonBedBookingCard from "./SkeletonBookingCard";
-import { Card, CardContent } from "@/components/ui/card";
-import EmptyState from "../../PatientOverview/EmptyState";
-import { BedDouble } from "lucide-react";
 
 function MyBedRequests() {
   const axiosSecure = useAxiosSecure();
@@ -30,48 +29,39 @@ function MyBedRequests() {
   });
 
   // Handle bed deletion
-  const handleBedDelete = async (id, bedId) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "This action will permanently delete the bed booking!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it",
-      cancelButtonText: "No, cancel",
-    });
 
-    if (result.isConfirmed) {
-      try {
-        const { data } = await axiosSecure.delete(`/bed-booking/delete/${id}`);
-        if (data.deletedCount) {
-          //   change the bed status to available
-          await toast.promise(
-            axiosSecure.patch(`/beds/status/${bedId}`, { status: "available" }),
-            {
-              loading: "Updating bed status...",
-              success: <b>Bed Status Updated Successfully!</b>,
-              error: <b>Could not update bed status.</b>,
+  const handleBedDelete = (id, bedId) => {
+    toast("Are you sure you want to cancel this booking?", {
+      action: {
+        label: "Confirm",
+        onClick: async () => {
+          try {
+            const { data } = await axiosSecure.delete(
+              `/bed-booking/delete/${id}`
+            );
+            if (data.deletedCount) {
+              await axiosSecure.patch(`/beds/status/${bedId}`, {
+                status: "available",
+              });
+
+              refetch();
+              toast.success("Bed booking canceled successfully!", {
+                position: "top-right",
+              });
             }
-          );
-
-          refetch();
-          Swal.fire({
-            title: "Deleted!",
-            text: "Bed booking has been deleted successfully!",
-            icon: "success",
-          });
-        }
-      } catch (error) {
-        Swal.fire({
-          title: "Error!",
-          text: error.message || "Failed to delete the bed booking!",
-          icon: "error",
-          background: "#ffffff",
-          color: "#000000",
-          confirmButtonColor: "#ef4444",
-        });
-      }
-    }
+          } catch (error) {
+            toast.error("Failed to delete the bed booking!", {
+              description: error?.message,
+              position: "top-right",
+            });
+          }
+        },
+      },
+      cancel: {
+        label: "Cancel",
+      },
+      position: "top-right",
+    });
   };
 
   return (
@@ -87,7 +77,7 @@ function MyBedRequests() {
       <div className="space-y-4 my-6">
         {isLoading ? (
           [...Array(3)].map((_, i) => <SkeletonBedBookingCard key={i} />)
-        ) : bed_booking.length > 0 ? (
+        ) : bed_booking?.length > 0 ? (
           bed_booking?.map((booking, i) => (
             <BedBookingCard
               key={i}
@@ -103,7 +93,7 @@ function MyBedRequests() {
                 title="No Bed Bookings Yet"
                 description="You haven’t booked any beds yet. Find available hospital beds and manage your reservations here"
                 actionLabel="Book A Bed"
-                actionLink="/our-available-beds"
+                actionLink="/available-beds"
               />
             </CardContent>
           </Card>
