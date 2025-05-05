@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -45,11 +46,16 @@ const BedBookingCard = ({ booking, handleBedDelete }) => {
       <CardContent className="p-6">
         <div className="flex flex-row gap-3">
           <div className="h-24 w-28 sm:w-32 md:w-40">
-            <img
-              src={booking?.bedImg || "/placeholder.svg"}
-              alt={booking?.bedTitle}
-              className="w-full h-full object-cover rounded-lg"
-            />
+            <Avatar className="w-full h-full rounded-lg">
+              <AvatarImage
+                src={booking?.bedImg}
+                alt={booking?.bedTitle}
+                className="object-cover w-full h-full"
+              />
+              <AvatarFallback className="text-xs">
+                {booking?.bedTitle?.slice(0, 2).toUpperCase() || "BB"}
+              </AvatarFallback>
+            </Avatar>
           </div>
           <div className="flex w-full flex-1 justify-between items-start">
             <div>

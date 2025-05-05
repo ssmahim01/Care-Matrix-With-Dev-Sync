@@ -6,6 +6,10 @@ import { LuBedSingle } from "react-icons/lu";
 import Swal from "sweetalert2";
 import { useAuthUser } from "@/redux/auth/authActions";
 import BedBookingCard from "./BedBookingCard";
+import SkeletonBedBookingCard from "./SkeletonBookingCard";
+import { Card, CardContent } from "@/components/ui/card";
+import EmptyState from "../../PatientOverview/EmptyState";
+import { BedDouble } from "lucide-react";
 
 function MyBedRequests() {
   const axiosSecure = useAxiosSecure();
@@ -81,13 +85,29 @@ function MyBedRequests() {
       />
       {/* Bookings Card */}
       <div className="space-y-4 my-6">
-        {bed_booking?.map((booking, i) => (
-          <BedBookingCard
-            key={i}
-            booking={booking}
-            handleBedDelete={handleBedDelete}
-          />
-        ))}
+        {isLoading ? (
+          [...Array(3)].map((_, i) => <SkeletonBedBookingCard key={i} />)
+        ) : bed_booking.length > 0 ? (
+          bed_booking?.map((booking, i) => (
+            <BedBookingCard
+              key={i}
+              booking={booking}
+              handleBedDelete={handleBedDelete}
+            />
+          ))
+        ) : (
+          <Card className="mt-6 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
+            <CardContent>
+              <EmptyState
+                icon={BedDouble}
+                title="No Bed Bookings Yet"
+                description="You haven’t booked any beds yet. Find available hospital beds and manage your reservations here"
+                actionLabel="Book A Bed"
+                actionLink="/our-available-beds"
+              />
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
