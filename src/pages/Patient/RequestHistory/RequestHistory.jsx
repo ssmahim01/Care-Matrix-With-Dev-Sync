@@ -13,7 +13,7 @@ import RequestTableRow from "@/components/RequestTableRow/RequestTableRow";
 import { useRoleRequest } from "@/hooks/useRoleRequest";
 import { CopyX, History } from "lucide-react";
 import Swal from "sweetalert2";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { IoSearch } from "react-icons/io5";
 import axios from "axios";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
@@ -33,53 +33,62 @@ const RequestHistory = () => {
   };
 
   const handleCancelRequest = async (id) => {
-    setIsLoading(true);
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You will cancel this request!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, cancel!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const response = await axios.patch(
-          `${import.meta.env.VITE_API_URL}/user-requests/status/${id}`
-        );
-
-        if (response.status === 200) {
-          refetch();
-          setIsLoading(false);
-          toast.success("Status has been updated");
-        }
-      }
+    toast("Are you sure? You will cancel this request!", {
+      action: {
+        label: "Yes, Cancel!",
+        onClick: async () => {
+          try {
+            const response = await axios.patch(
+              `${import.meta.env.VITE_API_URL}/user-requests/status/${id}`
+            );
+            if (response.status === 200) {
+              refetch();
+              setIsLoading(false);
+              toast.success("Request Cancelled! Status has been updated", {
+                position: "top-right",
+              });
+            }
+          } catch (err) {
+            toast.error("Failed to cancelled the request", {
+              position: "top-right",
+            });
+          }
+        },
+      },
+      cancel: {
+        label: "Cancel",
+      },
+      position: "top-right",
     });
   };
 
   const handleDeleteRequest = async (id) => {
-    // setIsLoading(true);
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You cannot retrieve this request!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const response = await axios.delete(
-          `${import.meta.env.VITE_API_URL}/user-requests/${id}`
-        );
-        if (response.status === 200) {
-          refetch();
-          setIsLoading(false);
-          toast.success("Request has been deleted");
-        }
-      }
+    toast("Are You Sure? This action will permanently delete the request!", {
+      action: {
+        label: "Delete",
+        onClick: async () => {
+          try {
+            const response = await axios.delete(
+              `${import.meta.env.VITE_API_URL}/user-requests/${id}`
+            );
+            if (response.status === 200) {
+              refetch();
+              setIsLoading(false);
+              toast.success("Request deleted successfully!", {
+                position: "top-right",
+              });
+            }
+          } catch (err) {
+            toast.error("Failed to delete request", {
+              position: "top-right",
+            });
+          }
+        },
+      },
+      cancel: {
+        label: "Cancel",
+      },
+      position: "top-right",
     });
   };
 
