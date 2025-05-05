@@ -1,180 +1,215 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import useFavoriteDoctors from "@/hooks/useFavoriteDoctors";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { ClipboardPlus, MoreVertical, Trash } from "lucide-react";
+import { ClipboardPlus, MoreVertical, Star, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { BiDetail } from "react-icons/bi";
-import { FaStar } from "react-icons/fa";
 import { FaUserDoctor } from "react-icons/fa6";
-import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom"; // Make sure to use react-router-dom not react-router
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 const MyFavoriteDoctors = () => {
-    const [favoriteDoctors, refetch, isLoading] = useFavoriteDoctors();
-    const axiosSecure = useAxiosSecure();
-    const { user } = useSelector((state) => state.auth);
-    const navigate = useNavigate();
-    const [showSkeleton, setShowSkeleton] = useState(true);
+  const axiosSecure = useAxiosSecure();
+  const [favoriteDoctors, refetch, isLoading] = useFavoriteDoctors();
+  const [showSkeleton, setShowSkeleton] = useState(true);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowSkeleton(false);
-        }, 2000);
-        return () => clearTimeout(timer);
-    }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSkeleton(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
-    const handleRemove = (_id) => {
-        axiosSecure
-            .delete(`/favorite-doctors/${_id}`)
-            .then((res) => {
-                if (res?.data?.deletedCount > 0) {
-                    toast.success("Removed successfully!");
-                    refetch();
-                }
-            })
-            .catch(() => {
-                toast.error("Something went wrong! Please try again.");
-            });
-    };
+  const handleRemove = (_id) => {
+    axiosSecure
+      .delete(`/favorite-doctors/${_id}`)
+      .then((res) => {
+        if (res?.data?.deletedCount > 0) {
+          toast.success("Doctor Removed successfully!", {
+            position: "top-right",
+          });
+          refetch();
+        }
+      })
+      .catch(() => {
+        toast.error("Something went wrong! Please try again", {
+          position: "top-right",
+        });
+      });
+  };
 
-    return (
-        <div className="p-7 pt-0">
-            <DashboardPagesHeader
-                title={"Favorite Doctors"}
-                subtitle={"View your all favorite doctors"}
-                icon={FaUserDoctor}
-            />
-            <Table className="rounded-md border border-gray-300 mt-4">
-                <TableCaption className="mb-2">A list of your favorite doctors.</TableCaption>
-
-                <TableHeader>
-                    <TableRow className="bg-muted">
-                        <TableHead>Sl.</TableHead>
-                        <TableHead>Doctor</TableHead>
-                        <TableHead>Rating</TableHead>
-                        <TableHead>Experience</TableHead>
-                        <TableHead>Consultation Fee</TableHead>
-                        <TableHead className="text-right">Action</TableHead>
-                    </TableRow>
-                </TableHeader>
-
-                <TableBody>
-                    {isLoading || showSkeleton
-                        ? [...Array(6)].map((_, idx) => (
-                            <TableRow key={idx} className="animate-pulse">
-                                <TableCell>
-                                    <div className="skeleton h-6 w-6 rounded"></div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="flex gap-2 items-center">
-                                        <div className="skeleton w-10 h-10 rounded-lg"></div>
-                                        <div className="space-y-1">
-                                            <div className="skeleton h-4 w-24"></div>
-                                            <div className="skeleton h-3 w-20"></div>
-                                        </div>
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="skeleton h-4 w-10"></div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="skeleton h-4 w-20"></div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="skeleton h-4 w-12"></div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="skeleton h-4 w-8 ml-auto"></div>
-                                </TableCell>
-                            </TableRow>
-                        ))
-                        : favoriteDoctors?.map((doctor, index) => (
-                            <TableRow key={doctor._id}>
-                                <TableCell>{index + 1}</TableCell>
-                                <TableCell>
-                                    <div className="flex items-center gap-2">
-                                        <img
-                                            src={doctor.doctorInfo.image}
-                                            alt="Doctor"
-                                            className="w-10 h-10 object-cover rounded-lg"
-                                        />
-                                        <div>
-                                            <p className="font-semibold">{doctor.doctorInfo.name}</p>
-                                            <p className="text-muted-foreground text-sm">{doctor.doctorInfo.title}</p>
-                                        </div>
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="flex items-center gap-1 text-yellow-500">
-                                        <FaStar /> {doctor.doctorInfo.rating}
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
-                                        {doctor.doctorInfo.experience}
-                                    </span>
-                                </TableCell>
-                                <TableCell>{doctor.doctorInfo.consultation_fee}</TableCell>
-                                <TableCell className="text-right">
-                                    <div className="dropdown dropdown-end">
-                                        <div tabIndex={0} role="button" className="btn btn-sm btn-ghost">
-                                            <MoreVertical size={18} />
-                                        </div>
-                                        <ul
-                                            tabIndex={0}
-                                            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-                                        >
-                                            <li>
-                                                <Link
-                                                    to={`/doctor-details/${doctor.doctorInfo._id}`}
-                                                    state={doctor.doctorInfo._id}
-                                                >
-                                                    <div className="flex items-center gap-2">
-                                                        <BiDetail size={16} />
-                                                        <span>View Details</span>
-                                                    </div>
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    to={`/book-appointment/${doctor.doctorInfo.name}`}
-                                                    state={doctor.doctorInfo._id}
-                                                >
-                                                    <div className="flex items-center gap-2">
-                                                        <ClipboardPlus size={16} />
-                                                        <span>Book Appointment</span>
-                                                    </div>
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <button
-                                                    onClick={() => handleRemove(doctor._id)}
-                                                    className="flex items-center gap-2 text-red-500"
-                                                >
-                                                    <Trash size={16} />
-                                                    <span>Remove from Favorite</span>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                </TableBody>
-            </Table>
+  return (
+    <div className="px-5">
+      <DashboardPagesHeader
+        title={"Favorite Doctors"}
+        subtitle={
+          "Easily access and manage all your favorite doctors in one place"
+        }
+        icon={FaUserDoctor}
+      />
+      
+      {isLoading || showSkeleton ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(3)].map((_, index) => (
+            <Card key={index} className="w-full overflow-hidden animate-pulse">
+              <div className="h-32 bg-gray-200"></div>
+              <CardContent className="pt-14 px-6 pb-4">
+                <div className="absolute top-56">
+                  <div className="w-24 h-24 rounded-full bg-gray-300"></div>
+                </div>
+                <div className="h-6 bg-gray-300 rounded w-3/4 mt-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2 mt-2"></div>
+                <div className="flex gap-2 mt-3">
+                  <div className="h-5 bg-gray-200 rounded w-16"></div>
+                  <div className="h-5 bg-gray-200 rounded w-24"></div>
+                </div>
+                <div className="mt-4 flex justify-between">
+                  <div>
+                    <div className="h-4 bg-gray-200 rounded w-24"></div>
+                    <div className="h-5 bg-gray-300 rounded w-16 mt-1"></div>
+                  </div>
+                  <div>
+                    <div className="h-4 bg-gray-200 rounded w-24"></div>
+                    <div className="h-5 bg-gray-300 rounded w-20 mt-1"></div>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="bg-gray-50 px-6 py-3 pb-6 flex justify-between">
+                <div className="h-9 bg-gray-200 rounded w-28"></div>
+                <div className="h-9 bg-gray-300 rounded w-36"></div>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {favoriteDoctors.map((doctor) => (
+            <Card
+              key={doctor?._id}
+              className="w-full overflow-hidden hover:shadow-md transition-shadow"
+            >
+              <CardContent className="p-0">
+                <div className="relative">
+                  {/* Doctor image with gradient overlay */}
+                  <div className="h-32 bg-gradient-to-r from-blue-500 to-sky-500"></div>
+                  <div className="absolute -bottom-12 left-6">
+                    <img
+                      src={doctor?.doctorInfo.image || "/placeholder.svg"}
+                      alt={doctor?.doctorInfo.name}
+                      className="w-24 h-24 rounded-full border-4 border-white object-cover bg-white"
+                    />
+                  </div>
+                  <div className="absolute top-4 right-4">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="bg-white/20 hover:bg-white/30 rounded-full"
+                        >
+                          <MoreVertical className="h-5 w-5 text-white" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-56">
+                        <DropdownMenuItem asChild>
+                          <Link
+                            to={`/doctor-details/${doctor?.doctorInfo._id}`}
+                            state={doctor?.doctorInfo._id}
+                          >
+                            <BiDetail className="mr-2 h-4 w-4" />
+                            <span>View Details</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            to={`/book-appointment/${doctor?.doctorInfo.name}`}
+                            state={doctor?.doctorInfo.name}
+                          >
+                            <ClipboardPlus className="mr-2 h-4 w-4" />
+                            <span>Book Appointment</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleRemove(doctor?._id)}
+                          className="text-red-500 focus:text-red-500"
+                        >
+                          <Trash className="mr-2 h-4 w-4" />
+                          <span>Remove from Favorite</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
 
-    );
+                {/* Doctor info */}
+                <div className="pt-14 px-6 pb-4">
+                  <h3 className="text-xl font-bold mt-2">
+                    {doctor?.doctorInfo.name}
+                  </h3>
+                  <div>
+                    <p className="font-medium">
+                      <span className="font-normal text-muted-foreground">
+                        Consultation Fee:
+                      </span>{" "}
+                      ${doctor?.doctorInfo.consultation_fee}
+                    </p>
+                  </div>{" "}
+                  <p className="text-muted-foreground">
+                    {doctor?.doctorInfo.title}
+                  </p>
+                  <div className="flex items-center gap-2 mt-3">
+                    <div className="flex items-center text-yellow-500">
+                      <Star className="h-4 w-4 fill-yellow-500" />
+                      <span className="ml-1 font-medium">
+                        {doctor?.doctorInfo.rating}
+                      </span>
+                    </div>
+                    <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                    <Badge
+                      variant="outline"
+                      className="bg-blue-50 text-blue-700 hover:bg-blue-50"
+                    >
+                      {doctor?.doctorInfo.experience}
+                    </Badge>
+                  </div>
+                  <div className="mt-4 flex flex-col gap-3">
+                    <div>
+                      <p className="text-sm text-muted-foreground">
+                        Available on
+                      </p>
+                      <p className="font-semibold">
+                        {doctor?.doctorInfo.available_days.join(", ")}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+
+              <CardFooter className="bg-gray-50 px-6 py-4 flex justify-end">
+                <Button asChild>
+                  <Link
+                    to={`/book-appointment/${doctor?.doctorInfo.name}`}
+                    state={doctor?.doctorInfo.name}
+                  >
+                    Book Appointment
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default MyFavoriteDoctors;
