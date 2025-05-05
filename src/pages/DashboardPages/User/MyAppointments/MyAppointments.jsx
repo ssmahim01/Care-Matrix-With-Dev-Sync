@@ -44,10 +44,14 @@ const MyAppointments = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
+
   const [appointments, refetch, isLoading] = useMyAppointments(
     sortDate,
     search,
     category
+  );
+  const [isAllAppointments, setIsAllAppointments] = useState(
+    appointments.slice(0, 3)
   );
 
   const [showSkeleton, setShowSkeleton] = useState(true);
@@ -224,7 +228,7 @@ const MyAppointments = () => {
   };
 
   return (
-    <div className="p-7 pt-0">
+    <div className="px-5">
       <div className="flex flex-col md:flex-row justify-between">
         <DashboardPagesHeader
           title={"My Appointments"}
@@ -295,159 +299,190 @@ const MyAppointments = () => {
 
       {isLoading || showSkeleton ? (
         <div className="grid grid-cols-1 w-full gap-4">
-          {[...Array(4)].map((_, index) => (
+          {[...Array(3)].map((_, index) => (
             <CardSkeleton key={index} />
           ))}
         </div>
-      ) : appointments?.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4">
-          {appointments
-            ?.slice()
-            .reverse()
-            .map((appointment) => (
-              <Card
-                key={appointment?._id}
-                className={
-                  "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
-                }
-              >
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <User className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Patient:</span>
-                          <span className="text-sm">
-                            {appointment?.name || "N/A"}
-                          </span>
+      ) : isAllAppointments?.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 gap-4">
+            {isAllAppointments
+              ?.slice()
+              .reverse()
+              .map((appointment) => (
+                <Card
+                  key={appointment?._id}
+                  className={
+                    "border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+                  }
+                >
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <User className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">
+                              Patient:
+                            </span>
+                            <span className="text-sm">
+                              {appointment?.name || "N/A"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">Date:</span>
+                            <span className="text-sm">
+                              {" "}
+                              {appointment?.date &&
+                              isValid(new Date(appointment?.date))
+                                ? format(
+                                    new Date(appointment?.date),
+                                    "dd MMM yyyy"
+                                  )
+                                : "N/A"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Clock className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">Time:</span>
+                            <span className="text-sm">
+                              {appointment?.time || "N/A"}
+                            </span>
+                          </div>{" "}
+                          <div className="flex items-center gap-2">
+                            <Timer className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">Serial:</span>
+                            <span className="text-sm">
+                              {appointment?.serialNumber || "N/A"}
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Date:</span>
-                          <span className="text-sm">
-                            {" "}
-                            {appointment?.date &&
-                            isValid(new Date(appointment?.date))
-                              ? format(
-                                  new Date(appointment?.date),
-                                  "dd MMM yyyy"
-                                )
-                              : "N/A"}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Time:</span>
-                          <span className="text-sm">
-                            {appointment?.time || "N/A"}
-                          </span>
-                        </div>{" "}
-                        <div className="flex items-center gap-2">
-                          <Timer className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Serial:</span>
-                          <span className="text-sm">
-                            {appointment?.serialNumber || "N/A"}
-                          </span>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">Doctor:</span>
+                            <span className="text-sm">
+                              {appointment?.doctorName || "N/A"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <FileText className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">
+                              Specialty:
+                            </span>
+                            <span className="text-sm">
+                              {appointment?.doctorTitle || "N/A"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CreditCard className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm font-medium">Fee:</span>
+                            <span className="text-sm">
+                              $ {appointment?.consultationFee || "N/A"}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Users className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Doctor:</span>
-                          <span className="text-sm">
-                            {appointment?.doctorName || "N/A"}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <FileText className="h-4 w-4 text-muted-foreground" />
+                      <div className="pt-2 border-t flex justify-between">
+                        <div>
                           <span className="text-sm font-medium">
-                            Specialty:
+                            Reason for Visit:
                           </span>
-                          <span className="text-sm">
-                            {appointment?.doctorTitle || "N/A"}
-                          </span>
+                          <p className="text-sm mt-1">
+                            {appointment?.reason || "No reason provided"}
+                          </p>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <CreditCard className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Fee:</span>
-                          <span className="text-sm">
-                            $ {appointment?.consultationFee || "N/A"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="pt-2 border-t flex justify-between">
-                      <div>
-                        <span className="text-sm font-medium">
-                          Reason for Visit:
-                        </span>
-                        <p className="text-sm mt-1">
-                          {appointment?.reason || "No reason provided"}
-                        </p>
-                      </div>
-                      <div>
-                        <Badge
-                          className={
-                            appointment?.status === "Prescribed"
-                              ? "bg-sky-500 text-white shadow-sm"
-                              : "bg-white text-black shadow-sm border border-border"
-                          }
-                        >
-                          {appointment?.status}
-                        </Badge>
-                      </div>
-                    </div>
-                    <div className="flex justify-end items-end gap-2">
-                      {appointment.status === "Approved" && (
-                        <Button
-                          onClick={() => handleDetails(appointment)}
-                          className={"cursor-pointer"}
-                          variant="outline"
-                          size={"sm"}
-                        >
-                          View Details
-                        </Button>
-                      )}
-
-                      {appointment.status === "Approved" ? (
-                        // <Button
-                        //   onClick={() =>
-                        //     handleDeleteAppointment(appointment._id)
-                        //   }
-                        //   className={"cursor-pointer"}
-                        //   size={"sm"}
-                        // >
-                        //   Cancel Appointment
-                        // </Button>
-                        <></>
-                      ) : (
-                        <div className="flex flex-col-reverse md:flex-row items-end gap-2">
-                          <Button
-                            onClick={() => handleViewPrescription(appointment)}
-                            className={"cursor-pointer"}
-                            size={"sm"}
-                          >
-                            View Prescription
-                          </Button>
-                          <Button
-                            onClick={() => setReviewDialog(true)}
-                            size={"sm"}
-                            variant={"outline"}
+                        <div>
+                          <Badge
                             className={
-                              "cursor-pointer :::bg-blue-500 :::hover:bg-blue-600"
+                              appointment?.status === "Prescribed"
+                                ? "bg-sky-500 text-white shadow-sm"
+                                : "bg-white text-black shadow-sm border border-border"
                             }
                           >
-                            Review
-                          </Button>
+                            {appointment?.status}
+                          </Badge>
                         </div>
-                      )}
+                      </div>
+                      <div className="flex justify-end items-end gap-2">
+                        {appointment.status === "Approved" && (
+                          <Button
+                            onClick={() => handleDetails(appointment)}
+                            className={"cursor-pointer"}
+                            variant="outline"
+                            size={"sm"}
+                          >
+                            View Details
+                          </Button>
+                        )}
+
+                        {appointment.status === "Approved" ? (
+                          // <Button
+                          //   onClick={() =>
+                          //     handleDeleteAppointment(appointment._id)
+                          //   }
+                          //   className={"cursor-pointer"}
+                          //   size={"sm"}
+                          // >
+                          //   Cancel Appointment
+                          // </Button>
+                          <></>
+                        ) : (
+                          <div className="flex flex-col-reverse md:flex-row items-end gap-2">
+                            <Button
+                              onClick={() =>
+                                handleViewPrescription(appointment)
+                              }
+                              className={"cursor-pointer"}
+                              size={"sm"}
+                            >
+                              View Prescription
+                            </Button>
+                            <Button
+                              onClick={() => setReviewDialog(true)}
+                              size={"sm"}
+                              variant={"outline"}
+                              className={
+                                "cursor-pointer :::bg-blue-500 :::hover:bg-blue-600"
+                              }
+                            >
+                              Review
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-        </div>
+                  </CardContent>
+                </Card>
+              ))}
+          </div>
+          <div>
+            {isAllAppointments.length > 2 && (
+              <div className="mt-4 flex justify-end">
+                {isAllAppointments.length === 3 ? (
+                  <Button
+                    onClick={() => setIsAllAppointments(appointments)}
+                    className={"cursor-pointer flex items-center gap-2"}
+                  >
+                    <ClipboardPlus />
+                    View Past Appointments
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() =>
+                      setIsAllAppointments(appointments.slice(0, 3))
+                    }
+                    className={"cursor-pointer flex items-center gap-2"}
+                  >
+                    <ClipboardPlus />
+                    View Recent Appointments
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+        </>
       ) : (
         <Card
           className={
