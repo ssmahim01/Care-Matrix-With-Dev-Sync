@@ -59,7 +59,7 @@ const MyFavoriteDoctors = () => {
       />
 
       {isLoading || showSkeleton ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {[...Array(3)].map((_, index) => (
             <Card key={index} className="w-full overflow-hidden animate-pulse">
               <div className="h-32 bg-gray-200"></div>
@@ -103,7 +103,7 @@ const MyFavoriteDoctors = () => {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {favoriteDoctors?.map((doctor) => (
             <Card
               key={doctor?._id}

@@ -8,6 +8,7 @@ const useDoctors = (search, selectedSort ) => {
     data: doctors = [],
     isPending,
     isLoading,
+    refetch
   } = useQuery({
     queryKey: ["doctors", search, selectedSort],
     queryFn: async () => {
@@ -18,7 +19,7 @@ const useDoctors = (search, selectedSort ) => {
     },
   });
 
-  return [doctors, isLoading];
+  return [doctors, isLoading, refetch];
 };
 
 export default useDoctors;

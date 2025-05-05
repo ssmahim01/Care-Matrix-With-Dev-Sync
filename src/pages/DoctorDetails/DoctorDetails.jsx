@@ -20,7 +20,7 @@ const DoctorDetails = () => {
     const { user } = useSelector((state) => state.auth);
       const [search, setSearch] = useState("")
       const [selectedSort, setSelectedSort] = useState("")
-    const [doctors] = useDoctors(search, selectedSort);
+    const [doctors, , refetch] = useDoctors(search, selectedSort);
     const axiosSecure = useAxiosSecure();
     const location = useLocation();
 
@@ -52,6 +52,7 @@ const DoctorDetails = () => {
         };
         axiosSecure.post('/favorite-doctors', info)
             .then(res => {
+                refetch();
                 if (res?.data?.insertedId) {
                     toast.success(`${doctorInfo?.name} is added to your favorite list!`, {
         position: "top-right",
