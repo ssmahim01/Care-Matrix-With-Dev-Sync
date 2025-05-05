@@ -8,7 +8,7 @@ import { Rating } from '@smastrom/react-rating';
 import '@smastrom/react-rating/style.css';
 import { useSelector } from 'react-redux';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { RiGroupLine } from 'react-icons/ri';
 import { HiOutlineCheckBadge } from 'react-icons/hi2';
 import { IoLocationOutline } from 'react-icons/io5';
@@ -53,16 +53,32 @@ const DoctorDetails = () => {
         axiosSecure.post('/favorite-doctors', info)
             .then(res => {
                 if (res?.data?.insertedId) {
-                    toast.success(`${doctorInfo?.name} is added to your favorite list!`);
+                    toast.success(`${doctorInfo?.name} is added to your favorite list!`, {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
+        },
+      });
                 }
-                console.log(res);
             })
             .catch(err => {
-                console.log("err", err.response.data.message);
                 if(err?.response?.data?.message === "Doctor already in favorites"){
-                    toast.error("Doctor already in favorites.");
+                    toast.error("Doctor already exist in favorites", {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
+        },
+      });
                 }else{
-                    toast.error("Something went wrong! Please try again.");
+                    toast.error("Something went wrong! Please try again", {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
+        },
+      });
                 }
             });
     };

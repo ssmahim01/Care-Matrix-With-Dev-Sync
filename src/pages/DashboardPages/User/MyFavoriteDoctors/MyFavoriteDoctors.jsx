@@ -83,8 +83,7 @@ const MyFavoriteDoctors = () => {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="bg-gray-50 px-6 py-3 pb-6 flex justify-between">
-                <div className="h-9 bg-gray-200 rounded w-28"></div>
+              <CardFooter className="bg-gray-50 px-6 py-3 pb-6 flex justify-end">
                 <div className="h-9 bg-gray-300 rounded w-36"></div>
               </CardFooter>
             </Card>
@@ -195,7 +194,7 @@ const MyFavoriteDoctors = () => {
               </CardContent>
 
               <CardFooter className="bg-gray-50 px-6 py-4 flex justify-end">
-                <Button asChild>
+                <Button asChild variant={"outline"}>
                   <Link
                     to={`/book-appointment/${doctor?.doctorInfo.name}`}
                     state={doctor?.doctorInfo.name}
