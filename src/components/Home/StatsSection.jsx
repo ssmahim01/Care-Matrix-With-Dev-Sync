@@ -1,3 +1,4 @@
+import { Count } from "@/pages/Home/Clinic_and_Specialties/Counter";
 import { Award, Heart } from "lucide-react";
 
 const StatsSection = () => {
@@ -13,7 +14,9 @@ const StatsSection = () => {
           />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-wide">348</h1>
+          <h1 className="text-3xl font-bold text-white tracking-wide">
+            <Count number={348} />
+          </h1>
           <h3 className="text-lg font-semibold text-white tracking-wide">
             Medical Experts
           </h3>
@@ -29,7 +32,9 @@ const StatsSection = () => {
           />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-wide">123</h1>
+          <h1 className="text-3xl font-bold text-white tracking-wide">
+            <Count number={123} />{" "}
+          </h1>
           <h3 className="text-lg font-semibold text-white tracking-wide">
             Hospital Rooms
           </h3>
@@ -41,7 +46,9 @@ const StatsSection = () => {
           <Heart color="#fff" size={70} />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-wide">5230</h1>
+          <h1 className="text-3xl font-bold text-white tracking-wide">
+            <Count number={5230} />{" "}
+          </h1>
           <h3 className="text-lg font-semibold text-white tracking-wide">
             Happy Patient
           </h3>
@@ -53,7 +60,9 @@ const StatsSection = () => {
           <Award color="#fff" size={70} />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-wide">234</h1>
+          <h1 className="text-3xl font-bold text-white tracking-wide">
+            <Count number={234} />
+          </h1>
           <h3 className="text-lg font-semibold text-white tracking-wide">
             Award Won
           </h3>

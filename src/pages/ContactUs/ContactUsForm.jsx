@@ -4,8 +4,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAxiosPublic } from "@/hooks/useAxiosPublic";
 import { useAuthUser } from "@/redux/auth/authActions";
 import UnderLineButton from "@/shared/Section/UnderLineButton";
-import toast from "react-hot-toast";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const ContactUsForm = () => {
   const user = useAuthUser();
@@ -19,13 +19,26 @@ const ContactUsForm = () => {
     e.preventDefault();
 
     if (!user) {
-      return toast.error("You Must Be Login To Send Message!");
+      return toast.error("You must be logged in to send a message!", {
+        position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
+        },
+      });
     }
 
     try {
       if (message.length > 350) {
         return toast.error(
-          "Your message is too long, Please keep it under 350 characters!"
+          "Your message is too long. Please keep it under 350 characters!",
+          {
+            position: "top-right",
+            duration: 2000,
+            style: {
+              marginTop: "35px",
+            },
+          }
         );
       }
 
@@ -36,20 +49,30 @@ const ContactUsForm = () => {
         message,
       };
 
-      const { data } = await toast.promise(
-        axiosPublic.post(`/contact`, formData),
+      await toast.promise(axiosPublic.post(`/contact`, formData), {
+        loading: "Sending your message...",
+        success: "Your message was sent successfully!",
+        error: "An error occurred while sending your message.",
+        position: "top-right",
+        duration: 2000,
+        style: {
+          marginTop: "35px",
+        },
+      });
+
+      setPhoneNumber(null);
+      setMessage("");
+    } catch (error) {
+      toast.error(
+        error?.message || "Error occurred while sending the message.",
         {
-          loading: "Sending Your Message...",
-          success: "Your Message Was Sent Successfully!",
+          position: "top-right",
+          duration: 2000,
+          style: {
+            marginTop: "35px",
+          },
         }
       );
-
-      if (data.insertedId) {
-        setPhoneNumber(null);
-        setMessage("");
-      }
-    } catch (error) {
-      toast.error(error?.message || "Error Caught While Sending Message");
     }
   };
 
@@ -105,6 +128,7 @@ const ContactUsForm = () => {
           required
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          className={"resize-none"}
         />
       </div>
       {/* Submit Button */}
