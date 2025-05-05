@@ -10,12 +10,13 @@ import {
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import useFavoriteDoctors from "@/hooks/useFavoriteDoctors";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import { ClipboardPlus, MoreVertical, Star, Trash } from "lucide-react";
+import { ClipboardPlus, Heart, MoreVertical, Star, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { BiDetail } from "react-icons/bi";
 import { FaUserDoctor } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import EmptyState from "../../PatientOverview/EmptyState";
 
 const MyFavoriteDoctors = () => {
   const axiosSecure = useAxiosSecure();
@@ -56,9 +57,9 @@ const MyFavoriteDoctors = () => {
         }
         icon={FaUserDoctor}
       />
-      
+
       {isLoading || showSkeleton ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {[...Array(3)].map((_, index) => (
             <Card key={index} className="w-full overflow-hidden animate-pulse">
               <div className="h-32 bg-gray-200"></div>
@@ -89,9 +90,21 @@ const MyFavoriteDoctors = () => {
             </Card>
           ))}
         </div>
+      ) : favoriteDoctors.length === 0 ? (
+        <Card className="mt-6 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
+          <CardContent>
+            <EmptyState
+              icon={Heart}
+              title="No Favorite Doctors"
+              description="You haven’t added any doctors to your favorites yet. Browse and add doctors to easily find them later."
+              actionLabel="Browse Doctors"
+              actionLink="/doctors"
+            />
+          </CardContent>
+        </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {favoriteDoctors.map((doctor) => (
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          {favoriteDoctors?.map((doctor) => (
             <Card
               key={doctor?._id}
               className="w-full overflow-hidden hover:shadow-md transition-shadow"
