@@ -1,22 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  Calendar,
-  CalendarPlus,
-  ClipboardPlus,
-  Clock,
-  CreditCard,
-  FileText,
-  MoreVertical,
-  Trash,
-  User,
-  Users,
-} from "lucide-react";
-import { BiDetail } from "react-icons/bi";
-import { FaCircle } from "react-icons/fa";
-import useMyAppointments from "@/hooks/useMyAppointments";
-import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
-import Swal from "sweetalert2";
-import useAxiosSecure from "@/hooks/useAxiosSecure";
+import AppointmentDetailsModal from "@/components/Modal/AppointmentDetailsModal ";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -24,37 +7,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import AppointmentDetailsModal from "@/components/Modal/AppointmentDetailsModal ";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import useMyAppointments from "@/hooks/useMyAppointments";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
+import {
+  Calendar,
+  CalendarPlus,
+  ClipboardPlus,
+  Clock,
+  CreditCard,
+  FileText,
+  Timer,
+  User,
+  Users,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { FileDown } from "lucide-react";
 import { PrescriptionViewModal } from "@/components/ManagePrescription/PrescriptionViewModal";
-import toast from "react-hot-toast";
-import { IoIosSearch } from "react-icons/io";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router";
-import EmptyState from "../../PatientOverview/EmptyState";
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import AddReviewAppointment from "./AddReviewAppointment";
-import { MdReviews } from "react-icons/md";
 import { useAuthUser } from "@/redux/auth/authActions";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { IoIosSearch } from "react-icons/io";
+import EmptyState from "../../PatientOverview/EmptyState";
+import AddReviewAppointment from "./AddReviewAppointment";
+import { format, isValid } from "date-fns";
 
 const MyAppointments = () => {
+  const user = useAuthUser();
+  const axiosSecure = useAxiosSecure();
+
   const [sortDate, setSortDate] = useState("");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
@@ -64,18 +49,18 @@ const MyAppointments = () => {
     search,
     category
   );
-  const axiosSecure = useAxiosSecure();
+
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [reviewDialog, setReviewDialog] = useState(false);
   const [newReview, setNewReview] = useState({
     rating: 5,
   });
-  const user = useAuthUser();
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [isPrescriptionViewModalOpen, setIsPrescriptionViewModalOpen] =
     useState(false);
+
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedPrescription, setSelectedPrescription] = useState(null);
 
@@ -122,11 +107,9 @@ const MyAppointments = () => {
   };
 
   const handleSortByDate = (value) => {
-    // console.log("sort by ", value);
     setSortDate(value);
   };
 
-  //   console.log("Sort by ", sortDate);
   const handleViewPrescription = async (appointment) => {
     setSelectedPatient(appointment);
     try {
@@ -195,6 +178,7 @@ const MyAppointments = () => {
       </Card>
     );
   };
+
   const handleSubmitReview = async (e) => {
     e.preventDefault();
 
@@ -310,13 +294,13 @@ const MyAppointments = () => {
       </div>
 
       {isLoading || showSkeleton ? (
-        <div className="grid grid-cols-1 xl:grid-cols-2 w-full gap-4">
-          {[...Array(6)].map((_, index) => (
+        <div className="grid grid-cols-1 w-full gap-4">
+          {[...Array(4)].map((_, index) => (
             <CardSkeleton key={index} />
           ))}
         </div>
       ) : appointments?.length > 0 ? (
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           {appointments
             ?.slice()
             .reverse()
@@ -341,13 +325,29 @@ const MyAppointments = () => {
                         <div className="flex items-center gap-2">
                           <Calendar className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm font-medium">Date:</span>
-                          <span className="text-sm">{appointment?.date}</span>
+                          <span className="text-sm">
+                            {" "}
+                            {appointment?.date &&
+                            isValid(new Date(appointment?.date))
+                              ? format(
+                                  new Date(appointment?.date),
+                                  "dd MMM yyyy"
+                                )
+                              : "N/A"}
+                          </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm font-medium">Time:</span>
                           <span className="text-sm">
                             {appointment?.time || "N/A"}
+                          </span>
+                        </div>{" "}
+                        <div className="flex items-center gap-2">
+                          <Timer className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-sm font-medium">Serial:</span>
+                          <span className="text-sm">
+                            {appointment?.serialNumber || "N/A"}
                           </span>
                         </div>
                       </div>
@@ -372,7 +372,7 @@ const MyAppointments = () => {
                           <CreditCard className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm font-medium">Fee:</span>
                           <span className="text-sm">
-                            {appointment?.consultationFee || "N/A"}
+                            $ {appointment?.consultationFee || "N/A"}
                           </span>
                         </div>
                       </div>
@@ -390,8 +390,8 @@ const MyAppointments = () => {
                         <Badge
                           className={
                             appointment?.status === "Prescribed"
-                              ? "bg-blue-500 text-white shadow-sm"
-                              : "bg-white text-black shadow-sm border"
+                              ? "bg-sky-500 text-white shadow-sm"
+                              : "bg-white text-black shadow-sm border border-border"
                           }
                         >
                           {appointment?.status}
@@ -399,42 +399,44 @@ const MyAppointments = () => {
                       </div>
                     </div>
                     <div className="flex justify-end items-end gap-2">
-                      <Button
-                        onClick={() => handleDetails(appointment)}
-                        className={"cursor-pointer"}
-                        variant="outline"
-                        size={"sm"}
-                      >
-                        View Details
-                      </Button>
+                      {appointment.status === "Approved" && (
+                        <Button
+                          onClick={() => handleDetails(appointment)}
+                          className={"cursor-pointer"}
+                          variant="outline"
+                          size={"sm"}
+                        >
+                          View Details
+                        </Button>
+                      )}
 
                       {appointment.status === "Approved" ? (
-                        <Button
-                          onClick={() =>
-                            handleDeleteAppointment(appointment._id)
-                          }
-                          className={"cursor-pointer"}
-                          size={"sm"}
-
-                        >
-                          Cancel Appointment
-                        </Button>
+                        // <Button
+                        //   onClick={() =>
+                        //     handleDeleteAppointment(appointment._id)
+                        //   }
+                        //   className={"cursor-pointer"}
+                        //   size={"sm"}
+                        // >
+                        //   Cancel Appointment
+                        // </Button>
+                        <></>
                       ) : (
                         <div className="flex flex-col-reverse md:flex-row items-end gap-2">
                           <Button
                             onClick={() => handleViewPrescription(appointment)}
-                            className={
-                              "cursor-pointer"
-                            }
+                            className={"cursor-pointer"}
                             size={"sm"}
-
                           >
                             View Prescription
                           </Button>
                           <Button
                             onClick={() => setReviewDialog(true)}
                             size={"sm"}
-                            className={"cursor-pointer  bg-blue-500 hover:bg-blue-600"}
+                            variant={"outline"}
+                            className={
+                              "cursor-pointer :::bg-blue-500 :::hover:bg-blue-600"
+                            }
                           >
                             Review
                           </Button>
@@ -447,13 +449,22 @@ const MyAppointments = () => {
             ))}
         </div>
       ) : (
-        <EmptyState
-          icon={CalendarPlus}
-          title="No Appointments Yet"
-          description="You don't have any scheduled appointments. Book a consultation with one of our specialists."
-          actionLabel="Book An Appointment"
-          actionLink="/doctors"
-        />
+        <Card
+          className={
+            "mt-6 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
+          }
+        >
+          <CardContent>
+            {" "}
+            <EmptyState
+              icon={CalendarPlus}
+              title="No Appointments Yet"
+              description="You don't have any scheduled appointments. Book a consultation with one of our specialists."
+              actionLabel="Book An Appointment"
+              actionLink="/doctors"
+            />{" "}
+          </CardContent>
+        </Card>
       )}
 
       {/* Modal */}
