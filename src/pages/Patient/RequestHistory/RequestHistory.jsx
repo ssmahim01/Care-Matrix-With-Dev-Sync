@@ -59,7 +59,7 @@ const RequestHistory = () => {
   };
 
   const handleDeleteRequest = async (id) => {
-    setIsLoading(true);
+    // setIsLoading(true);
 
     Swal.fire({
       title: "Are you sure?",
@@ -207,7 +207,7 @@ const RequestHistory = () => {
               icon={History}
               title="No Request History"
               description="No requests found. Your future role upgrade submissions will show up here"
-              actionLabel="Make A Request"
+              actionLabel="Make Request"
               actionLink="/dashboard/patient/request-form"
             />
           </CardContent>
