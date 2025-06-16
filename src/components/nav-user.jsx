@@ -22,7 +22,7 @@ import { NavLink, useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export function NavUser() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading = useAuthLoading();
   const user = useAuthUser();
@@ -32,7 +32,7 @@ export function NavUser() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             {loading ? (
               <SidebarMenuButton
