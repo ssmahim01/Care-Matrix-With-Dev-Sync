@@ -21,6 +21,8 @@ import { format } from "date-fns";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import UsersMessage from "./UsersMessage";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 const ChatBox = ({
   selectedPartner,
@@ -40,6 +42,19 @@ const ChatBox = ({
   currentUser,
   userEmail,
 }) => {
+  // Create a ref for the messages container
+  const messagesEndRef = useRef(null);
+
+  // Scroll to the bottom when messages change or component mounts
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTo({
+        top: messagesEndRef.current.scrollHeight,
+        behavior: "smooth", // Smooth scrolling
+      });
+    }
+  }, [messages]); // Trigger when messages array changes
+
   return (
     <div className="flex-1 flex flex-col h-[640px]">
       {selectedPartner ? (
@@ -137,7 +152,10 @@ const ChatBox = ({
             </DropdownMenu>
           </div>
 
-          <div className="flex-1 lg:py-4 py-8 px-4 overflow-y-auto">
+          <div
+            ref={messagesEndRef}
+            className="flex-1 lg:py-4 py-8 px-4 overflow-y-auto"
+          >
             {loadingMessages || loadingUser ? (
               <div className="text-center text-gray-500">
                 Loading messages...
