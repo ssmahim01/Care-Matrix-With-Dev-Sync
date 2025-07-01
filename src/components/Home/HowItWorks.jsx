@@ -159,16 +159,16 @@ const HowItWorks = () => {
                   {services[activeStep].icon}
                 </div>
                 <div>
-                  <span className="text-[#0E82FD] font-bold">
+                  <span className="text-sm md:text-base text-[#0E82FD] font-bold">
                     Step {activeStep + 1}/6
                   </span>
-                  <h3 className="text-2xl font-bold">
+                  <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
                     {services[activeStep].title}
                   </h3>
                 </div>
               </div>
 
-              <p className="text-gray-700 text-lg mb-6">
+              <p className="text-gray-700 md:text-sm lg:text-lg mb-6 text-[13.5px]">
                 {services[activeStep].detailedDescription}
               </p>
 
@@ -178,7 +178,7 @@ const HowItWorks = () => {
                   {[1, 2, 3].map((item) => (
                     <li key={item} className="flex items-start gap-2">
                       <CheckCircle2 className="h-5 w-5 text-[#0E82FD] mt-0.3 flex-shrink-0" />
-                      <span className="text-gray-700">
+                      <span className="text-gray-700 md:text-sm lg:text-lg text-xs">
                         {activeStep === 0 &&
                           item === 1 &&
                           "Find specialists based on your specific health needs"}
@@ -257,14 +257,14 @@ const HowItWorks = () => {
               className="relative rounded-2xl overflow-hidden shadow-lg aspect-video"
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-[#0E82FD]/80 to-blue-400/50 z-10 flex items-center justify-center">
-                <div className="text-white p-8 text-center">
+                <div className="text-white p-2 md:p-8 text-center">
                   <div className="flex justify-center mb-6 text-white">
                     {services[activeStep].icon}
                   </div>
-                  <h3 className="text-3xl font-bold mb-4">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4">
                     {services[activeStep].title}
                   </h3>
-                  <p className="text-lg font-medium md:px-4">
+                  <p className="text-xs md:text-sm lg:text-lg font-medium md:px-4">
                     {services[activeStep].description}
                   </p>
                 </div>

@@ -15,6 +15,8 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const Login = () => {
   const user = useAuthUser();
@@ -203,16 +205,11 @@ const Login = () => {
             {/* Email input */}
             <div>
               {/* Label */}
-              <label
-                htmlFor="email"
-                className="text-[16px] text-text font-[600]"
-              >
-                Email
-              </label>
+              <Label htmlFor="email">Email</Label>
               {/* Input with icon */}
               <div className="w-full mt-2 relative">
-                <MdOutlineMail className=" absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-                <input
+                <MdOutlineMail className=" absolute top-[7px] left-3 text-[1.5rem] text-[#777777]" />
+                <Input
                   type="email"
                   name="email"
                   id="email"
@@ -220,40 +217,35 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email address"
-                  className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
+                  className="peer border-blue-200 border rounded-md outline-none pl-11 pr-5 w-full focus:ring ring-blue-200 transition-colors duration-300"
                 />
               </div>
             </div>
             {/* Password input */}
             <div>
               {/* Label */}
-              <label
-                htmlFor="password"
-                className="text-[16px] text-text font-[600]"
-              >
-                Password
-              </label>
+              <Label htmlFor="password">Password</Label>
               {/* Input with icon */}
               <div className="w-full mt-2 relative">
-                <RiLockPasswordLine className="absolute top-3.5 left-3 text-[1.5rem] text-[#777777]" />
-                <input
+                <RiLockPasswordLine className="absolute top-[6.5px] left-3 text-[1.5rem] text-[#777777]" />
+                <Input
                   type={isEyeOpen ? "text" : "password"}
                   id="password"
                   name="password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="peer border-blue-200 border rounded-md outline-none pl-11 pr-12 py-3 w-full focus:ring ring-blue-200 transition-colors duration-300"
+                  className="peer border-blue-200 border rounded-md outline-none pl-11 pr-12 w-full focus:ring ring-blue-200 transition-colors duration-300"
                 />
 
                 {isEyeOpen ? (
                   <IoEyeOutline
-                    className="absolute top-3.5 right-3 text-[1.5rem] text-[#777777] cursor-pointer"
+                    className="absolute top-[6.5px] right-3 text-[1.5rem] text-[#777777] cursor-pointer"
                     onClick={() => setIsEyeOpen(false)}
                   />
                 ) : (
                   <IoEyeOffOutline
-                    className="absolute top-3.5 right-3 text-[1.5rem] text-[#777777] cursor-pointer"
+                    className="absolute top-[6.5px] right-3 text-[1.5rem] text-[#777777] cursor-pointer"
                     onClick={() => setIsEyeOpen(true)}
                   />
                 )}

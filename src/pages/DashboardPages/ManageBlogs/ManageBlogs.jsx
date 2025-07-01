@@ -8,53 +8,48 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 const ManageBlogs = () => {
-    const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
-    const { data: blogs = [], isLoading, refetch } = useQuery({
-      queryKey: ["blogs"],
-      queryFn: async () => {
-        const { data } = await axiosSecure.get("/blogs");
-        return data;
-      },
-    });
+  const {
+    data: blogs = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["blogs"],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get("/blogs");
+      return data;
+    },
+  });
 
   return (
-    <div className="px-7">
-      <div className="flex flex-col sm:flex-row items-center justify-between">
-      <DashboardPagesHeader
-        title={"Manage Blogs"}
-        subtitle={"Easily add or manage Blogs and News"}
-        icon={Newspaper}
-      />
-      {/* Add Blog Form */}
-      <div className="">
-        <Button
-          disabled={isFormOpen}
-          onClick={() => setIsFormOpen(!isFormOpen)}
-          className={"cursor-pointer"}
-        >
-          Add New Blog
-        </Button>
-      </div>
+    <div className="px-5">
+      <div className=":::flex :::flex-col :::sm:flex-row :::items-center :::justify-between">
+        <DashboardPagesHeader
+          title={"Manage Blogs"}
+          subtitle={"Easily add or manage Blogs and News"}
+          icon={Newspaper}
+        />
+        {/* Add Blog Form */}
+        <div className="flex justify-end mb-6">
+          <Button
+            disabled={isFormOpen}
+            onClick={() => setIsFormOpen(!isFormOpen)}
+            className={"cursor-pointer"}
+          >
+            Add New Blog
+          </Button>
+        </div>
       </div>
       {/* Assign User Form */}
       {isFormOpen && (
         <div className={`${isFormOpen ? "visible" : "hidden"} mt-4`}>
-          <AddBlogForm
-            refetch={refetch}
-            setIsFormOpen={setIsFormOpen}
-          />
+          <AddBlogForm refetch={refetch} setIsFormOpen={setIsFormOpen} />
         </div>
       )}
-        {/* Blog Table */}
-        <ShowBlogTable
-            blogs={blogs}
-            isLoading={isLoading}
-            refetch={refetch}
-        />
-
-     
+      {/* Blog Table */}
+      <ShowBlogTable blogs={blogs} isLoading={isLoading} refetch={refetch} />
     </div>
   );
 };
