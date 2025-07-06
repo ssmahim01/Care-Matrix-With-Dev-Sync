@@ -50,9 +50,13 @@ const MyAppointments = () => {
     search,
     category
   );
-  const [isAllAppointments, setIsAllAppointments] = useState(
-    appointments.slice(0, 3)
-  );
+  const [isAllAppointments, setIsAllAppointments] = useState([]);
+
+  useEffect(() => {
+    if (appointments?.length) {
+      setIsAllAppointments(appointments.slice(0, 3));
+    }
+  }, [appointments]);
 
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [reviewDialog, setReviewDialog] = useState(false);
