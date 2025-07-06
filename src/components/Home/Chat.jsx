@@ -31,15 +31,21 @@ const Chat = () => {
           <div className="flex gap-6 mt-4">
             <div className="flex flex-col items-center">
               <FaUserMd className="lg:text-3xl text-2xl text-cyan-500" />
-              <span className="text-sm mt-1 font-medium text-gray-700">Doctor</span>
+              <span className="text-sm mt-1 font-medium text-gray-700">
+                Doctor
+              </span>
             </div>
             <div className="flex flex-col items-center">
               <FaPills className="lg:text-3xl text-2xl text-rose-400" />
-              <span className="text-sm mt-1 font-medium text-gray-700">Pharmacist</span>
+              <span className="text-sm mt-1 font-medium text-gray-700">
+                Pharmacist
+              </span>
             </div>
             <div className="flex flex-col items-center">
               <FaUser className="lg:text-3xl text-2xl" />
-              <span className="text-sm mt-1 font-medium text-gray-700">Patient</span>
+              <span className="text-sm mt-1 font-medium text-gray-700">
+                Patient
+              </span>
             </div>
           </div>
           {(role === "patient" && "/dashboard/patient/patient-chat") ||
