@@ -13,7 +13,7 @@ import RequestTableRow from "@/components/RequestTableRow/RequestTableRow";
 import { useRoleRequest } from "@/hooks/useRoleRequest";
 import { CopyX, History } from "lucide-react";
 import Swal from "sweetalert2";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { IoSearch } from "react-icons/io5";
 import axios from "axios";
 import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
@@ -33,53 +33,62 @@ const RequestHistory = () => {
   };
 
   const handleCancelRequest = async (id) => {
-    setIsLoading(true);
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You will cancel this request!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, cancel!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const response = await axios.patch(
-          `${import.meta.env.VITE_API_URL}/user-requests/status/${id}`
-        );
-
-        if (response.status === 200) {
-          refetch();
-          setIsLoading(false);
-          toast.success("Status has been updated");
-        }
-      }
+    toast("Are you sure? You will cancel this request!", {
+      action: {
+        label: "Yes, Cancel!",
+        onClick: async () => {
+          try {
+            const response = await axios.patch(
+              `${import.meta.env.VITE_API_URL}/user-requests/status/${id}`
+            );
+            if (response.status === 200) {
+              refetch();
+              setIsLoading(false);
+              toast.success("Request Cancelled! Status has been updated", {
+                position: "top-right",
+              });
+            }
+          } catch (err) {
+            toast.error("Failed to cancelled the request", {
+              position: "top-right",
+            });
+          }
+        },
+      },
+      cancel: {
+        label: "Cancel",
+      },
+      position: "top-right",
     });
   };
 
   const handleDeleteRequest = async (id) => {
-    setIsLoading(true);
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You cannot retrieve this request!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const response = await axios.delete(
-          `${import.meta.env.VITE_API_URL}/user-requests/${id}`
-        );
-        if (response.status === 200) {
-          refetch();
-          setIsLoading(false);
-          toast.success("Request has been deleted");
-        }
-      }
+    toast("Are You Sure? This action will permanently delete the request!", {
+      action: {
+        label: "Delete",
+        onClick: async () => {
+          try {
+            const response = await axios.delete(
+              `${import.meta.env.VITE_API_URL}/user-requests/${id}`
+            );
+            if (response.status === 200) {
+              refetch();
+              setIsLoading(false);
+              toast.success("Request deleted successfully!", {
+                position: "top-right",
+              });
+            }
+          } catch (err) {
+            toast.error("Failed to delete request", {
+              position: "top-right",
+            });
+          }
+        },
+      },
+      cancel: {
+        label: "Cancel",
+      },
+      position: "top-right",
     });
   };
 
@@ -125,25 +134,45 @@ const RequestHistory = () => {
           </div>
         </div>
       </div>
-
       {/* Request Table Data */}
-      {requestedData.length === 0 ? (
-        <Card
-          className={
-            "mt-6 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg"
-          }
-        >
-          <CardContent>
-            <EmptyState
-              icon={History}
-              title="No Request History"
-              description="You currently have no request history. Once you submit a request, it will appear here for easy tracking and reference."
-              actionLabel="Make A Request"
-              actionLink="/dashboard/patient/request-form"
-            />
-          </CardContent>
-        </Card>
-      ) : (
+      {isLoading ? (
+        // loading skeleton table
+        <div className="md:py-6 py-8 rounded-xl">
+          <Table className={"*:w-full *:rounded-xl"}>
+            <TableHeader>
+              <TableRow className={"bg-base-200 hover:bg-base-200"}>
+                <TableHead></TableHead>
+                <TableHead>Photo</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Shift</TableHead>
+                <TableHead className="text-xs">
+                  Request <br /> Date
+                </TableHead>
+                <TableHead>Department</TableHead>
+                <TableHead className="text-xs">
+                  Request <br /> Role
+                </TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <TableRow key={i}>
+                  {Array.from({ length: 11 }).map((_, j) => (
+                    <TableCell key={j}>
+                      <div className="skeleton h-8 rounded w-full"></div>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : requestedData.length > 0 ? (
+        // show real data
         <div className="md:py-6 py-8 rounded-xl">
           <Table className={"*:w-full *:rounded-xl"}>
             <TableCaption>A list of your role upgrade requests</TableCaption>
@@ -167,36 +196,31 @@ const RequestHistory = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading
-                ? Array.from({ length: 3 }).map((_, i) => (
-                    <TableRow key={i}>
-                      {Array.from({ length: 11 }).map((_, j) => (
-                        <TableCell key={j}>
-                          <div className="skeleton h-8 rounded w-full"></div>
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                : requestedData?.map((request, index) => (
-                    <RequestTableRow
-                      key={request?._id || index}
-                      request={request}
-                      index={index}
-                      handleCancelRequest={handleCancelRequest}
-                      handleDeleteRequest={handleDeleteRequest}
-                      handleView={handleView}
-                    />
-                  ))}
+              {requestedData.map((request, index) => (
+                <RequestTableRow
+                  key={request?._id || index}
+                  request={request}
+                  index={index}
+                  handleCancelRequest={handleCancelRequest}
+                  handleDeleteRequest={handleDeleteRequest}
+                  handleView={handleView}
+                />
+              ))}
             </TableBody>
-            {/* <TableFooter>
-              <TableRow>
-                <TableCell colSpan={10}>
-                  Total Requests: {isLoading ? 0 : requestedData.length}
-                </TableCell>
-              </TableRow>
-            </TableFooter> */}
           </Table>
         </div>
+      ) : (
+        <Card className="mt-6 border shadow-sm border-[#e5e7eb] w-full py-6 rounded-lg">
+          <CardContent>
+            <EmptyState
+              icon={History}
+              title="No Request History"
+              description="No requests found. Your future role upgrade submissions will show up here"
+              actionLabel="Make Request"
+              actionLink="/dashboard/patient/request-form"
+            />
+          </CardContent>
+        </Card>
       )}
 
       <dialog id="request_modal" className="modal modal-middle">

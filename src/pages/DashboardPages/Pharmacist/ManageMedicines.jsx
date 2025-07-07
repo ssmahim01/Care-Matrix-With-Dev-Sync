@@ -8,12 +8,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import DashboardPagesHeader from "@/shared/Section/DashboardPagesHeader";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 import {
@@ -33,12 +33,12 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Eye, MoreVertical, Pencil, Trash } from "lucide-react";
+import { Eye, MoreVertical, Trash } from "lucide-react";
+import { useEffect, useState } from "react";
 import { GiMedicines } from "react-icons/gi";
 import { IoIosSearch } from "react-icons/io";
+import axios from "axios";
 
 import {
   Select,
@@ -48,12 +48,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import AddMedicine from "@/components/Modal/AddMedicine";
+import { AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { medicine_categories } from "@/lib/pharmacy";
-import AddMedicine from "@/components/Modal/AddMedicine";
-import Swal from "sweetalert2";
 import { Link } from "react-router";
-import { AvatarFallback } from "@/components/ui/avatar";
+import { toast } from "sonner";
 
 const ManageMedicines = () => {
   useEffect(() => {
@@ -110,39 +110,32 @@ const ManageMedicines = () => {
 
   // Medicine Delete Function
   const handleMedicineDelete = async (id) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "This action will permanently delete the medicine!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it",
-      cancelButtonText: "No, cancel",
+    toast("Are you sure? This will permanently delete the medicine", {
+      action: {
+        label: "Yes, Delete",
+        onClick: async () => {
+          try {
+            const { data } = await axios.delete(
+              `${import.meta.env.VITE_API_URL}/pharmacy/delete-medicine/${id}`
+            );
+            if (data.data.deletedCount) {
+              refetch();
+              toast.success("Medicine has been deleted successfully!", {
+                position: "top-right",
+              });
+            }
+          } catch (error) {
+            toast.error(error.message || "Failed to delete the medicine.", {
+              position: "top-right",
+            });
+          }
+        },
+      },
+      cancel: {
+        label: "No",
+      },
+      position: "top-right",
     });
-
-    if (result.isConfirmed) {
-      try {
-        const { data } = await axios.delete(
-          `${import.meta.env.VITE_API_URL}/pharmacy/delete-medicine/${id}`
-        );
-        if (data.data.deletedCount) {
-          refetch();
-          Swal.fire({
-            title: "Deleted!",
-            text: "Medicine has been deleted successfully!",
-            icon: "success",
-          });
-        }
-      } catch (error) {
-        Swal.fire({
-          title: "Error!",
-          text: error.message || "Failed to delete the medicine!",
-          icon: "error",
-          background: "#ffffff",
-          color: "#000000",
-          confirmButtonColor: "#ef4444",
-        });
-      }
-    }
   };
 
   return (
@@ -429,14 +422,13 @@ const ManageMedicines = () => {
                           <MoreVertical className="cursor-pointer text-gray-700" />
                         </div>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent>
+                      <DropdownMenuContent align="end">
                         <Link to={`/medicine/${medicine._id}`}>
                           <DropdownMenuItem className={"cursor-pointer"}>
-                            <Eye className="w-4 h-4 mr-2" /> View Medicine
-                            Details
+                            <Eye className="w-4 h-4 mr-2" /> View Details
                           </DropdownMenuItem>{" "}
                         </Link>
-                        <DropdownMenuItem className={"cursor-pointer"}>
+                        {/* <DropdownMenuItem className={"cursor-pointer"}>
                           <Pencil className="w-4 h-4 mr-2" /> Update Valid Until
                         </DropdownMenuItem>
                         <DropdownMenuItem className={"cursor-pointer"}>
@@ -446,7 +438,7 @@ const ManageMedicines = () => {
                         <DropdownMenuItem className={"cursor-pointer"}>
                           <Pencil className="w-4 h-4 mr-2" /> Update
                           Availability
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem
                           className={"cursor-pointer"}
                           onClick={() => handleMedicineDelete(medicine?._id)}
