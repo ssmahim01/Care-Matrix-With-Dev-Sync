@@ -1,4 +1,4 @@
-import loginImg from "@/assets/loginPage.png";
+import loginImg from "@/assets/LoginPage.png";
 import { useEffect, useState } from "react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { MdOutlineMail } from "react-icons/md";
